@@ -80,7 +80,8 @@ class MainActivity : ComponentActivity() {
                             Text("成都→德阳→绵阳粗粒度 fixture；只替换位置来源。请先结束当前旅程，再切换。")
                             Row { Text("模拟位置"); Switch(runtime.simulation, { runtime.developer(simulated = it) }, enabled = !runtime.journey.running) }
                             Row { listOf(1.0, 16.0, 60.0).forEach { speed -> TextButton({ runtime.developer(speed = speed) }) { Text("${speed.toInt()}×") } } }
-                            Text("当前 ${runtime.acceleration.toInt()}×；模拟速度 80 km/h")
+                            Text("当前 ${runtime.acceleration.toInt()}×；模拟速度 ${runtime.simulationSpeed.toInt()} km/h")
+                            Row { listOf(40.0, 80.0, 100.0).forEach { speed -> TextButton({ runtime.developer(speedKmh = speed) }, enabled = !runtime.journey.running) { Text("${speed.toInt()} km/h") } } }
                             if (runtime.journey.running) {
                                 OutlinedTextField(developerText, { developerText = it.take(800) }, label = { Text("模拟一句用户输入（语音不可用时）") })
                                 TextButton({ runtime.loop.user(developerText); developerText = ""; developer = false }, enabled = developerText.isNotBlank()) { Text("提交到同一 Director") }

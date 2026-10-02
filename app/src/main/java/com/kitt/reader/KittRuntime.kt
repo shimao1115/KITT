@@ -24,6 +24,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     }) { Log.w("KITT", it) }
     var simulation = settings.simulation
     var acceleration = settings.acceleration
+    var simulationSpeed = settings.simulationSpeed
     var source: LocationSource? = null; private set
     var sourceNotice = ""; private set
     var summary: TripSummary? = null; private set
@@ -35,7 +36,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         (voice as? AndroidVoice)?.speechRate = settings.speechRate
         journey.diagnostic = { Log.w("KITT", it) }
     }
-    val sourceLabel: String get() = if (simulation) "成都→绵阳 · 粗粒度模拟 / 80 km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
+    val sourceLabel: String get() = if (simulation) "成都→绵阳 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
     fun start() {
         val saved = if (resumeRequested) recovery else null
         resumeRequested = false
@@ -47,7 +48,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         loop.reset()
         source = if (simulation) {
             val fixture = context.assets.open("chengdu-mianyang.json").bufferedReader().use { RouteFixture.parse(it.readText()) }
-            SimulatedLocationSource(fixture, scope, System::currentTimeMillis, acceleration = acceleration, initialTravelMs = saved?.travelMs ?: 0L) {
+            SimulatedLocationSource(fixture, scope, System::currentTimeMillis, speedKmh = simulationSpeed, acceleration = acceleration, initialTravelMs = saved?.travelMs ?: 0L) {
                 sourceNotice = "模拟已到终点"; revision.intValue++
             }
         } else RealLocationSource(context) { sourceNotice = it; revision.intValue++ }
@@ -74,9 +75,10 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         summary?.let { store.finish(it) }; store.clearRecovery(); revision.intValue++
     }
     fun dismissSummary() { summary = null; revision.intValue++ }
-    fun developer(simulated: Boolean = simulation, speed: Double = acceleration) {
+    fun developer(simulated: Boolean = simulation, speed: Double = acceleration, speedKmh: Double = simulationSpeed) {
         if (journey.running) return
-        simulation = simulated; acceleration = speed; settings.developer(simulation, acceleration); revision.intValue++
+        simulation = simulated; acceleration = speed; simulationSpeed = speedKmh
+        settings.developer(simulation, acceleration, simulationSpeed); revision.intValue++
     }
     fun checkpoint() { store.checkpoint(journey, simulation, acceleration, (source as? SimulatedLocationSource)?.travelMs ?: travelCheckpointMs) }
     private fun checkpointIfChanged() {

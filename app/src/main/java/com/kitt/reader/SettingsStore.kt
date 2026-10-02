@@ -57,7 +57,9 @@ class SettingsStore(context: Context, private val secrets: SecretCipher = Androi
     val speechRate get() = prefs.getFloat("speech_rate", 1.0f)
     val simulation get() = prefs.getBoolean("simulation", false)
     val acceleration get() = prefs.getFloat("acceleration", 1.0f).toDouble().coerceIn(1.0, 120.0)
-    fun developer(simulation: Boolean, acceleration: Double) {
-        prefs.edit().putBoolean("simulation", simulation).putFloat("acceleration", acceleration.toFloat()).apply()
+    val simulationSpeed get() = prefs.getFloat("simulation_speed", 80.0f).toDouble().coerceIn(1.0, 200.0)
+    fun developer(simulation: Boolean, acceleration: Double, speedKmh: Double = simulationSpeed) {
+        prefs.edit().putBoolean("simulation", simulation).putFloat("acceleration", acceleration.toFloat())
+            .putFloat("simulation_speed", speedKmh.coerceIn(1.0, 200.0).toFloat()).apply()
     }
 }
