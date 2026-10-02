@@ -10,6 +10,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     val revision = mutableIntStateOf(0)
     val voice: VoicePort = injectedVoice ?: AndroidVoice(context)
     val store = TripStore(context)
+    val settings = SettingsStore(context)
     var recovery = store.recovery(); private set
     var resumeRequested = false
     val journey = Journey(System::currentTimeMillis, voice) {
@@ -17,18 +18,19 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         checkpointIfChanged()
     }
     val pipeline = ContextPipeline()
-    var config = ProviderConfig()
+    var config = settings.read()
     val loop = DirectorLoop(journey, pipeline, scope, System::currentTimeMillis, {
         if (config.kind == ProviderKind.FAKE) FakeProvider() else ApiProvider(config)
     }) { Log.w("KITT", it) }
-    var simulation = false
-    var acceleration = 1.0
+    var simulation = settings.simulation
+    var acceleration = settings.acceleration
     var source: LocationSource? = null; private set
     var sourceNotice = ""; private set
     var summary: TripSummary? = null; private set
     private var ticker: Job? = null
     private var lastCheckpoint = ""
     var notificationChanged: (() -> Unit)? = null
+    init { (voice as? AndroidVoice)?.speechRate = settings.speechRate }
     val sourceLabel: String get() = if (simulation) "成都→绵阳 · 粗粒度模拟 / 80 km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
     fun start() {
         val saved = if (resumeRequested) recovery else null
@@ -61,12 +63,17 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         notificationChanged?.invoke()
     }
     fun end() {
+        if (!journey.running && recovery == null) { stopSources(); return }
         if (journey.running) summary = journey.end()
         else recovery?.let { summary = TripSummary(it.started, System.currentTimeMillis(), it.destination, it.topics, 0) }
         stopSources(); recovery = null; resumeRequested = false
         summary?.let { store.finish(it) }; store.clearRecovery(); revision.intValue++
     }
     fun dismissSummary() { summary = null; revision.intValue++ }
+    fun developer(simulated: Boolean = simulation, speed: Double = acceleration) {
+        if (journey.running) return
+        simulation = simulated; acceleration = speed; settings.developer(simulation, acceleration); revision.intValue++
+    }
     fun checkpoint() { store.checkpoint(journey, simulation, acceleration, (source as? SimulatedLocationSource)?.travelMs ?: 0L) }
     private fun checkpointIfChanged() {
         // Ticks/GPS do not write a raw track. Only intent, quiet and topic summaries change this key.

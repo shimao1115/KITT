@@ -10,7 +10,7 @@
         <intent><action android:name="android.speech.RecognitionService" /></intent>
         <intent><action android:name="android.intent.action.TTS_SERVICE" /></intent>
     </queries>
-    <application android:name=".KittApp" android:theme="@style/AppTheme" android:label="路上读山河" android:allowBackup="false" android:supportsRtl="true">
+    <application android:name=".KittApp" android:theme="@style/AppTheme" android:label="路上读山河" android:icon="@drawable/ic_launcher" android:allowBackup="false" android:dataExtractionRules="@xml/data_extraction_rules" android:supportsRtl="true">
         <service android:name=".JourneyService" android:exported="false" android:foregroundServiceType="location" />
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
