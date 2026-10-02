@@ -67,6 +67,9 @@ class AndroidVoice(private val context: Context) : VoicePort {
                     if (chunks.isEmpty()) finishSpeech(false) else {
                         tts?.setSpeechRate(speechRate.coerceIn(0.5f, 1.5f))
                         finalId = "$token:${chunks.lastIndex}"
+                        watchdog?.let(handler::removeCallbacks)
+                        watchdog = Runnable { if (serial == token) finishSpeech(false) }
+                        handler.postDelayed(watchdog!!, (text.length * 350L + 20000).coerceAtMost(600000))
                         chunks.forEachIndexed { index, chunk ->
                             val status = tts?.speak(chunk, if (index == 0) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD, null, "$token:$index")
                             if (status != TextToSpeech.SUCCESS) finishSpeech(false)

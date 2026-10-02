@@ -19,7 +19,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    testOptions { unitTests.isIncludeAndroidResources = true }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        // Compose's cached main dispatcher otherwise retains a prior Robolectric application's Looper.
+        unitTests.all { it.forkEvery = 1 }
+    }
 }
 dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.10.01"))
@@ -32,4 +36,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.12.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

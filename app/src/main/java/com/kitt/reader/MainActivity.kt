@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
     private var microphonePermissionPending = false
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (hasLocation() && startAfterPermission) requestNotificationAndStart()
+        else if (startAfterPermission) runtime.locationUnavailable("请允许精确定位后再开始。")
         startAfterPermission = false
     }
     private val notificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { startServiceJourney() }
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
             var developer by remember { mutableStateOf(false) }; var taps by remember { mutableIntStateOf(0) }
             var settings by remember { mutableStateOf(false) }
             var unavailableSettings by remember { mutableStateOf(false) }
+            var developerText by remember { mutableStateOf("") }
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme(primary = Color(0xFF9BD2C0)) else
                 lightColorScheme(primary = Color(0xFF205D52), surface = Color(0xFFF4F5EF))) {
                 Surface(Modifier.fillMaxSize()) {
@@ -79,6 +81,10 @@ class MainActivity : ComponentActivity() {
                             Row { Text("模拟位置"); Switch(runtime.simulation, { runtime.developer(simulated = it) }, enabled = !runtime.journey.running) }
                             Row { listOf(1.0, 16.0, 60.0).forEach { speed -> TextButton({ runtime.developer(speed = speed) }) { Text("${speed.toInt()}×") } } }
                             Text("当前 ${runtime.acceleration.toInt()}×；模拟速度 80 km/h")
+                            if (runtime.journey.running) {
+                                OutlinedTextField(developerText, { developerText = it.take(800) }, label = { Text("模拟一句用户输入（语音不可用时）") })
+                                TextButton({ runtime.loop.user(developerText); developerText = ""; developer = false }, enabled = developerText.isNotBlank()) { Text("提交到同一 Director") }
+                            }
                             Button({ developer = false; if (runtime.journey.running) endJourney() else startJourney() }) {
                                 Text(if (runtime.journey.running) "停止模拟 / 结束" else "开始")
                             }

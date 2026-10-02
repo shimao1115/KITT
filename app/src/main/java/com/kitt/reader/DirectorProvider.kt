@@ -63,6 +63,7 @@ object DirectorContract {
         最近主题只用于避免重复；一次跳过不是长期偏好。Session Instructions 是本次临时偏好。
         PREPARE 只输出目标和重新确认条件，不生成待播正文、秒数或播放预约；同一时间最多一个。
         ASK_USER 只问一个短问题，未回答就放弃。不要在后台问需要即时回答的问题。
+        目的地“未提供”表示已经问过而无回答，不再追问目的地；位置年龄过大时不假装知道眼前现场。
         只输出严格 JSON，包含 action, topic, narration, question, prepare_hint, memory_update 六个字符串字段。
         action 只选 SILENT/SPEAK_NOW/PREPARE/ASK_USER；无用字段空字符串；memory_update 是极短主题摘要。
     """.trimIndent()

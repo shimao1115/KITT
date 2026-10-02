@@ -39,4 +39,13 @@ class PersistenceTest {
         assertNull(store.recovery()); assertNotNull(store.lastError)
         store.clearRecovery(); assertFalse(File(context.filesDir, "trips/current.json").exists())
     }
+    @Test fun resumedRuntimeKeepsTravelOffsetBeforeItsFirstPeriodicCheckpoint() {
+        val app = RuntimeEnvironment.getApplication(); val store = TripStore(app)
+        val journey = Journey(System::currentTimeMillis, TestVoice()); journey.start(); journey.requestInput("去绵阳")
+        store.checkpoint(journey, true, 16.0, 25000)
+        val runtime = KittRuntime(app, TestVoice()); runtime.resumeRequested = true; runtime.start()
+        runtime.checkpoint(); assertTrue(store.recovery()!!.travelMs >= 25000)
+        runtime.end(); runtime.scope.coroutineContext[kotlinx.coroutines.Job]?.cancel()
+        assertNull(store.recovery())
+    }
 }

@@ -28,7 +28,8 @@ class JourneyService : Service() {
                     if (!runtime.journey.running) runtime.start()
                     updateNotification()
                 } catch (_: SecurityException) {
-                    android.util.Log.w("KITT", "Location foreground permission unavailable"); stopSelf()
+                    android.util.Log.w("KITT", "Location foreground permission unavailable")
+                    runtime.locationUnavailable("定位不可用，请打开系统定位并允许位置权限。"); stopSelf()
                 }
             }
             else -> { stopSelf(); return START_NOT_STICKY }

@@ -11,6 +11,38 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit) {
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        if (maxWidth > maxHeight) {
+            Row(Modifier.fillMaxSize().safeDrawingPadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+                Column(Modifier.weight(1f)) {
+                    Row { TextButton(onDeveloper) { Text("路上读山河") }; TextButton(onSettings) { Text("设置") } }
+                    Text(sourceLabel, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelMedium)
+                    Text(stateLabel(journey), style = MaterialTheme.typography.headlineSmall)
+                    Text(journey.topic, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    if (journey.isQuiet) Text(quietLabel(journey))
+                    if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2)
+                }
+                Column(Modifier.weight(1.2f).fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
+                    DrivingControls(journey, onStart, onSpeak, onEnd)
+                }
+            }
+        } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper)
+    }
+}
+
+private fun stateLabel(journey: Journey) = when (journey.state) {
+    JourneyState.IDLE -> "开车上路后点一下开始"
+    JourneyState.READING -> "读山河中"
+    JourneyState.SPEAKING -> "正在讲述"
+    JourneyState.LISTENING -> "正在听"
+    JourneyState.QUIET -> "安静模式"
+}
+private fun quietLabel(journey: Journey) = if (journey.quietRemaining == Long.MAX_VALUE) "等你叫我" else
+    "剩余 ${journey.quietRemaining / 60000}:${((journey.quietRemaining / 1000) % 60).toString().padStart(2, '0')}"
+
+@Composable
+private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
+    onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit) {
     Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onDeveloper) { Text("路上读山河", style = MaterialTheme.typography.titleLarge) }
@@ -18,23 +50,22 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
         }
         Text(sourceLabel, style = MaterialTheme.typography.labelMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Spacer(Modifier.height(12.dp))
-        Text(when (journey.state) {
-            JourneyState.IDLE -> "开车上路后点一下开始"
-            JourneyState.READING -> "读山河中"
-            JourneyState.SPEAKING -> "正在讲述"
-            JourneyState.LISTENING -> "正在听"
-            JourneyState.QUIET -> "安静模式"
-        }, style = MaterialTheme.typography.headlineMedium)
+        Text(stateLabel(journey), style = MaterialTheme.typography.headlineMedium)
         Text(journey.fix?.area?.ifBlank { "GPS 已定位" } ?: if (journey.running) "等待可靠位置" else "其余的，跟它说就行。",
             style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.weight(1f))
         if (journey.isQuiet) {
-            Text(if (journey.quietRemaining == Long.MAX_VALUE) "等你叫我" else
-                "剩余 ${journey.quietRemaining / 60000}:${((journey.quietRemaining / 1000) % 60).toString().padStart(2, '0')}",
-                style = MaterialTheme.typography.headlineSmall)
+            Text(quietLabel(journey), style = MaterialTheme.typography.headlineSmall)
         } else Text(journey.topic, style = MaterialTheme.typography.headlineSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
         if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.weight(1f))
+        DrivingControls(journey, onStart, onSpeak, onEnd)
+    }
+}
+
+@Composable
+private fun DrivingControls(journey: Journey, onStart: () -> Unit, onSpeak: () -> Unit, onEnd: () -> Unit) {
+    Column {
         if (!journey.running) {
             Button(onStart, Modifier.fillMaxWidth().height(88.dp)) { Text("开始读山河", style = MaterialTheme.typography.titleLarge) }
         } else {

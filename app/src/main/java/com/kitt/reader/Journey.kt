@@ -24,6 +24,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     var prepared: Prepared? = null; private set
     var fix: Fix? = null; private set
     var foreground = true
+    var diagnostic: (String) -> Unit = {}
     var epoch = 0L; private set
     var lastSpeech = 0L; private set
     var cooldownUntil = 0L; private set
@@ -148,6 +149,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                     angleDifference(ticket.fix.bearing, fix!!.bearing) > 65)) return
         val response = runCatching { DirectorContract.parse(raw ?: error("Provider unavailable")) }
         if (response.isFailure) {
+            diagnostic("Director response unavailable or failed schema validation")
             if (ticket.active) say("刚才没连上，稍后再试。", false, true, onAnswer)
             changed(); return
         }
@@ -160,7 +162,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             }
             Action.ASK_USER -> {
                 val normalized = result.question.replace(Regex("[\\s？?。！!]"), "")
-                if (foreground && !isQuiet && normalized !in asked && now() - lastQuestion >= 600000) {
+                if (foreground && (ticket.active || !isQuiet) && normalized !in asked && now() - lastQuestion >= 600000) {
                     asked.add(normalized); lastQuestion = now()
                     if (destination == "未询问") { destinationQuestion = true; destination = "等待回答" }
                     say(result.question, true, ticket.active, onAnswer)
@@ -188,7 +190,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                     if (destinationQuestion) { destination = "未提供"; destinationQuestion = false }
                 }
                 changed()
-                if (ask && success && foreground && !isQuiet) beginListening(onAnswer)
+                if (ask && success && foreground && (active || !isQuiet)) beginListening(onAnswer)
             }
         }
     }

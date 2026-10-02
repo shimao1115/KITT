@@ -79,4 +79,11 @@ class JourneyTest {
         val card = context.card(journey, time); assertTrue(card.length < 2000); assertTrue(card.contains("海拔趋势未知"))
         assertFalse(card.contains("[Fix"))
     }
+    @Test fun activeQuestionCanTemporarilyTakeOverQuietWithoutCancellingTimer() {
+        start(); journey.quiet(); val until = journey.quietUntil
+        send(DirectorResult(Action.ASK_USER, question = "你想从哪个角度展开？"), active = true)
+        voice.finish(); assertEquals(JourneyState.LISTENING, journey.state)
+        voice.answer?.invoke(null); assertEquals(JourneyState.QUIET, journey.state)
+        assertEquals(until, journey.quietUntil)
+    }
 }

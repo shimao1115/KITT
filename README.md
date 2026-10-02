@@ -18,6 +18,19 @@ V0 只需要证明一个“魔法瞬间”：
 
 如果这条链成立，V0 就成立。
 
+## 当前可运行 V0
+
+原生 Android V0 已实现，默认使用明确标注的离线 Fake Provider；无需 API key 可验收完整交互链。
+
+- 安装包：`artifacts/kitt-v0-debug.apk`（Android 8.0+）。
+- 最短总验收步骤及唯一剩余外部动作：[HANDOFF.md](HANDOFF.md)。
+- 构建/测试/打包：PowerShell 执行 `./scripts/verify.ps1`；缓存齐全时可加 `-Offline`。
+- 测试证据：[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。
+- 模拟入口：连续点顶部“路上读山河”5次，开启模拟位置，选择 16× 或 60×，点击开始。实际速度仍为80 km/h，加速只推进位置。
+- 真实 AI：旅程结束后在设置选择 OpenAI Responses 或兼容 API，输入 HTTPS 地址、模型和 API key 并保存。密钥在本机通过 Android Keystore 加密保存，不进入 APK/仓库。普通 API fallback 的技术判断见 [Provider Spike](docs/PROVIDER_SPIKE.md)。
+
+Fake 通过闭环验收不代表真实 AI 内容质量通过；手机语音/GPS/锁屏表现与真实 Provider 内容是最后人工验收边界。
+
 ## 开发入口
 
 Codex 或其他开发 Agent 开工前必须按顺序阅读：
