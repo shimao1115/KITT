@@ -39,6 +39,14 @@
 - 一个自然问题就能得到可靠答案的，不构造复杂算法长期猜测。
 - AI 用在真正有价值的判断：选题、解释、对话、事实核验决策。
 
+### Agent 接班原则
+
+KITT 允许 Codex、WorkBuddy、Qoder、OpenCode 或其他施工 Agent 接力开发。任何新 Agent 接班时：
+
+> **先继承现状，再继续第一个未完成的 Destination；除非现有实现明确阻塞验收，否则不要为了个人偏好重构已经通过 Gate 的部分。**
+
+接班前先阅读 `AGENTS.md`、`docs/ROADMAP.md`、最近 milestone commits 和 `HANDOFF.md`（若已存在），以 GitHub 当前状态作为唯一施工真相源。不同 Agent 的角色是轮班施工队，而不是重新设计项目。
+
 ## 3. 禁止擅自扩张 V0
 
 除非规格明确要求，不要新增：
