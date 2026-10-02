@@ -25,12 +25,13 @@ data class RouteFixture(val name: String, val speedKmh: Double, val points: List
 class SimulatedLocationSource(
     val fixture: RouteFixture, private val scope: CoroutineScope, private val now: () -> Long,
     val speedKmh: Double = fixture.speedKmh, val acceleration: Double = 1.0,
-    private val onFinished: () -> Unit = {}
+    private val initialTravelMs: Long = 0L, private val onFinished: () -> Unit = {}
 ) : LocationSource {
     private val lengths = fixture.points.zipWithNext().map { (a, b) -> Fix(a.lat, a.lon, 0).distanceTo(Fix(b.lat, b.lon, 0)) }
     val totalMeters = lengths.sum()
     var traveledMeters = 0.0; private set
     var completed = false; private set
+    var travelMs = initialTravelMs; private set
     private var job: Job? = null
     init { require(speedKmh in 1.0..200.0 && acceleration in 1.0..120.0) }
     fun sample(elapsedMs: Long, timeMs: Long): Fix {
@@ -50,7 +51,8 @@ class SimulatedLocationSource(
         stop(); completed = false; val startTime = now()
         job = scope.launch {
             do {
-                onFix(sample(now() - startTime, now()))
+                travelMs = initialTravelMs + now() - startTime
+                onFix(sample(travelMs, now()))
                 if (traveledMeters >= totalMeters) { completed = true; onFinished(); break }
                 delay(1000)
             } while (isActive)

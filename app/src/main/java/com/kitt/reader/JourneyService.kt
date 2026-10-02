@@ -48,8 +48,7 @@ class JourneyService : Service() {
     }
     private fun updateNotification() { getSystemService(NotificationManager::class.java).notify(ID, notification()) }
     override fun onDestroy() {
-        runtime.notificationChanged = null; runtime.stopSources()
-        if (runtime.journey.running) runtime.journey.invalidateProvider()
+        runtime.notificationChanged = null; runtime.serviceLost()
         super.onDestroy()
     }
     companion object {

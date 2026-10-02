@@ -20,12 +20,14 @@ import androidx.core.content.ContextCompat
 class MainActivity : ComponentActivity() {
     private val runtime get() = (application as KittApp).runtime
     private var startAfterPermission = false
+    private var microphonePermissionPending = false
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (hasLocation() && startAfterPermission) requestNotificationAndStart()
         startAfterPermission = false
     }
     private val notificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { startServiceJourney() }
     private val micPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        microphonePermissionPending = false
         (runtime.voice as? AndroidVoice)?.permissionResult(granted)
     }
     private fun hasLocation() = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -52,8 +54,14 @@ class MainActivity : ComponentActivity() {
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme(primary = Color(0xFF9BD2C0)) else
                 lightColorScheme(primary = Color(0xFF205D52), surface = Color(0xFFF4F5EF))) {
                 Surface(Modifier.fillMaxSize()) {
-                    DrivingScreen(runtime.journey, runtime.sourceLabel, ::startJourney, runtime.loop::speak,
+                    val summary = runtime.summary
+                    if (summary != null) EndScreen(summary, runtime.store, runtime::dismissSummary)
+                    else DrivingScreen(runtime.journey, runtime.sourceLabel, ::startJourney, runtime.loop::speak,
                         ::endJourney, {}, { taps++; if (taps >= 5) { developer = true; taps = 0 } })
+                    if (runtime.recovery != null) AlertDialog(onDismissRequest = {}, title = { Text("继续刚才的旅程？") },
+                        text = { Text("恢复旅程意图和临时偏好；从当前现场重新判断。") },
+                        confirmButton = { TextButton({ runtime.resumeRequested = true; startJourney() }) { Text("继续") } },
+                        dismissButton = { TextButton(::endJourney) { Text("结束") } })
                     if (developer) AlertDialog(onDismissRequest = { developer = false }, title = { Text("开发模拟 · 非导航级") }, text = {
                         Column {
                             Text("成都→德阳→绵阳粗粒度 fixture；只替换位置来源。请先结束当前旅程，再切换。")
@@ -75,9 +83,9 @@ class MainActivity : ComponentActivity() {
     }
     override fun onResume() {
         super.onResume(); runtime.foreground(true)
-        (runtime.voice as? AndroidVoice)?.requestMicrophone = { micPermission.launch(Manifest.permission.RECORD_AUDIO) }
+        (runtime.voice as? AndroidVoice)?.requestMicrophone = { microphonePermissionPending = true; micPermission.launch(Manifest.permission.RECORD_AUDIO) }
     }
     override fun onPause() {
-        runtime.foreground(false); (runtime.voice as? AndroidVoice)?.requestMicrophone = null; super.onPause()
+        runtime.foreground(false, microphonePermissionPending); (runtime.voice as? AndroidVoice)?.requestMicrophone = null; super.onPause()
     }
 }
