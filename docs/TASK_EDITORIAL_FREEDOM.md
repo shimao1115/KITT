@@ -48,7 +48,7 @@ In particular, do not require every narration to:
 Replace with broad editorial goals:
 - be interesting, accurate, relevant to the current journey;
 - speak when there is something worth hearing;
-- history, culture, people, artifacts, archaeology, architecture, engineering, geography, food, industry, customs, place names, stories and contemporary life are all first-class;
+- history, culture, people, artifacts, archaeology, architecture, engineering, geography, food, industry, customs, place names, stories and contemporary life are all first-class; protected cultural relics, tangible/intangible heritage, local specialties, scenic places, folk arts, literature, religion, anecdotes and any other grounded worthwhile material are equally eligible;
 - use the form that best fits the material;
 - avoid repetition and generic filler;
 - do not force a moral, lesson, summary, or grand conclusion.
@@ -86,6 +86,48 @@ A candidate may include:
 - source/grounding notes.
 
 It should **not** prescribe the narration’s thesis or rhetorical question.
+
+
+
+### 2A. Area arrival should open a **local dossier**, not a narrow thesis
+
+When KITT enters a district/county/town/township/street chapter, the content layer should expose a broad **local dossier / material shelf**. It is not a checklist that must be read out, and it is not a pre-written essay outline.
+
+Useful material may include, when grounded and relevant:
+
+- place background / local character / historical depth;
+- scenic areas, notable places, museums, ruins, temples, old streets, historic towns and local landmarks;
+- human geography and settlement patterns;
+- historical origins and major periods of change;
+- local specialties, foods, crafts, products and everyday material culture;
+- tangible cultural heritage;
+- intangible cultural heritage;
+- nationally protected major cultural relic sites;
+- provincial-level protected cultural relic sites;
+- other locally important protected sites or historic buildings;
+- customs, festivals, folk arts, dialect/place-name stories and local traditions;
+- archaeology and notable discoveries;
+- historical figures and people strongly connected with the place;
+- anecdotes, local stories, curious facts and memorable episodes when reliable;
+- literature, art, religion and public culture;
+- agriculture, industry, trade and contemporary livelihoods;
+- bridges, dams, tunnels, railways, canals and other engineering stories;
+- mountains, rivers, lakes, passes and other physical geography;
+- any other genuinely interesting, reliable angle the model discovers.
+
+This list is deliberately **open-ended**. Do not reject a worthwhile topic just because it does not fit one of the named families.
+
+The purpose of the area chapter is simply:
+> “We have entered a new place. Here is a shelf of reliable things worth knowing.”
+
+The Director remains free to choose one thread, several connected threads, or silence.
+
+Do not require:
+- one item from every category;
+- a fixed order such as history → culture → geography → specialty;
+- a standard “background introduction” paragraph;
+- a concluding thesis about land, identity, civilization, or modernization.
+
 
 ### 3. Allow multiple narrative forms
 
@@ -128,7 +170,15 @@ Acceptance:
 - no requirement to mention all angles;
 - no requirement to conclude with “对这片土地的理解”.
 
-### 6. Keep diversity without mechanical category rotation
+### 6. Fully open the editorial field
+
+The topic-family enum is an implementation aid for weak deduplication, **not the ontology of what KITT is allowed to talk about**.
+
+If the model finds a grounded worthwhile subject that does not map neatly to a current family, do not suppress it merely because the taxonomy is incomplete. Prefer graceful mapping or an expandable representation over editorial exclusion.
+
+KITT is not a curriculum and not an exam answer. It should feel like travelling with someone widely read, locally curious and able to notice what is interesting.
+
+### 7. Keep diversity without mechanical category rotation
 
 Recent topic-family history remains useful as a weak anti-repetition signal.
 
@@ -137,7 +187,7 @@ It must not become:
 - a category quota;
 - a scripted playlist.
 
-### 7. Preserve AI-native principle
+### 8. Preserve AI-native principle
 
 The prompt should state destination and boundaries, not micromanage prose.
 
@@ -154,6 +204,7 @@ This is guidance, not required verbatim wording.
 Add/update tests so they verify constraints, not exact prose templates.
 
 Must verify:
+- entering a chapter can expose broad local-dossier material such as history, places, specialties, heritage/protected relics, people, stories and engineering without forcing a scripted order;
 - candidate titles are neutral topic/entity labels for benchmark items;
 - no constitution text requires the fixed “一个问题→解释一层→落回眼前” template;
 - no constitution/candidate requires “改变对这片土地的理解” or equivalent thesis;
