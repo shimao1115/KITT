@@ -1,73 +1,74 @@
-# 沿途 V0.3.1 — OAuth hosted search 能力验收交接
+# 沿途 V0.3.2 — Overview → Topic 收口交接
 
-**最新结论（2026-10-04）：A，最小web_search成功完成，ChatGPT OAuth hosted search可用。** vivo已有授权／`gpt-5.6-luna`／默认effort，使用用户指定的新都区一句话问题、`stream=true`、`web_search`与`tool_choice=required`，去掉Local Dossier schema。**HTTP200，tool item于2802ms出现；实际生命周期in_progress 2832ms、searching 4011ms、completed 5995ms；21个tool provenance URL，citation后总计22个不同来源；output text 6217ms开始，response.completed 6697ms到达，总耗时6699ms。** 20个实际SSE事件全部保留，正文／URL值／item ID／凭据不记录，见 [最小搜索能力验收与完整时间线](docs/ACCEPTANCE_MINIMAL_SEARCH_CAPABILITY.md)。
-
-本轮仅Debug-only SSE capability探针／测试：独立180秒诊断截止（此次6.699秒完成），生产仍为原90秒；没有再运行非流式真机请求。生产Provider／Local Dossier／Journey／Director／ASR／TTS均未修改，没有购买API、更换账号／Provider、新OAuth或token导出。测试包已卸载，真机与交付APK哈希相同。本轮停止于证明能力，完整Local Dossier的85秒超时仍需后续单独定位／缩减研究请求；没有在本批次扩大生产改动。
-
-## 上一批次诊断（历史）
-
-**上一批次当时为第3类；“capability未确定”已被本轮A结果取代。** 当时非流式生产研究payload为HTTP400／2116ms／`Stream must be set to true`，完整Dossier SSE为HTTP200／87089ms／85秒完成超时。其参数拒绝、超时与未获READY事实仍保留，不能再解释为账号不支持搜索。历史原始证据见 [OAuth研究传输验收](docs/ACCEPTANCE_OAUTH_RESEARCH_TRANSPORT.md)。
-
-本轮只有Debug／测试探针与回归：HTTPS、不重定向、不自动重试、90秒总截止、bounded完整JSON读取、取消释放与脱敏证据。**生产 Provider、Local Dossier契约、Journey、Director、TTS／ASR均未修改；后台研究仍保持streaming。** 未换账号／Provider、未购买API key、未要求新OAuth。测试包已从手机卸载，手机与交付Debug APK SHA256相同，原保存授权／设置保留。
-
-截至 **2026-10-04（Asia/Shanghai）**：从 upstream `main / 74bdf85` 合入热修复要求（合并点 `da1cd22`），优先完成 [HOTFIX_V03_TOTAL_SILENCE.md](docs/HOTFIX_V03_TOTAL_SILENCE.md)。已确认并修复研究全局门禁、模拟移动等待研究、失败章节机会丢失；保留真实搜索证据要求。原中文 ASR、识别文字上屏、typed 回复与用户接管路径保持。
-
-当前包：`H:\CODEX\KITT\artifacts\kitt-v0-debug.apk`，**沿途 0.3.1 / versionCode 6 / Android 8.0+**，76,215,833 bytes。SHA256：`BDAF346C5A25C6312AC8E9DED47CFFAC0114CD67E9AB48BF628013BC6D8C8074`。新增探针仅在Debug，Release不包含该类。
-最终全量 Gate 与真机交互通过；托管搜索未成功且没有明确服务拒绝，准确状态见 [热修复验收](docs/ACCEPTANCE_V03_SILENCE_HOTFIX.md)。此前完整 V0.3 能力／内容／ASR 交接存档在 [HANDOFF_V03_PRE_HOTFIX.md](docs/HANDOFF_V03_PRE_HOTFIX.md)。
+截至 **2026-10-04（Asia/Shanghai）**，本轮指定研究链已完成真机验收，**停止，不继续扩功能或架构**。
+实现 commit：`c81f641 feat: finish sourced Overview-to-Topic chapter research on OAuth`。
+完整记录：[两阶段研究验收](docs/ACCEPTANCE_STAGED_RESEARCH.md)。此前诊断交接：[V0.3.1存档](docs/HANDOFF_V031_RESEARCH_DIAGNOSTICS.md)。
 
 ## 当前可运行能力
 
-- `research.pending` 不再阻止整个 Director 或模拟行驶；初始意图询问、独立有依据地标与主动输入可继续。思考、TTS、用户回答窗口、监听和图片交互仍可暂停开发模拟；真实 GPS 不暂停。
-- 当前章节 RESEARCHING 保留待检查状态；READY 或 FAILED 得到一次安全章节机会。区县 READY 可以在镇街研究未完时使用；暂时解析缺口不会反复触发已检查的 FAILED。驶离只缓存、不晚播。
-- 失败仍是 FAILED；没有完成工具调用、来源与 provenance 就没有 Local Dossier，不把模型记忆当成查证结果。主动搜索失败仍只简短诚实反馈。
-- 研究开始／完成／失败耗时、检查延迟原因、机会保留／消耗有明确日志。该 vivo 屏蔽应用 logcat，Debug 使用最多约128KB的 cache 诊断备份；不保存凭据、完整转录、录音或原始轨迹，运行时重建即重置，Release 无此文件。
-- 真机发现的 ChatGPT 暂时网络失败改为固定60秒回退等待；后续本地拒绝不再滑动截止时间或覆盖原故障。
-- 真机发现旧 Android HTTP 连接连取消关闭也会阻塞；薄 Adapter 改用原生 Call 取消和总时限（旁白／授权35秒、研究90秒），不自动重试／重定向，不改变授权协议、请求 payload 与事实校验。
-- 原旅程开始／结束、10分钟安静、用户打断TTS、ASK_USER一次监听、PREPARE失效、真实／模拟隔离、纪要与既有视觉交流功能继续保留。
+- 区县／章节进入后先做轻量 Overview：简短概况、不同具体对象和实际来源，不再一次调查全区长事实。
+- Overview READY 即保留正常 Director opportunity；只可使用有证据的基础介绍，不从标题扩写未证实年代、故事或官方称号。
+- 自动讲过一个对象后，可按该对象或高 salience 线索启动一个后台 Topic；最多一个，不批量并发。
+  新证据补入本章证据卡，pending 不阻塞 Director、GPS、TTS 或模拟移动。
+- 用户输入先取消 Topic，再走原主动决策与必要搜索。“再讲一点”明确指向刚才对象，使用已完成专题的新角度。
+- 驶离取消未完 Topic，晚结果不补播。完成证据只缓存至本次旅程结束，重访可复用。
+- completed hosted search 与真实 provenance 仍是 READY 前提。缺政府 + OFFICIAL 引用的文保／非遗认定事实剔除。
+- V0.3.1静音修复、Journey、GPS、八字段 Director、主动搜索支线、ASR、TTS、独立 OpenAI Responses 备用入口保留。
+  没有新密钥、服务器、RAG、数据库、永久知识库、产品多 Agent 或新 UI 功能。
 
-## Provider 与当前真机事实
+## Provider 与授权
 
-新安装默认 Fake（只验交互，不验搜索）。连接的 vivo V2405A 原配置是 **ChatGPT / gpt-5.6-luna / 默认effort**，独立 OpenAI 研究未勾选；无新密钥、重新授权或替换 Provider 操作。
+真机沿用 **ChatGPT OAuth / gpt-5.6-luna / 默认 effort**，独立 OpenAI research **未勾选**。
+OAuth 研究仍为 streaming、required web_search、保留 action.sources，生产总时限仍90秒。
+本轮无需新 OAuth、API key 或用户授权步骤，手机原授权／设置保留。新安装仍默认 Fake；真实 Provider 通过既有设置连接账号。
 
-最终包真机开场 **ASK_USER，约6.5秒**，Android TTS 完成成功，一次监听正常打开／结束。研究等待时模拟前进至4016m、8480m及后续28572m；主动打字一般机制问题经同一 Director 判定 GENERAL_KNOWLEDGE，约12.4秒返回 SPEAK_NOW，TTS完成成功。
+## 真机验收
 
-用户解锁后最终安装完成，已核对手机 APK 与交付 APK 的 SHA256 相同。后台研究在90012ms超时，取消约3ms完成并释放研究槽；驶离新都不补播。已结束模拟、删除临时测试 APK、恢复临时日志属性。
+当前 vivo V2405A，以无答案提示的新都区身份运行生产研究与 Director/Journey/TTS：
 
-**独立 ChatGPT hosted-search capability已证明可用（A）。** 本轮最小SSE请求完整完成真实工具调用、22来源provenance与response.completed。完整Local Dossier仍未获READY；此前完整请求的完成超时／SocketException与非流式参数拒绝仍需分别解释，不能称为搜索能力拒绝。
+- Overview search → response.completed **42991ms**；研究开始 → READY **43018ms**；章节入口 → READY **43041ms**。
+- **5对象 / 6来源**。自动发现：宝光寺、杨升庵祠及桂湖、天府家风馆、新繁棕编、新繁东湖。
+  四个验收目标均发现，人物与祠园合并；没有将验收名称写入生产 prompt/query/fixture。
+- READY 回调立即放行 Director；约49.8秒形成第一段有证据旁白，中文系统 TTS 完整播放成功。
+- 杨升庵祠及桂湖 Topic：search → completed **75199ms**；研究开始 → READY **75215ms**；**3可用事实 / 5来源**。
+  两条缺政府认定依据的事实剔除，不凑数量。
+- “再讲一点”：原判断 USE_CONTEXT，原 Director SPEAK_NOW，补充杨氏家规与公共家风教育；原生 TTS started/completed 均成功。
+- 最终两次研究没有 SSE completion timeout。中间曾有29秒 SocketException和一次模型目录 DNS UnknownHostException；不把它们解释为搜索能力拒绝。
+  开发中发现重复对象和追问切换对象，已分别合并概况线索与补上主题指代，最后重新完成整条真机验收。
+- 探针采用持续更新的静止测试 fix，不修改真实 GPS；测试旅程已结束，androidTest APK 已卸载。
 
-## Build / test 与模拟
+## Build / test / 签名
 
-本轮 `scripts/verify.ps1 -Offline`：**PASS，Debug245／Release232项单测，零失败、零跳过，两种assemble／lint与Debug v2签名均通过**；前置最小probe／socket回归8项PASS。覆盖所有实际事件（含added、searching、未知type）、来源与完整终态、A/B/C/D区分、DONE不能替代response.completed、脱敏／大小边界、取消截止与晚到事件冻结；原研究／授权／Journey／语音／静默回归继续PASS。最终APK与手机SHA256复核PASS。
+完整 `scripts/verify.ps1 -Offline`：**Debug 259 / Release 246 tests**，失败／跳过均0；两种 assemble、lint 通过。
+新增14项两阶段回归；原232项基线及13项Debug传输诊断继续通过。脚本拒绝低于232项的报告，避免把筛选测试误当全量。
+全量日志：`artifacts/staged-research-verified-gates.log`；交付复核：`artifacts/staged-research-package-check.log`。
 
-成都→绵阳黄金路径与新都→雎水链继续使用生产 Context／Journey／Director，加确定性研究与 fake Voice。合成研究报告：29点、13章节、6区县、19次研究、13段旁白、33检查机会，零stale/cancel/failure。这不是真实 hosted-search 或新都黑盒验收。
+成都新都→绵阳安州雎水粗粒度模拟仍通过：29点／90912m；章节证据模拟13章节／19研究／13旁白。
+这是 Fake研究／Director／Voice与生产状态机的确定性回归，不冒充全程真实Provider内容验收；真实研究证据另见上文。
 
-本轮本地复核：`artifacts/search-capability-final-gates.log`、`search-capability-regression.log`、`search-capability-phone.log`、`search-capability-report.json`、`search-capability-timeline.jsonl`、`verification.json`及`SHA256.txt`。完整20事件表已入库；旧传输诊断、热修复与模拟日志保留为历史证据。
+交付版本 **0.3.2 / versionCode 7 / Android 8.0+**：
 
-## 已知限制与用户最小动作
+- Debug：[kitt-v0-debug.apk](artifacts/kitt-v0-debug.apk)，74654651 bytes，v2签名通过，已安装vivo并核对同一SHA256。
+  SHA256：`0C718DDDED32204023ABE864C41F309C2A4443C5364767881E7DC9531FFE1DF9`。
+- Release测试签名：[kitt-v0-release.apk](artifacts/kitt-v0-release.apk)，70609344 bytes，v2／v3通过。
+  SHA256：`CD8ABCCF1ECD31F5A062336E0C84AB6A32A682E455D472B917F78ACD25979D21`。
+  使用已有Android debug keystore，供验收；没有创建或配置Play发布签名身份。
 
-最终包已装在手机，无需用户再安装／授权。真实完整地方研究仍需要Local Dossier READY；最小搜索6.699秒完成已证明账号工具能力，尚不证明完整请求的超时是输出规模、服务端生命周期还是网络等哪一因素。本route强制stream=true，不再用非流式JSON测试。没有证据要求购买API、更换Provider或重新授权；最小SSE复测见能力验收文档。
+## 已知限制与最短人工复核
 
-真实地方内容／新都四对象无提示发现、来源支持与主观叙述质量仍需实际成功研究后验收，不能用确定性 fixture、桌面 web 或模型记忆代替。网络不可用时自动旁白继续安静降级，主动请求简短反馈；该修复不承诺断网仍讲地方事实。
+Overview约43秒，尚未达到十几秒目标；Topic约75秒，仍有托管搜索延迟和手机网络波动。未宣称长期成功率或消除所有 SocketException。
+数量为目标区间；证据不足不凑数，官方认定校验可能剔除部分事实。
+手机中文 ASR 保持已验收 Vosk 离线实现；系统 recogniser 的既有 ERROR_CLIENT 限制不在本轮改动。
 
-Geocoder 覆盖、短章节驶离、OEM后台／锁屏、TTS主观听感与离线 Vosk 地名准确率沿用 [联合手机验收](docs/COMBINED_PHONE_ACCEPTANCE.md) 与 [ASR验收](docs/ACCEPTANCE_CHINESE_ASR.md) 的限制。没有扩展语音栈、多Agent或全国POI数据。
-
-## 下一次人工总验收最短步骤
-
-1. 解锁手机，`adb install -r artifacts/kitt-v0-debug.apk`，保留原ChatGPT授权与语音设置。
-2. 保持独立OpenAI研究未勾选；顶部“沿途”点5次，以100km/h／16×启动新都模拟。观察开场询问、TTS及研究等待中的位置变化。
-3. typed／ASR分别问一般问题和需要查证的问题，验证用户优先、原TTS、失败诚实反馈与同一旅程恢复。
-4. 若复核搜索能力，按最小能力验收文档安装匹配app／test APK，只运行`search-capability`（SSE／180秒诊断）；查看逐事件时间线与A/B/C/D终态。四对象黑盒与完整内容验收仍等待有效Local Dossier。
-5. 此设备取诊断可用 `adb shell run-as com.kitt.reader cat cache/hotfix-diagnostics.log`；普通设备同时保留 `adb logcat -s KITTResearch KITT KITTSim KITTAuth`。
+普通复核：打开沿途，保留现有ChatGPT与独立研究关闭设置，开始新都模拟；待Overview完成后听基础介绍，专题完成后说或输入“再讲一点”；结束旅程清掉session资料。
+固定新都现场计时按 [验收文档](docs/ACCEPTANCE_STAGED_RESEARCH.md) 的 androidTest 命令运行；无需导出凭据。
 
 ## 最近 milestone commits
 
-- `801a712` — 最小OAuth hosted search真机A：gpt-5.6-luna／20个SSE事件／22来源／6699ms完整完成，Debug-only180秒诊断与245／232 Gate；无生产链路改动。
-- `9a2fd17` — 上一批次研究传输诊断交接（capability未确定的历史结论现已被A取代）。
-- `23ee7ca` — 隔离OAuth非流式参数拒绝与SSE完成超时，Debug-only bounded探针、239／232 Gate及最终66项相关回归；真机证据不支持账号搜索不可用或非流式默认切换。
-- `e01f301` — 已验证V0.3.1热修复交接，本轮继承起点。
-- `3397221` — 恢复研究等待期间的旁白／主动交互，保留搜索真实性，修复网络等待并完成232×2 Gate及真机复测。
-- `da1cd22` — 合入当前 upstream main。
-- `74bdf85` — 全静默热修复要求。
-- `595ca82` — vivo Google ASR 公开入口与失败复测。
-- `7de4303` — V0.3 交接与真实研究 Gate。
-- `5ed61bf` — V0.3 地方研究与主动提问实现。
+- `c81f641` — Overview → Topic研究链、真实新都／专题／追问TTS验收、全量回归。
+- `d9e860b` — 最小OAuth hosted search能力与完整SSE真机时间线交接。
+- `801a712` — 最小搜索成功，6699ms，22条来源provenance。
+- `9a2fd17` / `23ee7ca` — 非流式参数拒绝与旧完整研究约87秒完成超时诊断。
+- `e01f301` / `3397221` — V0.3.1静音热修复与真机交接。
+
+**到此收口，后续工作须另有用户任务。**
