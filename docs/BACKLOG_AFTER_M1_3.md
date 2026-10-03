@@ -166,7 +166,10 @@ Desired information strategy:
 - Exact names, dates, records and local claims must remain grounded; if evidence is unavailable, prefer omission over invention.
 
 Acceptance idea for later content milestone:
-- On a representative Chengdu→Deyang→Mianyang run, automatic narration should demonstrate **variety across topic families**, including at least one reliably grounded human/history/cultural/site topic when such material is available.
+- On a representative Chengdu→Deyang→Mianyang run, automatic narration should demonstrate **variety across topic families**, including reliably grounded human/history/cultural/site topics when such material is available.
+- **Sanxingdui / Guanghan is a concrete acceptance benchmark for this fixture.** A system that drives through the Guanghan/Deyang corridor yet only talks about curved roads and village growth is editorially incomplete. The later enrichment layer should surface major high-salience cultural/history candidates such as Sanxingdui when route/place context makes them relevant.
+- Likewise, significant ancient towns, heritage sites, historic settlements, local museums/ruins, and other culturally important nodes along a route should be eligible candidates for narration rather than being invisible behind generic geography.
+- Do not hard-code a fixed Sanxingdui script into production. Use it as a benchmark that the place/candidate-discovery system can actually notice major nearby cultural nodes.
 - Do not enforce a fixed category quota or scripted sequence.
 
 This is a **core product-content issue**, higher priority than final UI polish.
