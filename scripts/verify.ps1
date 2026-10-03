@@ -31,7 +31,7 @@ try {
         build='PASS'; tests=$taskTests; failures=$taskFailures; lint='PASS'; signature='PASS'
         simulation='PASS with Fake Provider and fake Voice'; apk='kitt-v0-debug.apk'; sha256=$taskHash
         deviceAcceptance='Remaining: GPS, Chinese TTS/ASR, Android Keystore, lock-screen/OEM behavior'
-        liveProvider='Remaining: enter a working API key on device for real AI content acceptance'
+        liveProvider='Remaining: authorize KITT ChatGPT sign-in and plan usage on device; API-key providers remain optional alternatives'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8
     Write-Output "PASS: $taskTests tests; install artifacts\kitt-v0-debug.apk"
 } finally { Pop-Location }

@@ -96,7 +96,7 @@ class FakeProvider : DirectorProvider {
     }
 }
 
-enum class ProviderKind { FAKE, OPENAI, COMPATIBLE }
+enum class ProviderKind { CHATGPT, FAKE, OPENAI, COMPATIBLE }
 data class ProviderConfig(
     val kind: ProviderKind = ProviderKind.FAKE, val endpoint: String = "https://api.openai.com/v1",
     val model: String = "gpt-4.1-mini", val effort: String = "", val apiKey: String = ""
@@ -157,6 +157,7 @@ class ApiProvider(private val config: ProviderConfig, private val transport: Jso
         }
     }
     override suspend fun direct(request: DirectorRequest): String = withContext(Dispatchers.IO) {
+        require(config.kind in setOf(ProviderKind.OPENAI, ProviderKind.COMPATIBLE))
         require(config.apiKey.isNotBlank() && config.model.isNotBlank()) { "Provider configuration missing" }
         val suffix = if (config.kind == ProviderKind.OPENAI) "/responses" else "/chat/completions"
         val obj = Json.parseToJsonElement(transport.post(config.endpoint.trimEnd('/') + suffix, config.apiKey, payload(request).toString())).jsonObject

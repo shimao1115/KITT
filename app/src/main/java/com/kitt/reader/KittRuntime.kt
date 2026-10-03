@@ -11,6 +11,11 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     val voice: VoicePort = injectedVoice ?: AndroidVoice(context)
     val store = TripStore(context)
     val settings = SettingsStore(context)
+    val chatGpt = ChatGptAccount(settings, diagnostic = { Log.i("KITTAuth", it) }, keepAlive = { active ->
+        val intent = android.content.Intent(context, ChatGptAuthService::class.java)
+        if (active) androidx.core.content.ContextCompat.startForegroundService(context, intent)
+        else context.stopService(intent)
+    })
     var recovery = store.recovery(); private set
     var resumeRequested = false
     val journey = Journey(System::currentTimeMillis, voice) {
@@ -20,7 +25,11 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     val pipeline = ContextPipeline()
     var config = settings.read()
     val loop = DirectorLoop(journey, pipeline, scope, System::currentTimeMillis, {
-        if (config.kind == ProviderKind.FAKE) FakeProvider() else ApiProvider(config)
+        when (config.kind) {
+            ProviderKind.CHATGPT -> ChatGptProvider(chatGpt, config)
+            ProviderKind.FAKE -> FakeProvider()
+            else -> ApiProvider(config)
+        }
     }) { Log.w("KITT", it) }
     var simulation = settings.simulation
     var acceleration = settings.acceleration

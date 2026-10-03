@@ -12,6 +12,7 @@
     </queries>
     <application android:name=".KittApp" android:theme="@style/AppTheme" android:label="路上读山河" android:icon="@drawable/ic_launcher" android:allowBackup="false" android:fullBackupContent="false" android:dataExtractionRules="@xml/data_extraction_rules" android:supportsRtl="true">
         <service android:name=".JourneyService" android:exported="false" android:foregroundServiceType="location" />
+        <service android:name=".ChatGptAuthService" android:exported="false" android:foregroundServiceType="shortService" />
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

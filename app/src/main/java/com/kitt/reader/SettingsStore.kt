@@ -46,15 +46,22 @@ class SettingsStore(context: Context, private val secrets: SecretCipher = Androi
         val uri = URI(config.endpoint)
         require(uri.scheme == "https" && !uri.host.isNullOrBlank() && uri.userInfo == null && uri.query == null && uri.fragment == null) { "请输入有效的 HTTPS API 地址。" }
         require(config.kind == ProviderKind.FAKE || config.model.isNotBlank()) { "请填写模型名称。" }
-        require(config.kind == ProviderKind.FAKE || config.apiKey.isNotBlank()) { "请填写 API key。" }
-        require(config.effort in setOf("", "low", "medium", "high")) { "不支持的思考强度。" }
+        require(config.kind in setOf(ProviderKind.FAKE, ProviderKind.CHATGPT) || config.apiKey.isNotBlank()) { "请填写 API key。" }
+        require(config.kind == ProviderKind.CHATGPT || config.effort in setOf("", "low", "medium", "high")) { "不支持的思考强度。" }
         val encrypted = if (config.apiKey.isBlank()) "" else secrets.encrypt(config.apiKey)
         check(prefs.edit().putString("provider", config.kind.name).putString("endpoint", config.endpoint.trimEnd('/'))
-            .putString("model", config.model.trim()).putString("effort", if (config.supportsEffort) config.effort else "")
+            .putString("model", config.model.trim()).putString("effort", if (config.supportsEffort || config.kind == ProviderKind.CHATGPT) config.effort else "")
             .putString("credential", encrypted).putFloat("speech_rate", speechRate.coerceIn(0.5f, 1.5f)).commit()) { "暂时无法保存设置。" }
         credentialUnavailable = false
     }
     val speechRate get() = prefs.getFloat("speech_rate", 1.0f)
+    // One atomic encrypted record: host, registration, verified identity and rotating credentials.
+    @Synchronized fun readChatGpt(): String? = prefs.getString("chatgpt", null)?.let {
+        runCatching { secrets.decrypt(it) }.getOrElse { credentialUnavailable = true; null }
+    }
+    @Synchronized fun saveChatGpt(record: String) {
+        check(prefs.edit().putString("chatgpt", secrets.encrypt(record)).commit()) { "暂时无法保存 ChatGPT 连接。" }
+    }
     val simulation get() = prefs.getBoolean("simulation", false)
     val acceleration get() = prefs.getFloat("acceleration", 1.0f).toDouble().coerceIn(1.0, 120.0)
     val simulationSpeed get() = prefs.getFloat("simulation_speed", 80.0f).toDouble().coerceIn(1.0, 200.0)
