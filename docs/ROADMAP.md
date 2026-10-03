@@ -1,5 +1,8 @@
 # KITT V0 Roadmap — Destination Chain
 
+> 当前轮次只收口 **Overview → Topic 研究链**，真机与回归结果见 [ACCEPTANCE_STAGED_RESEARCH.md](ACCEPTANCE_STAGED_RESEARCH.md)。
+> 验收完成后停止，不启动下一轮功能、架构或 Provider 扩展。此前静音热修复与真实搜索证据规则继续有效。
+
 > 当前紧急施工优先 [HOTFIX_V03_TOTAL_SILENCE.md](HOTFIX_V03_TOTAL_SILENCE.md)，结果以 [ACCEPTANCE_V03_SILENCE_HOTFIX.md](ACCEPTANCE_V03_SILENCE_HOTFIX.md) 与根 HANDOFF.md 为准。
 > 沿途 V0.3 原任务仍为 [TASK_POST_ASR_YANTU_V03.md](TASK_POST_ASR_YANTU_V03.md)（含主动按需搜索）。
 > 中文 ASR 已完成并由用户验收，保持其后端与交互。V0.3 的工程实现与真实 hosted-search／新都黑盒内容验收分开记录；

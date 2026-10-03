@@ -96,9 +96,14 @@ class ChatGptHttpsTransport(private val diagnostic: (String) -> Unit = {}) : Cha
     }
     override suspend fun research(url: String, bearer: String, body: String): String {
         diagnostic("research request started")
+        val started = System.nanoTime()
         val input = request(url, bearer, body).newBuilder().header("Accept", "text/event-stream").build()
         return responseFromCall(searchClient.newCall(input), diagnostic) { response ->
-            checked(response).use { ChatGptStream.read(it, response.header("x-request-id").orEmpty(), research = true) }
+            checked(response).use {
+                ChatGptStream.read(it, response.header("x-request-id").orEmpty(), research = true).also {
+                    diagnostic("research response.completed elapsed_ms=${(System.nanoTime() - started) / 1_000_000}")
+                }
+            }
         }
     }
     private fun bounded(reader: BufferedReader, max: Int): String {

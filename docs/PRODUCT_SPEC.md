@@ -1,5 +1,10 @@
 # 沿途 V0 产品规格
 
+> **V0.3.2 研究链收口**：章节先做轻量 Overview，发现4–8个具体对象与来源；READY 即给 Director 正常机会。
+> 已讲对象或高价值线索再串行做一个 Topic（3–6条事实），后台 pending 不阻塞导演或移动；用户输入抢占，驶离取消未完专题。
+> 完成证据只缓存至旅程结束，仍要求 completed hosted search 和可核对 provenance。主动问题搜索分支、八字段 Director 与语音交互保持。
+> 本轮到 Overview → Topic 验收为止，不继续扩功能。真机证据见 [两阶段研究验收](ACCEPTANCE_STAGED_RESEARCH.md)。
+
 > **V0.3.1 热修复边界**：章节研究异步进行，不得全局阻止 Director 或冻结模拟行驶；失败保留明确状态与一次安全检查机会。
 > 未查到证据时只允许意图交互、稳定一般机制或独立已有依据，不能编造章节特有事实或声称查证成功。见 [热修复验收](ACCEPTANCE_V03_SILENCE_HOTFIX.md)。
 

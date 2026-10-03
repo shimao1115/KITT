@@ -28,6 +28,10 @@ data class LocalDossier(val area: AreaIdentity, val searchedAt: Long, val orient
 
 fun interface LocalResearchProvider {
     suspend fun research(area: AreaIdentity, at: Long): LocalDossier
+    suspend fun overview(area: AreaIdentity, at: Long): OverviewDossier = OverviewDossier.from(research(area, at))
+    val supportsTopics: Boolean get() = false
+    suspend fun topic(area: AreaIdentity, objectToResearch: OverviewObject, at: Long): LocalDossier =
+        throw ResearchUnavailable("当前研究 Provider 不支持专题研究。")
     suspend fun researchQuestion(query: LocalQuestion, at: Long): LocalDossier =
         throw ResearchUnavailable("当前研究 Provider 不支持按需搜索；尚未实际查到资料。")
 }
@@ -108,7 +112,7 @@ object LocalResearchContract {
                 return@mapNotNull null
             }
             val designation = string(f, "designation", 100)
-            val officialClaim = designation.isNotBlank() || Regex("全国重点文物保护单位|省级文物保护单位|[国家省市县]级非物质文化遗产|国家级非遗|省级非遗").containsMatchIn(title + summary)
+            val officialClaim = designation.isNotBlank() || officialClaim(title + summary)
             if (officialClaim && refs.none { s -> s.government && s.kind == SourceClass.OFFICIAL }) {
                 if (gaps.size < 8) gaps += "$title：官方认定缺少政府依据，此条未纳入可讲事实。"
                 null
@@ -118,6 +122,7 @@ object LocalResearchContract {
         }
         return LocalDossier(area, at, string(obj, "orientation", 500), facts, sources, gaps)
     }
+    internal fun officialClaim(text: String) = Regex("全国重点文物保护单位|(?:国家|省|市|县)级文物保护单位|(?:国家|省|市|县)级非物质文化遗产|(?:国家|省|市|县)级非遗").containsMatchIn(text)
 
     fun payload(area: AreaIdentity, config: ProviderConfig, stream: Boolean = false, question: LocalQuestion? = null, at: Long? = null) = buildJsonObject {
         put("model", config.model); put("store", false); put("stream", stream)
@@ -146,6 +151,10 @@ object LocalResearchContract {
             put("reasoning", buildJsonObject { put("effort", config.effort) })
     }
     fun response(raw: String, area: AreaIdentity, at: Long): LocalDossier {
+        val (text, visited) = evidence(raw)
+        return parse(text, area, at, visited)
+    }
+    internal fun evidence(raw: String): Pair<String, Set<String>> {
         val obj = Json.parseToJsonElement(raw).jsonObject
         require(obj["status"]?.jsonPrimitive?.content == "completed")
         val output = obj.getValue("output").jsonArray.map { it.jsonObject }
@@ -164,13 +173,23 @@ object LocalResearchContract {
                 }
             }
         }
-        return parse(texts.joinToString(""), area, at, visited)
+        return texts.joinToString("") to visited
     }
 }
 
 class ApiLocalResearch(private val config: ProviderConfig,
     private val transport: JsonTransport = HttpsTransport(readTimeoutMs = 80000, maxChars = 512000)) : LocalResearchProvider {
     override suspend fun research(area: AreaIdentity, at: Long): LocalDossier = run(area, at)
+    override val supportsTopics = true
+    override suspend fun overview(area: AreaIdentity, at: Long): OverviewDossier =
+        StagedResearchContract.overviewResponse(staged(area), area, at)
+    override suspend fun topic(area: AreaIdentity, objectToResearch: OverviewObject, at: Long): LocalDossier =
+        StagedResearchContract.topicResponse(staged(area, objectToResearch), area, at)
+    private suspend fun staged(area: AreaIdentity, topic: OverviewObject? = null): String = withContext(Dispatchers.IO) {
+        if (config.kind != ProviderKind.OPENAI || config.apiKey.isBlank()) throw ResearchUnavailable("本地研究不可用：需要已配置的 OpenAI Responses 搜索通路。")
+        transport.post(config.endpoint.trimEnd('/') + "/responses", config.apiKey,
+            StagedResearchContract.payload(area, config, stream = false, topic = topic).toString())
+    }
     override suspend fun researchQuestion(query: LocalQuestion, at: Long): LocalDossier = run(query.area, at, query)
     private suspend fun run(area: AreaIdentity, at: Long, question: LocalQuestion? = null): LocalDossier = withContext(Dispatchers.IO) {
         if (config.kind != ProviderKind.OPENAI || config.apiKey.isBlank()) throw ResearchUnavailable("本地研究不可用：需要已配置的 OpenAI Responses 搜索通路。兼容聊天 API 不代表支持搜索。")
@@ -181,6 +200,22 @@ class ApiLocalResearch(private val config: ProviderConfig,
 class ChatGptLocalResearch(private val account: ChatGptAccount, private val config: ProviderConfig) : LocalResearchProvider {
     private var rejection: String? = null
     override suspend fun research(area: AreaIdentity, at: Long): LocalDossier = run(area, at)
+    override val supportsTopics = true
+    override suspend fun overview(area: AreaIdentity, at: Long): OverviewDossier =
+        StagedResearchContract.overviewResponse(staged(area), area, at)
+    override suspend fun topic(area: AreaIdentity, objectToResearch: OverviewObject, at: Long): LocalDossier =
+        StagedResearchContract.topicResponse(staged(area, objectToResearch), area, at)
+    private suspend fun staged(area: AreaIdentity, topic: OverviewObject? = null): String {
+        rejection?.let { throw ResearchUnavailable(it) }
+        try {
+            return account.research(config.model) { model -> StagedResearchContract.payload(area,
+                config.copy(effort = config.effort.takeIf { it in model.efforts }.orEmpty()), stream = true, topic = topic).toString() }
+        } catch (e: ChatGptFailure) {
+            val reason = "ChatGPT 地方研究请求未被接受：HTTP ${e.status} / ${e.code.ifBlank { "unknown" }}；不是未找到当地内容。"
+            if (e.status in setOf(400, 401, 403, 429)) rejection = reason
+            throw ResearchUnavailable(reason)
+        }
+    }
     override suspend fun researchQuestion(query: LocalQuestion, at: Long): LocalDossier = run(query.area, at, query)
     private suspend fun run(area: AreaIdentity, at: Long, question: LocalQuestion? = null): LocalDossier {
         rejection?.let { throw ResearchUnavailable(it) }
@@ -200,11 +235,21 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
     private val provider: () -> LocalResearchProvider, private val diagnostic: (String) -> Unit = {},
     private val changed: () -> Unit = {}) {
     private data class Entry(var status: ResearchStatus = ResearchStatus.UNSEEN, var dossier: LocalDossier? = null,
+        var overview: OverviewDossier? = null,
         var failure: String = "", var job: Job? = null, var examined: Boolean = false)
     private val cache = linkedMapOf<String, Entry>()
     private val slots = Semaphore(2)
     private var generation = 0
     private var lastResolvedKey: String? = null
+    private val topics = linkedMapOf<String, LocalDossier>()
+    private val attemptedTopics = mutableSetOf<String>()
+    private var topicJob: Job? = null
+    private var topicKey: String? = null
+    private var topicOpportunity = false
+    val topicPending get() = topicJob?.isActive == true
+    fun overview(area: AreaIdentity) = cache[area.key]?.overview
+    fun topic(area: AreaIdentity, title: String) = topics[area.key + "|" + title]
+    fun completedTopics(area: AreaIdentity) = topics.filterKeys { it.startsWith(area.key + "|") }.values.toList()
     var active: AreaIdentity? = null; private set
     private var unchecked = false
     val size get() = cache.size
@@ -212,7 +257,7 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
     val readyKeys get() = active?.let { area -> listOf(area.copy(chapter = ""), area).map { it.key }
         .filter { cache[it]?.dossier != null }.toSet() }.orEmpty()
     val opportunity get() = active?.let { area ->
-        (unchecked && cache[area.key]?.status in setOf(ResearchStatus.READY_UNCHECKED, ResearchStatus.CHECKED, ResearchStatus.FAILED)) ||
+        topicOpportunity || (unchecked && cache[area.key]?.status in setOf(ResearchStatus.READY_UNCHECKED, ResearchStatus.CHECKED, ResearchStatus.FAILED)) ||
             cache[area.copy(chapter = "").key]?.status == ResearchStatus.READY_UNCHECKED
     } == true
     fun status(area: AreaIdentity) = cache[area.key]?.let {
@@ -221,6 +266,8 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
     fun dossier(area: AreaIdentity) = cache[area.key]?.dossier
     fun enter(area: AreaIdentity?) {
         if (area == active) return
+        cancelTopic()
+        topicOpportunity = false
         active = area
         unchecked = area != null && (area.key != lastResolvedKey || cache[area.key]?.examined != true)
         if (area != null) lastResolvedKey = area.key
@@ -236,15 +283,16 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
         val entry = Entry(ResearchStatus.RESEARCHING); cache[area.key] = entry
         val token = generation
         val startedAt = now()
-        diagnostic("research started identity=${area.fullName} elapsed_ms=0 opportunity_retained=${area == active && unchecked}")
+        diagnostic("research started stage=overview identity=${area.fullName} elapsed_ms=0 opportunity_retained=${area == active && unchecked}")
         entry.job = scope.launch {
             try {
-                val dossier = slots.withPermit { withTimeout(90000) { provider().research(area, now()) } }
+                val overview = slots.withPermit { withTimeout(90000) { provider().overview(area, now()) } }
+                val dossier = overview.evidence()
                 ensureActive()
                 if (token != generation) return@launch
                 require(dossier.area == area)
-                entry.dossier = dossier; entry.status = ResearchStatus.READY_UNCHECKED
-                diagnostic("research ready identity=${area.fullName} elapsed_ms=${now() - startedAt} facts=${dossier.facts.size} opportunity_retained=${area == active && unchecked} sources=${dossier.sources.joinToString { it.url }}")
+                entry.overview = overview; entry.dossier = dossier; entry.status = ResearchStatus.READY_UNCHECKED
+                diagnostic("research ready stage=overview identity=${area.fullName} elapsed_ms=${now() - startedAt} objects=${overview.objects.size} facts=${dossier.facts.size} opportunity_retained=${area == active && unchecked} sources=${dossier.sources.joinToString { it.url }}")
             } catch (_: TimeoutCancellationException) {
                 entry.status = ResearchStatus.FAILED; entry.failure = "本地研究超时；尚未获得证据，不等于没有当地内容。"
                 diagnostic("research failed identity=${area.fullName} elapsed_ms=${now() - startedAt} reason=timeout opportunity_retained=${area == active && unchecked}")
@@ -258,6 +306,7 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
         }
     }
     fun checked(included: Set<String> = readyKeys + listOfNotNull(active?.key?.takeIf { cache[it]?.status == ResearchStatus.FAILED })) {
+        topicOpportunity = false
         if (active?.key in included) unchecked = false
         included.forEach { cache[it]?.examined = true }
         if (included.isNotEmpty()) diagnostic("chapter opportunity consumed keys=${included.joinToString()} pending_retained=${pending && unchecked}")
@@ -273,7 +322,50 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
             appendLine("【本地研究状态】${identity.fullName} ${status(identity)}；待检查=${identity == active && opportunity}")
             entry.dossier?.let { append(it.text()) } ?: appendLine(entry.failure.ifBlank { "搜索尚未完成；尚未获得证据。" } +
                 "不得用模型记忆填补具体当地事实，不得伪称已搜索；意图询问、一般机制或独立已有依据仍可使用。")
+            topics.filterKeys { it.startsWith(identity.key + "|") }.values.forEach {
+                appendLine("【已完成专题深挖】以下新证据可用于继续讲；仍须避开最近已讲的内容。")
+                append(it.text())
+            }
         }
     }
-    fun clear() { generation++; cache.values.forEach { it.job?.cancel() }; cache.clear(); active = null; unchecked = false; lastResolvedKey = null }
+    /** One background topic, chosen only from completed Overview evidence. No queue or retries. */
+    fun deepen(preferred: String = "") {
+        val area = active ?: return
+        if (topicPending || !provider().supportsTopics || pending) return
+        val available = listOf(area, area.copy(chapter = "")).distinctBy { it.key }.flatMap { identity ->
+            cache[identity.key]?.overview?.objects.orEmpty().map { identity to it }
+        }.filter { (identity, obj) -> identity.key + "|" + obj.title !in attemptedTopics }
+        fun match(obj: OverviewObject): Int = if (preferred.contains(obj.title)) 100 else
+            obj.title.split(Regex("[及与、/（）()\\s]+" )).count { it.length >= 2 && preferred.contains(it) }
+        val chosen = available.filter { match(it.second) > 0 }.maxByOrNull { match(it.second) * 10 + it.second.salience }
+            ?: available.maxByOrNull { it.second.salience } ?: return
+        val (identity, obj) = chosen
+        val key = identity.key + "|" + obj.title
+        attemptedTopics += key; topicKey = key
+        val token = generation; val startedAt = now()
+        diagnostic("research started stage=topic identity=${identity.fullName} title=${obj.title}")
+        topicJob = scope.launch {
+            try {
+                val dossier = slots.withPermit { withTimeout(90000) { provider().topic(identity, obj, now()) } }
+                ensureActive()
+                if (token != generation || active != area) return@launch
+                require(dossier.area == identity && dossier.facts.isNotEmpty())
+                topics[key] = dossier; topicOpportunity = true
+                diagnostic("research ready stage=topic identity=${identity.fullName} title=${obj.title} elapsed_ms=${now() - startedAt} facts=${dossier.facts.size} sources=${dossier.sources.size}")
+                changed()
+            } catch (_: TimeoutCancellationException) {
+                diagnostic("research failed stage=topic elapsed_ms=${now() - startedAt} reason=timeout")
+            } catch (e: CancellationException) { throw e }
+            catch (e: Exception) { diagnostic("research failed stage=topic elapsed_ms=${now() - startedAt} reason=${e.javaClass.simpleName}") }
+        }
+    }
+    fun cancelTopic() {
+        if (topicPending) {
+            topicJob?.cancel()
+            topicKey?.let { attemptedTopics.remove(it) }
+            diagnostic("research cancelled stage=topic")
+        }
+        topicJob = null; topicKey = null
+    }
+    fun clear() { generation++; cancelTopic(); topics.clear(); attemptedTopics.clear(); topicOpportunity = false; cache.values.forEach { it.job?.cancel() }; cache.clear(); active = null; unchecked = false; lastResolvedKey = null }
 }

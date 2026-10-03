@@ -61,8 +61,9 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         counters.opportunity()
         dispatch(null)
     }
-    fun speak() { cancel(); journey.beginListening(::user) }
+    fun speak() { research.cancelTopic(); cancel(); journey.beginListening(::user) }
     fun user(text: String, image: ImageInput? = null) {
+        research.cancelTopic()
         cancel()
         if (journey.requestInput(text)) dispatch(text, image)
     }
@@ -80,8 +81,10 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         request = scope.launch {
             // A dispatch cancelled before this coroutine runs has never examined the context.
             // Snapshot evidence at the actual check, including research completed before this coroutine ran.
+            val continuation = if (utterance?.trim() in setOf("再讲一点", "再讲点", "继续讲", "详细一点", "多讲一点") && journey.topic.isNotBlank())
+                "\n【当前主题追问】用户要继续刚才的“${journey.topic}”。优先使用该对象已完成专题中的新事实，补充未讲角度，不重复基础介绍，也不另换对象；没有新依据则按原主动搜索规则处理。" else ""
             val input = DirectorRequest(sessionInstructions = journey.instructions,
-                contextCard = context.card(journey, now()), userUtterance = utterance, image = image)
+                contextCard = context.card(journey, now()) + continuation, userUtterance = utterance, image = image)
             if (!ticket.active) { research.checked(); context.proximity.consumeOpportunity(landmarkIds) }
             diagnostic("director started active=${ticket.active} research_pending=${research.pending} chapter=$chapterKey")
             var activeFailure: String? = null
@@ -130,7 +133,12 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
             val parsed = raw?.let { runCatching { DirectorContract.parse(it) }.getOrNull() }
             val chapterBlock = if (!ticket.active && chapterKey != context.areas.active?.area?.key) DeliveryOutcome.STALE else null
             val outcome = journey.deliver(deliveryTicket, raw, activeFailure, chapterBlock ?: context.proximity.guard(parsed, ticket.active, landmarkIds)) { user(it) }
-            if (outcome == DeliveryOutcome.SPEAK_NOW && parsed != null) context.proximity.delivered(parsed)
+            if (outcome == DeliveryOutcome.SPEAK_NOW && parsed != null) {
+                context.proximity.delivered(parsed)
+                // A narrated object (or the highest salient remaining lead) may now be researched in the background.
+                // This does not delay delivery, consume GPS opportunities, or pause simulation.
+                if (!ticket.active && chapterBlock == null) research.deepen(parsed.topic + "\n" + parsed.narration)
+            }
             counters.terminal(ticket.active, outcome)
             diagnostic("terminal active=${ticket.active} chapter=$chapterKey outcome=$outcome topic=${parsed?.topic.orEmpty()} reason=${parsed?.memoryUpdate.orEmpty()} ${counters.summary()}")
         }
