@@ -124,6 +124,51 @@ Acceptance requires:
 - cancel/end/quiet does not leak a late result;
 - no stale audio/result is replayed after state change.
 
+
+## Live transcript + typed-input fallback
+
+The listening experience should behave more like a modern voice input method.
+
+### Show recognized speech on screen
+
+While one-shot ASR is active:
+- if the backend provides partial/interim hypotheses, show the current recognized text live on screen as it changes;
+- when a final result arrives, show the final recognized text clearly before/while it is submitted into the existing Director path;
+- do not fabricate partial text for engines that only support final results;
+- if a backend cannot provide interim hypotheses, keep the listening visualization and show text as soon as a real final result exists;
+- recognition errors/notices must remain visually distinct from actual recognized text.
+
+The transcript is transient UI state only. Do not persist it as raw voice history beyond the existing user-text/Director interaction semantics.
+
+### Always preserve a typing path
+
+Whenever the user has entered the **“说点什么”** interaction, and whenever KITT has asked the user a question via `ASK_USER`, the UI must also expose a **typed text input** path.
+
+Required behavior:
+- microphone listening and text entry belong to the same one-shot interaction surface;
+- the user may choose to speak or type;
+- selecting/starting text entry should safely stop/cancel the active recognizer so a late ASR result cannot overwrite or duplicate the typed submission;
+- typed text must go through the same existing `Journey.requestInput` / Director path as recognized speech;
+- do not create separate command semantics for typed vs spoken input;
+- when KITT asks a question, the user must not be forced to answer by voice only;
+- if ASR is unavailable, typed input still remains usable.
+
+The exact UI may be a compact text field, keyboard action, or equivalent, but it must be obvious and reachable during the active interaction without navigating away from the journey screen.
+
+Do not require the user to type while driving; this is an available input method for a passenger/stopped user, not a driving requirement.
+
+### Interaction correctness
+
+Verify:
+- partial ASR text updates do not submit prematurely;
+- final ASR result submits once;
+- typed submit cancels ASR and submits once;
+- a late recognizer callback after typed submit is ignored;
+- cancel/back clears transient transcript and input state;
+- `ASK_USER` still abandons cleanly if neither voice nor text response is given;
+- TTS → ASK_USER → listening + typing entry works;
+- ASR-unavailable state still allows typed response.
+
 ## Error and privacy requirements
 
 Keep structured outcomes at least equivalent to M1.4:
@@ -165,7 +210,13 @@ Add focused tests for:
 - permission handling;
 - backend unavailable fallback;
 - no fallback retry storm;
-- TTS → listen interruption remains correct.
+- TTS → listen interruption remains correct;
+- partial transcript rendering when the backend supports it;
+- final transcript rendering;
+- typed submit through the same Director path;
+- typed submit cancels/invalidates late ASR results;
+- ASK_USER exposes both voice and typed response paths;
+- ASR unavailable still leaves typed input usable.
 
 Run full:
 - Debug unit tests;
