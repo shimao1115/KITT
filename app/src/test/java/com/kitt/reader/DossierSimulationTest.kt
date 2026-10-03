@@ -16,7 +16,7 @@ class DossierSimulationTest {
         lateinit var loop: DirectorLoop
         loop = DirectorLoop(journey, context, backgroundScope, clock, { DirectorProvider { request ->
             val active = context.areas.active!!.area
-            val dossier = loop.research.dossier(active)!!
+            val dossier = loop.research.dossier(active) ?: return@DirectorProvider DirectorResult(Action.SILENT).json()
             assertTrue(dossier.area.fullName in request.contextCard)
             assertTrue(dossier.sources.single().url in request.contextCard)
             assertTrue(dossier.facts.single().summary in request.contextCard)
@@ -27,7 +27,7 @@ class DossierSimulationTest {
         } }, diagnostic = { evidence += it }, researchProvider = { research })
         val fixture = RouteFixture.parse(File("src/main/assets/chengdu-mianyang.json").readText())
         val source = SimulatedLocationSource(fixture, backgroundScope, clock, 100.0, 16.0,
-            paused = { loop.pending || loop.research.pending || journey.speaking || journey.listening || journey.imageInteraction })
+            paused = { loop.simulationPaused })
         journey.simulationCadence({ source.simulatedTravelMs }, { source.traveledMeters }); source.start(loop::location)
         var speechAt = 0L
         repeat(1000) {

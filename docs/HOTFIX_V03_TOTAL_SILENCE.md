@@ -1,6 +1,6 @@
 # Hotfix — V0.3 total-silence regression
 
-Status: **URGENT**
+Status: **IMPLEMENTED — acceptance evidence in [ACCEPTANCE_V03_SILENCE_HOTFIX.md](ACCEPTANCE_V03_SILENCE_HOTFIX.md)**
 Base: current main at/after 7de4303
 Scope: restore narration responsiveness without weakening research truthfulness
 

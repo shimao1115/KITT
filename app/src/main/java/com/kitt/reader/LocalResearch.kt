@@ -200,7 +200,7 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
     private val provider: () -> LocalResearchProvider, private val diagnostic: (String) -> Unit = {},
     private val changed: () -> Unit = {}) {
     private data class Entry(var status: ResearchStatus = ResearchStatus.UNSEEN, var dossier: LocalDossier? = null,
-        var failure: String = "", var job: Job? = null)
+        var failure: String = "", var job: Job? = null, var examined: Boolean = false)
     private val cache = linkedMapOf<String, Entry>()
     private val slots = Semaphore(2)
     private var generation = 0
@@ -212,30 +212,31 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
     val readyKeys get() = active?.let { area -> listOf(area.copy(chapter = ""), area).map { it.key }
         .filter { cache[it]?.dossier != null }.toSet() }.orEmpty()
     val opportunity get() = active?.let { area ->
-        (unchecked && cache[area.key]?.dossier != null) ||
-            (!pending && cache[area.copy(chapter = "").key]?.status == ResearchStatus.READY_UNCHECKED)
+        (unchecked && cache[area.key]?.status in setOf(ResearchStatus.READY_UNCHECKED, ResearchStatus.CHECKED, ResearchStatus.FAILED)) ||
+            cache[area.copy(chapter = "").key]?.status == ResearchStatus.READY_UNCHECKED
     } == true
     fun status(area: AreaIdentity) = cache[area.key]?.let {
-        if (area == active && opportunity) ResearchStatus.READY_UNCHECKED else it.status
+        if (area == active && opportunity && it.dossier != null) ResearchStatus.READY_UNCHECKED else it.status
     } ?: ResearchStatus.UNSEEN
     fun dossier(area: AreaIdentity) = cache[area.key]?.dossier
     fun enter(area: AreaIdentity?) {
         if (area == active) return
         active = area
-        unchecked = area != null && (area.key != lastResolvedKey || cache[area.key]?.status != ResearchStatus.CHECKED)
+        unchecked = area != null && (area.key != lastResolvedKey || cache[area.key]?.examined != true)
         if (area != null) lastResolvedKey = area.key
-        diagnostic("research active=${area?.fullName ?: "unresolved"} opportunity=$opportunity")
         if (area != null) {
             // A district dossier gives background across its chapters, researched once per trip.
             if (area.chapter.isNotBlank()) start(area.copy(chapter = ""))
             start(area)
         }
+        diagnostic("research active=${area?.fullName ?: "unresolved"} opportunity_retained=$unchecked status=${area?.let(::status)}")
     }
     private fun start(area: AreaIdentity) {
         if (area.key in cache) return
         val entry = Entry(ResearchStatus.RESEARCHING); cache[area.key] = entry
         val token = generation
-        diagnostic("research started identity=${area.fullName}")
+        val startedAt = now()
+        diagnostic("research started identity=${area.fullName} elapsed_ms=0 opportunity_retained=${area == active && unchecked}")
         entry.job = scope.launch {
             try {
                 val dossier = slots.withPermit { withTimeout(90000) { provider().research(area, now()) } }
@@ -243,21 +244,23 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
                 if (token != generation) return@launch
                 require(dossier.area == area)
                 entry.dossier = dossier; entry.status = ResearchStatus.READY_UNCHECKED
-                diagnostic("research ready identity=${area.fullName} facts=${dossier.facts.size} opportunity=${area == active && unchecked} sources=${dossier.sources.joinToString { it.url }}")
+                diagnostic("research ready identity=${area.fullName} elapsed_ms=${now() - startedAt} facts=${dossier.facts.size} opportunity_retained=${area == active && unchecked} sources=${dossier.sources.joinToString { it.url }}")
             } catch (_: TimeoutCancellationException) {
                 entry.status = ResearchStatus.FAILED; entry.failure = "本地研究超时；尚未获得证据，不等于没有当地内容。"
-                diagnostic("research failed identity=${area.fullName} reason=timeout")
+                diagnostic("research failed identity=${area.fullName} elapsed_ms=${now() - startedAt} reason=timeout opportunity_retained=${area == active && unchecked}")
             } catch (e: CancellationException) { throw e }
             catch (e: Exception) {
                 entry.status = ResearchStatus.FAILED
                 entry.failure = (e as? ResearchUnavailable)?.reason ?: "本地研究失败；尚未获得可靠证据，不等于没有当地内容。"
-                diagnostic("research failed identity=${area.fullName} reason=${e.javaClass.simpleName}")
+                diagnostic("research failed identity=${area.fullName} elapsed_ms=${now() - startedAt} reason=${e.javaClass.simpleName} opportunity_retained=${area == active && unchecked}")
             }
             if (token == generation) changed()
         }
     }
-    fun checked(included: Set<String> = readyKeys) {
+    fun checked(included: Set<String> = readyKeys + listOfNotNull(active?.key?.takeIf { cache[it]?.status == ResearchStatus.FAILED })) {
         if (active?.key in included) unchecked = false
+        included.forEach { cache[it]?.examined = true }
+        if (included.isNotEmpty()) diagnostic("chapter opportunity consumed keys=${included.joinToString()} pending_retained=${pending && unchecked}")
         included.forEach { key -> cache[key]?.takeIf { it.dossier != null && it.status != ResearchStatus.CHECKED }?.let {
             it.status = ResearchStatus.CHECKED
             diagnostic("research checked identity=${it.dossier!!.area.fullName}")
@@ -268,7 +271,8 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
         listOf(area.copy(chapter = ""), area).distinctBy { it.key }.forEach { identity ->
             val entry = cache[identity.key] ?: return@forEach
             appendLine("【本地研究状态】${identity.fullName} ${status(identity)}；待检查=${identity == active && opportunity}")
-            entry.dossier?.let { append(it.text()) } ?: appendLine(entry.failure.ifBlank { "搜索尚未完成；不得用模型记忆填补具体当地事实。" })
+            entry.dossier?.let { append(it.text()) } ?: appendLine(entry.failure.ifBlank { "搜索尚未完成；尚未获得证据。" } +
+                "不得用模型记忆填补具体当地事实，不得伪称已搜索；意图询问、一般机制或独立已有依据仍可使用。")
         }
     }
     fun clear() { generation++; cache.values.forEach { it.job?.cancel() }; cache.clear(); active = null; unchecked = false; lastResolvedKey = null }

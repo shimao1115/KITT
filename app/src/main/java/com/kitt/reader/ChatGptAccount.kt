@@ -180,8 +180,10 @@ class ChatGptAccount(
     }
     suspend fun infer(model: String, body: (ChatGptModel) -> String): String = withContext(Dispatchers.IO) {
         mutex.withLock {
+            // A local admission check is not a new network failure. Keep the original retry deadline
+            // and diagnosis; frequent journey checks must never slide backoff forward indefinitely.
+            check(!paused && clock() >= retryAfter) { "ChatGPT 连接暂不可用，请查看设置。" }
             try {
-                check(!paused && clock() >= retryAfter) { "ChatGPT 连接暂不可用，请查看设置。" }
                 val token = accessLocked()
                 if (models.isEmpty()) loadModelsLocked()
                 val selected = models.singleOrNull { it.slug == model } ?: error("请选择当前账号可用的模型。")

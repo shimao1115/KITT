@@ -38,7 +38,7 @@ class LandmarkProximityTest {
         val loop = DirectorLoop(journey, context, this, { time }, { DirectorProvider { calls++; DirectorResult(Action.SILENT).json() } })
         loop.location(fix(30.009, time)); runCurrent()
         repeat(700) { time += 1000; loop.location(fix(30.009, time)); runCurrent() }
-        assertEquals(1, calls); assertTrue(voice.speech.isEmpty()); assertFalse(context.proximity.opportunity)
+        assertEquals(2, calls); assertTrue(voice.speech.isEmpty()); assertFalse(context.proximity.opportunity) // Initial + one FAILED chapter check, no retry storm.
     }
     @Test fun quietPassesNodeAndResumeNeverQueuesIt() = runTest {
         var time = 1000000L; val journey = Journey({ time }, TestVoice()); journey.start()
@@ -129,7 +129,7 @@ class LandmarkProximityTest {
         assertTrue(source.completed); assertEquals(nodes.map { it.id }.toSet(), selected.toSet())
         assertEquals(selected.distinct(), selected); assertEquals(13, context.areas.transitions)
         assertNull(loop.counters.automatic[DeliveryOutcome.STALE]); assertNull(loop.counters.automatic[DeliveryOutcome.FAILURE])
-        assertNull(loop.counters.automatic[DeliveryOutcome.CANCELLED]); assertTrue(loop.counters.dispatched in 8..20)
+        assertNull(loop.counters.automatic[DeliveryOutcome.CANCELLED]); assertTrue(loop.counters.dispatched in 13..30)
         assertTrue(diagnostics.count { "landmark opportunity" in it } >= 4)
         val report = "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)\n" +
             "100km/h; 16x; latency=5s; TTS=20s; chapters=${context.areas.transitions}\n" +

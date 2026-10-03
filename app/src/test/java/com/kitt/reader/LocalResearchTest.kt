@@ -124,8 +124,9 @@ class LocalResearchTest {
         var calls = 0
         val manager = ChapterResearch(this, { 1000 }, { LocalResearchProvider { _, _ -> calls++; throw ResearchUnavailable("搜索不可用，不是没有内容") } })
         manager.enter(area); runCurrent(); repeat(1000) { manager.enter(area) }
-        assertEquals(2, calls); assertEquals(ResearchStatus.FAILED, manager.status(area)); assertFalse(manager.opportunity)
-        assertTrue("搜索不可用" in manager.card()); assertFalse("已实际搜索" in manager.card()); manager.clear()
+        assertEquals(2, calls); assertEquals(ResearchStatus.FAILED, manager.status(area)); assertTrue(manager.opportunity)
+        assertTrue("搜索不可用" in manager.card()); assertFalse("已实际搜索" in manager.card())
+        manager.checked(); assertFalse(manager.opportunity); assertEquals(ResearchStatus.FAILED, manager.status(area)); manager.clear()
     }
     @Test fun rapidChaptersHaveAtMostTwoResearchRequestsAndEndCancelsAll() = runTest {
         var active = 0; var maximum = 0; var completed = 0
@@ -142,7 +143,7 @@ class LocalResearchTest {
         val manager = ChapterResearch(this, { 1000 }, { LocalResearchProvider { _, _ -> delay(100000); error("late") } })
         manager.enter(area); advanceTimeBy(90001); runCurrent()
         assertEquals(ResearchStatus.FAILED, manager.status(area)); assertTrue("超时" in manager.card())
-        assertFalse(manager.opportunity); manager.clear()
+        assertTrue(manager.opportunity); manager.checked(); assertFalse(manager.opportunity); manager.clear()
     }
     @Test fun interruptedTripNeverAcceptsLateResearch() = runTest {
         val manager = ChapterResearch(this, { 1000 }, { LocalResearchProvider { a, at ->

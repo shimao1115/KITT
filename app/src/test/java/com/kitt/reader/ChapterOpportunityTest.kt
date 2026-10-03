@@ -65,7 +65,7 @@ class ChapterOpportunityTest {
             researchProvider = { LocalResearchProvider { area, at -> delay(5000); testDossier(area, at) } })
         loop.location(Fix(30.0, 104.0, time, administrative = a)); runCurrent()
         time += 61000; advanceTimeBy(5000); runCurrent(); loop.check(); runCurrent()
-        assertEquals(0, calls); assertTrue(loop.research.opportunity)
+        assertEquals(1, calls); assertTrue(loop.research.opportunity) // Safe initial check ran before research; stale GPS still blocks READY.
         loop.reset(); journey.end()
     }
     @Test fun canceledDispatchBeforeActualDirectorCheckRetainsContextOpportunity() = runTest {

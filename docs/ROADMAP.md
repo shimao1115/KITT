@@ -1,6 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
-> 当前接班 Destination 是 [TASK_POST_ASR_YANTU_V03.md](TASK_POST_ASR_YANTU_V03.md)（沿途 V0.3，含主动按需搜索）。
+> 当前紧急施工优先 [HOTFIX_V03_TOTAL_SILENCE.md](HOTFIX_V03_TOTAL_SILENCE.md)，结果以 [ACCEPTANCE_V03_SILENCE_HOTFIX.md](ACCEPTANCE_V03_SILENCE_HOTFIX.md) 与根 HANDOFF.md 为准。
+> 沿途 V0.3 原任务仍为 [TASK_POST_ASR_YANTU_V03.md](TASK_POST_ASR_YANTU_V03.md)（含主动按需搜索）。
 > 中文 ASR 已完成并由用户验收，保持其后端与交互。V0.3 的工程实现与真实 hosted-search／新都黑盒内容验收分开记录；
 > 下文历史 Stop Rules 不重开已通过的 Gate，当前外部缺口与最短验收以根 HANDOFF.md 为准。
 

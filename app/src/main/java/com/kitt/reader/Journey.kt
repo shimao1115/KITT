@@ -135,26 +135,31 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun noteChapterEntry() { chapterEntry = true }
     fun clearChapterEntry() { chapterEntry = false }
 
-    fun shouldCheck(landmarkOpportunity: Boolean = false): Boolean {
-        val position = fix ?: return false
+    fun shouldCheck(landmarkOpportunity: Boolean = false) = checkDelayReason(landmarkOpportunity) == null
+    fun checkDelayReason(landmarkOpportunity: Boolean = false): String? {
+        val position = fix ?: return "no_location"
         val freshChapter = chapterEntry
         // An open exchange counts as the user being busy: narrating over it would discard what they are typing.
-        if (!running || isQuiet || speaking || listening || awaitingReply || imageInteraction ||
-            (cadenceNow() < cooldownUntil && !(landmarkOpportunity && autoSpeechCooldown)) || now() - position.timeMs > 60000) return false
-        if (lastCheckFix == null) return true
-        if (freshChapter) return true
+        if (!running) return "not_running"
+        if (isQuiet) return "quiet"
+        if (speaking) return "speaking"
+        if (listening || awaitingReply) return "user_exchange"
+        if (imageInteraction) return "image_interaction"
+        if (cadenceNow() < cooldownUntil && !(landmarkOpportunity && autoSpeechCooldown)) return "cooldown"
+        if (now() - position.timeMs > 60000) return "stale_location"
+        if (lastCheckFix == null || freshChapter) return null
         val elapsed = cadenceNow() - lastCheckAt
-        if (landmarkOpportunity) return true
+        if (landmarkOpportunity) return null
         simulationProgress?.let {
             val traveled = it() - lastCheckProgress
             val areaChanged = position.area != lastCheckFix!!.area
             // About 13–15 opportunities on this 110 km fixture, without per-second requests.
-            return elapsed >= 45000 && (traveled >= 9000 || (areaChanged && traveled >= 5000))
+            return if (elapsed >= 45000 && (traveled >= 9000 || (areaChanged && traveled >= 5000))) null else "cadence"
         }
         val distance = lastCheckFix!!.distanceTo(position)
         val sinceSpeech = if (lastSpeech == 0L) Long.MAX_VALUE else now() - lastSpeech
         val threshold = if (sinceSpeech < 180000) 3000.0 else 1500.0
-        return elapsed >= 45000 && (distance >= threshold || (elapsed >= 300000 && distance >= 300))
+        return if (elapsed >= 45000 && (distance >= threshold || (elapsed >= 300000 && distance >= 300))) null else "cadence"
     }
     fun ticket(active: Boolean): Ticket {
         if (active) invalidate()

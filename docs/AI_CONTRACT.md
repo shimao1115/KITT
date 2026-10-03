@@ -2,6 +2,9 @@
 
 本文件定义 KITT V0 中 AI 与 App 之间的最小稳定契约。目标是让 Provider、模型和未来实现可替换，同时避免把导演逻辑写成规则引擎。
 
+V0.3.1 热修复：RESEARCHING/FAILED 不是全局静音门禁。目的地询问、用户主动输入、一般机制与独立已有依据仍可处理；章节特有事实仍需真实完成搜索与来源证明。
+READY 与 FAILED 的现场机会延迟保留，实际检查才消费，驶离不得补播；真实网络失败的重试等待不得被本地门禁反复延长。见 [热修复验收](ACCEPTANCE_V03_SILENCE_HOTFIX.md)。
+
 ## 沿途 V0.3 补充（当前真相）
 
 [TASK_POST_ASR_YANTU_V03.md](TASK_POST_ASR_YANTU_V03.md) 是当前 Destination，含用户主动按需搜索补充。

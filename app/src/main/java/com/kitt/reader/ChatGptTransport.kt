@@ -1,9 +1,14 @@
 package com.kitt.reader
 
 import kotlinx.serialization.json.*
+import kotlinx.coroutines.*
 import java.io.BufferedReader
-import java.net.HttpURLConnection
-import java.net.URL
+import java.io.IOException
+import java.util.concurrent.TimeUnit
+import kotlin.coroutines.EmptyCoroutineContext
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /** Safe diagnostics preserve status/code/request ID/shape, never response messages or credentials. */
 class ChatGptFailure(val status: Int = 0, val code: String = "", val requestId: String = "", val shape: String = "") :
@@ -46,50 +51,55 @@ class ChatGptFailure(val status: Int = 0, val code: String = "", val requestId: 
 interface ChatGptTransport {
     fun get(url: String, bearer: String = ""): String
     fun form(url: String, body: String): String
-    fun stream(url: String, bearer: String, body: String): String
-    fun research(url: String, bearer: String, body: String): String = throw ResearchUnavailable("当前账号 Transport 未提供研究能力。")
+    suspend fun stream(url: String, bearer: String, body: String): String
+    suspend fun research(url: String, bearer: String, body: String): String = throw ResearchUnavailable("当前账号 Transport 未提供研究能力。")
 }
 
-class ChatGptHttpsTransport : ChatGptTransport {
-    private fun connection(url: String, bearer: String = "", type: String? = null): HttpURLConnection {
-        require(URL(url).protocol == "https")
-        return (URL(url).openConnection() as HttpURLConnection).apply {
-            instanceFollowRedirects = false; connectTimeout = 12000; readTimeout = 25000
-            if (bearer.isNotBlank()) setRequestProperty("Authorization", "Bearer $bearer")
-            if (type != null) { requestMethod = "POST"; doOutput = true; setRequestProperty("Content-Type", type) }
-        }
+class ChatGptHttpsTransport(private val diagnostic: (String) -> Unit = {}) : ChatGptTransport {
+    private val client = OkHttpClient.Builder().followRedirects(false).followSslRedirects(false)
+        .retryOnConnectionFailure(false).connectTimeout(12, TimeUnit.SECONDS)
+        .writeTimeout(25, TimeUnit.SECONDS).readTimeout(25, TimeUnit.SECONDS)
+        .callTimeout(35, TimeUnit.SECONDS).build()
+    private val searchClient = client.newBuilder().readTimeout(80, TimeUnit.SECONDS)
+        .callTimeout(90, TimeUnit.SECONDS).build()
+    private fun request(url: String, bearer: String = "", body: String? = null, type: String = "application/json"): Request {
+        val builder = Request.Builder().url(url)
+        require(builder.build().url.isHttps)
+        if (bearer.isNotBlank()) builder.header("Authorization", "Bearer $bearer")
+        if (body != null) builder.post(body.toRequestBody(type.toMediaType()))
+        return builder.build()
     }
-    private fun checked(c: HttpURLConnection): BufferedReader {
-        if (c.responseCode !in 200..299) {
-            val body = c.errorStream?.bufferedReader()?.use { bounded(it, 32000) }.orEmpty()
-            throw ChatGptFailure.from(c.responseCode, body, c.getHeaderField("x-request-id").orEmpty())
+    private fun checked(response: Response): BufferedReader {
+        diagnostic("HTTP response status=${response.code}")
+        val reader = requireNotNull(response.body).charStream().buffered()
+        if (!response.isSuccessful) {
+            val body = reader.use { bounded(it, 32000) }
+            throw ChatGptFailure.from(response.code, body, response.header("x-request-id").orEmpty())
         }
-        return c.inputStream.bufferedReader(Charsets.UTF_8)
+        return reader
     }
-    override fun get(url: String, bearer: String): String = connection(url, bearer).let { c ->
+    override fun get(url: String, bearer: String): String = client.newCall(request(url, bearer)).execute().use { response ->
         // The live account catalog includes substantial per-model metadata (>256 KB on the acceptance account).
         val limit = if (url == "${ChatGptProtocol.RESOURCE}/models") 4_000_000 else 256000
-        try { checked(c).use { bounded(it, limit) } } finally { c.disconnect() }
+        checked(response).use { bounded(it, limit) }
     }
-    override fun form(url: String, body: String): String = connection(url, type = "application/x-www-form-urlencoded").let { c ->
-        try {
-            c.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
-            checked(c).use { bounded(it, 64000) }
-        } finally { c.disconnect() }
+    override fun form(url: String, body: String): String = client.newCall(
+        request(url, body = body, type = "application/x-www-form-urlencoded")).execute().use { response ->
+        checked(response).use { bounded(it, 64000) }
     }
-    override fun stream(url: String, bearer: String, body: String): String = connection(url, bearer, "application/json").let { c ->
-        try {
-            c.setRequestProperty("Accept", "text/event-stream")
-            c.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
-            checked(c).use { ChatGptStream.read(it, c.getHeaderField("x-request-id").orEmpty()) }
-        } finally { c.disconnect() }
+    override suspend fun stream(url: String, bearer: String, body: String): String {
+        diagnostic("narration request started")
+        val input = request(url, bearer, body).newBuilder().header("Accept", "text/event-stream").build()
+        return responseFromCall(client.newCall(input), diagnostic) { response ->
+            checked(response).use { ChatGptStream.read(it, response.header("x-request-id").orEmpty()) }
+        }
     }
-    override fun research(url: String, bearer: String, body: String): String = connection(url, bearer, "application/json").let { c ->
-        try {
-            c.readTimeout = 80000
-            c.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
-            checked(c).use { ChatGptStream.read(it, c.getHeaderField("x-request-id").orEmpty(), research = true) }
-        } finally { c.disconnect() }
+    override suspend fun research(url: String, bearer: String, body: String): String {
+        diagnostic("research request started")
+        val input = request(url, bearer, body).newBuilder().header("Accept", "text/event-stream").build()
+        return responseFromCall(searchClient.newCall(input), diagnostic) { response ->
+            checked(response).use { ChatGptStream.read(it, response.header("x-request-id").orEmpty(), research = true) }
+        }
     }
     private fun bounded(reader: BufferedReader, max: Int): String {
         val out = StringBuilder(); val buffer = CharArray(4096)
@@ -98,6 +108,28 @@ class ChatGptHttpsTransport : ChatGptTransport {
             require(out.length + count <= max) { "ChatGPT 响应过大。" }; out.append(buffer, 0, count)
         }
     }
+}
+
+/** Cancellation releases the coroutine promptly and cancels the native socket call. */
+internal suspend fun responseFromCall(call: Call, diagnostic: (String) -> Unit = {}, read: (Response) -> String): String = suspendCancellableCoroutine { continuation ->
+    continuation.invokeOnCancellation {
+        diagnostic("HTTP cancellation requested")
+        // Some OEM TLS socket close paths block. Never run native close on the cancellation caller
+        // or as a structured child whose completion would retain the Director/auth/research slot.
+        Dispatchers.IO.dispatch(EmptyCoroutineContext, Runnable { call.cancel(); diagnostic("HTTP native cancellation completed") })
+    }
+    call.enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            diagnostic("HTTP transport failure=${e.javaClass.simpleName}")
+            continuation.resumeWith(Result.failure(e))
+        }
+        override fun onResponse(call: Call, response: Response) {
+            response.use {
+                if (!continuation.isActive) return
+                continuation.resumeWith(runCatching { read(response) })
+            }
+        }
+    })
 }
 
 object ChatGptStream {

@@ -84,7 +84,7 @@ class BatchSimulationTest {
         val source = SimulatedLocationSource(fixture, backgroundScope, clock, 100.0, 16.0, paused = { loop.pending })
         journey.simulationCadence({ source.simulatedTravelMs }, { source.traveledMeters }); source.start(loop::location)
         repeat(450) { advanceTimeBy(1000); runCurrent() }
-        assertTrue(source.completed); assertTrue(voice.speech.isEmpty()); assertTrue(loop.counters.dispatched in 8..18)
+        assertTrue(source.completed); assertTrue(voice.speech.isEmpty()); assertTrue(loop.counters.dispatched in 13..27)
         assertEquals(loop.counters.dispatched, loop.counters.automatic[DeliveryOutcome.FAILURE]); source.stop(); loop.cancel()
     }
 }

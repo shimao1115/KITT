@@ -30,6 +30,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     private var requestActive = false
     val pending get() = request?.isActive == true
     val counters = DirectorCounters()
+    private var lastDelay = ""
     val research = ChapterResearch(scope, now, researchProvider, diagnostic) { researchChanged(); check() }
     init { context.researchCard = research::card }
     fun location(fix: Fix) {
@@ -50,8 +51,13 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         journey.tick()
         if (!journey.running) { research.clear(); return }
         if (research.opportunity) journey.noteChapterEntry()
-        if (research.pending && !context.proximity.opportunity) return
-        if (pending || !journey.shouldCheck(context.proximity.opportunity)) return
+        val delay = if (pending) "director_in_flight" else journey.checkDelayReason(context.proximity.opportunity)
+        if (delay != null) {
+            val state = "$delay research_pending=${research.pending} chapter_retained=${research.opportunity}"
+            if (state != lastDelay) { diagnostic("director delayed reason=$state"); lastDelay = state }
+            return
+        }
+        lastDelay = ""
         counters.opportunity()
         dispatch(null)
     }
@@ -66,17 +72,18 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         var deliveryTicket = ticket
         val landmarkIds = context.proximity.ids
         val chapterKey = context.areas.active?.area?.key
-        val readyKeys = research.readyKeys
         if (!ticket.active) {
             if (context.proximity.opportunity) diagnostic("landmark opportunity ids=${landmarkIds.joinToString()}")
         }
-        val input = DirectorRequest(sessionInstructions = journey.instructions,
-            contextCard = context.card(journey, now()), userUtterance = utterance, image = image)
         counters.dispatch(ticket.active)
         diagnostic("dispatch active=${ticket.active} ${counters.summary()}")
         request = scope.launch {
             // A dispatch cancelled before this coroutine runs has never examined the context.
-            if (!ticket.active) { research.checked(readyKeys); context.proximity.consumeOpportunity(landmarkIds) }
+            // Snapshot evidence at the actual check, including research completed before this coroutine ran.
+            val input = DirectorRequest(sessionInstructions = journey.instructions,
+                contextCard = context.card(journey, now()), userUtterance = utterance, image = image)
+            if (!ticket.active) { research.checked(); context.proximity.consumeOpportunity(landmarkIds) }
+            diagnostic("director started active=${ticket.active} research_pending=${research.pending} chapter=$chapterKey")
             var activeFailure: String? = null
             val raw = try { withTimeout(if (ticket.active) 140000 else 35000) {
                 val selected = provider()
@@ -135,5 +142,6 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         }
         request?.cancel(); request = null
     }
-    fun reset() { cancel(); research.clear(); journey.clearChapterEntry(); context.reset() }
+    val simulationPaused get() = pending || journey.speaking || journey.listening || journey.awaitingReply || journey.imageInteraction
+    fun reset() { cancel(); research.clear(); journey.clearChapterEntry(); context.reset(); lastDelay = "" }
 }

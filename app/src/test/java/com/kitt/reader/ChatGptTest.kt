@@ -164,7 +164,7 @@ class ChatGptAccountTest {
             refreshes++
             return """{"access_token":"rotated-access","refresh_token":"rotated-refresh","token_type":"Bearer","expires_in":3600,"earliest_refresh_at":1001,"scope":"chatgpt.tokens.use.direct"}"""
         }
-        override fun stream(url: String, bearer: String, body: String): String {
+        override suspend fun stream(url: String, bearer: String, body: String): String {
             assertEquals("https://api.openai.com/v1/responses", url)
             streams++; this.body = body; this.bearer = bearer; failure?.let { throw it }
             return DirectorResult(Action.SILENT).json()
@@ -225,6 +225,23 @@ class ChatGptAccountTest {
             assertEquals(1, transport.streams)
         }
     }
+    @Test fun rejectedChecksDoNotExtendTransientNetworkBackoffForever() = runTest {
+        var time = 1000000L
+        val store = store(); store.saveChatGpt(record().encode())
+        val transport = Transport(); transport.failure = ChatGptFailure(503)
+        val account = ChatGptAccount(store, transport) { time }
+        assertTrue(runCatching { account.infer("account-model") { "{}" } }.isFailure)
+        transport.failure = null
+        repeat(5) {
+            time += 10000
+            assertTrue(runCatching { account.infer("account-model") { "{}" } }.isFailure)
+            assertEquals(503, account.lastFailure?.status)
+            assertEquals(1, transport.streams)
+        }
+        time += 10000
+        assertEquals(DirectorResult(Action.SILENT).json(), account.infer("account-model") { "{}" })
+        assertEquals(2, transport.streams)
+    }
     @Test fun signOutRevokesAndRetainsRegistrationWithoutHintsEvenIfRemoteFails() = runTest {
         for (fails in listOf(false, true)) {
             val store = store(); store.saveChatGpt(record().encode())
@@ -252,7 +269,7 @@ class ChatGptAccountTest {
         val store = store(); store.saveChatGpt(record().encode())
         val delegate = Transport(); var searches = 0
         val transport = object : ChatGptTransport by delegate {
-            override fun research(url: String, bearer: String, body: String): String {
+            override suspend fun research(url: String, bearer: String, body: String): String {
                 searches++; assertEquals("own-access", bearer)
                 val payload = Json.parseToJsonElement(body).jsonObject
                 assertEquals("required", payload["tool_choice"]!!.jsonPrimitive.content)
@@ -272,7 +289,7 @@ class ChatGptAccountTest {
         val store = store(); store.saveChatGpt(record().encode())
         val entered = java.util.concurrent.CountDownLatch(1); val release = java.util.concurrent.CountDownLatch(1)
         val transport = object : ChatGptTransport by Transport() {
-            override fun research(url: String, bearer: String, body: String): String {
+            override suspend fun research(url: String, bearer: String, body: String): String {
                 entered.countDown(); check(release.await(5, java.util.concurrent.TimeUnit.SECONDS)); return "{}"
             }
         }
@@ -320,7 +337,7 @@ class ChatGptAccountTest {
                     val token = unsigned + "." + b64(Signature.getInstance("SHA256withRSA").run { initSign(key.private); update(unsigned.toByteArray()); sign() })
                     return """{"access_token":"own-access","id_token":"$token","token_type":"Bearer","expires_in":3600,"scope":"openid profile email"}"""
                 }
-                override fun stream(url: String, bearer: String, body: String): String = error("Identity-only grant cannot infer")
+                override suspend fun stream(url: String, bearer: String, body: String): String = error("Identity-only grant cannot infer")
             }
             val events = mutableListOf<String>(); val protection = mutableListOf<Boolean>()
             val account = ChatGptAccount(store, transport, keepAlive = { protection.add(it) }, diagnostic = { events.add(it) }) { 1000000 }

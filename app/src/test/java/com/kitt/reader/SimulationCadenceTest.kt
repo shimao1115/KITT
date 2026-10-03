@@ -65,7 +65,7 @@ class SimulationCadenceTest {
         val (_, loop, source) = session(provider = DirectorProvider { delay(15000); DirectorResult(Action.SILENT).json() })
         repeat(600) { advanceTimeBy(1000); runCurrent() }
         assertTrue(source.completed)
-        assertTrue(loop.counters.opportunities in 8..15)
+        assertTrue(loop.counters.opportunities in 13..27) // Each FAILED chapter retains one check in addition to ordinary cadence.
         assertEquals(loop.counters.opportunities, loop.counters.automatic[DeliveryOutcome.SILENT])
         assertNull(loop.counters.automatic[DeliveryOutcome.STALE])
         assertEquals(loop.counters.opportunities, loop.counters.dispatched)
@@ -74,7 +74,7 @@ class SimulationCadenceTest {
     @Test fun sixtyTimesSmokeModeIsNotLimitedByWallCadence() = runTest {
         val (_, loop, source) = session(60.0, DirectorProvider { delay(5000); DirectorResult(Action.SILENT).json() })
         repeat(200) { advanceTimeBy(1000); runCurrent() }
-        assertTrue(source.completed); assertTrue(loop.counters.opportunities in 8..15)
+        assertTrue(source.completed); assertTrue(loop.counters.opportunities in 13..27)
         assertNull(loop.counters.automatic[DeliveryOutcome.STALE])
     }
 
@@ -169,7 +169,7 @@ class SimulationCadenceTest {
             if (journey.listening) { voice.answer!!("去绵阳"); runCurrent() }
         }
         assertTrue(source.completed); assertEquals("去绵阳", journey.destination)
-        assertTrue(loop.counters.opportunities in 8..15)
+        assertTrue(loop.counters.opportunities in 13..27)
         assertTrue((loop.counters.automatic[DeliveryOutcome.SPEAK_NOW] ?: 0) >= 8)
         assertNull(loop.counters.automatic[DeliveryOutcome.STALE]); assertEquals(1, loop.counters.activeDispatched)
         val report = "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS\n${loop.counters.summary()}\nVoice outputs=${voice.speech.size}; distance=${source.traveledMeters.toInt()}m"

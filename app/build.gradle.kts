@@ -10,8 +10,9 @@ android {
         applicationId = "com.kitt.reader"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.3.0"
+        versionCode = 6
+        versionName = "0.3.1"
+        testInstrumentationRunner = "com.kitt.reader.HotfixPhoneProbe"
         // The offline recogniser ships native libraries; x86 ABIs would double the APK without serving any phone.
         ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a") }
     }
@@ -35,6 +36,8 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    // Native call cancellation bounds real-device socket stalls, including response headers.
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     // Offline Simplified Chinese recogniser, used only when the device's own recogniser cannot work.
     implementation("com.alphacephei:vosk-android:0.3.75")
     testImplementation("junit:junit:4.13.2")

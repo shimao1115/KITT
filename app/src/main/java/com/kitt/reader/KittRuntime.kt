@@ -11,7 +11,9 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     val voice: VoicePort = injectedVoice ?: AndroidVoice(context)
     val store = TripStore(context)
     val settings = SettingsStore(context)
-    val chatGpt = ChatGptAccount(settings, diagnostic = { Log.i("KITTAuth", it) }, keepAlive = { active ->
+    private val diagnostics = DebugDiagnostics(context)
+    val chatGpt = ChatGptAccount(settings, transport = ChatGptHttpsTransport { diagnostics.log("KITTAuth", it) },
+        diagnostic = { diagnostics.log("KITTAuth", it) }, keepAlive = { active ->
         val intent = android.content.Intent(context, ChatGptAuthService::class.java)
         if (active) androidx.core.content.ContextCompat.startForegroundService(context, intent)
         else context.stopService(intent)
@@ -49,8 +51,8 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     val loop = DirectorLoop(journey, pipeline, scope, System::currentTimeMillis, {
         provider()
     }, failure = { Log.w("KITT", it) }, diagnostic = {
-        Log.i("KITTResearch", it)
-        if (simulation) Log.i("KITTSim", "$it progressMeters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt() ?: 0}")
+        diagnostics.log("KITTResearch", it)
+        if (simulation) diagnostics.log("KITTSim", "$it progressMeters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt() ?: 0}")
     }, researchProvider = ::researchProvider, researchChanged = { revision.intValue++ })
     val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
@@ -67,7 +69,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         java.io.File(context.cacheDir, "visual-talk/capture.jpg").delete()
         (voice as? AndroidVoice)?.speechRate = settings.speechRate
         (voice as? AndroidVoice)?.voiceName = settings.voiceName
-        journey.diagnostic = { if (simulation) Log.i("KITTSim", it) else if (!it.startsWith("Voice completed")) Log.w("KITT", it) }
+        journey.diagnostic = { diagnostics.log(if (simulation) "KITTSim" else "KITT", it) }
     }
     val sourceLabel: String get() = if (simulation) "新都→安州雎水 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
     fun start(simulated: Boolean = false) {
@@ -86,8 +88,8 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         source = if (simulation) {
             val fixture = context.assets.open("chengdu-mianyang.json").bufferedReader().use { RouteFixture.parse(it.readText()) }
             SimulatedLocationSource(fixture, scope, System::currentTimeMillis, speedKmh = simulationSpeed, acceleration = acceleration,
-                initialTravelMs = saved?.travelMs ?: 0L, paused = { loop.pending || loop.research.pending || journey.speaking || journey.listening || journey.imageInteraction }) {
-                Log.i("KITTSim", "route completed ${loop.counters.summary()}")
+                initialTravelMs = saved?.travelMs ?: 0L, paused = { loop.simulationPaused }) {
+                diagnostics.log("KITTSim", "route completed ${loop.counters.summary()}")
                 sourceNotice = "模拟已到终点"; revision.intValue++
             }
         } else RealLocationSource(context) { sourceNotice = it; revision.intValue++ }
@@ -99,7 +101,10 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             var quiet = journey.isQuiet
             while (isActive && journey.running) {
                 delay(1000); visualTalk.sync(); loop.check()
-                if (System.currentTimeMillis() / 1000 % 10 == 0L) checkpoint()
+                if (System.currentTimeMillis() / 1000 % 10 == 0L) {
+                    checkpoint()
+                    if (simulation) diagnostics.log("KITTSim", "progress meters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt()} paused=${loop.simulationPaused} research_pending=${loop.research.pending}")
+                }
                 if (quiet != journey.isQuiet) { quiet = journey.isQuiet; notificationChanged?.invoke() }
             }
         }
