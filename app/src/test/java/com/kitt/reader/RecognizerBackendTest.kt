@@ -33,6 +33,7 @@ class DrivingEngine(override val id: String, override var watchdogMs: Long = 150
     override fun cancel() { cancellations++ }
     fun ready() { sinks.last().onReady() }
     fun rms(level: Float) { sinks.last().onRms(level) }
+    fun partial(text: String) { sinks.last().onPartial(text) }
     fun finish(result: ListeningResult) { sinks.last().onFinish(result) }
 }
 
@@ -215,6 +216,50 @@ class RecognizerBackendTest {
         assertEquals(listOf(ListeningOutcome.PERMISSION_DENIED), outcomes.map { it.outcome })
         assertNotEquals(ListeningOutcome.NO_MATCH, outcomes.single().outcome)
         engine.cancel()
+    }
+
+    @Test fun interimHypothesisAppearsOnScreenButIsNeverSubmitted() {
+        val engine = DrivingEngine("system"); val voice = voiceWith(engine)
+        val outcomes = mutableListOf<ListeningResult>()
+        voice.listenOutcome(outcomes::add); idle()
+        engine.ready(); engine.partial("再讲"); idle()
+        assertEquals(TranscriptText("再讲"), voice.transcript)
+        assertTrue(voice.transcript.present)
+        assertEquals(0, outcomes.size)
+        engine.partial("再讲一点"); idle()
+        assertEquals("再讲一点", voice.transcript.text)
+        assertEquals(0, outcomes.size)
+        voice.close()
+    }
+
+    @Test fun finalTranscriptStaysVisibleAfterTheAttemptCloses() {
+        val engine = DrivingEngine("system"); val voice = voiceWith(engine)
+        voice.listenOutcome { }; idle()
+        engine.ready(); engine.partial("跳过"); engine.finish(ListeningResult.recognized("跳过")); idle()
+        assertEquals(TranscriptText("跳过", final = true), voice.transcript)
+        assertEquals(VoiceDetail(), voice.detail)
+        voice.close()
+    }
+
+    @Test fun aMissOrASilenceNeverLeavesAnInventedTranscriptOnScreen() {
+        listOf(ListeningOutcome.NO_MATCH, ListeningOutcome.TIMEOUT, ListeningOutcome.UNAVAILABLE).forEach { outcome ->
+            val engine = DrivingEngine("system"); val voice = voiceWith(engine)
+            voice.listenOutcome { }; idle()
+            engine.ready(); engine.partial("半句"); idle()
+            engine.finish(ListeningResult(outcome)); idle()
+            assertEquals("$outcome", TranscriptText(), voice.transcript)
+            voice.close()
+        }
+    }
+
+    @Test fun cancelAndTheNextListenBothStartFromAnEmptyTranscript() {
+        val engine = DrivingEngine("system"); val voice = voiceWith(engine)
+        voice.listenOutcome { }; idle(); engine.ready(); engine.partial("再讲"); idle()
+        voice.clearTranscript(); assertEquals(TranscriptText(), voice.transcript)
+        engine.partial("残留"); idle()
+        voice.listenOutcome { }; idle()
+        assertEquals("a new attempt must not inherit the previous text", TranscriptText(), voice.transcript)
+        voice.close()
     }
 
     @Test fun chineseTranscriptsLoseVoskSpacingAndEmptyJsonStaysEmpty() {

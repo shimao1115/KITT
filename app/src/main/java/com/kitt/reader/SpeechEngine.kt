@@ -34,6 +34,11 @@ interface RecognitionSink {
     fun onRms(level: Float)
     fun onEndOfSpeech()
     fun onFinish(result: ListeningResult)
+    /**
+     * Interim hypothesis for display only. Engines that cannot produce one must never call this,
+     * so the UI shows a real partial instead of an invented one.
+     */
+    fun onPartial(text: String) {}
 }
 
 /** One-shot recogniser backend. Audio lives only inside the active attempt and is never written to disk. */
@@ -90,14 +95,17 @@ class SystemSpeechEngine(private val context: Context, private val handler: Hand
                         Log.i("KITTVoice", "engine=system results")
                         post { it.onFinish(ListeningResult.recognized(value)) }
                     }
-                    override fun onPartialResults(partialResults: Bundle?) {}
+                    override fun onPartialResults(partialResults: Bundle?) {
+                        val value = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
+                        if (!value.isNullOrBlank()) post { it.onPartial(value) }
+                    }
                     override fun onEvent(eventType: Int, params: Bundle?) {}
                 })
             }
             recognizer?.startListening(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, "zh-CN")
-                putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, false)
+                putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
             })
         } catch (error: Exception) {
@@ -197,6 +205,7 @@ class VoskSpeechEngine(
         var endpoint = false
         var voiced = false
         var peakRms = 0.0
+        var lastPartial = ""
         var frames = 0
         try {
             if (cancelled) return
@@ -218,6 +227,11 @@ class VoskSpeechEngine(
                 postFinish(sink) { it.onRms(level) }
                 if (recognizer.acceptWaveForm(frame, read)) { endpoint = true; break }
                 frames++
+                val interim = runCatching { voskPartial(recognizer.partialResult) }.getOrDefault("")
+                if (interim.isNotBlank() && interim != lastPartial) {
+                    lastPartial = interim
+                    postFinish(sink) { it.onPartial(interim) }
+                }
             }
             if (cancelled) return
             postFinish(sink) { it.onEndOfSpeech() }
@@ -271,9 +285,14 @@ class VoskSpeechEngine(
         const val ANDROID_RMS_CEILING = 5.0f
 
         /** Vosk's Chinese model returns spaced characters: "再 讲 一 点". */
-        fun voskTranscript(raw: String?): String {
+        fun voskTranscript(raw: String?) = voskField(raw, "text")
+
+        /** Interim hypothesis, display only — it is never submitted as an answer. */
+        fun voskPartial(raw: String?) = voskField(raw, "partial")
+
+        private fun voskField(raw: String?, field: String): String {
             if (raw.isNullOrBlank()) return ""
-            val text = runCatching { Json.parseToJsonElement(raw).jsonObject["text"]?.jsonPrimitive?.contentOrNull }.getOrNull()
+            val text = runCatching { Json.parseToJsonElement(raw).jsonObject[field]?.jsonPrimitive?.contentOrNull }.getOrNull()
             return text.orEmpty().replace(" ", "").trim()
         }
     }

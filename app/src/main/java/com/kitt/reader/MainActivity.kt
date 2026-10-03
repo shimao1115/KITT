@@ -61,6 +61,10 @@ class MainActivity : ComponentActivity() {
         startSimulation = false
     }
     private fun endJourney() { runtime.end(); stopService(Intent(this, JourneyService::class.java)) }
+    /** Back/cancel drops both the exchange and its transient recognition text. */
+    private fun cancelReply() {
+        runtime.journey.cancelReply(); (runtime.voice as? AndroidVoice)?.clearTranscript()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -68,6 +72,8 @@ class MainActivity : ComponentActivity() {
             var developer by remember { mutableStateOf(false) }; var taps by remember { mutableIntStateOf(0) }
             var settings by remember { mutableStateOf(false) }
             BackHandler(enabled = settings) { settings = false }
+            // An open speak/ASK_USER exchange is the topmost thing on the driving screen, so Back closes it.
+            BackHandler(enabled = !settings && runtime.journey.awaitingReply, onBack = ::cancelReply)
             var unavailableSettings by remember { mutableStateOf(false) }
             var developerText by remember { mutableStateOf("") }
             KittTheme {
@@ -84,7 +90,9 @@ class MainActivity : ComponentActivity() {
                         (runtime.voice as? AndroidVoice)?.detail ?: VoiceDetail(),
                         onRouteImage = { routePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
                         routeNotice = runtime.routeReference.notice, onClearRoute = runtime.routeReference::clear,
-                        onVisualTalk = runtime.visualTalk::begin)
+                        onVisualTalk = runtime.visualTalk::begin,
+                        transcript = (runtime.voice as? AndroidVoice)?.transcript ?: TranscriptText(),
+                        onCancelReply = ::cancelReply)
                     if (runtime.visualTalk.open) VisualTalkDialog(runtime)
                     if (unavailableSettings) AlertDialog(onDismissRequest = { unavailableSettings = false },
                         title = { Text("请结束旅程后调整设置") }, confirmButton = { TextButton({ unavailableSettings = false }) { Text("知道了") } })

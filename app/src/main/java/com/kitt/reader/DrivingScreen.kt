@@ -4,28 +4,34 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
 @Composable
 fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail = VoiceDetail(),
-    onRouteImage: () -> Unit = {}, routeNotice: String = "", onClearRoute: () -> Unit = {}, onVisualTalk: () -> Unit = {}) {
+    onRouteImage: () -> Unit = {}, routeNotice: String = "", onClearRoute: () -> Unit = {}, onVisualTalk: () -> Unit = {},
+    transcript: TranscriptText = TranscriptText(), onCancelReply: () -> Unit = {}) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val availableHeight = maxHeight
         if (maxWidth > maxHeight) {
-            Row(Modifier.fillMaxSize().safeDrawingPadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+            Row(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                 Column(Modifier.weight(1f)) {
                     Row { TextButton(onDeveloper) { Text("路上读山河") }; TextButton(onSettings) { Text("设置") } }
                     Text(sourceLabel, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelMedium)
@@ -34,14 +40,16 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
                     VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(64.dp))
                     Text(if (journey.isQuiet) quietLabel(quietRemainingNow(journey)) else journey.topic, maxLines = 2,
                         overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleLarge)
-                    if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2)
+                    if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, modifier = Modifier.testTag("journey-notice"))
+                    ReplySurface(journey, transcript, onCancelReply, compact = availableHeight < 400.dp)
                 }
                 Column(Modifier.weight(1.2f).fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
                     DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact = availableHeight < 400.dp)
                 }
             }
         } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper, voiceDetail,
-            onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact = maxHeight < 700.dp)
+            onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact = maxHeight < 700.dp,
+            transcript = transcript, onCancelReply = onCancelReply)
     }
 }
 
@@ -97,8 +105,9 @@ private fun JourneyStatus(journey: Journey) {
 @Composable
 private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail,
-    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit, compact: Boolean) {
-    Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
+    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit, compact: Boolean,
+    transcript: TranscriptText, onCancelReply: () -> Unit) {
+    Column(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onDeveloper) { Text("路上读山河", style = MaterialTheme.typography.titleLarge) }
             Spacer(Modifier.weight(1f)); TextButton(onSettings) { Text("设置") }
@@ -113,9 +122,45 @@ private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart
         if (journey.isQuiet) {
             Text(quietLabel(quietRemainingNow(journey)), style = MaterialTheme.typography.headlineSmall)
         } else Text(journey.topic, style = MaterialTheme.typography.titleLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, style = MaterialTheme.typography.bodyMedium)
+        if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.testTag("journey-notice"))
+        ReplySurface(journey, transcript, onCancelReply, compact)
         Spacer(Modifier.weight(1f))
         DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact)
+    }
+}
+
+/**
+ * The one-shot exchange as one surface: live recognition text plus a typed way to answer.
+ * Recognition text is coloured as speech and notices render elsewhere, so a backend error can never
+ * look like something the user said. Interim text is display-only — only 发送 or a real final
+ * transcript submits, and submitting closes the exchange so nothing can submit twice.
+ */
+@Composable
+private fun ReplySurface(journey: Journey, transcript: TranscriptText, onCancelReply: () -> Unit, compact: Boolean) {
+    if (!journey.awaitingReply) return
+    var draft by remember { mutableStateOf("") }
+    // Submitting releases the microphone first, so a late transcript cannot overwrite or duplicate this answer.
+    val submit: () -> Unit = {
+        val text = draft.trim()
+        if (text.isNotBlank()) { draft = ""; journey.stopListeningForTyping(); journey.submitReply(text) }
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 10.dp)) {
+        if (transcript.present) Text(
+            (if (transcript.final) "你说：" else "在听：") + transcript.text,
+            maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("spoken-transcript"))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(draft, { draft = it.take(400) },
+                // Reaching for the keyboard hands the microphone back before anything is typed.
+                Modifier.weight(1f).testTag("typed-reply")
+                    .onFocusEvent { if (it.hasFocus) journey.stopListeningForTyping() },
+                label = { Text("或打字回答") }, placeholder = { Text("想说但不方便开口时") },
+                maxLines = if (compact) 1 else 2, textStyle = MaterialTheme.typography.bodyLarge,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { submit() }))
+            Button(submit, Modifier.testTag("send-reply"), enabled = draft.isNotBlank()) { Text("发送") }
+        }
+        TextButton(onCancelReply, Modifier.testTag("cancel-reply")) { Text("取消") }
     }
 }
 

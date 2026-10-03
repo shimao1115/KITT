@@ -197,6 +197,79 @@ engaged 剩余 9:56 | +10s 9:44 | +20s 9:32 | +30s 9:20 | +40s 9:08 | +50s 8:56 
 顺带确认：识别成功之后同一 session 出现 `tts configured voice=yue` → `tts started`，
 说明文字确实走回 Director，而不是停在 ASR 层。
 
+## 第二阶段：识别文字上屏 + 打字入口（任务卡新增要求）
+
+任务卡在我完成 ASR 之后追加了一节 `Live transcript + typed-input fallback`。实现只加了一层 UI/交互，
+**没有**改 Director 语义、没有第二套指令语法、没有新的持久化。
+
+### 屏幕上的识别文字
+
+| 情况 | 行为 |
+| --- | --- |
+| 后端能给 partial/interim | 实时显示，前缀「在听：」，随识别推进更新 |
+| 后端只能给 final | **不伪造中间结果**：监听条照常活着，最终文本出现时才显示 |
+| 最终结果到达 | 前缀变成「你说：」，并在这次交互期间持续显示，Director 处理时仍看得见 |
+| partial | **只用于显示，永不提交**（`TranscriptText.final=false`，提交路径只认 final 或打字） |
+| 没听清／没出声／后端坏了 | transcript 被清空，走 `journey.notice` 独立节点、独立样式（`journey-notice`），不会看起来像用户说过的话 |
+
+系统识别通过 `EXTRA_PARTIAL_RESULTS=true` + `onPartialResults` 供中间结果；离线模型用 Vosk 的
+`partialResult` 供中间结果，只在内容真的变化时才发出。两者都是引擎真实给出的假设，不是合成的。
+
+`TranscriptText` 是纯 transient UI 状态：不落盘、不进旅程纪要、下一次监听开始即清空，
+返回／取消也会清（`AndroidVoice.clearTranscript()`）。
+
+### 打字入口与语音共用同一条路
+
+点「说点什么」之后，同一块界面上除了麦克风还有「或打字回答」输入框 + 发送 + 取消。
+KITT 用 `ASK_USER` 提问之后也是同一块界面，所以**提问不再只能靠语音回答**。
+
+关键实现：打字提交调用的是 `Journey.submitReply(text)`，它触发的是**当初交给语音的那个同一个 handler**
+（生产里就是 `DirectorLoop::user` → `Journey.requestInput` → `dispatch`）。所以打字和说话不是两套语义，
+而是同一个入口的两个来源。`awaitingReply` 只在一次交互期间为真，90 秒无人回答就过期作废并把麦克风还回去。
+
+竞争处理（都有测试）：
+
+- 输入框**获得焦点**就 `stopListeningForTyping()`：先把 `listening` 置假再 `voice.stop()`，
+  于是这次取消不会被当成回答，同时监听立刻停止；
+- **提交**先 `invalidate()`（epoch 自增 + 停识别器），所以迟到的 ASR 回调被 epoch 守卫吃掉，
+  既不能覆盖用户打的字，也不能重复提交；
+- 回答一旦交付就 `clearReply()`，第二次 `onResults` 不会再算一次回答；
+- 取消／返回 → `cancelReply()` + `clearTranscript()`，界面与瞬时文字一起清掉；
+- **识别器全坏了也不堵路**：`UNAVAILABLE`／`CLIENT`／权限拒绝都保持 `awaitingReply` 为真，打字照旧能用；
+  只有「没听清／没出声／被取消」这类声学结论才关闭这次交互；
+- 用户正在回答时不会被自动讲述打断（`shouldCheck` 把 `awaitingReply` 和 `listening` 同等看待）。
+
+### 这一阶段的测试
+
+`ReplyExchangeTest`（12 项，JVM）＋ `ReplySurfaceUiTest`（6 项，Robolectric Compose 竖屏）＋
+`RecognizerBackendTest` 新增 5 项文字上屏断言。最终包 **Debug 177 + Release 177，0 failures / 0 errors / 0 skipped**，
+lint 0 error，签名 PASS。
+
+| 任务卡要求的 case | 覆盖它的测试 |
+| --- | --- |
+| partial 能显示 | `interimHypothesisAppearsOnScreenButIsNeverSubmitted`、`interimTextIsShownAsStillBeingHeardAndNeverLooksCommitted` |
+| final 能显示且只提交一次 | `finalTranscriptStaysVisibleAfterTheAttemptCloses`、`finalTextIsShownAsWhatTheUserActuallySaid`、`speechAnswerSubmitsOnceAndRejectsASecondTranscript` |
+| 打字提交进入 Director | `typedAnswerTravelsTheSameRequestInputPathAsSpeech`、`theOpenExchangeOffersTypingAlongsideTheMicrophone` |
+| 打字后迟到 ASR 被丢弃 | `aLateTranscriptAfterTypedAnswerCannotOverwriteOrDuplicate`、`reachingForTheKeyboardHandsTheMicrophoneBackButKeepsTypingOpen` |
+| ASK_USER 既能说也能打字 | `askedQuestionAcceptsEitherSpokenOrTypedReply`、`askedQuestionCanBeAnsweredByVoiceAndClosesAfterOneResult` |
+| ASR 不可用时仍能打字 | `anUnavailableRecogniserStillLeavesTheExchangeOpenForTyping`、`recognitionTroubleIsShownAsANoticeNotAsTranscriptText`、`aStartupErrorFromEveryBackendIsNotAMissingAnswer` |
+| 取消／返回清状态 | `cancelClosesTheExchangeAndHandsTheMicrophoneBack`、`cancelClosesTheSurfaceAndReportsBackToTheCaller`、`cancelAndTheNextListenBothStartFromAnEmptyTranscript` |
+| 无人回答要干净作废 | `anUnansweredExchangeExpiresAndStopsCapturing` |
+| 错误提示与识别文字视觉区分 | `aMissOrASilenceNeverLeavesAnInventedTranscriptOnScreen`、`recognitionTroubleIsShownAsANoticeNotAsTranscriptText` |
+
+### 还需要在真机上补的（手机当时断开）
+
+代码版本 **0.2.2 / versionCode 4**，`kitt-v0-debug.apk` 73.6 MB，SHA-256 `8BBF70421AD4E63342F8EF55B370A290CD76F0E6D12DBEDE8F5A291AA8F138BF`。下面几项只有真人＋真机能判，
+**补做之前不要当作已过**：
+
+1. 说话过程中「在听：…」是否真的逐字出现（离线中文模型的中间结果粒度）；
+2. 说完后「你说：…」是否明确显示；
+3. 四句验收语仍然逐字正确，且 TTS 讲述中打断仍然能听（不回归）；
+4. 打字入口在驾驶页可点、键盘不遮挡、发送后确实进入 Director；
+5. `ASK_USER` 提问后不动嘴、只用打字也能回答；
+6. 取消／系统返回键能清掉屏幕上的识别文字。
+
+
 ## 顺带发现并修掉的一个旧缺陷（与 ASR 无关）
 
 用户在测「安静十分钟」时报：**安静倒计时一直停在 9:59 不走**。

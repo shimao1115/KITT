@@ -35,6 +35,15 @@ data class ListeningResult(val outcome: ListeningOutcome, val text: String = "",
 enum class VoicePhase { IDLE, PREPARING_LISTEN, LISTENING, PROCESSING, SPEAKING }
 data class VoiceDetail(val phase: VoicePhase = VoicePhase.IDLE, val level: Float = 0f)
 
+/**
+ * Recognition text shown while the one-shot interaction is open. Transient UI state only:
+ * it is never persisted, never replayed into a later interaction, and never becomes voice history.
+ * `final=false` means an interim hypothesis, which must never be submitted as an answer.
+ */
+data class TranscriptText(val text: String = "", val final: Boolean = false) {
+    val present get() = text.isNotBlank()
+}
+
 /** Callback-driven only; no microphone buffers, timers or simulated sound levels. */
 class ListeningFeedback {
     var detail = VoiceDetail(); private set

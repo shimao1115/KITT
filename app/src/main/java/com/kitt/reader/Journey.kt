@@ -22,6 +22,8 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     var running by mutableStateOf(false); private set
     var speaking by mutableStateOf(false); private set
     var listening by mutableStateOf(false); private set
+    /** An open "说点什么" or ASK_USER exchange: typing stays possible even when no recogniser can serve. */
+    var awaitingReply by mutableStateOf(false); private set
     var imageInteraction by mutableStateOf(false); private set
     var quietUntil by mutableLongStateOf(0L); private set
     var started = 0L; private set
@@ -50,6 +52,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     private var simulationProgress: (() -> Double)? = null
     private var lastCheckProgress = 0.0
     private var lastSpeechTravelMs: Long? = null
+    private var replyEpoch = -1L
+    private var replyUntil = 0L
+    private var replyHandler: ((String) -> Unit)? = null
     val simulatedTravelMs get() = simulationClock?.invoke()
     val simulatedMeters get() = simulationProgress?.invoke()
     val simulatedSinceSpeechMs get() = lastSpeechTravelMs?.let { simulatedTravelMs?.minus(it) }
@@ -69,8 +74,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     val quietRemaining get() = if (quietUntil == Long.MAX_VALUE) Long.MAX_VALUE else (quietUntil - now()).coerceAtLeast(0)
 
     private fun invalidate() {
-        epoch++; speaking = false; listening = false; imageInteraction = false; voice.stop()
+        epoch++; speaking = false; listening = false; imageInteraction = false; clearReply(); voice.stop()
     }
+    private fun clearReply() { awaitingReply = false; replyEpoch = -1L; replyUntil = 0L; replyHandler = null }
     fun start() {
         simulationClock = null; simulationProgress = null; lastCheckProgress = 0.0; lastSpeechTravelMs = null
         invalidate(); running = true; started = now(); quietUntil = 0; destination = "未询问"
@@ -104,7 +110,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun tick() {
         if (quietUntil != 0L && quietUntil != Long.MAX_VALUE && now() >= quietUntil) resume()
         prepared?.let { if (now() - it.at > 300000) prepared = null }
-        changed()
+        // Neither speech nor typing answered: abandon the exchange and hand the microphone back.
+        if (awaitingReply && now() > replyUntil) { invalidate(); changed() }
+        else changed()
     }
     fun skip() {
         if (!running) return
@@ -130,7 +138,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         val freshChapter = chapterEntry
         // Consumed even when blocked: a suppressed chapter wake-up does not become a queued opportunity.
         chapterEntry = false
-        if (!running || isQuiet || speaking || listening || imageInteraction || cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
+        // An open exchange counts as the user being busy: narrating over it would discard what they are typing.
+        if (!running || isQuiet || speaking || listening || awaitingReply || imageInteraction ||
+            cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
         if (lastCheckFix == null) return true
         if (freshChapter) return true
         val elapsed = cadenceNow() - lastCheckAt
@@ -169,18 +179,53 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     }
     fun beginListening(onResult: (String) -> Unit) {
         if (!running) return
-        invalidate(); prepared = null; listening = true; notice = ""; changed()
+        invalidate(); prepared = null; listening = true; notice = ""
+        // The exchange outlives the recogniser attempt: if no backend can serve this device, the typed
+        // entry stays open instead of dead-ending a question KITT itself asked.
+        replyEpoch = epoch; replyUntil = now() + REPLY_WINDOW_MS; replyHandler = onResult; awaitingReply = true
+        changed()
         val token = epoch
         voice.listenOutcome { result ->
             if (token == epoch && running && listening) {
                 listening = false
                 if (result.outcome != ListeningOutcome.SUCCESS || result.text.isBlank()) {
                     if (destinationQuestion) { destination = "未提供"; destinationQuestion = false }
-                    notice = result.notice; cooldownUntil = cadenceNow() + 30000; changed()
-                } else { changed(); onResult(result.text) }
+                    notice = result.notice; cooldownUntil = cadenceNow() + 30000
+                    // Nothing was heard, or the user backed out: that closes the exchange. A backend that
+                    // cannot serve at all keeps it open, because typing is still a valid way to answer.
+                    if (result.outcome in ACOUSTIC_CLOSURES) clearReply()
+                    changed()
+                } else {
+                    clearReply(); changed(); onResult(result.text)
+                }
             }
         }
     }
+    /**
+     * Typed answer for the open exchange. It reuses the very handler speech would have used, so typed and
+     * spoken input share one path instead of growing a second command grammar. Invalidating first stops the
+     * recogniser and bumps the epoch, which makes any late transcript unsubmittable.
+     */
+    fun submitReply(text: String): Boolean {
+        val handler = replyHandler
+        if (!running || text.isBlank() || handler == null || replyEpoch != epoch) return false
+        invalidate()
+        handler(text.trim())
+        return true
+    }
+
+    /** Back / cancel: close the exchange, drop its transcript and release the microphone. */
+    fun cancelReply() { if (awaitingReply) { invalidate(); notice = ""; changed() } }
+
+    /**
+     * The user reached for the keyboard: hand the microphone back but keep the exchange open so they can
+     * finish typing. `listening` drops first, so the cancellation this triggers can never read as an answer.
+     */
+    fun stopListeningForTyping() {
+        if (!awaitingReply || !listening) return
+        listening = false; voice.stop(); changed()
+    }
+
     fun beginImageInteraction() {
         if (!running) return
         invalidate(); prepared = null; imageInteraction = true; notice = ""; changed()
@@ -252,6 +297,13 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         }
     }
     fun invalidateProvider() { if (running) { invalidate(); prepared = null; cooldownUntil = cadenceNow() + 10000; changed() } }
+
+    companion object {
+        /** Long enough to cover a cold local-model load, short enough that an unanswered question expires. */
+        const val REPLY_WINDOW_MS = 90_000L
+        /** Outcomes that mean "this exchange produced nothing" rather than "the recogniser is broken here". */
+        val ACOUSTIC_CLOSURES = setOf(ListeningOutcome.NO_MATCH, ListeningOutcome.TIMEOUT, ListeningOutcome.CANCELLED)
+    }
 }
 
 fun quietCommand(text: String): Long? {

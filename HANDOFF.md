@@ -8,9 +8,10 @@
 
 ## 直接安装与验收
 
-最新可安装 APK：`H:\CODEX\KITT\artifacts\kitt-v0-debug.apk`，**0.2.1 / versionCode 3 / Android 8.0+ / 73.9 MB**。
+最新可安装 APK：`H:\CODEX\KITT\artifacts\kitt-v0-debug.apk`，**0.2.2 / versionCode 4 / Android 8.0+ / 73.6 MB**。
 本地 `adb install -r artifacts/kitt-v0-debug.apk`。APK v2 签名验证 PASS；SHA-256：
-`D0C1634E3614DA7CFD163BC2FBE1D08B5B1BF1F88A57F067853E06C845C8797C`。
+`8BBF70421AD4E63342F8EF55B370A290CD76F0E6D12DBEDE8F5A291AA8F138BF`。
+（0.2.1／versionCode 3／SHA `D0C1634E…` 是真人语音四句验收那一轮的包，那份证据仍然有效。）
 **体积从 9.5 MB 涨到 73.9 MB**：离线中文模型解压 68 MB（随包发布，不走下载）＋只保留 arm64／armeabi-v7a 的原生库。
 **第一次使用语音**时模型会从包内解到应用私有目录（实测约 8 秒，之后每次开听只需 76–91 ms）；不语音输入则完全不付出这个代价。
 
@@ -23,6 +24,11 @@
 
 - **中文语音输入**：点「说点什么」→ 立刻停止朗读 → 听一次 → 中文转写 → 交回原 Director／安静／跳过路径。
   优先手机系统识别，坏掉时自动回落本地离线模型；RMS 监听条、结构化错误文案、TTS 声音选择器全部保留。
+- **识别文字上屏 + 打字并存**：说话时实时显示中间结果（「在听：」），最终结果变「你说：」并持续显示；
+  只有 final 或打字会提交，中间结果绝不提交。同一个交互面上还有「或打字回答」+ 发送 + 取消，
+  `ASK_USER` 提问后既能说也能打字；打字走的是语音本来会走的**同一个** handler（`DirectorLoop.user` → `requestInput`），
+  不是第二套语义。聚焦输入框就交还麦克风，提交先作废 epoch 让迟到识别无法覆盖或重复提交，
+  90 秒无人回答干净作废；系统识别全坏了时打字照旧可用。识别文字与错误提示分节点分样式，不会混。
 - Journey 开始／结束、10分钟真实时间安静与提前退出、跳过、最新用户意图、一次 ASK_USER、一个失效型 PREPARE、简短纪要。
 - **安静倒计时现在真的会走**：过去停在第一次画出的数字上，因为绝对截止时间不产生任何可观察变化、Compose 不重组这一行。
   现在在组合里按秒重读剩余时间；时长、到点恢复、墙钟计算逻辑一行都没改。
@@ -57,6 +63,8 @@ SpeechEngine { id, watchdogMs, start(sink), cancel() }   RecognitionSink { onRea
   `BUSY`／`NETWORK`／`SERVER` 视为瞬时，下次仍给系统识别机会。全部坏掉时保留准确文案 `系统语音识别暂不可用。`
 - 每次点击只交付一个结果：`serial` 之外再加 per-attempt `closed`，被放弃尝试的 watchdog 不可能再触发第二次回落。
   这条是实机日志里抓出来的真实缺陷（旧版会在 15 s 后打出一条过期 watchdog），已修并有测试。
+- `Journey.awaitingReply` 表示一次未结束的回答窗口（点「说点什么」或 KITT 提问）。它跟着 epoch 作废，
+  任何 skip／安静／结束／新意图都会关闭它；`shouldCheck` 把它与 `listening` 同等看待，避免讲述打断正在打字的人。
 - **隐私**：麦克风只在一次「说点什么」期间打开；音频只进一个 100 ms 短数组，用完立刻 `stop/release`，
   不落盘、无录音历史、无常驻监听、无唤醒词。模型文件是应用私有目录，卸载即清。
 - 没有引入：付费服务、需要 API key 的 ASR、订阅、按分钟计费、云端 TTS、后台识别、RAG／向量库、多 Agent。
@@ -77,8 +85,9 @@ SpeechEngine { id, watchdogMs, start(sink), cancel() }   RecognitionSink { onRea
 **29点、13个镇街章节、90,912m 测试折线**。
 
 - 最终门禁：`scripts/verify.ps1` 完成 **assembleDebug/Release、testDebug/ReleaseUnitTest、lintDebug/Release**，
-  **154＋154 tests，0 failures/errors/skips**；lint **0 errors**；APK v2 签名 PASS。
-  本批次保留原有 136 项，新增 18 项（12 项识别后端选择／回落／取消／静音／权限，3 项安静倒计时，3 项其余）。
+  **177＋177 tests，0 failures/errors/skips**；lint **0 errors**；APK v2 签名 PASS。
+  本批次保留原有 136 项，累计新增 41 项：识别后端选择／回落／取消／静音／权限 12 项、安静倒计时 3 项、
+  中文 ASR 其余 3 项，以及交互层 23 项（打字与语音共用一条路径 12 项、文字上屏 5 项、Compose 界面 6 项）。
 - **章节素材架回归**：13 章节缓存／13 次章节进入机会、14 段素材、6 个题材家族、三星堆可选且被选两次、零 stale/cancel/failure。
 - **独立地标回归**：四节点各选一次、18 机会＝14 SILENT＋4 SPEAK_NOW、零 stale/cancel/failure（规则未动）。
 - **M1.2 晚到再现／M1.3 对话节奏／Fake 黄金路径**：与上一批一致，见下档。
@@ -92,7 +101,11 @@ SpeechEngine { id, watchdogMs, start(sink), cancel() }   RecognitionSink { onRea
 
 ## 已知限制及延后的 Gate
 
-**真人语音验收已在最终发布包上完成**（0.2.1／versionCode 3／SHA `D0C1634E…`，vivo V2405A）：
+**交互层（文字上屏＋打字并存）还欠一次真机确认**（0.2.2／versionCode 4／SHA `8BBF7042…`）：中间结果是否逐字出现、
+final 是否明确显示、驾驶页打字入口可点且键盘不遮挡、`ASK_USER` 只打字能答、返回键能清掉识别文字，
+以及四句验收语与 TTS 打断不回归。全部逻辑有测试，但只有真机能判这几条。**手机补接后请先做这一轮。**
+
+**真人语音验收已在 0.2.1 发布包上完成**（versionCode 3／SHA `D0C1634E…`，vivo V2405A）：
 `再讲一点`／`跳过`／`安静十分钟`／`三星堆为什么这么有名` 四句全部逐字正确；不出声得到 `TIMEOUT` 而非编造文字；
 讲述中打断后仍能听；第一次系统识别失败之后整个窗口都不再重复探测它；安静倒计时按真实秒速下降。
 完整表格与原始日志见 [中文语音输入恢复](docs/ACCEPTANCE_CHINESE_ASR.md)。

@@ -48,6 +48,8 @@ class AndroidVoice(
     var voiceMessage by mutableStateOf("正在加载系统中文声音…"); private set
     /** Which recogniser served the current or most recent attempt, so the accepted behaviour is never ambiguous. */
     var recognitionSource by mutableStateOf("未使用"); private set
+    /** Live recognition text for the screen. Interim values are display-only and are never submitted. */
+    var transcript by mutableStateOf(TranscriptText()); private set
     var requestMicrophone: (() -> Unit)? = null
     var speechRate = 1.0f
     var voiceName = ""
@@ -146,7 +148,7 @@ class AndroidVoice(
         result(it.text.takeIf { _ -> it.outcome == ListeningOutcome.SUCCESS })
     }
     override fun listenOutcome(result: (ListeningResult) -> Unit) {
-        stop(); feedback.preparing(); detail = feedback.detail
+        stop(); feedback.preparing(); detail = feedback.detail; transcript = TranscriptText()
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             val request = requestMicrophone
             if (request == null) { finishBeforeStart(result, ListeningOutcome.PERMISSION_DENIED); return }
@@ -203,6 +205,9 @@ class AndroidVoice(
             activeListen = null
             clearWatchdog(); engine.cancel()
             feedback.reset(); detail = feedback.detail
+            // Only a real final transcript survives the attempt; acoustic misses keep the notice channel instead.
+            if (value.outcome == ListeningOutcome.SUCCESS && value.text.isNotBlank()) transcript = TranscriptText(value.text, final = true)
+            else if (transcript.final.not()) transcript = TranscriptText()
             event("finish outcome=${value.outcome} code=${value.androidCode} rmsCallbacks=$rmsCount rmsMin=${if (rmsCount == 0) 0f else rmsMin} rmsMax=${if (rmsCount == 0) 0f else rmsMax} text=${value.text.take(80)}")
             callback(value)
         }
@@ -216,6 +221,9 @@ class AndroidVoice(
                 }
             } }
             override fun onEndOfSpeech() { live { event("end"); feedback.endSpeech(); detail = feedback.detail } }
+            override fun onPartial(text: String) { live {
+                if (text.isNotBlank()) transcript = TranscriptText(text)
+            } }
             override fun onFinish(value: ListeningResult) { live { if (value.outcome == ListeningOutcome.SUCCESS) event("results") else event("finish-sink outcome=${value.outcome} code=${value.androidCode}"); finish(value) } }
         }
         watchdog = Runnable { event("watchdog"); finish(ListeningResult(ListeningOutcome.TIMEOUT)) }
@@ -225,5 +233,7 @@ class AndroidVoice(
             finish(ListeningResult(if (error is SecurityException) ListeningOutcome.PERMISSION_DENIED else ListeningOutcome.CLIENT))
         }
     }
-    fun close() { stop(); tts?.shutdown(); tts = null }
+    /** Back/cancel: drop the transient transcript so nothing from a discarded attempt stays on screen. */
+    fun clearTranscript() { transcript = TranscriptText() }
+    fun close() { stop(); tts?.shutdown(); tts = null; transcript = TranscriptText() }
 }
