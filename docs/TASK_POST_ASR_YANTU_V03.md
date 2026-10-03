@@ -1,6 +1,7 @@
 # Task Card — 沿途 V0.3：品牌重命名 + 搜索驱动内容 + 触发增强
 
 Status: **ACTIVE — Chinese ASR recovery is complete; execute from current `main`**
+Implementation update (2026-10-03): **engineering implemented in `5ed61bf`**, including section 4A; Debug/Release each 222 tests, build/lint/signature PASS. This Destination remains active for credential-backed hosted-search, fresh production Xindu discovery and real narration/content acceptance. No connected phone or usable research API credential was available for those gates; see [HANDOFF](../HANDOFF.md) and [acceptance evidence](ACCEPTANCE_YANTU_V03.md). Deterministic simulations and separate desktop web discovery do not establish production acceptance.
 Source of truth after ASR: this file
 Absorbs: `docs/TASK_MANDATORY_LOCAL_SEARCH.md` + the latest product decisions in Issue #10
 Internal codename: KITT may remain

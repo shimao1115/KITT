@@ -1,5 +1,11 @@
 # M1.1 implementation and acceptance
 
+Current V0.3 branding is **沿途**; new dynamic registrations send this name. Existing issued client IDs,
+tokens, PKCE/nonce/state, refresh and revocation rules are inherited. V0.3 adds a dedicated mandatory-search
+request using the same account lifecycle; current hosted-search support remains **NOT RUN / unverified**
+because the authorized phone is disconnected. See [ACCEPTANCE_YANTU_V03.md](ACCEPTANCE_YANTU_V03.md).
+The M1.1 acceptance record below retains the original product name as historical evidence.
+
 Checked against official OpenAI documentation and production OIDC discovery on **2026-10-03 (Asia/Shanghai)**.
 
 KITT uses its own public-client dynamic registration. No desktop Codex/ChatGPT credential files are read. The existing Director, Journey, Context, Voice and driving UI are unchanged; the new path is selected only through Settings and the provider factory. Fake remains the credential-free default, with ChatGPT listed first as the preferred real-AI path. No automatic switch to API-key billing occurs.

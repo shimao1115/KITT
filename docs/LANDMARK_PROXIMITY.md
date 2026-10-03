@@ -1,5 +1,12 @@
 # Independent geographic / landmark opportunities
 
+V0.3 update: [TASK_POST_ASR_YANTU_V03.md](TASK_POST_ASR_YANTU_V03.md) supersedes the historic cadence below.
+Live unchecked landmark opportunities bypass the ordinary 45s check interval and automatic narration cooldown;
+user conversation/skip/image/quiet cooldowns, freshness, epoch and spatial guards still win. Only an actual
+Director request consumes the opportunity. Chapter research READY_UNCHECKED is also retained under gates while
+still current, and dropped on leaving; this stores context to examine, never generated narration.
+The previous editorial-freedom batch description below is historical evidence.
+
 Area Chapters remain the main content container. A grounded spatial node can wake the same Director
 inside an unchanged chapter, without satisfying the usual 1.5–3km real-GPS or 9km simulated distance gate.
 The existing minimum 45-second cadence, voice cooldown, quiet, listening, image interaction, pending-request,
