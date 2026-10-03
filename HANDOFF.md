@@ -1,18 +1,18 @@
 # KITT V0 + M1.1 — acceptance handoff
 
-Status as of **2026-10-03 (Asia/Shanghai)**: D0–D11 preserved; M1.1 Sign in with ChatGPT is implemented, built and locally verified. The final APK is installed on the connected **vivo V2405A (Android API 36)**. The phone exposes the preferred ChatGPT option and has opened the official OpenAI authorization page in the system **Firefox** browser. **Remaining boundary: the user must personally complete KITT's ChatGPT login/consent before live identity, account models, inference and reconnect can be accepted.** No desktop Codex/ChatGPT tokens were inspected or reused in M1.1.
+Status as of **2026-10-03 (Asia/Shanghai)**: **M1.1 PASS on the connected vivo V2405A (Android API 36)**; D0–D11 preserved. KITT signed in through the official system-browser flow, validated identity/plan permission, loaded account models and completed a real structured Director request with **no Platform API key configured**. Disconnect/remote revocation and reconnect with the retained registration also passed. No desktop Codex/ChatGPT tokens were inspected or reused. No user-only authorization step remains on this phone.
 
-## M1.1 phone acceptance and smallest remaining action
+## M1.1 phone acceptance
 
-Verified on the connected phone: update installation succeeds; app launches; existing offline selection and simulation settings survive the update; Settings lists **ChatGPT 账号（推荐）**, existing three providers, and **Continue with ChatGPT**. The system browser is now showing OpenAI's **将路上读山河连接到 ChatGPT / 允许智能体访问** page. The listener starts before browser launch and uses the official ephemeral `http://127.0.0.1:<port>/auth/callback` URI; no custom scheme substitution. Actual callback delivery remains pending the user's authorization.
+Verified: APK update and launch; old settings survive; Settings lists **ChatGPT 账号（推荐）**, the three existing providers and **Continue with ChatGPT**. The official OpenAI authorization page opens in system **Firefox**. The user personally completed authorization. Lifecycle diagnostics establish listener bound → browser opened → callback state/client validated → code exchanged → signed ID token/subject/scopes validated and encrypted → account catalog loaded. The exact ephemeral `http://127.0.0.1:<port>/auth/callback` is reused for authorization and exchange, with no custom-scheme substitution.
 
-**User action:** finish account/workspace selection and explicitly grant ChatGPT plan usage in that phone browser, then return to KITT. If the two-and-a-half-minute attempt expires or Android kills KITT, reopen Settings → ChatGPT → **Continue with ChatGPT** to start a fresh attempt. Do not copy any desktop token or enter a Platform API key for this path.
+The account returned **five listed models**: GPT-6-Astra, GPT-5.6-Sol, GPT-5.6-Terra, GPT-5.6-Luna and GPT-5.5. GPT-6.1 was not listed for this account; the cause is unclaimed. Only `visibility == "list"` choices are displayed. Current saved phone configuration: **ChatGPT / `gpt-5.6-sol` / `medium`** (advertised by the account catalog). Fresh installations still default to Fake; ChatGPT is the preferred real-AI option.
 
-After consent, KITT validates the signed ID token and actual granted scopes, loads the account model list, and shows plan use enabled. Select a model and tap **测试 Director 连接**; success must say **Director 请求已完成 …（ChatGPT 计划）**. Tap **保存** to use it for a journey. Then run the existing 成都→绵阳 acceptance below. Finally disconnect/reconnect and confirm the same registered identity can return. These live steps are **not yet claimed PASS**. An identity-only grant stays signed in with plan use disabled; use **授权 ChatGPT 计划使用** or manually choose another provider. Admission/region/usage restrictions are shown in Settings; no automatic paid-key fallback.
+The real **测试 Director 连接** result was **Director 请求已完成：SPEAK_NOW（ChatGPT 计划）**, both before and after disconnect/reconnect. This requires public Responses SSE reaching `response.completed` and strict local Director JSON validation. A boolean on-device settings check confirmed no Platform API-key credential configured; no token values were extracted. **断开 ChatGPT** confirmed remote revocation and local token clearing while retaining registration. Reconnect reused the issued client/host and revalidated the same subject; plan access and the five-model catalog returned. The phone remains configured for ChatGPT.
 
-Phone follow-up: the first attempt's browser displayed **Authorization received**, establishing that the official callback reached KITT. Background HTTP probes had stalled until the app was foregrounded, exposing a cached-process freeze risk. The implementation now protects only login with a bounded `shortService` (150 seconds, no new permissions), and fixed non-secret `KITTAuth` lifecycle diagnostics. Code exchange, verified account models and a real Director result still require a successful final authorization attempt; callback receipt alone is not a complete connection.
+Real phone failures fixed before completion: cached-process freezing during browser login (bounded `shortService`, 150 seconds, no new permissions), a model catalog larger than 256 KB (separate 4 MB bounded catalog read; nullable capability metadata is also tolerated), and a completed SSE event with an empty final output snapshot (collect text deltas/done events and validate only after completion). Live login/reconnect completed with the short foreground service; its notification stops after the attempt. Unused listener sockets close immediately after callback validation.
 
-Implementation, lifecycle boundaries and official sources: [M1.1](docs/CHATGPT_SIWC.md). OAuth callback, signed-token validation, returning identity mismatch, refresh/rotation, revocation, encryption, model catalog and stream completion are locally tested. Real eligibility and plan availability depend on the user's consent and OpenAI's preview policy.
+Implementation, lifecycle boundaries and official sources: [M1.1](docs/CHATGPT_SIWC.md). Refresh rotation and failure paths use focused tests; waiting an hour/30 days on the phone is not part of the gate. A new installation requires its own explicit browser authorization. If a login attempt expires or Android kills it, start a fresh attempt; do not import desktop credentials. Identity-only grants stay connected with plan use disabled. Admission/region/usage errors appear in Settings, with no automatic API-key billing fallback.
 
 ## Install and run
 
@@ -27,7 +27,7 @@ Implementation, lifecycle boundaries and official sources: [M1.1](docs/CHATGPT_S
 
 The final M1.1 APK has been installed and launched on the connected phone. Original D0–D11 audio/GPS/OEM background behavior still requires the acceptance run below; installing and opening Settings alone does not establish those behaviors.
 
-## Default Provider and the one remaining credential action
+## Default Provider and real-AI setup
 
 Default: **Fake Provider / fixed offline demonstration**, prominently labeled. Model: none; effort: none. No login, server, map key or AI key is needed to test the interaction loop.
 
@@ -75,7 +75,7 @@ cd H:\CODEX\KITT
 
 Result: **PASS**. Equivalent Gradle gate: `./gradlew.bat assembleDebug testDebugUnitTest lintDebug --offline --console=plain`.
 
-- **51 tests**, **0 failures, 0 errors, 0 skips**: all original 34 tests unchanged, plus 17 focused M1.1 tests including real local sockets, signed-token sign-in, cancellation/protection lifetime, refresh concurrency/rotation, encrypted records and terminal-stream handling.
+- **52 tests**, **0 failures, 0 errors, 0 skips**: all original 34 tests unchanged, plus 18 focused M1.1 tests including real local sockets, signed-token sign-in, cancellation/protection lifetime, refresh concurrency/rotation, encrypted records and terminal-stream handling.
 - Lint: **0 errors**, four informational newer-dependency warnings. Pinned working toolchain: JDK 17, Gradle 8.9, AGP 8.7.3, Kotlin/Compose compiler 2.0.21, SDK 35.
 - APK signature: **PASS**, v2 scheme. SHA-256: `artifacts/SHA256.txt`; machine-readable gate result: `artifacts/verification.json`.
 - Full route: **110,452 m**, **80 km/h**, **82 simulated minutes**, **64 Director checks**, **4 voice outputs**. Production Context/Director/Journey with Fake Provider and fake Voice. No subjective real-AI product PASS is implied.
@@ -85,7 +85,7 @@ This machine already has `JAVA_HOME=C:\Users\Church\AppData\Local\CodexToolchain
 
 ## Remaining external checks and limitations
 
-Remaining external checks: the user's KITT ChatGPT consent, live account models/Director/reconnect, physical GPS/Chinese audio/recognition and lock-screen/OEM foreground-service behavior. A Platform API key is optional. The app exposes the required controls. The phone authorization flow has reached OpenAI's consent page; final live acceptance remains unclaimed.
+M1.1's phone authorization, account models, real Director and disconnect/reconnect gates passed. Remaining original V0 checks: physical GPS/Chinese audio/recognition, full driving content quality and lock-screen/OEM journey-service behavior. A Platform API key is optional. Those broader D0–D11 phone behaviors are not implied by the focused M1.1 Settings acceptance.
 
 - Fixture is **coarse, non-navigation-grade**, with no promised AMap screenshot supplied. Replacing `app/src/main/assets/chengdu-mianyang.json` later refines the fixture; the screenshot is optional for the current technical acceptance.
 - Map enrichment/search are not connected. The constitution explicitly limits unverified local specifics, exact figures, records and real-time claims. Fake explains general mechanisms and labels demonstration content. Real factual/narrative quality remains to be judged after credentials are supplied.
@@ -112,6 +112,8 @@ Milestones on `main` (including the original D0–D11 history and the M1.1 task 
 | D10 | `64c34a5` | Full simulation/UI acceptance |
 | D10 follow-up | `21af3cc` | Persist developer simulation speed |
 | D11 | `fef5d70` | Original handoff |
-| M1.1 | see latest `M1.1:` commits | ChatGPT provider and this verified handoff |
+| M1.1 | `afc3217` | Isolated ChatGPT OAuth provider and bounded Android login |
+| M1.1 live gate | `3ff905d` | Live catalog/SSE fixes; phone Director and reconnect PASS |
+| M1.1 handoff | final `HEAD` | Final phone evidence and this handoff |
 
 The final tracked working tree is clean. `artifacts/`, Gradle/Kotlin caches and build/test outputs are intentionally ignored and remain available locally. `git log --oneline -13` shows the exact final commit hashes, including D11.
