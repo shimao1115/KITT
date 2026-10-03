@@ -1,4 +1,26 @@
-# KITT V0 + M1.3 — acceptance handoff
+# KITT V0 + M1.4 — acceptance handoff
+
+Status as of **2026-10-03 (Asia/Shanghai)**: **M1.4 implemented; Debug/Release build, lint and 89 tests per variant PASS; final APK installed on vivo V2405A (API 36).** RMS-driven listening bars, a distinct animated speaking scanner, Android recognition outcome diagnostics, and selectable/previewable/persistent TTS voices are delivered. All original 70 M1.1–M1.3 / D0–D11 tests remain. **Real-phone Chinese ASR/RMS acceptance is blocked by vivo's selected public recognizer; no successful spoken transcription is claimed.**
+
+## M1.4 phone diagnosis and acceptance
+
+**Root cause:** selected `com.vivo.ai.copilot/.framework.wakeup.CopilotRecognitionService` (Copilot 6.9.3.0) returns **ERROR_CLIENT(5)** in about **15–26 ms**, before any ready, RMS or results callback. Inspection of the installed public APK's service method establishes that `onStartListening` unconditionally sends error 5 and returns, without reading the intent or starting recognition. This is an OEM public-API stub, not “没听清,” permission denial or KITT's timeout. Android exposes no on-device recognizer or recognize-speech Activity on this phone. Its Google recognition component is not enabled/resolvable; Android rejected component enable with SecurityException and made no change. No private vivo API, silent alternate-app routing, paid ASR or saved recording was introduced. The app reports the accurate startup failure and offers **系统语音识别设置**. Full bounded evidence: [M1.4 acceptance](docs/ACCEPTANCE_M1_4.md).
+
+**Verified on the phone:** both exposed local voices (**zh / zh-Hant**, **yue / yue-Hans**) previewed with successful TTS completion callbacks; non-default **yue** saved, survived force-stop/relaunch and APK reinstall, and was applied to journey narration. Real ChatGPT question and automatic narration displayed the scanner; paired screenshots show different scanner positions in one utterance. A physical Speak-button action stopped real TTS and started the one-shot recognizer **64 ms after TTS start**; the scanner disappeared and the accurate client error replaced listening. Quiet counted down in real time and resumed early, explicit End opened a populated summary, ordinary Start returned to phone GPS, Settings Back stayed in-app, and the final phone is idle with **no active JourneyService**. Sustained real listening/RMS, spoken Chinese → Director and genuine silence/no-match cannot pass until the system recognizer works; their lifecycle/error/state gates pass in Robolectric.
+
+**成都→绵阳 live simulation:** **80 km/h / 16×**, **110,452 m**, completed **10:20:48**. **14 automatic opportunities = 7 SILENT + 3 SPEAK_NOW + 1 ASK_USER + 3 FAILURE**, zero stale or automatic cancellation. One extra developer typed request was deliberately cancelled during interruption testing. One narration completed, another was stopped by typed input and the third by Speak. At the end ChatGPT returned **HTTP 503**; two subsequent opportunities were silently blocked by the existing connection safeguard. There was no error narration, stale replay, crash or retry storm. No quota/auth-revocation cause is inferred; after final APK reinstall, Settings refreshed the account's five models without authorization. The deterministic Fake full route and M1.3 delayed-provider simulation also pass unchanged.
+
+**Final configuration:** fresh installations remain **Fake / offline demonstration**. This existing phone retains **ChatGPT / gpt-5.6-luna / high**, **yue system TTS voice / 1.0× rate**. No API key or OAuth action is presently required for this phone. An ordinary Start uses real GPS; only explicit developer Start/recovery uses simulation.
+
+**Smallest remaining user/system action:** enable/select a working Chinese Android speech-recognition service using supported phone setup, then tap **说点什么** and actually say **再讲一点**, followed by a silence attempt. Confirm live level motion and genuine recognized text reaching the Director. The selected Copilot stub cannot be fixed by waiting/retrying or changing language extras. Any new recognizer's account, permissions and data-processing setup must be completed through its normal user flow. This limitation is separate from the working TTS/AI loop. Outdoor GPS accuracy, subjective content/voice quality and OEM lock-screen endurance remain broader V0 checks.
+
+**Final gates:** `scripts/verify.ps1 -Offline` and `gradlew.bat build lintRelease --offline --console=plain` PASS. **89 Debug + 89 Release tests, zero failures/errors/skips**; lint **zero errors**, only four existing dependency warnings in Debug and one in Release; v2 APK signature PASS. Ready APK: `H:\CODEX\KITT\artifacts\kitt-v0-debug.apk`; SHA-256 **B5F0997EE6253615C74B86B015892478BB41F382E5864BC0864BF58E76DC21F8**. Installed with `adb install -r`. No source/build dependency or new permission was added.
+
+**Shortest next total acceptance:** Settings → choose voice → **试听 → 保存 → 系统返回**; title five taps → **80 km/h / 16× / 开始**; observe auto question/narration and scanner, interrupt with Speak, quiet/resume, End/summary/Return, then verify ordinary Start says **手机 GPS**. Use the existing typed developer fallback only to continue non-ASR checks while the recognizer is blocked. After system setup, repeat with actual spoken Chinese; never count typed text as an ASR pass.
+
+**Recent milestone commits:** `6944fc5` M1.4 voice implementation, 19 regressions and phone diagnosis; `179dbf7` M1.4 task; `c7e8116` M1.3 cadence/voice delivery; `1d54588` M1.2 handoff; `3ff905d` M1.1 live catalog/SSE. Final tracked working tree is clean after the handoff commit; artifacts/build/cache outputs are ignored and kept locally.
+
+## Preserved M1.3 handoff
 
 Status as of **2026-10-03 (Asia/Shanghai)**: **M1.3 accelerated-simulation delivery gate verified on vivo V2405A (API 36)**. Explicit simulation now compresses driving between interactions: route progress drives roughly 14 automatic opportunities, and travel pauses during Director requests, TTS and one-shot listening. Real-GPS cadence, the 1,500 m stale threshold, wall-clock quiet durations and ChatGPT M1.1 adapters remain unchanged. Debug/Release builds, lint and **70 tests per variant** pass, preserving all original 60. The final APK is installed; the human user confirmed hearing an automatic real-ChatGPT narration. No authorization/key step is required on this phone.
 
@@ -51,7 +73,7 @@ Implementation, lifecycle boundaries and official sources: [M1.1](docs/CHATGPT_S
 & "$env:ANDROID_HOME\platform-tools\adb.exe" shell am start -n com.kitt.reader/.MainActivity
 ```
 
-The final M1.3 APK has been installed and launched on the connected phone. Automatic real-ChatGPT Chinese TTS is now heard and verified; broader D0–D11 GPS/ASR/OEM background and subjective quality checks remain as described below.
+The final M1.4 APK has been installed and launched on the connected phone. Automatic real-ChatGPT Chinese TTS is now heard and verified; broader D0–D11 GPS/ASR/OEM background and subjective quality checks remain as described below.
 
 ## Default Provider and real-AI setup
 
@@ -90,9 +112,9 @@ If Chinese TTS is unavailable, select/install a **zh-CN system TTS voice** in An
 - ChatGPT OAuth plan provider, Fake, OpenAI Responses and compatible API adapters; Provider/model/effort controls, encrypted credentials, TTS rate and notification status. M1.1 adds dynamic registration, RS256 OIDC validation, rotating-token renewal, revocation, account models and completion-gated SSE.
 - Hidden simulation controls: one fixture, physical speed 40/80/100 km/h, time acceleration 1/16/60×, explicit session start/stop, typed voice fallback and action counters. Only speed preferences persist; ordinary starts use real GPS. Explicit recovery may continue an unfinished simulation. M1.3 pauses travel during requests/TTS/listening and uses route progress for opportunities; quiet durations remain real time.
 
-## Build/test evidence
+## Preserved M1.3 build/test evidence
 
-Final executable verification command:
+M1.3 verification command (also used by M1.4):
 
 ```powershell
 cd H:\CODEX\KITT
@@ -147,6 +169,8 @@ Milestones on `main` (including the original D0–D11 history and the M1.1 task 
 | M1.2 | `3f4d994` | Navigation/source isolation fixes, regression tests and phone acceptance |
 | M1.2 handoff | `1d54588` | Phone-verified source/navigation and all-variant gates |
 | M1.3 task | `87097c4` | Accelerated simulation cadence and live delivery contract |
-| M1.3 | final `HEAD` | Simulation progress/pause fix, ten regressions, real ChatGPT audible acceptance |
+| M1.3 | `c7e8116` | Simulation progress/pause fix, ten regressions, real ChatGPT audible acceptance |
+| M1.4 task | `179dbf7` | Voice reliability, visualization and TTS acceptance contract |
+| M1.4 | `6944fc5` | OEM recognizer diagnosis, live indicators, persistent voice/preview and 19 regressions |
 
 The final tracked working tree is clean. `artifacts/`, Gradle/Kotlin caches and build/test outputs are intentionally ignored and remain available locally. `git log --oneline -13` shows the exact final commit hashes, including D11.
