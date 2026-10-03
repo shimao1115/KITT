@@ -23,11 +23,15 @@ class DirectorCounters {
 class DirectorLoop(private val journey: Journey, private val context: ContextPipeline,
     private val scope: CoroutineScope, private val now: () -> Long,
     private val provider: () -> DirectorProvider, private val failure: (String) -> Unit = {},
-    private val diagnostic: (String) -> Unit = {}) {
+    private val diagnostic: (String) -> Unit = {},
+    private val researchProvider: () -> LocalResearchProvider = { UnavailableResearch() },
+    researchChanged: () -> Unit = {}) {
     private var request: Job? = null
     private var requestActive = false
     val pending get() = request?.isActive == true
     val counters = DirectorCounters()
+    val research = ChapterResearch(scope, now, researchProvider, diagnostic) { researchChanged(); check() }
+    init { context.researchCard = research::card }
     fun location(fix: Fix) {
         journey.location(fix)
         if (journey.fix == fix) {
@@ -36,13 +40,17 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
             val entered = context.areas.active?.area?.key != previous
             if (entered) {
                 diagnostic("area chapter=${context.areas.active?.area?.label ?: "unresolved"} cache=${context.areas.size}")
-                journey.noteChapterEntry()
+                journey.clearChapterEntry()
+                research.enter(context.areas.active?.area)
             }
         }
         check()
     }
     fun check() {
         journey.tick()
+        if (!journey.running) { research.clear(); return }
+        if (research.opportunity) journey.noteChapterEntry()
+        if (research.pending && !context.proximity.opportunity) return
         if (pending || !journey.shouldCheck(context.proximity.opportunity)) return
         counters.opportunity()
         dispatch(null)
@@ -55,35 +63,69 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     private fun dispatch(utterance: String?, image: ImageInput? = null) {
         requestActive = utterance != null
         val ticket = journey.ticket(utterance != null)
+        var deliveryTicket = ticket
         val landmarkIds = context.proximity.ids
+        val chapterKey = context.areas.active?.area?.key
+        val readyKeys = research.readyKeys
         if (!ticket.active) {
             if (context.proximity.opportunity) diagnostic("landmark opportunity ids=${landmarkIds.joinToString()}")
-            context.proximity.consumeOpportunity()
         }
         val input = DirectorRequest(sessionInstructions = journey.instructions,
             contextCard = context.card(journey, now()), userUtterance = utterance, image = image)
         counters.dispatch(ticket.active)
         diagnostic("dispatch active=${ticket.active} ${counters.summary()}")
         request = scope.launch {
+            // A dispatch cancelled before this coroutine runs has never examined the context.
+            if (!ticket.active) { research.checked(readyKeys); context.proximity.consumeOpportunity(landmarkIds) }
             var activeFailure: String? = null
-            val raw = try { withTimeout(35000) {
+            val raw = try { withTimeout(if (ticket.active) 140000 else 35000) {
                 val selected = provider()
                 if (image != null && !selected.acceptsImages) throw UnsupportedImage()
-                selected.direct(input)
+                var groundedInput = input
+                if (ticket.active && (image == null || ActiveResearchPolicy.forced(utterance.orEmpty()))) {
+                    val needs = if (ActiveResearchPolicy.forced(utterance.orEmpty())) ResearchNeed.SEARCH_REQUIRED
+                        else withTimeout(35000) { selected.researchNeed(input) }
+                    diagnostic("active research decision=$needs")
+                    if (needs == ResearchNeed.SEARCH_REQUIRED) {
+                        deliveryTicket = ticket.copy(researching = true)
+                        val area = ticket.fix?.administrative ?: AreaIdentity()
+                        try {
+                            val dossier = withTimeout(90000) { researchProvider().researchQuestion(
+                                LocalQuestion(area, utterance.orEmpty(), input.contextCard), now()) }
+                            ensureActive()
+                            // Active questions remain about their original place if GPS changes; label it explicitly.
+                            groundedInput = input.copy(contextCard = input.contextCard + "\n【当前主动问题的搜索证据】\n" + dossier.text() +
+                                "\n以上是提问时现场，不证明回答时仍在那里；附近只按区域关联，不伪造精确距离或方向。")
+                            diagnostic("active research ready sources=${dossier.sources.joinToString { it.url }} facts=${dossier.facts.size}")
+                        } catch (_: TimeoutCancellationException) {
+                            diagnostic("active research failed reason=timeout")
+                            throw ActiveResearchFailure()
+                        } catch (e: CancellationException) { throw e }
+                        catch (e: Exception) {
+                            diagnostic("active research failed reason=${e.javaClass.simpleName}")
+                            // Local failure semantics: never let model memory impersonate failed search.
+                            throw ActiveResearchFailure()
+                        }
+                    } else groundedInput = input.copy(contextCard = input.contextCard +
+                        "\n【本次未联网】现有证据或一般常识足够直接回答；不能声称‘我刚查到’。")
+                }
+                withTimeout(35000) { selected.direct(groundedInput) }
             } }
             catch (e: TimeoutCancellationException) { failure("Provider timeout"); null }
             catch (e: CancellationException) { throw e }
             catch (e: Exception) {
                 failure("Provider failure: ${e.javaClass.simpleName}")
-                if (image != null) activeFailure = if (e is UnsupportedImage) e.message
+                if (e is ActiveResearchFailure) activeFailure = "刚才没查到可靠资料，暂时无法确认。"
+                if (image != null && e !is ActiveResearchFailure) activeFailure = if (e is UnsupportedImage) e.message
                     else "看图暂时没完成，请确认所选模型支持图片，并检查连接。"
                 null
             }
             val parsed = raw?.let { runCatching { DirectorContract.parse(it) }.getOrNull() }
-            val outcome = journey.deliver(ticket, raw, activeFailure, context.proximity.guard(parsed, ticket.active, landmarkIds)) { user(it) }
+            val chapterBlock = if (!ticket.active && chapterKey != context.areas.active?.area?.key) DeliveryOutcome.STALE else null
+            val outcome = journey.deliver(deliveryTicket, raw, activeFailure, chapterBlock ?: context.proximity.guard(parsed, ticket.active, landmarkIds)) { user(it) }
             if (outcome == DeliveryOutcome.SPEAK_NOW && parsed != null) context.proximity.delivered(parsed)
             counters.terminal(ticket.active, outcome)
-            diagnostic("terminal active=${ticket.active} outcome=$outcome ${counters.summary()}")
+            diagnostic("terminal active=${ticket.active} chapter=$chapterKey outcome=$outcome topic=${parsed?.topic.orEmpty()} reason=${parsed?.memoryUpdate.orEmpty()} ${counters.summary()}")
         }
     }
     fun cancel() {
@@ -93,5 +135,5 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         }
         request?.cancel(); request = null
     }
-    fun reset() { cancel(); context.reset() }
+    fun reset() { cancel(); research.clear(); journey.clearChapterEntry(); context.reset() }
 }

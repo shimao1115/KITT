@@ -32,9 +32,14 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
     val context = LocalContext.current
     val account = runtime.chatGpt
     val draft = ProviderConfig(kind, endpoint.trim(), model.trim(), effort, key.trim())
+    val savedResearch = remember { runtime.settings.readResearch() }
+    var separateResearch by remember { mutableStateOf(savedResearch != null) }
+    var researchEndpoint by remember { mutableStateOf(savedResearch?.endpoint ?: "https://api.openai.com/v1") }
+    var researchModel by remember { mutableStateOf(savedResearch?.model ?: "gpt-4.1-mini") }
+    var researchKey by remember { mutableStateOf(savedResearch?.apiKey.orEmpty()) }
     Column(Modifier.fillMaxSize().safeDrawingPadding().padding(20.dp).verticalScroll(rememberScrollState())) {
         Text("设置", style = MaterialTheme.typography.headlineLarge)
-        Text("KITT V0 · ${BuildConfig.VERSION_NAME}")
+        Text("沿途 · ${BuildConfig.VERSION_NAME} · 读懂沿途的世界")
         ProviderKind.entries.forEach { choice ->
             Row {
                 RadioButton(kind == choice, { kind = choice }); Text(when (choice) {
@@ -120,7 +125,37 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
             }
             if (runtime.settings.credentialUnavailable) Text("本机密钥无法解密，请重新填写。")
         } else Text("无需登录。演示内容用于闭环验收，真实 AI 内容质量需接通 Provider 后验证。")
-        Spacer(Modifier.height(12.dp)); Text("语音速度 ${"%.1f".format(rate)}×")
+        Spacer(Modifier.height(12.dp))
+        Text("本地事实研究", style = MaterialTheme.typography.titleMedium)
+        Text("每个新章节先搜索证据，再讲述。ChatGPT 账号通路会实际请求搜索；是否支持以服务返回为准。离线演示与兼容聊天 API 不具备搜索能力。")
+        Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+            Checkbox(separateResearch, { separateResearch = it }); Text("显式使用独立 OpenAI Responses 研究通路")
+        }
+        if (separateResearch) {
+            Text("研究请求由此 API key 计费，旁白仍使用上面所选 Provider。")
+            OutlinedTextField(researchEndpoint, { researchEndpoint = it }, Modifier.fillMaxWidth(), label = { Text("研究 API 地址") }, singleLine = true)
+            OutlinedTextField(researchModel, { researchModel = it }, Modifier.fillMaxWidth(), label = { Text("研究模型（需支持 web search）") }, singleLine = true)
+            OutlinedTextField(researchKey, { researchKey = it }, Modifier.fillMaxWidth(), label = { Text("研究 API key") }, visualTransformation = PasswordVisualTransformation(), singleLine = true)
+        }
+        if (runtime.loop.research.active != null) Text(runtime.loop.research.card())
+        var researching by remember { mutableStateOf(false) }
+        TextButton({
+            val area = runtime.journey.fix?.administrative ?: return@TextButton
+            researching = true
+            scope.launch {
+                try {
+                    val dossier = runtime.researchProvider().research(area, System.currentTimeMillis())
+                    message = "实际搜索完成：${dossier.area.fullName}，${dossier.facts.size} 条事实，${dossier.sources.size} 个来源。\n" + dossier.text()
+                    android.util.Log.i("KITTResearch", "explicit probe READY ${dossier.text()}")
+                } catch (e: Exception) {
+                    message = (e as? ResearchUnavailable)?.reason ?: "研究探测未完成；未获得证据，不等于没有当地内容。"
+                    android.util.Log.i("KITTResearch", "explicit probe FAILED ${e.javaClass.simpleName}")
+                } finally { researching = false }
+            }
+        }, enabled = runtime.journey.fix?.administrative != null && !researching) {
+            Text(if (researching) "正在实际搜索…" else "测试已保存的本地研究配置（当前位置）")
+        }
+        Text("语音速度 ${"%.1f".format(rate)}×")
         Slider(rate, { rate = it }, valueRange = 0.5f..1.5f)
         Text("朗读声音", style = MaterialTheme.typography.titleMedium)
         Text(androidVoice?.voiceMessage ?: "系统声音不可用")
@@ -157,16 +192,21 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
         TextButton(onNotification) { Text("通知：${if (notificationEnabled) "已允许" else "未允许"} · 系统设置") }
         Button({
             val selected = account.models.find { it.slug == model }
-            val saved = if (kind == ProviderKind.CHATGPT && (!account.record.planEnabled || selected == null))
+            val researchDraft = if (separateResearch) ProviderConfig(ProviderKind.OPENAI, researchEndpoint.trim(), researchModel.trim(), apiKey = researchKey.trim()) else null
+            val researchValidation = runtime.settings.validateResearch(researchDraft)
+            val saved = if (researchValidation.isFailure) researchValidation
+            else if (kind == ProviderKind.CHATGPT && (!account.record.planEnabled || selected == null))
                 Result.failure(IllegalStateException("请先授权 ChatGPT 计划使用并选择账号模型，或选择其他 Provider。"))
             else runtime.settings.save(if (kind == ProviderKind.CHATGPT) draft.copy(endpoint = ChatGptProtocol.RESOURCE,
                 effort = effort.takeIf { it in selected!!.efforts }.orEmpty()) else draft, rate, voiceName)
-            if (saved.isSuccess) {
+            val researchSaved = if (saved.isSuccess) runtime.settings.saveResearch(researchDraft) else saved
+            if (saved.isSuccess && researchSaved.isSuccess) {
                 runtime.loop.cancel(); runtime.journey.invalidateProvider()
+                runtime.resetResearchProvider()
                 runtime.config = runtime.settings.read(); (runtime.voice as? AndroidVoice)?.speechRate = rate
                 androidVoice?.voiceName = voiceName
                 runtime.revision.intValue++; message = "已保存"
-            } else message = saved.exceptionOrNull()?.message ?: "暂时无法保存"
+            } else message = (saved.exceptionOrNull() ?: researchSaved.exceptionOrNull())?.message ?: "暂时无法保存"
         }, Modifier.fillMaxWidth().height(64.dp)) { Text("保存") }
         if (message.isNotBlank()) Text(message)
         TextButton(onReturn, Modifier.fillMaxWidth().height(56.dp)) { Text("返回") }

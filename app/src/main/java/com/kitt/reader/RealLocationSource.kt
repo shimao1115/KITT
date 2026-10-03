@@ -34,10 +34,12 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
                     if (location.hasBearing()) location.bearing.toDouble() else 0.0,
                     if (location.hasAltitude()) location.altitude else null,
                     if (location.hasAccuracy()) location.accuracy.toDouble() else 200.0)
+                if (!fix.valid() || System.currentTimeMillis() - fix.timeMs !in -10000..60000 ||
+                    (latest?.timeMs ?: Long.MIN_VALUE) > fix.timeMs) return
                 latest = fix
                 onFix(fix.copy(administrative = lookup.cached(fix)))
                 if (fix.valid()) lookup.resolve(fix) { area ->
-                    latest?.takeIf { it.distanceTo(fix) < 1500 }?.let { current ->
+                    latest?.takeIf { areaCacheValid(fix, it, System.currentTimeMillis()) }?.let { current ->
                         onFix(current.copy(administrative = area))
                     }
                 }

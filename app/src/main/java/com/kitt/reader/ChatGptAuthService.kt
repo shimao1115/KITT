@@ -21,7 +21,7 @@ class ChatGptAuthService : Service() {
         val open = PendingIntent.getActivity(this, 40, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val cancel = PendingIntent.getService(this, 41, Intent(this, javaClass).setAction(CANCEL), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val notification = NotificationCompat.Builder(this, CHANNEL).setSmallIcon(R.drawable.ic_journey)
-            .setContentTitle("完成 ChatGPT 登录").setContentText("请在系统浏览器授权后返回 KITT；等待最多两分半。")
+            .setContentTitle("完成 ChatGPT 登录").setContentText("请在系统浏览器授权后返回沿途；等待最多两分半。")
             .setContentIntent(open).setOngoing(true).setSilent(true).addAction(0, "取消登录", cancel).build()
         if (Build.VERSION.SDK_INT >= 34) startForeground(ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE)
         else startForeground(ID, notification)

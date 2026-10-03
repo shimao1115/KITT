@@ -111,7 +111,7 @@ class AndroidVoice(
     override fun speak(text: String, complete: (Boolean) -> Unit) = speakWith(text, voiceName, speechRate, complete)
     /** Settings-only operation: fixed local text, draft voice/rate; does not touch Journey or Provider. */
     fun preview(name: String, rate: Float, complete: (Boolean) -> Unit) =
-        speakWith("你好，我是路上读山河。前面的风景，值得慢慢听。", name, rate, complete)
+        speakWith("你好，我是沿途。读懂沿途的世界，陪你听懂正在经过的地方。", name, rate, complete)
     private fun speakWith(text: String, name: String, rate: Float, complete: (Boolean) -> Unit) {
         stop(); this.complete = complete; val token = serial
         val execute = {

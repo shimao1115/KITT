@@ -64,7 +64,7 @@ class ChatGptAccount(
         lastFailure = error as? ChatGptFailure
         val location = error.stackTrace.firstOrNull { it.className.startsWith("com.kitt.reader.") }
         diagnostic("failure: ${error.javaClass.simpleName} location=$location" + (lastFailure?.let { " status=${it.status} code=${it.code} request_id=${it.requestId} shape=${it.shape}" } ?: ""))
-        message = if (error is ChatGptFailure) error.userMessage else "连接未完成，请重试。请确保浏览器和 KITT 未被系统关闭。"
+        message = if (error is ChatGptFailure) error.userMessage else "连接未完成，请重试。请确保浏览器和沿途 未被系统关闭。"
         if (error is ChatGptFailure && error.pausesRequests) paused = true
         retryAfter = clock() + 60000 // No retry storm; a later explicit Settings action may reset this.
     }
@@ -76,7 +76,7 @@ class ChatGptAccount(
     }
     fun signIn(scope: CoroutineScope, consent: Boolean = false, openBrowser: (String) -> Unit) {
         if (busy) return
-        busy = true; message = "请在系统浏览器完成登录和授权，再返回 KITT。"
+        busy = true; message = "请在系统浏览器完成登录和授权，再返回沿途。"
         val attemptGeneration = ++generation
         authJob = scope.launch {
             try {
@@ -207,8 +207,29 @@ class ChatGptAccount(
                     }
                 } catch (_: Exception) { /* Clear locally even when remote revocation is unavailable. */ }
                 save(record.withoutTokens()); models = emptyList(); paused = true
-                message = if (confirmed) "已断开连接。注册保留，可重新登录。" else "已在本机断开；远程撤销未确认，请在 ChatGPT 设置中断开 KITT。"
+                message = if (confirmed) "已断开连接。注册保留，可重新登录。" else "已在本机断开；远程撤销未确认，请在 ChatGPT 设置中断开沿途。"
             }
+        }
+    }
+
+    /** Uses the same verified registration and refresh rules, but never holds the auth lock during research.
+     * A search capability rejection must not pause the already accepted narration connection. */
+    suspend fun research(model: String, body: (ChatGptModel) -> String): String = withContext(Dispatchers.IO) {
+        val (token, selected, stamp) = mutex.withLock {
+            check(!paused && clock() >= retryAfter) { "ChatGPT 连接暂不可用，请查看设置。" }
+            val access = accessLocked()
+            if (models.isEmpty()) loadModelsLocked()
+            Triple(access, models.singleOrNull { it.slug == model } ?: error("请选择当前账号可用的模型。"), generation)
+        }
+        try {
+            val raw = transport.research("${ChatGptProtocol.RESOURCE}/responses", token, body(selected))
+            ensureActive()
+            check(generation == stamp && record.planEnabled) { "研究期间账号连接已改变。" }
+            raw
+        } catch (e: CancellationException) { throw e }
+        catch (e: ChatGptFailure) {
+            diagnostic("research rejected status=${e.status} code=${e.code} request_id=${e.requestId} shape=${e.shape}")
+            throw e
         }
     }
 }

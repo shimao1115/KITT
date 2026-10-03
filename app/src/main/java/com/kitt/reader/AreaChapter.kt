@@ -1,23 +1,24 @@
 package com.kitt.reader
 
 /** Administrative labels are context, never a route or a claim of exact boundaries. */
-data class AreaIdentity(val city: String = "", val district: String = "", val chapter: String = "") {
-    val key get() = listOf(city, district, chapter).joinToString("/")
+data class AreaIdentity(val city: String = "", val district: String = "", val chapter: String = "", val province: String = "") {
+    val key get() = listOf(province, city, district, chapter).joinToString("/")
+    val fullName get() = listOf(province, city, district, chapter).filter(String::isNotBlank).joinToString(" / ")
     val label get() = listOf(district, chapter).filter(String::isNotBlank).distinct().joinToString(" · ").ifBlank { city }
     companion object {
-        fun normalize(city: String?, district: String?, chapter: String?): AreaIdentity? {
+        fun normalize(city: String?, district: String?, chapter: String?, province: String? = null): AreaIdentity? {
             fun clean(value: String?) = value.orEmpty().replace(Regex("\\s+"), "").take(60)
             val c = clean(city); val d = clean(district); val t = clean(chapter).takeUnless { it == d }.orEmpty()
-            return AreaIdentity(c, d, t).takeIf { it.label.isNotBlank() }
+            return AreaIdentity(c, d, t, clean(province)).takeIf { it.label.isNotBlank() }
         }
-        fun geocoderFields(locality: String?, subAdmin: String?, subLocality: String?): AreaIdentity? {
+        fun geocoderFields(locality: String?, subAdmin: String?, subLocality: String?, province: String? = null): AreaIdentity? {
             val fields = listOf(locality, subAdmin, subLocality).map { it.orEmpty().trim() }
             val chapter = fields.firstOrNull { it.endsWith("镇") || it.endsWith("乡") || it.endsWith("街道") }.orEmpty()
             val district = fields.firstOrNull { it.endsWith("区") || it.endsWith("县") || it.endsWith("旗") }
                 ?: if (fields[0].endsWith("市") && fields[1].endsWith("市") && fields[0] != fields[1]) fields[0]
                 else fields[1].takeUnless { it == chapter }.orEmpty()
             val city = fields.take(2).firstOrNull { it.isNotBlank() && it != district && it != chapter }.orEmpty()
-            return normalize(city, district, chapter.ifBlank { fields[2].takeUnless { it == district }.orEmpty() })
+            return normalize(city, district, chapter.ifBlank { fields[2].takeUnless { it == district }.orEmpty() }, province)
         }
     }
 }
@@ -41,7 +42,7 @@ data class AreaCard(val area: AreaIdentity, val orientation: String, val candida
         }
         appendLine("这是素材架，不是播放清单：顺序、类别和条数都不构成要求，可以任选一条、把几条真正相关的串起来，也可以在确实没有值得讲的东西时保持安静。")
         appendLine("标题只标明可讲的对象，不规定切入方式、结构、深度或结论；形式按素材本身决定。")
-        appendLine("未标依据的素材只是方向提示，具体当地事实必须可靠；无依据的数字、日期和现状删去。")
+        appendLine("整面素材架是研究方向，预存对象与来源注记也不代表本章已实际搜索。当地事实必须来自本趟已就绪的 Local Dossier；没有证据时不可用模型记忆补齐。")
     }
 }
 
@@ -107,7 +108,7 @@ fun chapterCandidates(area: AreaIdentity): AreaCard {
     return AreaCard(area, "${area.city} / ${area.label}。区县提供背景，镇乡街道组织章节；GPS 坐标和方向见当前位置。", candidates)
 }
 
-/** One pending lookup, >=60s between attempts even after failure; movement or 5min staleness refreshes. */
+/** Driving refresh: >=15s and 250m at road speed; slow travel >=30s/150m; stationary >=2min. */
 class GeocodeThrottle {
     private var attempted: Fix? = null
     private var at: Long? = null
@@ -115,8 +116,16 @@ class GeocodeThrottle {
     fun begin(fix: Fix, time: Long): Boolean {
         if (pending || !fix.valid()) return false
         val elapsed = at?.let { time - it }
-        if (elapsed != null && (elapsed < 60000 || (elapsed < 300000 && attempted!!.distanceTo(fix) < 1000))) return false
+        val inferredSpeed = if (elapsed != null && elapsed > 0) attempted!!.distanceTo(fix) * 3600 / elapsed else 0.0
+        val driving = fix.speedKmh >= 50 || (attempted?.speedKmh ?: 0.0) >= 50 || inferredSpeed >= 50
+        val minimum = if (driving) 15000 else 30000
+        val movement = if (driving) 250.0 else 150.0
+        if (elapsed != null && (elapsed < minimum || (elapsed < 120000 && attempted!!.distanceTo(fix) < movement))) return false
         at = time; attempted = fix; pending = true; return true
     }
     fun complete() { pending = false }
 }
+
+/** Never carry a town for kilometers while its replacement is being resolved. */
+fun areaCacheValid(anchor: Fix, fix: Fix, time: Long): Boolean =
+    fix.valid() && time - anchor.timeMs in 0..30000 && anchor.distanceTo(fix) <= 450

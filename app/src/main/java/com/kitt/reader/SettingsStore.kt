@@ -59,6 +59,31 @@ class SettingsStore(context: Context, private val secrets: SecretCipher = Androi
     }
     val speechRate get() = prefs.getFloat("speech_rate", 1.0f)
     val voiceName get() = prefs.getString("tts_voice", "").orEmpty()
+    /** Optional explicit research-only API configuration; never auto-bills a second Provider. */
+    fun readResearch(): ProviderConfig? {
+        if (!prefs.getBoolean("separate_research", false)) return null
+        val key = prefs.getString("research_credential", "").orEmpty()
+        val plain = runCatching { secrets.decrypt(key) }.getOrElse { credentialUnavailable = true; "" }
+        return ProviderConfig(ProviderKind.OPENAI, prefs.getString("research_endpoint", "https://api.openai.com/v1").orEmpty(),
+            prefs.getString("research_model", "gpt-4.1-mini").orEmpty(), apiKey = plain)
+    }
+    fun validateResearch(config: ProviderConfig?): Result<Unit> = runCatching {
+        if (config != null) {
+            val uri = URI(config.endpoint)
+            require(config.kind == ProviderKind.OPENAI && uri.scheme == "https" && !uri.host.isNullOrBlank() &&
+                uri.userInfo == null && uri.query == null && uri.fragment == null && config.model.isNotBlank() && config.apiKey.isNotBlank()) {
+                "独立研究需要有效的 HTTPS Responses 地址、模型和 API key。"
+            }
+        }
+    }
+    fun saveResearch(config: ProviderConfig?): Result<Unit> = runCatching {
+        validateResearch(config).getOrThrow()
+        val edit = prefs.edit().putBoolean("separate_research", config != null)
+        if (config == null) edit.remove("research_endpoint").remove("research_model").remove("research_credential")
+        else edit.putString("research_endpoint", config.endpoint.trimEnd('/')).putString("research_model", config.model.trim())
+            .putString("research_credential", secrets.encrypt(config.apiKey))
+        check(edit.commit()) { "暂时无法保存研究配置。" }
+    }
     // One atomic encrypted record: host, registration, verified identity and rotating credentials.
     @Synchronized fun readChatGpt(): String? = prefs.getString("chatgpt", null)?.let {
         runCatching { secrets.decrypt(it) }.getOrElse { credentialUnavailable = true; null }

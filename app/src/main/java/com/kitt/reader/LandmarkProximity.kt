@@ -47,7 +47,7 @@ class LandmarkProximity(private val nodes: List<Landmark>) {
             }
         }
     }
-    fun consumeOpportunity() { checked.addAll(ids) }
+    fun consumeOpportunity(requested: Set<String> = ids) { checked.addAll(requested) }
     private fun matching(result: DirectorResult): String? = result.landmarkId.takeIf(String::isNotBlank)
         ?: nodes.firstOrNull { it.name in result.topic || it.name in result.memoryUpdate }?.id
     fun guard(result: DirectorResult?, active: Boolean, requested: Set<String>): DeliveryOutcome? {

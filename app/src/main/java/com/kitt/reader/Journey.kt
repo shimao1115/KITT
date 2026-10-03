@@ -12,7 +12,7 @@ interface VoicePort {
     fun listenOutcome(result: (ListeningResult) -> Unit) { listen { result(ListeningResult.recognized(it)) } }
 }
 data class Prepared(val topic: String, val hint: String, val at: Long, val anchor: Fix)
-data class Ticket(val epoch: Long, val at: Long, val fix: Fix?, val active: Boolean)
+data class Ticket(val epoch: Long, val at: Long, val fix: Fix?, val active: Boolean, val researching: Boolean = false)
 enum class DeliveryOutcome { SILENT, SPEAK_NOW, PREPARE, ASK_USER, STALE, CANCELLED, FAILURE, SUPPRESSED }
 data class TripSummary(val started: Long, val ended: Long, val destination: String, val topics: List<String>, val skipped: Int)
 
@@ -38,6 +38,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     var epoch = 0L; private set
     var lastSpeech = 0L; private set
     var cooldownUntil = 0L; private set
+    private var autoSpeechCooldown = false
     val recentTopics = ArrayDeque<String>()
     val recentFamilies = ArrayDeque<TopicFamily>()
     private val skippedTopics = mutableMapOf<String, Long>()
@@ -82,7 +83,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         invalidate(); running = true; started = now(); quietUntil = 0; destination = "未询问"
         instructions = ""; topic = ""; notice = ""; fix = null; prepared = null
         recentTopics.clear(); recentFamilies.clear(); skippedTopics.clear(); asked.clear(); skippedCount = 0
-        lastSpeech = 0; cooldownUntil = 0; lastCheckAt = Long.MIN_VALUE / 2; lastCheckFix = null
+        lastSpeech = 0; cooldownUntil = 0; autoSpeechCooldown = false; lastCheckAt = Long.MIN_VALUE / 2; lastCheckFix = null
         lastQuestion = Long.MIN_VALUE / 2; destinationQuestion = false; chapterEntry = false; changed()
     }
     fun restore(startedAt: Long, intent: String, session: String, topics: List<String>, quiet: Long) {
@@ -104,7 +105,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     }
     fun resume() {
         if (!running) return
-        invalidate(); quietUntil = 0; prepared = null; cooldownUntil = cadenceNow() + 10000
+        invalidate(); quietUntil = 0; prepared = null; autoSpeechCooldown = false; cooldownUntil = cadenceNow() + 10000
         lastCheckAt = cadenceNow(); lastCheckFix = fix; lastCheckProgress = simulationProgress?.invoke() ?: 0.0; changed()
     }
     fun tick() {
@@ -117,7 +118,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun skip() {
         if (!running) return
         if (topic.isNotBlank()) { skippedTopics[topic] = now() + 1800000; skippedCount++ }
-        invalidate(); prepared = null; topic = ""; cooldownUntil = cadenceNow() + 45000; changed()
+        invalidate(); prepared = null; topic = ""; autoSpeechCooldown = false; cooldownUntil = cadenceNow() + 45000; changed()
     }
     fun location(next: Fix) {
         if (!running || !next.valid() || now() - next.timeMs > 60000 || next.timeMs > now() + 10000) return
@@ -132,19 +133,18 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     }
     /** A new town/township/street chapter is worth one look; it grants an opportunity, never forced audio. */
     fun noteChapterEntry() { chapterEntry = true }
+    fun clearChapterEntry() { chapterEntry = false }
 
     fun shouldCheck(landmarkOpportunity: Boolean = false): Boolean {
         val position = fix ?: return false
         val freshChapter = chapterEntry
-        // Consumed even when blocked: a suppressed chapter wake-up does not become a queued opportunity.
-        chapterEntry = false
         // An open exchange counts as the user being busy: narrating over it would discard what they are typing.
         if (!running || isQuiet || speaking || listening || awaitingReply || imageInteraction ||
-            cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
+            (cadenceNow() < cooldownUntil && !(landmarkOpportunity && autoSpeechCooldown)) || now() - position.timeMs > 60000) return false
         if (lastCheckFix == null) return true
         if (freshChapter) return true
         val elapsed = cadenceNow() - lastCheckAt
-        if (landmarkOpportunity && elapsed >= 45000) return true
+        if (landmarkOpportunity) return true
         simulationProgress?.let {
             val traveled = it() - lastCheckProgress
             val areaChanged = position.area != lastCheckFix!!.area
@@ -159,6 +159,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun ticket(active: Boolean): Ticket {
         if (active) invalidate()
         if (!active || simulationClock != null) {
+            if (!active) chapterEntry = false
             lastCheckAt = cadenceNow(); lastCheckFix = fix; lastCheckProgress = simulationProgress?.invoke() ?: 0.0
         }
         return Ticket(epoch, now(), fix, active)
@@ -175,11 +176,11 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         }
         if (listOf("多讲", "少讲", "详细一点", "简单一点", "孩子", "偏好").any { it in clean })
             instructions = (instructions.lines().filter(String::isNotBlank).takeLast(3) + clean).joinToString("\n").takeLast(600)
-        cooldownUntil = cadenceNow() + 30000; changed(); return true
+        autoSpeechCooldown = false; cooldownUntil = cadenceNow() + 30000; changed(); return true
     }
     fun beginListening(onResult: (String) -> Unit) {
         if (!running) return
-        invalidate(); prepared = null; listening = true; notice = ""
+        invalidate(); prepared = null; autoSpeechCooldown = false; listening = true; notice = ""
         // The exchange outlives the recogniser attempt: if no backend can serve this device, the typed
         // entry stays open instead of dead-ending a question KITT itself asked.
         replyEpoch = epoch; replyUntil = now() + REPLY_WINDOW_MS; replyHandler = onResult; awaitingReply = true
@@ -228,7 +229,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
 
     fun beginImageInteraction() {
         if (!running) return
-        invalidate(); prepared = null; imageInteraction = true; notice = ""; changed()
+        invalidate(); prepared = null; autoSpeechCooldown = false; imageInteraction = true; notice = ""; changed()
     }
     fun finishImageInteraction() {
         imageInteraction = false; cooldownUntil = cadenceNow() + 30000; changed()
@@ -236,7 +237,8 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun deliver(ticket: Ticket, raw: String?, activeFailure: String? = null, proximityBlock: DeliveryOutcome? = null,
         onAnswer: (String) -> Unit = {}): DeliveryOutcome {
         if (!running || ticket.epoch != epoch) return DeliveryOutcome.CANCELLED
-        if (now() - ticket.at > 45000) return DeliveryOutcome.STALE
+        // On-demand research is an explicit active request; automatic content still expires in 45s.
+        if (now() - ticket.at > if (ticket.active && ticket.researching) 140000 else 45000) return DeliveryOutcome.STALE
         if (!ticket.active && (isQuiet || speaking || listening || ticket.fix == null || fix == null ||
                     now() - fix!!.timeMs > 60000 || ticket.fix.distanceTo(fix!!) > 1500 ||
                     angleDifference(ticket.fix.bearing, fix!!.bearing) > 65)) return DeliveryOutcome.STALE
@@ -286,6 +288,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                 speaking = false; lastSpeech = now()
                 lastSpeechTravelMs = simulatedTravelMs
                 cooldownUntil = cadenceNow() + if (active) 30000 else 60000
+                autoSpeechCooldown = !active && !ask
                 diagnostic("Voice completed success=$success active=$active ask=$ask")
                 if (!success) {
                     notice = "语音播放不可用，请检查系统中文语音。"
@@ -296,7 +299,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             }
         }
     }
-    fun invalidateProvider() { if (running) { invalidate(); prepared = null; cooldownUntil = cadenceNow() + 10000; changed() } }
+    fun invalidateProvider() { if (running) { invalidate(); prepared = null; autoSpeechCooldown = false; cooldownUntil = cadenceNow() + 10000; changed() } }
 
     companion object {
         /** Long enough to cover a cold local-model load, short enough that an unanswered question expires. */

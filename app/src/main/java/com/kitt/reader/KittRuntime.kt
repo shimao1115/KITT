@@ -29,12 +29,29 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         ProviderKind.FAKE -> FakeProvider()
         else -> ApiProvider(config)
     }
+    private var researchConfig: ProviderConfig? = null
+    private var selectedResearch: LocalResearchProvider = UnavailableResearch()
+    fun resetResearchProvider() { researchConfig = null }
+    fun researchProvider(): LocalResearchProvider {
+        val configured = settings.readResearch() ?: config
+        if (researchConfig != configured) {
+            researchConfig = configured
+            selectedResearch = when (configured.kind) {
+                ProviderKind.CHATGPT -> ChatGptLocalResearch(chatGpt, configured)
+                ProviderKind.OPENAI -> ApiLocalResearch(configured)
+                ProviderKind.FAKE -> UnavailableResearch("离线演示没有实际搜索；当地事实研究不可用，演示内容不是研究验收。")
+                ProviderKind.COMPATIBLE -> UnavailableResearch("兼容聊天 API 未声明搜索能力；本地研究不可用。可在设置中显式配置独立的研究通路。")
+            }
+        }
+        return selectedResearch
+    }
     val routeReference = RouteReference(scope, ::provider)
     val loop = DirectorLoop(journey, pipeline, scope, System::currentTimeMillis, {
         provider()
     }, failure = { Log.w("KITT", it) }, diagnostic = {
+        Log.i("KITTResearch", it)
         if (simulation) Log.i("KITTSim", "$it progressMeters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt() ?: 0}")
-    })
+    }, researchProvider = ::researchProvider, researchChanged = { revision.intValue++ })
     val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
     var acceleration = settings.acceleration
@@ -69,7 +86,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         source = if (simulation) {
             val fixture = context.assets.open("chengdu-mianyang.json").bufferedReader().use { RouteFixture.parse(it.readText()) }
             SimulatedLocationSource(fixture, scope, System::currentTimeMillis, speedKmh = simulationSpeed, acceleration = acceleration,
-                initialTravelMs = saved?.travelMs ?: 0L, paused = { loop.pending || journey.speaking || journey.listening || journey.imageInteraction }) {
+                initialTravelMs = saved?.travelMs ?: 0L, paused = { loop.pending || loop.research.pending || journey.speaking || journey.listening || journey.imageInteraction }) {
                 Log.i("KITTSim", "route completed ${loop.counters.summary()}")
                 sourceNotice = "模拟已到终点"; revision.intValue++
             }

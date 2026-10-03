@@ -12,7 +12,7 @@ class JourneyService : Service() {
     override fun onCreate() {
         super.onCreate()
         getSystemService(NotificationManager::class.java).createNotificationChannel(
-            NotificationChannel(CHANNEL, "正在读山河", NotificationManager.IMPORTANCE_LOW).apply {
+            NotificationChannel(CHANNEL, "沿途旅程", NotificationManager.IMPORTANCE_LOW).apply {
                 description = "旅程中的安静与结束控制"; setSound(null, null); enableVibration(false); setShowBadge(false)
             })
         runtime.notificationChanged = ::updateNotification
@@ -40,7 +40,7 @@ class JourneyService : Service() {
         Intent(this, JourneyService::class.java).setAction(action), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     private fun notification(): Notification {
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        return Notification.Builder(this, CHANNEL).setSmallIcon(R.drawable.ic_journey).setContentTitle("路上读山河")
+        return Notification.Builder(this, CHANNEL).setSmallIcon(R.drawable.ic_journey).setContentTitle("沿途")
             .setContentText(if (runtime.journey.isQuiet) "安静模式" else "旅程进行中")
             .setContentIntent(open).setOngoing(true).setOnlyAlertOnce(true)
             .setCategory(Notification.CATEGORY_SERVICE).setVisibility(Notification.VISIBILITY_PUBLIC)

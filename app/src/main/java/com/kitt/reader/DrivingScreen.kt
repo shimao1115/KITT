@@ -33,7 +33,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
         if (maxWidth > maxHeight) {
             Row(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                 Column(Modifier.weight(1f)) {
-                    Row { TextButton(onDeveloper) { Text("路上读山河") }; TextButton(onSettings) { Text("设置") } }
+                    Row { TextButton(onDeveloper) { Text("沿途") }; TextButton(onSettings) { Text("设置") } }
                     Text(sourceLabel, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelMedium)
                     JourneyStatus(journey)
                     Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleMedium)
@@ -55,7 +55,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
 
 private fun stateLabel(journey: Journey) = when (journey.state) {
     JourneyState.IDLE -> "开车上路后点一下开始"
-    JourneyState.READING -> "读山河中"
+    JourneyState.READING -> "读懂沿途中"
     JourneyState.SPEAKING -> "正在讲述"
     JourneyState.LISTENING -> "正在听，请说话"
     JourneyState.QUIET -> "安静模式"
@@ -109,7 +109,7 @@ private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart
     transcript: TranscriptText, onCancelReply: () -> Unit) {
     Column(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            TextButton(onDeveloper) { Text("路上读山河", style = MaterialTheme.typography.titleLarge) }
+            TextButton(onDeveloper) { Text("沿途", style = MaterialTheme.typography.titleLarge) }
             Spacer(Modifier.weight(1f)); TextButton(onSettings) { Text("设置") }
         }
         Text(sourceLabel, style = MaterialTheme.typography.labelMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
@@ -174,7 +174,7 @@ private fun DrivingControls(journey: Journey, onStart: () -> Unit, onSpeak: () -
                 Text(routeNotice, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodySmall)
                 TextButton(onClearRoute) { Text("清除路线参考") }
             }
-            Button(onStart, Modifier.fillMaxWidth().height(if (compact) 80.dp else 88.dp), shape = RoundedCornerShape(20.dp)) { Text("开始读山河", style = MaterialTheme.typography.titleLarge) }
+            Button(onStart, Modifier.fillMaxWidth().height(if (compact) 80.dp else 88.dp), shape = RoundedCornerShape(20.dp)) { Text("开始沿途", style = MaterialTheme.typography.titleLarge) }
         } else {
             Button(if (journey.isQuiet) journey::resume else onSpeak, Modifier.fillMaxWidth().height(if (compact) 80.dp else 88.dp), shape = RoundedCornerShape(20.dp)) {
                 Text(if (journey.isQuiet) "结束安静" else "说点什么", style = MaterialTheme.typography.titleLarge)

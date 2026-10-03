@@ -30,19 +30,21 @@ try {
     }
     New-Item -ItemType Directory -Path artifacts -Force | Out-Null
     Copy-Item -LiteralPath app\build\outputs\apk\debug\app-debug.apk -Destination artifacts\kitt-v0-debug.apk -Force
-    foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt')) {
+    foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt')) {
         Copy-Item -LiteralPath (Join-Path app\build\acceptance $taskReport) -Destination (Join-Path artifacts $taskReport) -Force
     }
     $taskHash = (Get-FileHash -LiteralPath artifacts\kitt-v0-debug.apk -Algorithm SHA256).Hash
     "$taskHash  kitt-v0-debug.apk" | Set-Content -LiteralPath artifacts\SHA256.txt -Encoding utf8
     [ordered]@{
-        version='0.2.2'; build='PASS (Debug/Release)'; variants=$taskCounts; lint='PASS (Debug/Release)'; signature='PASS'
+        version='0.3.0'; product='沿途'; build='PASS (Debug/Release)'; variants=$taskCounts; lint='PASS (Debug/Release)'; signature='PASS'
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk='kitt-v0-debug.apk'; sha256=$taskHash
         deviceAcceptance='Chinese voice input accepted on the vivo V2405A; see docs/ACCEPTANCE_CHINESE_ASR.md. Remaining subjective-content gates stay in docs/COMBINED_PHONE_ACCEPTANCE.md.'
         liveProvider='Real provider narrative/image quality DEFERRED; historical M1.1-M1.4 phone evidence preserved in HANDOFF.md.'
         chineseASR='System recogniser still fails ERROR_CLIENT before ready; the bundled offline Vosk Chinese model is the working path on this device.'
+        localResearch='Deterministic regression PASS; this verification script does not run credential-backed hosted search. Current external probe status is recorded in docs/ACCEPTANCE_YANTU_V03.md.'
+        xinduBenchmark='NOT VERIFIED BY THIS SCRIPT: fresh production-provider research is required; manual web discovery is separate evidence and does not establish runtime acceptance.'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8
     Write-Output "PASS: Debug $($taskCounts.Debug.tests) + Release $($taskCounts.Release.tests) tests; install artifacts\kitt-v0-debug.apk"
 } finally { Pop-Location }

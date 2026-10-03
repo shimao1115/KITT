@@ -113,28 +113,28 @@ class SettingsBackTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
     @Test fun systemBackFromSettingsReturnsToMainWithoutFinishingAndPageReturnStillWorks() {
         compose.onNodeWithText("设置").performClick()
-        compose.onNodeWithText("KITT V0 · ${BuildConfig.VERSION_NAME}").assertIsDisplayed()
+        compose.onNodeWithText("沿途 · ${BuildConfig.VERSION_NAME} · 读懂沿途的世界").assertIsDisplayed()
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
-        compose.onNodeWithText("开始读山河").assertIsDisplayed()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed()
         compose.runOnIdle { assertFalse(compose.activity.isFinishing) }
         compose.onNodeWithText("设置").performClick()
         compose.onNodeWithText("返回").performScrollTo().performClick()
-        compose.onNodeWithText("开始读山河").assertIsDisplayed()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed()
     }
     @Test fun idleMainSystemBackRetainsPlatformExitBehavior() {
-        compose.onNodeWithText("开始读山河").assertIsDisplayed()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed()
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
         assertTrue(compose.activity.isFinishing)
     }
     @Test fun developerStartPassesSimulationOnlyForThatAction() {
         val app = RuntimeEnvironment.getApplication()
         shadowOf(app).grantPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)
-        repeat(5) { compose.onNodeWithText("路上读山河").performClick() }
+        repeat(5) { compose.onNodeWithText("沿途").performClick() }
         compose.onNodeWithText("开始").performClick()
         compose.runOnIdle {
             assertTrue(shadowOf(app).nextStartedService.getBooleanExtra(JourneyService.SIMULATED, false))
         }
-        compose.onNodeWithText("开始读山河").performClick()
+        compose.onNodeWithText("开始沿途").performClick()
         compose.runOnIdle {
             assertFalse(shadowOf(app).nextStartedService.getBooleanExtra(JourneyService.SIMULATED, true))
         }

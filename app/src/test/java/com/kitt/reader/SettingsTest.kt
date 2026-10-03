@@ -48,4 +48,17 @@ class SettingsTest {
         val store = SettingsStore(app, cipher()); assertEquals("", store.read().apiKey); assertTrue(store.credentialUnavailable)
         assertTrue(store.save(ProviderConfig(), 1.0f).isSuccess); assertFalse(store.credentialUnavailable)
     }
+    @Test fun researchConfigIsExplicitEncryptedAndIndependentFromNarrationProvider() {
+        val app = RuntimeEnvironment.getApplication(); val store = SettingsStore(app, cipher())
+        assertNull(store.readResearch())
+        assertTrue(store.save(ProviderConfig(), 1.0f).isSuccess)
+        val research = ProviderConfig(ProviderKind.OPENAI, model = "research-model", apiKey = "search-secret")
+        assertTrue(store.saveResearch(research).isSuccess); assertEquals(research, store.readResearch())
+        assertEquals(ProviderKind.FAKE, store.read().kind)
+        assertFalse(app.getSharedPreferences("settings", Context.MODE_PRIVATE).all.toString().contains("search-secret"))
+        assertTrue(store.saveResearch(research.copy(kind = ProviderKind.COMPATIBLE)).isFailure)
+        assertTrue(store.saveResearch(research.copy(apiKey = "")).isFailure)
+        assertTrue(store.saveResearch(null).isSuccess); assertNull(store.readResearch())
+        assertFalse(app.getSharedPreferences("settings", Context.MODE_PRIVATE).all.keys.any { it.startsWith("research_") })
+    }
 }

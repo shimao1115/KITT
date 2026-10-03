@@ -22,6 +22,7 @@ class ContextPipeline(landmarks: List<Landmark> = emptyList()) {
     private val recent = ArrayDeque<Fix>()
     val areas = AreaCards()
     val proximity = LandmarkProximity(landmarks)
+    var researchCard: () -> String = { "" }
     var routeHint = ""
     fun reset() { recent.clear(); areas.clear(); proximity.clear(); routeHint = "" }
     fun accept(fix: Fix) {
@@ -50,6 +51,7 @@ class ContextPipeline(landmarks: List<Landmark> = emptyList()) {
             appendLine("【最近讲过】${journey.recentTopics.joinToString("；").ifBlank { "无" }}")
             appendLine("【最近题材】${journey.recentFamilies.distinct().joinToString().ifBlank { "无" }}；只用于避免重复同样的内容，不是黑名单，也不要求轮换题材。")
             areas.active?.let { append(it.text()) }
+            append(researchCard())
             append(proximity.card())
             appendLine("【当前交互状态】${journey.state}；${if (journey.foreground) "前台" else "后台/锁屏，不主动提问"}；距上次讲话：${if (journey.lastSpeech == 0L) "无" else "${(time - journey.lastSpeech) / 1000} 秒"}")
             journey.simulatedTravelMs?.let { travel ->

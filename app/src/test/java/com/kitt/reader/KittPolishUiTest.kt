@@ -31,7 +31,7 @@ class KittPolishPortraitTest {
         } } } }
         compose.onNodeWithText("添加路线参考图（可选）").assertIsDisplayed().performClick()
         compose.runOnIdle { assertEquals(1, routeTaps) }
-        compose.onNodeWithText("开始读山河").assertIsDisplayed().performClick()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed().performClick()
         compose.runOnUiThread { journey.location(Fix(31.0, 104.0, 1000000, administrative = AreaIdentity("德阳市", "广汉市", "雒城街道"))) }
         compose.onNodeWithText("广汉市 · 雒城街道").assertIsDisplayed()
         compose.onNodeWithTag("journey-state-READING").assertIsDisplayed()
@@ -48,7 +48,7 @@ class KittPolishPortraitTest {
         compose.onNodeWithText("剩余 10:00").assertIsDisplayed()
         compose.onNodeWithText("结束安静").assertIsDisplayed()
         compose.onNodeWithText("结束旅程").assertIsDisplayed().performClick()
-        compose.onNodeWithText("开始读山河").assertIsDisplayed()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed()
         compose.onAllNodes(hasScrollAction()).assertCountEquals(0)
     }
 }

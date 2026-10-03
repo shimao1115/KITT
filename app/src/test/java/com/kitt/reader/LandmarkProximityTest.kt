@@ -24,7 +24,7 @@ class LandmarkProximityTest {
                 requests += it; DirectorResult(Action.SILENT).json()
             } })
             loop.location(fix(30.0, time)); runCurrent(); assertEquals(1, requests.size)
-            time += 44000; loop.location(fix(30.008, time)); runCurrent(); assertEquals(1, requests.size)
+            time += 10000; loop.location(fix(30.008, time)); runCurrent(); assertEquals(2, requests.size)
             time += 1000; loop.location(fix(30.009, time)); runCurrent()
             assertEquals("$kind independently triggers", 2, requests.size)
             assertEquals(1, context.areas.transitions)

@@ -227,7 +227,7 @@ class AndroidVoiceExperienceTest {
         voice.preview(second.name, 1.2f) {}; idle()
         assertEquals(second, shadow.currentVoice)
         assertEquals(120, ReflectionHelpers.getField<Bundle>(engine, "mParams").getInt("rate"))
-        assertTrue(shadow.lastSpokenText.startsWith("你好，我是路上读山河"))
+        assertTrue(shadow.lastSpokenText.startsWith("你好，我是沿途"))
         assertFalse(runtime.journey.running); assertEquals(epoch, runtime.journey.epoch)
         assertEquals(config, runtime.config); assertFalse(runtime.loop.pending)
         assertEquals(first.name, voice.voiceName); assertEquals(0.8f, voice.speechRate, 0.001f)
@@ -244,7 +244,7 @@ class AndroidVoiceExperienceTest {
         assertTrue(voice.voices.isEmpty()); assertTrue(voice.canSpeak)
         voice.voiceName = "no-longer-installed"
         voice.preview(voice.voiceName, 1f) {}; idle()
-        assertTrue(shadow.lastSpokenText.startsWith("你好，我是路上读山河"))
+        assertTrue(shadow.lastSpokenText.startsWith("你好，我是沿途"))
         assertEquals(Locale.SIMPLIFIED_CHINESE, shadow.currentLanguage)
         voice.close()
     }

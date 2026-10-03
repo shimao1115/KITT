@@ -45,7 +45,7 @@ class ChatGptAttempt(
             "scope" to ChatGptProtocol.SCOPES, "resource" to ChatGptProtocol.RESOURCE,
             "state" to state, "nonce" to nonce, "code_challenge_method" to "S256",
             "code_challenge" to ChatGptProtocol.challenge(verifier))
-        if (selected.clientId.isBlank()) params["agent_name_hint"] = "路上读山河"
+        if (selected.clientId.isBlank()) params["agent_name_hint"] = "沿途"
         else {
             if (selected.idToken.isNotBlank()) params["id_token_hint"] = selected.idToken
             if (selected.email.isNotBlank()) params["login_hint"] = selected.email
@@ -106,7 +106,7 @@ class ChatGptLoopback : AutoCloseable {
                 }
                 val result = runCatching { attempt.callback(target) }
                 reply(socket, if (result.isSuccess) "200 OK" else "400 Bad Request",
-                    if (result.isSuccess) "Authorization received. Return to KITT to finish connecting." else "Authorization rejected. Return to KITT and reconnect.")
+                    if (result.isSuccess) "Authorization received. Return to Yantu to finish connecting." else "Authorization rejected. Return to Yantu and reconnect.")
                 return result.getOrThrow()
             }
         }

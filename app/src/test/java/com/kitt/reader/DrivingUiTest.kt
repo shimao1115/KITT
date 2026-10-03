@@ -24,7 +24,7 @@ class DrivingUiTest {
         val revision = mutableIntStateOf(0)
         val journey = Journey({ 1000000 }, TestVoice()) { revision.intValue++ }; var summary: TripSummary? = null
         compose.runOnUiThread { compose.activity.setContent { revision.intValue; MaterialTheme { DrivingScreen(journey, "模拟", journey::start, { journey.beginListening {} }, { summary = journey.end() }, {}, {}) } } }
-        compose.onNodeWithText("开始读山河").assertIsDisplayed().performClick()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed().performClick()
         compose.onNodeWithText("说点什么").assertIsDisplayed()
         compose.onNodeWithText("跳过").assertIsDisplayed()
         compose.onNodeWithText("安静一会儿").assertIsDisplayed().performClick()
@@ -34,7 +34,7 @@ class DrivingUiTest {
         compose.onNodeWithText("跳过").performClick()
         compose.onAllNodes(hasScrollAction()).assertCountEquals(0)
         compose.onNodeWithText("结束旅程").assertIsDisplayed().performClick()
-        compose.onNodeWithText("开始读山河").assertIsDisplayed()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed()
         compose.runOnIdle { assertNotNull(summary); assertFalse(journey.running) }
     }
 }

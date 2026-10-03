@@ -16,9 +16,10 @@ class AndroidAreaResolver(context: Context, private val scope: CoroutineScope,
     private var job: Job? = null
     private var anchor: Fix? = null
     private var resolved: AreaIdentity? = null
-    fun cached(fix: Fix): AreaIdentity? = resolved.takeIf { anchor?.distanceTo(fix)?.let { it < 3000 } == true }
+    fun cached(fix: Fix): AreaIdentity? = resolved.takeIf { anchor?.let { areaCacheValid(it, fix, System.currentTimeMillis()) } == true }
     fun resolve(fix: Fix, complete: (AreaIdentity?) -> Unit) {
         if (!throttle.begin(fix, System.currentTimeMillis())) return
+        diagnostic("area lookup started speedKmh=${fix.speedKmh.toInt()}")
         job = scope.launch {
             try {
                 val area = withTimeout(8000) { withContext(Dispatchers.IO) {
@@ -39,12 +40,12 @@ class AndroidAreaResolver(context: Context, private val scope: CoroutineScope,
                             geocoder.getFromLocation(fix.latitude, fix.longitude, 1)?.firstOrNull()
                         }
                         // Thoroughfare is a road, not a town. Do not fabricate a chapter from it.
-                        address?.let { AreaIdentity.geocoderFields(it.locality, it.subAdminArea, it.subLocality) }
+                        address?.let { AreaIdentity.geocoderFields(it.locality, it.subAdminArea, it.subLocality, it.adminArea) }
                     }
                 } }
                 ensureActive()
                 resolved = area; anchor = fix
-                diagnostic(if (area == null) "area unresolved (platform unavailable/incomplete)" else "area resolved")
+                diagnostic(if (area == null) "area unresolved (platform unavailable/incomplete)" else "area resolved ${area.fullName}")
                 complete(area)
             } catch (_: TimeoutCancellationException) { diagnostic("area lookup timed out; GPS continues") }
             catch (e: CancellationException) { throw e }

@@ -47,6 +47,7 @@ interface ChatGptTransport {
     fun get(url: String, bearer: String = ""): String
     fun form(url: String, body: String): String
     fun stream(url: String, bearer: String, body: String): String
+    fun research(url: String, bearer: String, body: String): String = throw ResearchUnavailable("当前账号 Transport 未提供研究能力。")
 }
 
 class ChatGptHttpsTransport : ChatGptTransport {
@@ -83,6 +84,13 @@ class ChatGptHttpsTransport : ChatGptTransport {
             checked(c).use { ChatGptStream.read(it, c.getHeaderField("x-request-id").orEmpty()) }
         } finally { c.disconnect() }
     }
+    override fun research(url: String, bearer: String, body: String): String = connection(url, bearer, "application/json").let { c ->
+        try {
+            c.readTimeout = 80000
+            c.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
+            checked(c).use { ChatGptStream.read(it, c.getHeaderField("x-request-id").orEmpty(), research = true) }
+        } finally { c.disconnect() }
+    }
     private fun bounded(reader: BufferedReader, max: Int): String {
         val out = StringBuilder(); val buffer = CharArray(4096)
         while (true) {
@@ -93,10 +101,13 @@ class ChatGptHttpsTransport : ChatGptTransport {
 }
 
 object ChatGptStream {
-    fun read(reader: BufferedReader, requestId: String = ""): String {
+    fun read(reader: BufferedReader, requestId: String = "", research: Boolean = false): String {
         var total = 0; val event = StringBuilder()
         val deltas = StringBuilder(); val doneTexts = linkedMapOf<String, String>()
-        val deadline = System.nanoTime() + 25_000_000_000L
+        val deadline = System.nanoTime() + if (research) 85_000_000_000L else 25_000_000_000L
+        val textLimit = if (research) 40000 else 16000
+        val items = linkedMapOf<String, JsonObject>()
+        val annotations = mutableListOf<JsonElement>()
         while (true) {
             require(System.nanoTime() < deadline) { "ChatGPT stream timed out" }
             // Bound each line before allocation; a malformed stream cannot exhaust the app heap.
@@ -104,7 +115,7 @@ object ChatGptStream {
             while (true) {
                 val c = reader.read()
                 if (c < 0) throw ChatGptFailure(code = "interrupted_stream", requestId = requestId)
-                total++; require(total <= 512000 && line.length <= 128000) { "ChatGPT stream too large" }
+                total++; require(total <= (if (research) 1_000_000 else 512000) && line.length <= 128000) { "ChatGPT stream too large" }
                 if (c == 10) break
                 if (c != 13) line.append(c.toChar())
             }
@@ -114,14 +125,19 @@ object ChatGptStream {
                 if (raw == "[DONE]") throw ChatGptFailure(code = "interrupted_stream", requestId = requestId)
                 val obj = Json.parseToJsonElement(raw).jsonObject
                 when (obj["type"]?.jsonPrimitive?.content) {
+                    "response.output_item.done" -> if (research) {
+                        val item = obj.getValue("item").jsonObject
+                        items[obj["output_index"].toString()] = item
+                    }
+                    "response.output_text.annotation.added" -> if (research) annotations += obj.getValue("annotation")
                     "response.output_text.delta" -> {
                         deltas.append(obj.getValue("delta").jsonPrimitive.content)
-                        require(deltas.length <= 16000) { "Director response too large" }
+                        require(deltas.length <= textLimit) { "Response too large" }
                     }
                     "response.output_text.done" -> {
                         val key = "${obj["output_index"]}:${obj["content_index"]}"
                         doneTexts[key] = obj.getValue("text").jsonPrimitive.content
-                        require(doneTexts.values.sumOf { it.length } <= 16000) { "Director response too large" }
+                        require(doneTexts.values.sumOf { it.length } <= textLimit) { "Response too large" }
                     }
                     "response.failed", "error" -> {
                         val source = obj["response"] as? JsonObject ?: obj
@@ -131,6 +147,27 @@ object ChatGptStream {
                     "response.completed" -> {
                         val response = obj.getValue("response").jsonObject
                         require(response["status"]?.jsonPrimitive?.content == "completed")
+                        if (research) {
+                            val snapshot = response["output"]?.jsonArray ?: JsonArray(emptyList())
+                            // Direct-plan snapshots can omit tool items while retaining the final message.
+                            val extraTools = items.values.filter { item ->
+                                item["type"]?.jsonPrimitive?.content == "web_search_call" && snapshot.none { saved ->
+                                    val s = saved.jsonObject
+                                    s == item || (item["id"] != null && s["id"] == item["id"])
+                                }
+                            }
+                            val output = if (snapshot.isEmpty()) JsonArray(items.values.toList()) else JsonArray(snapshot + extraTools)
+                            val hasText = output.any { item -> (item.jsonObject["content"] as? JsonArray)?.any {
+                                it.jsonObject["type"]?.jsonPrimitive?.content == "output_text" && !it.jsonObject["text"]?.jsonPrimitive?.content.isNullOrBlank()
+                            } == true }
+                            val assembled = if (hasText) output else JsonArray(output + buildJsonObject {
+                                put("type", "message"); put("content", buildJsonArray { add(buildJsonObject {
+                                    put("type", "output_text"); put("text", deltas.toString().ifBlank { doneTexts.values.joinToString("") })
+                                    put("annotations", JsonArray(annotations))
+                                }) })
+                            })
+                            return JsonObject(response + ("output" to assembled)).toString()
+                        }
                         val snapshot = response["output"]?.jsonArray?.flatMap { item ->
                             item.jsonObject["content"]?.jsonArray?.mapNotNull { part ->
                                 val p = part.jsonObject
@@ -166,6 +203,8 @@ object ChatGptModels {
 }
 
 class ChatGptProvider(private val account: ChatGptAccount, private val config: ProviderConfig) : DirectorProvider {
+    override suspend fun researchNeed(request: DirectorRequest): ResearchNeed = ActiveResearchPolicy.parse(
+        direct(request.copy(systemConstitution = ActiveResearchPolicy.decisionInstructions, image = null)))
     override val acceptsImages get() = true
     fun payload(request: DirectorRequest, model: ChatGptModel): JsonObject = buildJsonObject {
         put("model", model.slug); put("store", false); put("stream", true)

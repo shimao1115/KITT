@@ -25,7 +25,7 @@ class VoiceIndicatorUiTest {
             MaterialTheme { DrivingScreen(journey, "手机 GPS", journey::start, { journey.beginListening {} },
                 { journey.end() }, {}, {}, VoiceDetail(VoicePhase.LISTENING, 0.6f)) }
         } }
-        compose.onNodeWithText("开始读山河").performClick()
+        compose.onNodeWithText("开始沿途").performClick()
         compose.runOnUiThread { journey.deliver(journey.ticket(true), DirectorResult(Action.SPEAK_NOW, "主题", "讲述").json()) }
         compose.mainClock.advanceTimeBy(64)
         compose.onNodeWithTag("speaking-indicator").assertIsDisplayed()
@@ -44,7 +44,7 @@ class VoiceIndicatorUiTest {
         compose.onNodeWithText("结束安静").assertIsDisplayed()
         compose.onNodeWithText("结束旅程").performClick()
         compose.mainClock.advanceTimeBy(64)
-        compose.onNodeWithText("开始读山河").assertIsDisplayed()
+        compose.onNodeWithText("开始沿途").assertIsDisplayed()
     }
 }
 

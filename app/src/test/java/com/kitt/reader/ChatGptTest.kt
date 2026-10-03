@@ -32,7 +32,7 @@ class ChatGptProtocolTest {
         val second = ChatGptAttempt(first.redirectUri, first.hostId, ChatGptRecord())
         val params = query(first.url)
         assertEquals(ChatGptProtocol.DYNAMIC, params["client_id"])
-        assertEquals("路上读山河", params["agent_name_hint"])
+        assertEquals("沿途", params["agent_name_hint"])
         assertEquals(ChatGptProtocol.SCOPES, params["scope"])
         assertEquals(ChatGptProtocol.RESOURCE, params["resource"])
         assertEquals(first.redirectUri, params["redirect_uri"])
@@ -247,6 +247,42 @@ class ChatGptAccountTest {
             assertEquals(Action.SILENT, DirectorContract.parse(provider.direct(DirectorRequest(contextCard = ""))).action)
         }
         assertTrue(runCatching { ApiProvider(ProviderConfig(ProviderKind.CHATGPT, apiKey = "paid-key")).direct(DirectorRequest(contextCard = "")) }.isFailure)
+    }
+    @Test fun researchRejectionPreservesAcceptedNarrationAuthorizationAndHasNoPaidFallback() = runTest {
+        val store = store(); store.saveChatGpt(record().encode())
+        val delegate = Transport(); var searches = 0
+        val transport = object : ChatGptTransport by delegate {
+            override fun research(url: String, bearer: String, body: String): String {
+                searches++; assertEquals("own-access", bearer)
+                val payload = Json.parseToJsonElement(body).jsonObject
+                assertEquals("required", payload["tool_choice"]!!.jsonPrimitive.content)
+                throw ChatGptFailure(400, "unsupported_tool", "req_test", "error_object")
+            }
+        }
+        val events = mutableListOf<String>(); val account = ChatGptAccount(store, transport, diagnostic = { events += it }) { 1000000 }
+        val research = ChatGptLocalResearch(account, ProviderConfig(ProviderKind.CHATGPT, model = "account-model", apiKey = "must-not-use"))
+        repeat(5) { assertTrue(runCatching { research.research(AreaIdentity("测试市", "测试区", "测试镇"), 1) }.exceptionOrNull() is ResearchUnavailable) }
+        assertEquals(1, searches); assertEquals(record(), account.record)
+        assertEquals(DirectorResult(Action.SILENT).json(), account.infer("account-model") { "{}" })
+        assertEquals(1, delegate.streams)
+        assertTrue(events.any { "research rejected status=400 code=unsupported_tool" in it })
+        assertFalse(events.joinToString().contains("own-access"))
+    }
+    @Test fun researchCannotBlockActiveDirectorAndDisconnectedResearchCannotReturn() = runBlocking {
+        val store = store(); store.saveChatGpt(record().encode())
+        val entered = java.util.concurrent.CountDownLatch(1); val release = java.util.concurrent.CountDownLatch(1)
+        val transport = object : ChatGptTransport by Transport() {
+            override fun research(url: String, bearer: String, body: String): String {
+                entered.countDown(); check(release.await(5, java.util.concurrent.TimeUnit.SECONDS)); return "{}"
+            }
+        }
+        val account = ChatGptAccount(store, transport) { 1000000 }
+        val search = async { runCatching { account.research("account-model") { "{}" } } }
+        try {
+            withContext(Dispatchers.IO) { check(entered.await(5, java.util.concurrent.TimeUnit.SECONDS)) }
+            assertEquals(DirectorResult(Action.SILENT).json(), withTimeout(2000) { account.infer("account-model") { "{}" } })
+            account.disconnect(); release.countDown(); assertTrue(withTimeout(5000) { search.await() }.isFailure)
+        } finally { release.countDown(); search.cancelAndJoin() }
     }
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test fun cancelAuthorizationClosesLoopbackAndEndsProtectionWithoutReplacingRegistration() = runBlocking {

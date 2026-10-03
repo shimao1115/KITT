@@ -18,7 +18,7 @@ class BatchSimulationTest {
     @Test fun newRouteHasDetailedChaptersAndNeutralGroundedSubjects() = runTest {
         val fixture = RouteFixture.parse(File("src/main/assets/chengdu-mianyang.json").readText())
         assertEquals(29, fixture.points.size); assertEquals("新都区", fixture.points.first().administrative!!.district)
-        assertEquals(AreaIdentity("绵阳市", "安州区", "雎水镇"), fixture.points.last().administrative)
+        assertEquals(AreaIdentity("绵阳市", "安州区", "雎水镇", "四川省"), fixture.points.last().administrative)
         assertTrue(fixture.points.map { it.administrative!!.key }.distinct().size >= 12)
         val candidates = chapterCandidates(fixture.points.last().administrative!!).candidates
         assertTrue(candidates.any { it.title.contains("太平桥") }); assertTrue(candidates.any { it.family == TopicFamily.PEOPLE })
@@ -44,7 +44,7 @@ class BatchSimulationTest {
                 seen += choice.title; picked += choice
                 DirectorResult(Action.SPEAK_NOW, choice.title, "测试内容：${choice.title}。这是确定性回归内容，不代表真实 AI 内容质量。", topicFamily = choice.family).json()
             }
-        } }, diagnostic = { diagnostics += it })
+        } }, diagnostic = { diagnostics += it }, researchProvider = { testResearch })
         val fixture = RouteFixture.parse(File("src/main/assets/chengdu-mianyang.json").readText())
         val source = SimulatedLocationSource(fixture, backgroundScope, clock, 100.0, 16.0,
             paused = { loop.pending || journey.speaking || journey.listening })

@@ -28,10 +28,10 @@ class AreaChapterTest {
         val throttle = GeocodeThrottle(); val a = Fix(30.0, 104.0, 0)
         assertTrue(throttle.begin(a, 1000000)); assertFalse(throttle.begin(a.copy(latitude = 31.0), 1200000))
         throttle.complete()
-        assertFalse(throttle.begin(a.copy(latitude = 31.0), 1059999))
-        assertTrue(throttle.begin(a.copy(latitude = 31.0), 1060000)); throttle.complete()
-        assertFalse(throttle.begin(a.copy(latitude = 31.0), 1200000))
-        assertTrue(throttle.begin(a.copy(latitude = 31.0), 1360000))
+        assertFalse(throttle.begin(a.copy(latitude = 31.0), 1014999))
+        assertTrue(throttle.begin(a.copy(latitude = 31.0), 1015000)); throttle.complete()
+        assertFalse(throttle.begin(a.copy(latitude = 31.0), 1134999))
+        assertTrue(throttle.begin(a.copy(latitude = 31.0), 1135000))
     }
     @Test fun chapterExposesNeutralLocalDossierWithoutForcingNarration() = runTest {
         val fixture = RouteFixture.parse(File("src/main/assets/chengdu-mianyang.json").readText())
@@ -51,7 +51,7 @@ class AreaChapterTest {
         val loop = DirectorLoop(journey, pipeline, this, { time }, { DirectorProvider { request ->
             seen += if ("三星堆镇" in request.contextCard) "new-chapter" else "old-chapter"
             DirectorResult(Action.SILENT).json()
-        } })
+        } }, researchProvider = { testResearch })
         loop.location(Fix(30.0, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "雒城街道"))); runCurrent()
         assertEquals(listOf("old-chapter"), seen)
         time += 60000
@@ -61,20 +61,20 @@ class AreaChapterTest {
         assertEquals(2, pipeline.areas.transitions)
         assertTrue(pipeline.card(journey, time).contains("三星堆 / 古蜀文明"))
     }
-    @Test fun quietAndCooldownSwallowChapterWakeUpWithoutLeavingAQueue() = runTest {
+    @Test fun quietAndCooldownRetainUnexaminedChapterWithoutQueuingNarration() = runTest {
         var time = 1000000L; val journey = Journey({ time }, TestVoice()); journey.start()
         val pipeline = ContextPipeline(); var calls = 0
-        val loop = DirectorLoop(journey, pipeline, this, { time }, { DirectorProvider { calls++; DirectorResult(Action.SILENT).json() } })
+        val loop = DirectorLoop(journey, pipeline, this, { time }, { DirectorProvider { calls++; DirectorResult(Action.SILENT).json() } }, researchProvider = { testResearch })
         loop.location(Fix(30.0, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "雒城街道"))); runCurrent()
         journey.quiet(); time += 60000
         loop.location(Fix(30.003, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
         assertEquals(1, calls)
         journey.resume(); time += 11000
         loop.location(Fix(30.006, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
-        assertEquals(1, calls) // A suppressed chapter wake-up is dropped, never replayed later.
+        assertEquals(2, calls) // The current chapter's unexamined context survives quiet/cooldown.
         time += 45000
         loop.location(Fix(30.02, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
-        assertEquals(2, calls); loop.reset()
+        assertEquals(3, calls); loop.reset() // After the retained check, ordinary movement cadence still applies.
     }
     @Test fun familyHistoryIsBoundedAndUnknownFamilyFailsValidation() {
         var time = 1000000L; val voice = TestVoice(); val journey = Journey({ time }, voice); journey.start()
