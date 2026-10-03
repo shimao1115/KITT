@@ -35,6 +35,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     }, failure = { Log.w("KITT", it) }, diagnostic = {
         if (simulation) Log.i("KITTSim", "$it progressMeters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt() ?: 0}")
     })
+    val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
     var acceleration = settings.acceleration
     var simulationSpeed = settings.simulationSpeed
@@ -46,12 +47,14 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     private var travelCheckpointMs = 0L
     var notificationChanged: (() -> Unit)? = null
     init {
+        java.io.File(context.cacheDir, "visual-talk/capture.jpg").delete()
         (voice as? AndroidVoice)?.speechRate = settings.speechRate
         (voice as? AndroidVoice)?.voiceName = settings.voiceName
         journey.diagnostic = { if (simulation) Log.i("KITTSim", it) else if (!it.startsWith("Voice completed")) Log.w("KITT", it) }
     }
     val sourceLabel: String get() = if (simulation) "成都→绵阳 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
     fun start(simulated: Boolean = false) {
+        visualTalk.clear()
         val routeHint = routeReference.beginJourney()
         val saved = if (resumeRequested) recovery else null
         resumeRequested = false
@@ -66,7 +69,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         source = if (simulation) {
             val fixture = context.assets.open("chengdu-mianyang.json").bufferedReader().use { RouteFixture.parse(it.readText()) }
             SimulatedLocationSource(fixture, scope, System::currentTimeMillis, speedKmh = simulationSpeed, acceleration = acceleration,
-                initialTravelMs = saved?.travelMs ?: 0L, paused = { loop.pending || journey.speaking || journey.listening }) {
+                initialTravelMs = saved?.travelMs ?: 0L, paused = { loop.pending || journey.speaking || journey.listening || journey.imageInteraction }) {
                 Log.i("KITTSim", "route completed ${loop.counters.summary()}")
                 sourceNotice = "模拟已到终点"; revision.intValue++
             }
@@ -78,7 +81,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         ticker = scope.launch {
             var quiet = journey.isQuiet
             while (isActive && journey.running) {
-                delay(1000); loop.check()
+                delay(1000); visualTalk.sync(); loop.check()
                 if (System.currentTimeMillis() / 1000 % 10 == 0L) checkpoint()
                 if (quiet != journey.isQuiet) { quiet = journey.isQuiet; notificationChanged?.invoke() }
             }
@@ -90,6 +93,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         notificationChanged?.invoke()
     }
     fun end() {
+        visualTalk.clear(); java.io.File(context.cacheDir, "visual-talk/capture.jpg").delete()
         routeReference.clear()
         if (!journey.running && recovery == null) { stopSources(); return }
         if (journey.running) summary = journey.end()
@@ -110,6 +114,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         if (journey.running && key != lastCheckpoint) { lastCheckpoint = key; checkpoint() }
     }
     fun serviceLost() {
+        visualTalk.clear(); java.io.File(context.cacheDir, "visual-talk/capture.jpg").delete()
         routeReference.clear()
         checkpoint(); stopSources()
         if (journey.running) {

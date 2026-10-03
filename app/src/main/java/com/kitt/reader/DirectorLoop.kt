@@ -40,23 +40,33 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         dispatch(null)
     }
     fun speak() { cancel(); journey.beginListening(::user) }
-    fun user(text: String) {
+    fun user(text: String, image: ImageInput? = null) {
         cancel()
-        if (journey.requestInput(text)) dispatch(text)
+        if (journey.requestInput(text)) dispatch(text, image)
     }
-    private fun dispatch(utterance: String?) {
+    private fun dispatch(utterance: String?, image: ImageInput? = null) {
         requestActive = utterance != null
         val ticket = journey.ticket(utterance != null)
         val input = DirectorRequest(sessionInstructions = journey.instructions,
-            contextCard = context.card(journey, now()), userUtterance = utterance)
+            contextCard = context.card(journey, now()), userUtterance = utterance, image = image)
         counters.dispatch(ticket.active)
         diagnostic("dispatch active=${ticket.active} ${counters.summary()}")
         request = scope.launch {
-            val raw = try { withTimeout(35000) { provider().direct(input) } }
+            var activeFailure: String? = null
+            val raw = try { withTimeout(35000) {
+                val selected = provider()
+                if (image != null && !selected.acceptsImages) throw UnsupportedImage()
+                selected.direct(input)
+            } }
             catch (e: TimeoutCancellationException) { failure("Provider timeout"); null }
             catch (e: CancellationException) { throw e }
-            catch (e: Exception) { failure("Provider failure: ${e.javaClass.simpleName}"); null }
-            val outcome = journey.deliver(ticket, raw, ::user)
+            catch (e: Exception) {
+                failure("Provider failure: ${e.javaClass.simpleName}")
+                if (image != null) activeFailure = if (e is UnsupportedImage) e.message
+                    else "看图暂时没完成，请确认所选模型支持图片，并检查连接。"
+                null
+            }
+            val outcome = journey.deliver(ticket, raw, activeFailure) { user(it) }
             counters.terminal(ticket.active, outcome)
             diagnostic("terminal active=${ticket.active} outcome=$outcome ${counters.summary()}")
         }

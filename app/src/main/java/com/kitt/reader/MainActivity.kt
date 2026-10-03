@@ -86,7 +86,9 @@ class MainActivity : ComponentActivity() {
                         { taps++; if (taps >= 5) { developer = true; taps = 0 } },
                         (runtime.voice as? AndroidVoice)?.detail ?: VoiceDetail(),
                         onRouteImage = { routePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
-                        routeNotice = runtime.routeReference.notice, onClearRoute = runtime.routeReference::clear)
+                        routeNotice = runtime.routeReference.notice, onClearRoute = runtime.routeReference::clear,
+                        onVisualTalk = runtime.visualTalk::begin)
+                    if (runtime.visualTalk.open) VisualTalkDialog(runtime)
                     if (unavailableSettings) AlertDialog(onDismissRequest = { unavailableSettings = false },
                         title = { Text("请结束旅程后调整设置") }, confirmButton = { TextButton({ unavailableSettings = false }) { Text("知道了") } })
                     if (runtime.recovery != null) AlertDialog(onDismissRequest = {}, title = { Text("继续刚才的旅程？") },

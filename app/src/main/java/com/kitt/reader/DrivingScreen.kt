@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail = VoiceDetail(),
-    onRouteImage: () -> Unit = {}, routeNotice: String = "", onClearRoute: () -> Unit = {}) {
+    onRouteImage: () -> Unit = {}, routeNotice: String = "", onClearRoute: () -> Unit = {}, onVisualTalk: () -> Unit = {}) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         if (maxWidth > maxHeight) {
             Row(Modifier.fillMaxSize().safeDrawingPadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
@@ -26,11 +26,11 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
                     if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2)
                 }
                 Column(Modifier.weight(1.2f).fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
-                    DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute)
+                    DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk)
                 }
             }
         } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper, voiceDetail,
-            onRouteImage, routeNotice, onClearRoute)
+            onRouteImage, routeNotice, onClearRoute, onVisualTalk)
     }
 }
 
@@ -52,7 +52,7 @@ private fun quietLabel(journey: Journey) = if (journey.quietRemaining == Long.MA
 @Composable
 private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail,
-    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit) {
+    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit) {
     Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onDeveloper) { Text("路上读山河", style = MaterialTheme.typography.titleLarge) }
@@ -70,13 +70,13 @@ private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart
         } else Text(journey.topic, style = MaterialTheme.typography.headlineSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
         if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.weight(1f))
-        DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute)
+        DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk)
     }
 }
 
 @Composable
 private fun DrivingControls(journey: Journey, onStart: () -> Unit, onSpeak: () -> Unit, onEnd: () -> Unit,
-    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit) {
+    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit) {
     Column {
         if (!journey.running) {
             TextButton(onRouteImage, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("添加路线参考图（可选）") }
@@ -94,7 +94,10 @@ private fun DrivingControls(journey: Journey, onStart: () -> Unit, onSpeak: () -
                 OutlinedButton(journey::skip, Modifier.weight(1f).height(64.dp)) { Text("跳过") }
                 OutlinedButton({ journey.quiet() }, Modifier.weight(1f).height(64.dp)) { Text("安静一会儿") }
             }
-            TextButton(onEnd, Modifier.fillMaxWidth().height(56.dp)) { Text("结束旅程") }
+            Row {
+                TextButton(onVisualTalk, Modifier.weight(1f).height(56.dp)) { Text("旅途看图") }
+                TextButton(onEnd, Modifier.weight(1f).height(56.dp)) { Text("结束旅程") }
+            }
         }
     }
 }

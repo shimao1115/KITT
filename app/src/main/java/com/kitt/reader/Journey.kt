@@ -22,6 +22,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     var running by mutableStateOf(false); private set
     var speaking by mutableStateOf(false); private set
     var listening by mutableStateOf(false); private set
+    var imageInteraction by mutableStateOf(false); private set
     var quietUntil by mutableLongStateOf(0L); private set
     var started = 0L; private set
     var destination = "未询问"; private set
@@ -67,7 +68,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     val quietRemaining get() = if (quietUntil == Long.MAX_VALUE) Long.MAX_VALUE else (quietUntil - now()).coerceAtLeast(0)
 
     private fun invalidate() {
-        epoch++; speaking = false; listening = false; voice.stop()
+        epoch++; speaking = false; listening = false; imageInteraction = false; voice.stop()
     }
     fun start() {
         simulationClock = null; simulationProgress = null; lastCheckProgress = 0.0; lastSpeechTravelMs = null
@@ -122,7 +123,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     }
     fun shouldCheck(): Boolean {
         val position = fix ?: return false
-        if (!running || isQuiet || speaking || listening || cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
+        if (!running || isQuiet || speaking || listening || imageInteraction || cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
         if (lastCheckFix == null) return true
         val elapsed = cadenceNow() - lastCheckAt
         simulationProgress?.let {
@@ -171,7 +172,14 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             }
         }
     }
-    fun deliver(ticket: Ticket, raw: String?, onAnswer: (String) -> Unit = {}): DeliveryOutcome {
+    fun beginImageInteraction() {
+        if (!running) return
+        invalidate(); prepared = null; imageInteraction = true; notice = ""; changed()
+    }
+    fun finishImageInteraction() {
+        imageInteraction = false; cooldownUntil = cadenceNow() + 30000; changed()
+    }
+    fun deliver(ticket: Ticket, raw: String?, activeFailure: String? = null, onAnswer: (String) -> Unit = {}): DeliveryOutcome {
         if (!running || ticket.epoch != epoch) return DeliveryOutcome.CANCELLED
         if (now() - ticket.at > 45000) return DeliveryOutcome.STALE
         if (!ticket.active && (isQuiet || speaking || listening || ticket.fix == null || fix == null ||
@@ -180,7 +188,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         val response = runCatching { DirectorContract.parse(raw ?: error("Provider unavailable")) }
         if (response.isFailure) {
             diagnostic("Director response unavailable or failed schema validation")
-            if (ticket.active) say("刚才没连上，稍后再试。", false, true, onAnswer)
+            if (ticket.active) say(activeFailure ?: "刚才没连上，稍后再试。", false, true, onAnswer)
             changed(); return DeliveryOutcome.FAILURE
         }
         val result = response.getOrThrow()

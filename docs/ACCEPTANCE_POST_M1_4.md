@@ -43,3 +43,23 @@ Photo picker on vivo, screenshot interpretation and real selected-model image su
 **DEFERRED TO COMBINED PHONE ACCEPTANCE**.
 Interface sources: [OpenAI images and vision](https://developers.openai.com/api/docs/guides/images-vision),
 [Android photo picker](https://developer.android.com/training/data-storage/shared/photo-picker).
+
+## Phase C — visual talk
+
+Active-trip secondary **旅途看图** control opens **拍照 / 从相册选择**, an optional typed
+question, and the default **帮我看看这个**. Camera capture delegates to the system camera
+with a narrowly scoped, non-exported FileProvider cache URI; no CAMERA/storage permission.
+Opening stops TTS/listening and cancels automatic work. The image interaction pauses simulated
+travel and auto checks; send/cancel releases it with a short cooldown.
+
+A single image goes through the same Director with current GPS/session/RouteHint, strict JSON,
+local TTS and active-request failure behavior. Later auto checks have no image. Selection
+replacement, skip, quiet, new user intent and trip end invalidate pending pictures; no image queue.
+The temporary camera file is deleted after reading, cancellation, disposal, trip end/service loss
+and next runtime initialization. Process recreation drops unfinished image interaction rather than
+restoring raw media. Existing photo-picker originals remain under the user's own gallery control.
+
+Real camera/gallery/provider/TTS response: **DEFERRED TO COMBINED PHONE ACCEPTANCE**.
+The optional follow-up in this batch is typed; Chinese ASR implementation/acceptance remains excluded.
+All-variant build/tests/lint: PASS, **108 tests per variant**, zero failures/errors/skips,
+lint zero errors. Log: `artifacts/phase-c-gates.log`.
