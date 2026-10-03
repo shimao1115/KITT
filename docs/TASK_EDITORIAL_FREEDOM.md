@@ -129,6 +129,25 @@ Do not require:
 - a concluding thesis about land, identity, civilization, or modernization.
 
 
+
+
+### 2B. Every town/township/street is a narration opportunity
+
+When KITT enters a **new town / township / street-level chapter**, this should normally create a fresh Director opportunity.
+
+Editorial expectation:
+- if the new chapter has at least one grounded, genuinely worthwhile subject, KITT should **usually speak**;
+- SILENT is appropriate when the place truly has nothing worth saying with current evidence, when all worthwhile material was just covered, or when quiet/user-interaction/stale/safety rules suppress delivery;
+- do not use “silence is excellent” as a blanket default at every chapter boundary;
+- do not require an encyclopedia-style chapter introduction; the Director may choose any worthwhile local thread from the dossier;
+- district/county changes may also trigger a higher-level background opportunity, but town/township/street remains the normal chapter cadence.
+
+This is a **soft editorial expectation**, not a hard-coded forced-audio rule. The implementation should trigger the Director on chapter entry and give a strong preference to SPEAK_NOW when meaningful grounded material exists.
+
+Acceptance intent:
+> A long drive through many distinct towns should not pass most of them in total silence if those places have identifiable history, culture, sites, people, products, heritage, scenery or other worthwhile material.
+
+
 ### 3. Allow multiple narrative forms
 
 Director may choose, depending on material:
@@ -210,6 +229,7 @@ Must verify:
 - no constitution/candidate requires “改变对这片土地的理解” or equivalent thesis;
 - existing strict JSON contract remains;
 - user intent/quiet/stale/dedup safeguards remain;
+- entering a new town/township/street creates a Director opportunity and, when grounded worthwhile material exists, is biased toward SPEAK_NOW rather than default silence;
 - Sanxingdui remains discoverable/high-salience;
 - M1.1–V0.2 regressions remain green.
 
