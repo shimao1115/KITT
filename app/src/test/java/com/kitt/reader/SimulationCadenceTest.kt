@@ -19,7 +19,9 @@ class SimulationCadenceTest {
             DirectorResult(Action.SPEAK_NOW, "测试主题", "正常延迟的讲述").json()
         } })
         // Deliberately emulate M1.2: wall cadence, no interaction pause.
-        val source = SimulatedLocationSource(fixture(), backgroundScope, clock, 100.0, 16.0)
+        // Keep the exact old 110km route for reproducing the historical six stale replies.
+        val legacy = RouteFixture.parse(File("src/test/resources/chengdu-mianyang-m1_3.json").readText())
+        val source = SimulatedLocationSource(legacy, backgroundScope, clock, 100.0, 16.0)
         source.start(loop::location)
         repeat(260) { advanceTimeBy(1000); runCurrent() }
         assertTrue(source.completed); assertEquals(6, calls); assertTrue(voice.speech.isEmpty())

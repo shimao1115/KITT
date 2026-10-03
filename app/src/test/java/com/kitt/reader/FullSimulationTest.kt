@@ -37,7 +37,7 @@ class FullSimulationTest {
             }
         }
         assertTrue(narration && interruption && quietChecked)
-        assertEquals(31.47, journey.fix!!.latitude, 0.00001); assertTrue(calls < 90)
+        assertEquals(31.501, journey.fix!!.latitude, 0.00001); assertEquals("雎水镇", journey.fix!!.administrative!!.chapter); assertTrue(calls < 90)
         assertTrue(voice.speech.size <= 4) // ASK, acknowledgement, one narration, one deeper answer.
         val summary = journey.end(); assertEquals(JourneyState.IDLE, journey.state); assertTrue(summary.topics.isNotEmpty())
         events.add("Mianyang → END → lightweight summary")

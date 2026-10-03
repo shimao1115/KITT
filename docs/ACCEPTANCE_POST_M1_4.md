@@ -63,3 +63,37 @@ Real camera/gallery/provider/TTS response: **DEFERRED TO COMBINED PHONE ACCEPTAN
 The optional follow-up in this batch is typed; Chinese ASR implementation/acceptance remains excluded.
 All-variant build/tests/lint: PASS, **108 tests per variant**, zero failures/errors/skips,
 lint zero errors. Log: `artifacts/phase-c-gates.log`.
+
+## Phase D — refined route and content regression
+
+User-requested start **成都市新都区**, end **绵阳市安州区雎水镇**. The 29-point
+coarse scenario traverses 13 town/street chapters through 青白江、广汉、德阳、绵竹 and 安州.
+Test polyline length **90,912 m**; not a recommended driving route, surveyed road alignment or
+authoritative administrative boundary. The original 110km fixture remains test-only for the exact
+M1.2 historical six-stale-response reproduction. No old regression scenario was removed.
+
+At **100 km/h / 16×**, production Journey/Context/Director with deterministic Provider/fake Voice,
+five-second request delay and twenty-second TTS: **13 chapters / 13 cached cards**, Sanxingdui
+eligible and selected, **six topic families**, **14 opportunities, zero stale/cancel/failure**.
+The deterministic selector is test-only; no Sanxingdui narration script or category quota was added
+to production. Separate all-SILENT and failed-provider tests establish no forced speech/retry storm.
+M1.3 delayed dialogue gate: 14 opportunities, 15 requests, zero stale/cancel/failure on the new route.
+The 80 km/h Fake golden path: 68 simulated minutes, 51 checks, four voice outputs, quiet/interruption/end PASS.
+Reports: `artifacts/batch-simulation.txt`, `artifacts/accelerated-simulation.txt`, `artifacts/full-simulation.txt`.
+
+Broader candidate lenses plus small stable associations: 绵竹年画 and 雎水太平桥/踩桥、沙汀故居.
+Sources: [绵竹市政府](https://www.mz.gov.cn/gk/zfxxgk/fdzdnr/cdgz/1594150.htm),
+[四川统一战线](https://www.sctyzx.gov.cn/my/202409/54308962.html).
+They are orientation/candidate facts; no dates, records, current events or sightline claims are inferred.
+Endpoint coordinates are rounded coarse representative coordinates, not navigation truth.
+
+Chinese Geocoder field-layout normalization improved; Android 33+ uses an eight-second bounded
+async lookup. Older platforms use a single IO lookup: a blocked system implementation cannot be
+force-interrupted, but GPS/Journey stay live and no concurrent geocode requests accumulate.
+Additional image bounds/metadata/cleanup and FileProvider declaration tests PASS. AndroidX URI grants
+remain a physical Android gate because Windows JVM canonical paths differ from Android's '/' paths.
+
+All-variant build/tests/lint: **PASS, 116 tests per variant**, zero failures/errors/skips,
+lint zero errors; `artifacts/phase-d-gates.log`. No local `OPENAI_API_KEY` was present (presence-only check).
+Phone account state was not accessed. Real ChatGPT narrative variety, image inference and optional
+account web-search probe remain **DEFERRED TO COMBINED PHONE ACCEPTANCE**; no real-AI product PASS claimed.

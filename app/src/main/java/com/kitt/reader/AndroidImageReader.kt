@@ -23,6 +23,13 @@ object AndroidImageReader {
             }
             out.toByteArray()
         } ?: error("图片无法读取，请重新选择。")
+        // Reject non-image streams even on platforms whose decoder is permissive.
+        val prefix = raw.take(12).toByteArray()
+        val signature = prefix.toString(Charsets.ISO_8859_1)
+        require((raw.size >= 3 && raw[0] == 0xff.toByte() && raw[1] == 0xd8.toByte() && raw[2] == 0xff.toByte()) ||
+            signature.startsWith("\u0089PNG\r\n\u001a\n") || signature.startsWith("GIF87a") || signature.startsWith("GIF89a") ||
+            (signature.startsWith("RIFF") && signature.endsWith("WEBP")) ||
+            (prefix.size >= 12 && signature.substring(4, 8) == "ftyp")) { "请选择普通照片或截图。" }
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeByteArray(raw, 0, raw.size, bounds)
         require(bounds.outWidth > 0 && bounds.outHeight > 0) { "无法识别图片格式，请选择普通照片或截图。" }

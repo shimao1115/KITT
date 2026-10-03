@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
                         dismissButton = { TextButton(::endJourney) { Text("结束") } })
                     if (developer) AlertDialog(onDismissRequest = { developer = false }, title = { Text("开发模拟 · 非导航级") }, text = {
                         Column {
-                            Text("成都→德阳→绵阳粗粒度 fixture；只替换位置来源。请先结束当前旅程，再切换。")
+                            Text("新都区→广汉→德阳→绵竹→安州区雎水镇，29 点粗粒度 fixture；只替换位置来源。请先结束当前旅程，再切换。")
                             Text("开始将使用模拟位置；普通开始使用手机 GPS。")
                             Row { listOf(1.0, 16.0, 60.0).forEach { speed -> TextButton({ runtime.developer(speed = speed) }) { Text("${speed.toInt()}×") } } }
                             Text("当前 ${runtime.acceleration.toInt()}×；模拟速度 ${runtime.simulationSpeed.toInt()} km/h")

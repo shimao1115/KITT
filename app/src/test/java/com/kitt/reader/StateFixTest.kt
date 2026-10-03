@@ -62,7 +62,7 @@ class SourceIsolationTest {
             runtime.start(simulated = true)
             assertTrue(runtime.source is SimulatedLocationSource)
             assertTrue(runtime.simulation)
-            assertTrue(runtime.sourceLabel.contains("成都→绵阳"))
+            assertTrue(runtime.sourceLabel.contains("新都→安州雎水"))
             runtime.end(); assertIdle(runtime); runtime.dismissSummary()
             runtime.start(); assertReal(runtime)
             assertEquals(kind, runtime.config.kind)

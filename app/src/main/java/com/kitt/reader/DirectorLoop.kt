@@ -30,7 +30,12 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     val counters = DirectorCounters()
     fun location(fix: Fix) {
         journey.location(fix)
-        if (journey.fix == fix) context.accept(fix)
+        if (journey.fix == fix) {
+            val previous = context.areas.active?.area?.key
+            context.accept(fix)
+            if (context.areas.active?.area?.key != previous)
+                diagnostic("area chapter=${context.areas.active?.area?.label ?: "unresolved"} cache=${context.areas.size}")
+        }
         check()
     }
     fun check() {

@@ -2,6 +2,22 @@
 
 本文件定义 KITT V0 中 AI 与 App 之间的最小稳定契约。目标是让 Provider、模型和未来实现可替换，同时避免把导演逻辑写成规则引擎。
 
+## V0.2 批次补充（优先于下文的初版示例）
+
+区域 Context 增加区县背景、镇乡街道章节、一次生成并按本旅程缓存的候选池及最近题材。
+道路是一个视角；地方史、古镇、遗产、文化名胜、地名习俗、产业饮食和有依据的人物故事也是一等候选。
+高置信稳定当地关联可保守解释；候选方向不等于已证实事实。精确数字、日期、纪录与当前状态仍需核验。
+进入章节只更新 Context 和候选，绝不强制讲话或题材配额。再讲一点仍深入当前主题。
+
+Director 输出新增字符串 `topic_family`：
+`GEOGRAPHY / TRANSPORT / EVERYDAY_LIFE / HISTORY / HISTORIC_SETTLEMENT / HERITAGE /
+CULTURAL_SITE / CULTURAL_GEOGRAPHY / ECONOMY / PEOPLE`，非讲述动作可空。
+新 Provider schema 要求七个字段；本地解析兼容初版六字段，除此之外仍严格拒绝额外字段或无效题材。
+
+可选图片只用于一次主动请求。路线截图先压缩到 ≤240 字 RouteHint，后续只传文字，GPS 优先。
+旅途照片进入当前主动 Director/TTS 链；后续自动检查不重传，图中文字指令不可信，GPS 不证明拍摄地点。
+图片与 RouteHint 不落入恢复文件、纪要或长期记忆。中文 ASR 不在本批次实现／验收范围内。
+
 ---
 
 ## 1. Prompt 分层
