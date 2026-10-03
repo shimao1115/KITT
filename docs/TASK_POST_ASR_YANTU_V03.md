@@ -313,9 +313,43 @@ No requirement to cover all angles in one narration.
 
 ---
 
+
+# 12A. Black-box Xindu discovery benchmark
+
+**New acceptance benchmark: Chengdu Xindu District.**
+
+This benchmark is intentionally **black-box**:
+
+- do **not** seed the runtime prompt/query with the expected answers;
+- do **not** hard-code these names into production AreaCard/fixtures/search prompts merely to pass the test;
+- do **not** add special Xindu-only training or heuristics;
+- the normal mandatory local-research pipeline should discover them from the place identity and open research coverage alone.
+
+Given only the ordinary place context **四川省 / 成都市 / 新都区** (plus live town/street when available), a competent Local Dossier should independently discover at least these three high-salience Xindu subjects:
+
+1. **杨升庵（杨慎）** — who he was and why he is strongly associated with Xindu;
+2. **桂湖 / 新都桂湖（杨升庵博物馆相关）** — what the place is and its historical/cultural connection;
+3. **宝光寺** — what it is and why it is a major historical/cultural landmark of Xindu.
+
+These are **acceptance expectations, not injected hints**.
+
+The research layer should also be free to discover other important Xindu subjects beyond these three.
+
+### Pass condition
+
+For a fresh black-box Xindu research run:
+- actual web/local research is invoked;
+- sources are preserved;
+- all three subjects above appear in the resulting dossier with enough context for a first-time outsider;
+- the Director has real opportunities to narrate them during the Xindu portion of the journey, subject only to user/quiet/stale/safety rules;
+- at least the district-level content plan is rich enough that Xindu is not reduced to a generic “成都北部城区” introduction.
+
+A test that passes because the expected names were inserted into the production prompt, fixture, candidate list or training examples **does not count**.
+
+
 # 13. Acceptance on the existing route
 
-Use the existing Xindu → Jushui fixture plus real-phone testing when available.
+Use the existing Xindu → Jushui fixture plus real-phone testing when available. Run the Xindu benchmark as a fresh black-box research case without seeding 杨升庵、桂湖、宝光寺 into the production query/prompt.
 
 For each chapter, evidence should make it possible to inspect:
 1. resolved chapter identity;
