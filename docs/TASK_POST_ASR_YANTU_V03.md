@@ -135,6 +135,44 @@ Normal Director narration remains separate from research.
 
 ---
 
+
+# 4A. User-initiated search branch
+
+Mandatory chapter research is not the only place where search may be needed.
+
+When the user explicitly asks a question during the journey, the Director must be able to obtain fresh/search-grounded information when the existing Context + Local Dossier are not sufficient.
+
+Examples:
+- “附近还有什么值得去的地方？”
+- “这个寺庙今天开放吗？”
+- “前面这个地方有什么来历？”
+- “附近今天有什么活动？”
+- “帮我查一下这附近有什么博物馆。”
+- “这里最近有什么新闻？”
+- “这条路为什么堵？”
+- “刚才你说的那个人再查详细一点。”
+
+Required behavior:
+
+- If the answer is already well-supported by the current Local Dossier/context, answer directly without redundant search.
+- If the question requires **current/fresh information** (opening status, events, traffic, recent news, closures, current conditions, etc.), search is required.
+- If the user explicitly says “查一下 / 搜一下 / 帮我找”, search is required unless the request is impossible/unavailable.
+- If the question asks for a local fact that is missing or weakly grounded in the dossier, perform an on-demand research/search call before answering.
+- Stable general knowledge that does not need freshness may be answered without search when confidence is high.
+- Preserve source/provenance for searched facts and do not claim “查到” when no search actually ran.
+
+This should reuse the same search/research capability boundary rather than creating a second unrelated web stack.
+
+The user-initiated search is a **temporary branch from the journey**, not a new journey mode:
+- current GPS/chapter remains available as context;
+- the answer returns through the normal Director/TTS path;
+- after answering, KITT returns to the ongoing journey;
+- do not replace or reset the current chapter Local Dossier unless the new search produces useful local facts worth merging;
+- do not queue unrelated autonomous narration behind the user answer.
+
+For “nearby” queries, use the current location/area as grounding, but do not pretend precise visibility or travel time without an appropriate data source.
+
+
 # 5. Every town/township/street is a chapter opportunity
 
 Spatial model:
