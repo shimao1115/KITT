@@ -2,6 +2,7 @@
 
 Scope: `HOTFIX_V03_TOTAL_SILENCE.md`, based on upstream main `74bdf85`, preserving the local Google ASR reprobe documentation.
 Test session: 2026-10-03 evening through 2026-10-04 (Asia/Shanghai).
+Implementation milestone: `3397221` — `fix: restore V0.3 narration while research is pending`.
 
 ## Regression evidence
 

@@ -51,7 +51,7 @@ Geocoder 覆盖、短章节驶离、OEM后台／锁屏、TTS主观听感与离�
 
 ## 最近 milestone commits
 
-- 本批热修复提交：`fix: restore V0.3 narration while research is pending`（提交后记录SHA）。
+- `3397221` — 恢复研究等待期间的旁白／主动交互，保留搜索真实性，修复网络等待并完成232×2 Gate及真机复测。
 - `da1cd22` — 合入当前 upstream main。
 - `74bdf85` — 全静默热修复要求。
 - `595ca82` — vivo Google ASR 公开入口与失败复测。
