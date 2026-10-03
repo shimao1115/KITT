@@ -21,6 +21,19 @@ Desired UX:
 - Distinguish real error states from “speech not understood”.
 - Keep one-shot listening semantics; no always-on microphone or wake word.
 
+### AI speaking visual feedback
+
+The user also wants an obvious animated state while KITT is speaking, so the app feels alive and the user can instantly tell that audio output is active.
+
+Desired UX:
+- During `JourneyState.SPEAKING`, show a clear dynamic visual effect rather than only the static text **“正在讲述”**.
+- The animation should be smooth, glanceable, and appropriate for driving; no tiny decorative UI that requires attention.
+- It can visually echo the future KITT identity (pulse / scanner / waveform / breathing bars), but the first implementation should stay lightweight.
+- Listening and speaking states should be visually distinct at a glance.
+- Prefer driving-safe motion: large, low-frequency, non-distracting animation rather than fast flashing.
+- The effect should stop immediately when TTS stops, is interrupted by **“说点什么”**, skipped, enters quiet mode, or the journey ends.
+- No requirement for true audio-frequency analysis in the first version; a state-driven animation is sufficient unless actual TTS amplitude is cheaply available.
+
 Possible later milestone: **M1.4 Voice Experience**.
 
 ## 2. Route-reference image input
@@ -58,7 +71,7 @@ This can be grouped with M1.4 if convenient.
 ## Priority / sequencing
 
 1. Finish **M1.3 accelerated simulation Director fix** first.
-2. Then address **Voice Experience** (speech recognition diagnostics + dynamic listening UI + TTS voice selection).
+2. Then address **Voice Experience** (speech recognition diagnostics + dynamic listening UI + dynamic AI-speaking UI + TTS voice selection).
 3. Then address **Route Reference image**.
 
 These are remembered backlog items, not active implementation instructions yet.
