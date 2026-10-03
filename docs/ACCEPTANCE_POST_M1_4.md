@@ -2,6 +2,12 @@
 
 Date: 2026-10-03 (Asia/Shanghai). Chinese ASR is out of scope.
 
+> **Evidence record.** This file documents what was built and measured in the post-M1.4 batch. Its editorial wording is
+> superseded by `docs/TASK_EDITORIAL_FREEDOM.md`: candidate titles are now neutral subject labels on an open local
+> material shelf, entering a town/township/street chapter grants its own Director opportunity, families no longer
+> demote candidates, and Sanxingdui is available-but-not-forced. Test counts and gate results below remain the record
+> of that batch; the current suite is reported in `HANDOFF.md`.
+
 ## Phase A — area chapters
 
 Implemented platform reverse geocoding on IO, immediate GPS delivery, one lookup at a time,

@@ -33,8 +33,11 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         if (journey.fix == fix) {
             val previous = context.areas.active?.area?.key
             context.accept(fix)
-            if (context.areas.active?.area?.key != previous)
+            val entered = context.areas.active?.area?.key != previous
+            if (entered) {
                 diagnostic("area chapter=${context.areas.active?.area?.label ?: "unresolved"} cache=${context.areas.size}")
+                journey.noteChapterEntry()
+            }
         }
         check()
     }

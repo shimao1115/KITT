@@ -1,6 +1,7 @@
 # Task Card — Editorial Freedom / Prompt Reset
 
-Status: **ACTIVE — IMPLEMENT NOW**
+Status: **IMPLEMENTED 2026-10-03 — non-phone gates PASS** (evidence: `docs/ACCEPTANCE_EDITORIAL_FREEDOM.md`, `HANDOFF.md`).
+Subject-side content quality under a real model remains part of `docs/COMBINED_PHONE_ACCEPTANCE.md` items 3 / 4 / 8.
 Scope: Director prompt + Area/Landmark candidate semantics
 Chinese ASR: out of scope
 

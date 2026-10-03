@@ -15,7 +15,7 @@ class BatchSimulationTest {
         assertEquals(AreaIdentity("成都市", "新都区", ""), AreaIdentity.geocoderFields("成都市", null, "新都区"))
         assertNull(AreaIdentity.geocoderFields(null, null, null))
     }
-    @Test fun newRouteHasDetailedChaptersAndGroundedEndpointCandidates() = runTest {
+    @Test fun newRouteHasDetailedChaptersAndNeutralGroundedSubjects() = runTest {
         val fixture = RouteFixture.parse(File("src/main/assets/chengdu-mianyang.json").readText())
         assertEquals(29, fixture.points.size); assertEquals("新都区", fixture.points.first().administrative!!.district)
         assertEquals(AreaIdentity("绵阳市", "安州区", "雎水镇"), fixture.points.last().administrative)
@@ -23,9 +23,11 @@ class BatchSimulationTest {
         val candidates = chapterCandidates(fixture.points.last().administrative!!).candidates
         assertTrue(candidates.any { it.title.contains("太平桥") }); assertTrue(candidates.any { it.family == TopicFamily.PEOPLE })
         val families = candidates.map { it.family }.toSet()
-        assertTrue(families.containsAll(listOf(TopicFamily.HISTORY, TopicFamily.ECONOMY, TopicFamily.TRANSPORT, TopicFamily.CULTURAL_SITE)))
+        assertTrue(families.containsAll(listOf(TopicFamily.HISTORY, TopicFamily.ECONOMY, TopicFamily.TRANSPORT,
+            TopicFamily.CULTURAL_SITE, TopicFamily.HERITAGE, TopicFamily.EVERYDAY_LIFE, TopicFamily.OTHER)))
+        assertTrue(candidates.none { ThesisInTitle.containsMatchIn(it.title) })
     }
-    @Test fun complete100Kmh16xProductionPipelineRefreshesCachesAndDiversifiesWithoutStaleReplay() = runTest {
+    @Test fun complete100Kmh16xDossierPipelineSpeaksThroughChaptersWithoutStaleReplay() = runTest {
         val clock = { 1000000L + testScheduler.currentTime }; val voice = TestVoice()
         val journey = Journey(clock, voice); journey.start()
         val pipeline = ContextPipeline(); pipeline.routeHint = "新都→雎水（测试截图提示）"
@@ -35,11 +37,12 @@ class BatchSimulationTest {
             assertNull(request.image); assertTrue(request.contextCard.contains("GPS 优先")); delay(5000)
             val card = pipeline.areas.active!!
             if (card.area.district == "广汉市") { assertTrue(request.contextCard.contains("三星堆")); sanxingduiEligible = true }
-            val choice = card.ranked(journey.recentFamilies.toList()).firstOrNull { it.title !in seen }
+            // Deterministic stand-in for the Director: free choice over the whole shelf, same family allowed again.
+            val choice = card.candidates.firstOrNull { it.title !in seen }
             if (choice == null) DirectorResult(Action.SILENT).json()
             else {
                 seen += choice.title; picked += choice
-                DirectorResult(Action.SPEAK_NOW, choice.title, "测试解释：${choice.title}。这是确定性回归内容，不代表真实 AI 内容质量。", topicFamily = choice.family).json()
+                DirectorResult(Action.SPEAK_NOW, choice.title, "测试内容：${choice.title}。这是确定性回归内容，不代表真实 AI 内容质量。", topicFamily = choice.family).json()
             }
         } }, diagnostic = { diagnostics += it })
         val fixture = RouteFixture.parse(File("src/main/assets/chengdu-mianyang.json").readText())
@@ -55,15 +58,20 @@ class BatchSimulationTest {
             }
         }
         assertTrue(source.completed); assertTrue(sanxingduiEligible)
-        assertTrue(picked.any { it.title.contains("三星堆") }); assertTrue(picked.map { it.family }.distinct().size >= 4)
+        assertTrue(picked.any { it.title.contains("三星堆") })
+        assertTrue(picked.map { it.family }.distinct().size >= 4)
+        assertTrue(picked.size > picked.map { it.family }.distinct().size) // No family blacklist: repeats are allowed.
         assertEquals(13, pipeline.areas.size); assertEquals(13, pipeline.areas.transitions)
+        assertTrue(picked.size >= pipeline.areas.transitions) // Every chapter found something to say here.
         assertNull(loop.counters.automatic[DeliveryOutcome.STALE]); assertNull(loop.counters.automatic[DeliveryOutcome.CANCELLED])
-        assertTrue(loop.counters.dispatched in 8..18); assertTrue(diagnostics.any { "广汉市" in it })
-        val report = "Post-M1.4 refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)\n" +
+        assertTrue(loop.counters.dispatched in 13..26)
+        val chapters = diagnostics.count { "area chapter=" in it }
+        assertEquals(13, chapters)
+        val report = "Editorial freedom refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)\n" +
             "${fixture.name}\n29 points; distance=${source.totalMeters.toInt()}m; speed=100km/h; acceleration=16x; latency=5s; TTS=20s\n" +
-            "chapters=${pipeline.areas.transitions}; cached=${pipeline.areas.size}; Sanxingdui eligible=true\n" +
-            "families=${picked.map { it.family }.distinct()}; ${loop.counters.summary()}\n" +
-            "Selected candidates=${picked.joinToString { it.title }}\nReal ChatGPT variety and physical phone gates: DEFERRED TO COMBINED PHONE ACCEPTANCE."
+            "chapters=${pipeline.areas.transitions}; cached=${pipeline.areas.size}; chapterEntryOpportunities=$chapters; Sanxingdui eligible=true\n" +
+            "subjects=${picked.size}; families=${picked.map { it.family }.distinct()}; ${loop.counters.summary()}\n" +
+            "Selected subjects=${picked.joinToString { it.title }}\nReal ChatGPT variety and physical phone gates: DEFERRED TO COMBINED PHONE ACCEPTANCE."
         File("build/acceptance").mkdirs(); File("build/acceptance/batch-simulation.txt").writeText(report); println(report)
         journey.end(); loop.reset(); source.stop(); assertEquals(0, pipeline.areas.size); assertEquals("", pipeline.routeHint)
     }

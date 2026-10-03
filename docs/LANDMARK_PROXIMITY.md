@@ -5,6 +5,10 @@ inside an unchanged chapter, without satisfying the usual 1.5–3km real-GPS or 
 The existing minimum 45-second cadence, voice cooldown, quiet, listening, image interaction, pending-request,
 location freshness and user-intent gates still apply. This creates an opportunity; it never forces narration.
 
+The 2026-10-03 editorial-freedom batch leaves these rules untouched. It only adds a sibling wake-up: entering a new
+district/town/township/street chapter also grants one Director check under the same quiet, cooldown, freshness and
+user-intent gates, and a chapter wake-up suppressed by those gates is dropped instead of queued.
+
 `LandmarkKind` supports mountains/peaks, rivers/crossings, lakes/reservoirs, landforms, bridges/dams/tunnels,
 landmark buildings, museums, ruins and heritage sites. `landmarks.json` is a small, source-backed reference set
 independent of the route fixture. It is consumed by both real GPS and developer simulation. No new Provider,

@@ -33,25 +33,48 @@ class AreaChapterTest {
         assertFalse(throttle.begin(a.copy(latitude = 31.0), 1200000))
         assertTrue(throttle.begin(a.copy(latitude = 31.0), 1360000))
     }
-    @Test fun fixtureDiscoversSanxingduiAsCandidateWithoutNarration() = runTest {
+    @Test fun chapterExposesNeutralLocalDossierWithoutForcingNarration() = runTest {
         val fixture = RouteFixture.parse(File("src/main/assets/chengdu-mianyang.json").readText())
         val point = fixture.points.first { it.administrative?.district == "广汉市" }
         val card = chapterCandidates(point.administrative!!)
-        val ranked = card.ranked(listOf(TopicFamily.TRANSPORT, TopicFamily.TRANSPORT, TopicFamily.EVERYDAY_LIFE))
-        assertTrue(ranked.first().title.contains("三星堆")); assertEquals(TopicFamily.HERITAGE, ranked.first().family)
-        assertFalse(card.text(emptyList()).contains("narration"))
+        val sanxingdui = card.candidates.filter { "三星堆" in it.title }
+        assertTrue(sanxingdui.isNotEmpty())
+        assertTrue(sanxingdui.all { it.family == TopicFamily.HERITAGE })
+        assertEquals(5, sanxingdui.maxOf { it.salience })
+        assertFalse(card.text().contains("narration"))
         val source = SimulatedLocationSource(fixture, backgroundScope, { 1000000 }, 100.0, 16.0)
         assertTrue((0L..260000L step 1000).map { source.sample(it, 1000000 + it).administrative?.district }.contains("广汉市"))
     }
-    @Test fun boundaryRefreshGivesContextButNeverForcesSpeech() = runTest {
+    @Test fun chapterEntryWakesDirectorBelowOrdinaryCadenceAndSilentStaysLegal() = runTest {
         var time = 1000000L; val voice = TestVoice(); val journey = Journey({ time }, voice); journey.start()
-        val pipeline = ContextPipeline()
-        val loop = DirectorLoop(journey, pipeline, this, { time }, { DirectorProvider { DirectorResult(Action.SILENT).json() } })
+        val pipeline = ContextPipeline(); val seen = mutableListOf<String>()
+        val loop = DirectorLoop(journey, pipeline, this, { time }, { DirectorProvider { request ->
+            seen += if ("三星堆镇" in request.contextCard) "new-chapter" else "old-chapter"
+            DirectorResult(Action.SILENT).json()
+        } })
         loop.location(Fix(30.0, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "雒城街道"))); runCurrent()
+        assertEquals(listOf("old-chapter"), seen)
         time += 60000
-        loop.location(Fix(30.1, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
-        assertEquals(2, pipeline.areas.transitions); assertTrue(voice.speech.isEmpty())
-        assertTrue(pipeline.card(journey, time).contains("三星堆"))
+        // About 330 m travelled: far below the ordinary cadence gate, but a new street chapter.
+        loop.location(Fix(30.003, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
+        assertEquals(listOf("old-chapter", "new-chapter"), seen); assertTrue(voice.speech.isEmpty())
+        assertEquals(2, pipeline.areas.transitions)
+        assertTrue(pipeline.card(journey, time).contains("三星堆 / 古蜀文明"))
+    }
+    @Test fun quietAndCooldownSwallowChapterWakeUpWithoutLeavingAQueue() = runTest {
+        var time = 1000000L; val journey = Journey({ time }, TestVoice()); journey.start()
+        val pipeline = ContextPipeline(); var calls = 0
+        val loop = DirectorLoop(journey, pipeline, this, { time }, { DirectorProvider { calls++; DirectorResult(Action.SILENT).json() } })
+        loop.location(Fix(30.0, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "雒城街道"))); runCurrent()
+        journey.quiet(); time += 60000
+        loop.location(Fix(30.003, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
+        assertEquals(1, calls)
+        journey.resume(); time += 11000
+        loop.location(Fix(30.006, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
+        assertEquals(1, calls) // A suppressed chapter wake-up is dropped, never replayed later.
+        time += 45000
+        loop.location(Fix(30.02, 104.0, time, administrative = AreaIdentity("德阳市", "广汉市", "三星堆镇"))); runCurrent()
+        assertEquals(2, calls); loop.reset()
     }
     @Test fun familyHistoryIsBoundedAndUnknownFamilyFailsValidation() {
         var time = 1000000L; val voice = TestVoice(); val journey = Journey({ time }, voice); journey.start()

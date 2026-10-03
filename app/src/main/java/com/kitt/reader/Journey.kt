@@ -45,6 +45,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     private var skippedCount = 0
     private var lastCheckAt = Long.MIN_VALUE / 2
     private var lastCheckFix: Fix? = null
+    private var chapterEntry = false
     private var simulationClock: (() -> Long)? = null
     private var simulationProgress: (() -> Double)? = null
     private var lastCheckProgress = 0.0
@@ -76,7 +77,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         instructions = ""; topic = ""; notice = ""; fix = null; prepared = null
         recentTopics.clear(); recentFamilies.clear(); skippedTopics.clear(); asked.clear(); skippedCount = 0
         lastSpeech = 0; cooldownUntil = 0; lastCheckAt = Long.MIN_VALUE / 2; lastCheckFix = null
-        lastQuestion = Long.MIN_VALUE / 2; destinationQuestion = false; changed()
+        lastQuestion = Long.MIN_VALUE / 2; destinationQuestion = false; chapterEntry = false; changed()
     }
     fun restore(startedAt: Long, intent: String, session: String, topics: List<String>, quiet: Long) {
         start(); started = startedAt; destination = intent; instructions = session
@@ -87,7 +88,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun end(): TripSummary {
         val summary = TripSummary(started, now(), destination, recentTopics.toList(), skippedCount)
         invalidate(); running = false; prepared = null; fix = null; quietUntil = 0; instructions = ""
-        destination = "未询问"; topic = ""; recentTopics.clear(); recentFamilies.clear(); asked.clear(); skippedTopics.clear(); changed()
+        destination = "未询问"; topic = ""; recentTopics.clear(); recentFamilies.clear(); asked.clear(); skippedTopics.clear(); chapterEntry = false; changed()
         return summary
     }
     fun quiet(durationMs: Long = 600000) {
@@ -121,10 +122,17 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         }
         changed()
     }
+    /** A new town/township/street chapter is worth one look; it grants an opportunity, never forced audio. */
+    fun noteChapterEntry() { chapterEntry = true }
+
     fun shouldCheck(landmarkOpportunity: Boolean = false): Boolean {
         val position = fix ?: return false
+        val freshChapter = chapterEntry
+        // Consumed even when blocked: a suppressed chapter wake-up does not become a queued opportunity.
+        chapterEntry = false
         if (!running || isQuiet || speaking || listening || imageInteraction || cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
         if (lastCheckFix == null) return true
+        if (freshChapter) return true
         val elapsed = cadenceNow() - lastCheckAt
         if (landmarkOpportunity && elapsed >= 45000) return true
         simulationProgress?.let {

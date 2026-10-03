@@ -4,6 +4,13 @@ Status: **remember only / do not implement yet**.
 
 These items were observed by the user on the current real-phone build and should be handled in later milestones after M1.3. Do not fold them into M1.3 unless they directly block that milestone.
 
+> **Superseded on 2026-10-03.** The content-breadth item below was implemented in M1.5–M1.7 and then rewritten by
+> `docs/TASK_EDITORIAL_FREEDOM.md`. Treat the observed problems here as historical diagnosis only. In particular,
+> “choose the most interesting lens / avoid repeating the explanatory family / Sanxingdui outranks generic road topics”
+> is **no longer** current policy: the local material shelf is open-ended, topic families are only a weak
+> anti-repetition signal, and Sanxingdui is available-but-not-forced material. Current truth lives in
+> `docs/AI_CONTRACT.md`, `docs/PRODUCT_SPEC.md` and `HANDOFF.md`.
+
 ## 1. Voice input / “说点什么” listening UX
 
 Observed:

@@ -48,7 +48,8 @@ class ContextPipeline(landmarks: List<Landmark> = emptyList()) {
             appendLine("【最近行驶】短期约 ${distance.toInt()} m；${climb?.let { "海拔变化约 ${it.toInt()} m" } ?: "海拔趋势未知"}")
             appendLine("【附近/前方可靠线索】${fix?.clue?.ifBlank { "无地图增强；不猜桥名、河名和道路" } ?: "无"}")
             appendLine("【最近讲过】${journey.recentTopics.joinToString("；").ifBlank { "无" }}")
-            areas.active?.let { appendLine(it.text(journey.recentFamilies.toList())) }
+            appendLine("【最近题材】${journey.recentFamilies.distinct().joinToString().ifBlank { "无" }}；只用于避免重复同样的内容，不是黑名单，也不要求轮换题材。")
+            areas.active?.let { append(it.text()) }
             append(proximity.card())
             appendLine("【当前交互状态】${journey.state}；${if (journey.foreground) "前台" else "后台/锁屏，不主动提问"}；距上次讲话：${if (journey.lastSpeech == 0L) "无" else "${(time - journey.lastSpeech) / 1000} 秒"}")
             journey.simulatedTravelMs?.let { travel ->
