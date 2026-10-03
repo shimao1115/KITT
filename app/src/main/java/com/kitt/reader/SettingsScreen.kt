@@ -2,6 +2,7 @@ package com.kitt.reader
 
 import android.content.Intent
 import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -21,6 +22,11 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
     var effort by remember { mutableStateOf(runtime.config.effort) }
     var key by remember { mutableStateOf(runtime.config.apiKey) }
     var rate by remember { mutableFloatStateOf(runtime.settings.speechRate) }
+    var voiceName by remember { mutableStateOf(runtime.settings.voiceName) }
+    val androidVoice = runtime.voice as? AndroidVoice
+    var previewMessage by remember { mutableStateOf("") }
+    var previewing by remember { mutableStateOf(false) }
+    DisposableEffect(androidVoice) { onDispose { androidVoice?.stop() } }
     var message by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -116,16 +122,49 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
         } else Text("无需登录。演示内容用于闭环验收，真实 AI 内容质量需接通 Provider 后验证。")
         Spacer(Modifier.height(12.dp)); Text("语音速度 ${"%.1f".format(rate)}×")
         Slider(rate, { rate = it }, valueRange = 0.5f..1.5f)
+        Text("朗读声音", style = MaterialTheme.typography.titleMedium)
+        Text(androidVoice?.voiceMessage ?: "系统声音不可用")
+        var voiceExpanded by remember { mutableStateOf(false) }
+        val voiceOptions = androidVoice?.voices.orEmpty()
+        if (voiceName.isNotBlank() && voiceOptions.isNotEmpty() && voiceOptions.none { it.name == voiceName && it.installed })
+            Text("保存的声音已不可用，将使用系统中文声音。")
+        Box {
+            OutlinedButton({ voiceExpanded = true }, enabled = voiceOptions.isNotEmpty()) {
+                Text(voiceOptions.find { it.name == voiceName }?.label ?: "系统默认中文声音")
+            }
+            DropdownMenu(voiceExpanded, { voiceExpanded = false }) {
+                DropdownMenuItem(text = { Text("系统默认中文声音") }, onClick = { voiceName = ""; voiceExpanded = false })
+                voiceOptions.forEach { item -> DropdownMenuItem(text = { Text(item.label) }, enabled = item.installed, onClick = {
+                    voiceName = item.name; voiceExpanded = false
+                }) }
+            }
+        }
+        TextButton({
+            if (previewing) { androidVoice?.stop(); previewing = false; previewMessage = "" }
+            else {
+                previewing = true; previewMessage = ""
+                androidVoice?.preview(voiceName, rate) { success ->
+                    previewing = false; previewMessage = if (success) "试听结束" else "试听未能播放，请检查系统中文语音。"
+                }
+            }
+        }, enabled = androidVoice?.canSpeak == true) { Text(if (previewing) "停止试听" else "试听") }
+        if (previewMessage.isNotBlank()) Text(previewMessage)
+        TextButton({
+            val intent = Intent(Settings.ACTION_VOICE_INPUT_SETTINGS)
+            if (intent.resolveActivity(context.packageManager) != null) context.startActivity(intent)
+            else previewMessage = "请在系统设置中启用支持中文的语音识别服务。"
+        }) { Text("系统语音识别设置") }
         TextButton(onNotification) { Text("通知：${if (notificationEnabled) "已允许" else "未允许"} · 系统设置") }
         Button({
             val selected = account.models.find { it.slug == model }
             val saved = if (kind == ProviderKind.CHATGPT && (!account.record.planEnabled || selected == null))
                 Result.failure(IllegalStateException("请先授权 ChatGPT 计划使用并选择账号模型，或选择其他 Provider。"))
             else runtime.settings.save(if (kind == ProviderKind.CHATGPT) draft.copy(endpoint = ChatGptProtocol.RESOURCE,
-                effort = effort.takeIf { it in selected!!.efforts }.orEmpty()) else draft, rate)
+                effort = effort.takeIf { it in selected!!.efforts }.orEmpty()) else draft, rate, voiceName)
             if (saved.isSuccess) {
                 runtime.loop.cancel(); runtime.journey.invalidateProvider()
                 runtime.config = runtime.settings.read(); (runtime.voice as? AndroidVoice)?.speechRate = rate
+                androidVoice?.voiceName = voiceName
                 runtime.revision.intValue++; message = "已保存"
             } else message = saved.exceptionOrNull()?.message ?: "暂时无法保存"
         }, Modifier.fillMaxWidth().height(64.dp)) { Text("保存") }

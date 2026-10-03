@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
-    onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit) {
+    onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail = VoiceDetail()) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         if (maxWidth > maxHeight) {
             Row(Modifier.fillMaxSize().safeDrawingPadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
@@ -18,6 +18,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
                     Row { TextButton(onDeveloper) { Text("路上读山河") }; TextButton(onSettings) { Text("设置") } }
                     Text(sourceLabel, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelMedium)
                     Text(stateLabel(journey), style = MaterialTheme.typography.headlineSmall)
+                    VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(64.dp))
                     Text(journey.topic, maxLines = 2, overflow = TextOverflow.Ellipsis)
                     if (journey.isQuiet) Text(quietLabel(journey))
                     if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2)
@@ -26,7 +27,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
                     DrivingControls(journey, onStart, onSpeak, onEnd)
                 }
             }
-        } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper)
+        } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper, voiceDetail)
     }
 }
 
@@ -34,7 +35,7 @@ private fun stateLabel(journey: Journey) = when (journey.state) {
     JourneyState.IDLE -> "开车上路后点一下开始"
     JourneyState.READING -> "读山河中"
     JourneyState.SPEAKING -> "正在讲述"
-    JourneyState.LISTENING -> "正在听"
+    JourneyState.LISTENING -> "正在听，请说话"
     JourneyState.QUIET -> "安静模式"
 }
 private fun quietLabel(journey: Journey) = if (journey.quietRemaining == Long.MAX_VALUE) "等你叫我" else
@@ -42,7 +43,7 @@ private fun quietLabel(journey: Journey) = if (journey.quietRemaining == Long.MA
 
 @Composable
 private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
-    onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit) {
+    onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail) {
     Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onDeveloper) { Text("路上读山河", style = MaterialTheme.typography.titleLarge) }
@@ -54,6 +55,7 @@ private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart
         Text(journey.fix?.area?.ifBlank { "GPS 已定位" } ?: if (journey.running) "等待可靠位置" else "其余的，跟它说就行。",
             style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.weight(1f))
+        VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(80.dp))
         if (journey.isQuiet) {
             Text(quietLabel(journey), style = MaterialTheme.typography.headlineSmall)
         } else Text(journey.topic, style = MaterialTheme.typography.headlineSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)

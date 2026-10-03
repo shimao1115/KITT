@@ -75,7 +75,8 @@ class MainActivity : ComponentActivity() {
                     else DrivingScreen(runtime.journey, (if (runtime.config.kind == ProviderKind.FAKE) "离线演示 · " else "") + runtime.sourceLabel,
                         { startJourney() }, runtime.loop::speak, ::endJourney,
                         { if (runtime.journey.running) unavailableSettings = true else settings = true },
-                        { taps++; if (taps >= 5) { developer = true; taps = 0 } })
+                        { taps++; if (taps >= 5) { developer = true; taps = 0 } },
+                        (runtime.voice as? AndroidVoice)?.detail ?: VoiceDetail())
                     if (unavailableSettings) AlertDialog(onDismissRequest = { unavailableSettings = false },
                         title = { Text("请结束旅程后调整设置") }, confirmButton = { TextButton({ unavailableSettings = false }) { Text("知道了") } })
                     if (runtime.recovery != null) AlertDialog(onDismissRequest = {}, title = { Text("继续刚才的旅程？") },

@@ -44,7 +44,7 @@ class SettingsStore(context: Context, private val secrets: SecretCipher = Androi
             prefs.getString("endpoint", "https://api.openai.com/v1").orEmpty(), prefs.getString("model", "gpt-4.1-mini").orEmpty(),
             prefs.getString("effort", "").orEmpty(), plain)
     }
-    fun save(config: ProviderConfig, speechRate: Float): Result<Unit> = runCatching {
+    fun save(config: ProviderConfig, speechRate: Float, voiceName: String = this.voiceName): Result<Unit> = runCatching {
         val uri = URI(config.endpoint)
         require(uri.scheme == "https" && !uri.host.isNullOrBlank() && uri.userInfo == null && uri.query == null && uri.fragment == null) { "请输入有效的 HTTPS API 地址。" }
         require(config.kind == ProviderKind.FAKE || config.model.isNotBlank()) { "请填写模型名称。" }
@@ -53,10 +53,12 @@ class SettingsStore(context: Context, private val secrets: SecretCipher = Androi
         val encrypted = if (config.apiKey.isBlank()) "" else secrets.encrypt(config.apiKey)
         check(prefs.edit().putString("provider", config.kind.name).putString("endpoint", config.endpoint.trimEnd('/'))
             .putString("model", config.model.trim()).putString("effort", if (config.supportsEffort || config.kind == ProviderKind.CHATGPT) config.effort else "")
-            .putString("credential", encrypted).putFloat("speech_rate", speechRate.coerceIn(0.5f, 1.5f)).commit()) { "暂时无法保存设置。" }
+            .putString("credential", encrypted).putFloat("speech_rate", speechRate.coerceIn(0.5f, 1.5f))
+            .putString("tts_voice", voiceName).commit()) { "暂时无法保存设置。" }
         credentialUnavailable = false
     }
     val speechRate get() = prefs.getFloat("speech_rate", 1.0f)
+    val voiceName get() = prefs.getString("tts_voice", "").orEmpty()
     // One atomic encrypted record: host, registration, verified identity and rotating credentials.
     @Synchronized fun readChatGpt(): String? = prefs.getString("chatgpt", null)?.let {
         runCatching { secrets.decrypt(it) }.getOrElse { credentialUnavailable = true; null }

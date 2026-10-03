@@ -1,10 +1,15 @@
 package com.kitt.reader
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.setValue
 enum class JourneyState { IDLE, READING, SPEAKING, LISTENING, QUIET }
 interface VoicePort {
     fun stop()
     fun speak(text: String, complete: (Boolean) -> Unit)
     fun listen(result: (String?) -> Unit)
+    fun listenOutcome(result: (ListeningResult) -> Unit) { listen { result(ListeningResult.recognized(it)) } }
 }
 data class Prepared(val topic: String, val hint: String, val at: Long, val anchor: Fix)
 data class Ticket(val epoch: Long, val at: Long, val fix: Fix?, val active: Boolean)
@@ -13,17 +18,18 @@ data class TripSummary(val started: Long, val ended: Long, val destination: Stri
 
 /** All transitions run on the main thread in Android; fake clock/voice make races testable on JVM. */
 class Journey(private val now: () -> Long, private val voice: VoicePort, private val changed: () -> Unit = {}) {
-    var running = false; private set
-    var speaking = false; private set
-    var listening = false; private set
-    var quietUntil = 0L; private set
+    // Compose observes the authoritative flags directly, including same-instance transitions.
+    var running by mutableStateOf(false); private set
+    var speaking by mutableStateOf(false); private set
+    var listening by mutableStateOf(false); private set
+    var quietUntil by mutableLongStateOf(0L); private set
     var started = 0L; private set
     var destination = "未询问"; private set
     var instructions = ""; private set
-    var topic = ""; private set
-    var notice = ""; private set
+    var topic by mutableStateOf(""); private set
+    var notice by mutableStateOf(""); private set
     var prepared: Prepared? = null; private set
-    var fix: Fix? = null; private set
+    var fix by mutableStateOf<Fix?>(null); private set
     var foreground = true
     var diagnostic: (String) -> Unit = {}
     var epoch = 0L; private set
@@ -154,13 +160,13 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         if (!running) return
         invalidate(); prepared = null; listening = true; notice = ""; changed()
         val token = epoch
-        voice.listen { value ->
+        voice.listenOutcome { result ->
             if (token == epoch && running && listening) {
                 listening = false
-                if (value.isNullOrBlank()) {
+                if (result.outcome != ListeningOutcome.SUCCESS || result.text.isBlank()) {
                     if (destinationQuestion) { destination = "未提供"; destinationQuestion = false }
-                    notice = "没听清，想说时再点一下。"; cooldownUntil = cadenceNow() + 30000; changed()
-                } else { changed(); onResult(value) }
+                    notice = result.notice; cooldownUntil = cadenceNow() + 30000; changed()
+                } else { changed(); onResult(result.text) }
             }
         }
     }
