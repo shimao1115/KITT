@@ -1,6 +1,7 @@
 package com.kitt.reader
 
 import android.app.Instrumentation
+import android.content.Intent
 import android.os.Bundle
 import kotlinx.coroutines.*
 
@@ -14,6 +15,10 @@ class HotfixPhoneProbe : Instrumentation() {
         try {
             lateinit var runtime: KittRuntime
             runOnMainSync { runtime = (targetContext.applicationContext as KittApp).runtime }
+            if (mode in setOf("research-transport", "research-transport-sse")) {
+                startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                finish(0, researchPhoneProbe(runtime, targetContext, streamOnly = mode == "research-transport-sse")); return
+            }
             check(runtime.config.kind == ProviderKind.CHATGPT) { "Use the saved ChatGPT account narration provider" }
             check(runtime.settings.readResearch() == null) { "Independent OpenAI research must be unchecked for this probe" }
             result.putString("provider", "CHATGPT/${runtime.config.model}/${runtime.config.effort.ifBlank { "default" }}")
