@@ -126,7 +126,52 @@ Implementation direction to evaluate later:
 
 Possible milestone: fold into **M1.4/M1.5 usability pass** before the final visual-polish milestone.
 
-## 6. UI visual polish — deliberately later
+
+## 6. Narrative breadth / local culture and history
+
+Observed on the first real ChatGPT accelerated-simulation run:
+- The two automatic narrations were both generic spatial-mechanism topics: why a road bends, and how roadside villages grow.
+- The user explicitly found this **too monotonous and too narrow**.
+- Desired KITT experience must also surface **local history, cultural geography, notable places, heritage/monuments, famous sites, local stories, industry, food/everyday life, and other human context** when relevant.
+
+Current likely product cause:
+- The Director constitution strongly favors `地形 → 道路 → 聚落 → 历史与生活` causal explanation.
+- It repeatedly rewards silence and warns against unverified local specifics.
+- Current real/simulated Context is sparse and has no verified nearby POIs/history.
+- Therefore the model has very little safe local material and naturally falls back to generic geography/roads/settlements.
+
+Important distinction:
+- **Do not solve this by merely telling the model “talk more about history”.** Without reliable local facts, that would increase hallucination risk.
+- This is partly an editorial-policy problem and partly a Context/enrichment problem.
+
+Desired editorial policy:
+- KITT should have multiple narrative lenses available:
+  - natural geography / landform;
+  - roads / engineering / transport;
+  - settlements and how people live;
+  - local history and historical change;
+  - notable sites / monuments / heritage / scenic places;
+  - cultural geography / customs / place names;
+  - industry / agriculture / food / everyday economy;
+  - people and stories when they are reliably grounded.
+- Do not rotate categories mechanically.
+- Choose the most interesting lens for the current place and avoid repeating the same explanatory family.
+- Silence remains valid, but “generic road mechanism again” should not beat a well-grounded local human/history topic.
+- Track recent **topic family** as well as topic text so repeated road/settlement explanations are discouraged.
+
+Desired information strategy:
+- Human-readable current place and route reference can help, but they may not be sufficient.
+- Evaluate a lightweight **local enrichment / verified-facts** step that can provide a few reliable nearby/history candidates to the Director.
+- Search/enrichment should be selective and cached per trip/area, not repeated on every Director check.
+- Exact names, dates, records and local claims must remain grounded; if evidence is unavailable, prefer omission over invention.
+
+Acceptance idea for later content milestone:
+- On a representative Chengdu→Deyang→Mianyang run, automatic narration should demonstrate **variety across topic families**, including at least one reliably grounded human/history/cultural/site topic when such material is available.
+- Do not enforce a fixed category quota or scripted sequence.
+
+This is a **core product-content issue**, higher priority than final UI polish.
+
+## 7. UI visual polish — deliberately later
 
 The user wants a dedicated UI beautification pass, but **after the core interaction, voice, route-reference, and visual-talk behavior are stable**.
 
@@ -147,9 +192,10 @@ Possible later milestone: **M1.7 UI Polish / KITT Visual Identity**.
 
 1. Finish **M1.3 accelerated simulation Director fix** first.
 2. Then address **Voice Experience** (speech recognition diagnostics + dynamic listening UI + dynamic AI-speaking UI + TTS voice selection).
-3. Then address **Route Reference image**.
-4. Then address **In-trip Visual Talk**, optionally sharing the image transport/picker plumbing built for Route Reference.
-5. Add a concise **current-place display** for real GPS journeys.
-6. Then do the broader **UI visual-polish pass**.
+3. Then address **Narrative breadth / local enrichment** so KITT is not limited to generic road/settlement explanations.
+4. Then address **Route Reference image**.
+5. Then address **In-trip Visual Talk**, optionally sharing the image transport/picker plumbing built for Route Reference.
+6. Add a concise **current-place display** for real GPS journeys (or fold it into the content-enrichment work if useful).
+7. Then do the broader **UI visual-polish pass**.
 
 These are remembered backlog items, not active implementation instructions yet.
