@@ -18,6 +18,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
                     Row { TextButton(onDeveloper) { Text("路上读山河") }; TextButton(onSettings) { Text("设置") } }
                     Text(sourceLabel, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelMedium)
                     Text(stateLabel(journey), style = MaterialTheme.typography.headlineSmall)
+                    Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis)
                     VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(64.dp))
                     Text(journey.topic, maxLines = 2, overflow = TextOverflow.Ellipsis)
                     if (journey.isQuiet) Text(quietLabel(journey))
@@ -38,6 +39,11 @@ private fun stateLabel(journey: Journey) = when (journey.state) {
     JourneyState.LISTENING -> "正在听，请说话"
     JourneyState.QUIET -> "安静模式"
 }
+private fun placeLabel(journey: Journey) = journey.fix?.let {
+    it.administrative?.label ?: it.area.ifBlank {
+        java.lang.String.format(java.util.Locale.ROOT, "GPS %.3f, %.3f", it.latitude, it.longitude)
+    }
+} ?: if (journey.running) "等待可靠位置" else "其余的，跟它说就行。"
 private fun quietLabel(journey: Journey) = if (journey.quietRemaining == Long.MAX_VALUE) "等你叫我" else
     "剩余 ${journey.quietRemaining / 60000}:${((journey.quietRemaining / 1000) % 60).toString().padStart(2, '0')}"
 
@@ -52,7 +58,7 @@ private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart
         Text(sourceLabel, style = MaterialTheme.typography.labelMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Spacer(Modifier.height(12.dp))
         Text(stateLabel(journey), style = MaterialTheme.typography.headlineMedium)
-        Text(journey.fix?.area?.ifBlank { "GPS 已定位" } ?: if (journey.running) "等待可靠位置" else "其余的，跟它说就行。",
+        Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.weight(1f))
         VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(80.dp))

@@ -36,6 +36,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     var lastSpeech = 0L; private set
     var cooldownUntil = 0L; private set
     val recentTopics = ArrayDeque<String>()
+    val recentFamilies = ArrayDeque<TopicFamily>()
     private val skippedTopics = mutableMapOf<String, Long>()
     private val asked = mutableSetOf<String>()
     private var lastQuestion = Long.MIN_VALUE / 2
@@ -72,7 +73,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         simulationClock = null; simulationProgress = null; lastCheckProgress = 0.0; lastSpeechTravelMs = null
         invalidate(); running = true; started = now(); quietUntil = 0; destination = "未询问"
         instructions = ""; topic = ""; notice = ""; fix = null; prepared = null
-        recentTopics.clear(); skippedTopics.clear(); asked.clear(); skippedCount = 0
+        recentTopics.clear(); recentFamilies.clear(); skippedTopics.clear(); asked.clear(); skippedCount = 0
         lastSpeech = 0; cooldownUntil = 0; lastCheckAt = Long.MIN_VALUE / 2; lastCheckFix = null
         lastQuestion = Long.MIN_VALUE / 2; destinationQuestion = false; changed()
     }
@@ -85,7 +86,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun end(): TripSummary {
         val summary = TripSummary(started, now(), destination, recentTopics.toList(), skippedCount)
         invalidate(); running = false; prepared = null; fix = null; quietUntil = 0; instructions = ""
-        destination = "未询问"; topic = ""; recentTopics.clear(); asked.clear(); skippedTopics.clear(); changed()
+        destination = "未询问"; topic = ""; recentTopics.clear(); recentFamilies.clear(); asked.clear(); skippedTopics.clear(); changed()
         return summary
     }
     fun quiet(durationMs: Long = 600000) {
@@ -200,6 +201,10 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             Action.SPEAK_NOW -> {
                 if (!ticket.active && (skippedTopics[result.topic] ?: 0) > now()) return DeliveryOutcome.SUPPRESSED
                 prepared = null; topic = result.topic
+                result.topicFamily?.let {
+                    recentFamilies.addLast(it)
+                    while (recentFamilies.size > 8) recentFamilies.removeFirst()
+                }
                 if (result.topic !in recentTopics) {
                     recentTopics.addLast(result.memoryUpdate.ifBlank { result.topic })
                     while (recentTopics.size > 8) recentTopics.removeFirst()

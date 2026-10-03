@@ -8,24 +8,39 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Looper
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.*
 
 class RealLocationSource(context: Context, private val unavailable: (String) -> Unit) : LocationSource {
     private val context = context.applicationContext
     private val manager = context.getSystemService(LocationManager::class.java)
     private var listener: LocationListener? = null
+    private var areaScope: CoroutineScope? = null
+    private var resolver: AndroidAreaResolver? = null
+    private var latest: Fix? = null
     override fun start(onFix: (Fix) -> Unit) {
         stop()
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+        areaScope = scope
+        val lookup = AndroidAreaResolver(context, scope) { android.util.Log.i("KITTArea", it) }
+        resolver = lookup
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             unavailable("请允许精确定位，或在开发入口使用模拟。")
             return
         }
         val callback = object : LocationListener {
             override fun onLocationChanged(location: Location) {
-                onFix(Fix(location.latitude, location.longitude, location.time,
+                val fix = Fix(location.latitude, location.longitude, location.time,
                     if (location.hasSpeed()) location.speed.toDouble() * 3.6 else 0.0,
                     if (location.hasBearing()) location.bearing.toDouble() else 0.0,
                     if (location.hasAltitude()) location.altitude else null,
-                    if (location.hasAccuracy()) location.accuracy.toDouble() else 200.0))
+                    if (location.hasAccuracy()) location.accuracy.toDouble() else 200.0)
+                latest = fix
+                onFix(fix.copy(administrative = lookup.cached(fix)))
+                if (fix.valid()) lookup.resolve(fix) { area ->
+                    latest?.takeIf { it.distanceTo(fix) < 1500 }?.let { current ->
+                        onFix(current.copy(administrative = area))
+                    }
+                }
             }
             override fun onProviderDisabled(provider: String) { unavailable("定位已关闭；打开系统定位后继续。") }
             @Deprecated("Platform callback")
@@ -37,5 +52,8 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
             manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000L, 5f, callback, Looper.getMainLooper())
         } catch (_: SecurityException) { unavailable("定位权限不可用，请在系统设置允许。") }
     }
-    override fun stop() { listener?.let { manager.removeUpdates(it) }; listener = null }
+    override fun stop() {
+        listener?.let { manager.removeUpdates(it) }; listener = null
+        resolver?.stop(); resolver = null; areaScope?.cancel(); areaScope = null; latest = null
+    }
 }

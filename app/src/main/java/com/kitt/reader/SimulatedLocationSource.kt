@@ -4,14 +4,15 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import kotlin.math.*
 
-data class RoutePoint(val lat: Double, val lon: Double, val area: String)
+data class RoutePoint(val lat: Double, val lon: Double, val area: String, val administrative: AreaIdentity? = null)
 data class RouteFixture(val name: String, val speedKmh: Double, val points: List<RoutePoint>) {
     companion object {
         fun parse(raw: String): RouteFixture {
             val obj = Json.parseToJsonElement(raw).jsonObject
             val points = obj.getValue("points").jsonArray.map { item ->
                 val p = item.jsonObject
-                RoutePoint(p.getValue("lat").jsonPrimitive.double, p.getValue("lon").jsonPrimitive.double, p.getValue("area").jsonPrimitive.content)
+                RoutePoint(p.getValue("lat").jsonPrimitive.double, p.getValue("lon").jsonPrimitive.double, p.getValue("area").jsonPrimitive.content,
+                    AreaIdentity.normalize(p["city"]?.jsonPrimitive?.content, p["district"]?.jsonPrimitive?.content, p["chapter"]?.jsonPrimitive?.content))
             }
             require(points.size in 2..500 && points.all { Fix(it.lat, it.lon, 0).valid() })
             val speed = obj.getValue("speed_kmh").jsonPrimitive.double
@@ -48,7 +49,8 @@ class SimulatedLocationSource(
         return Fix(a.lat + (b.lat - a.lat) * fraction, a.lon + (b.lon - a.lon) * fraction, timeMs,
             if (traveledMeters >= totalMeters) 0.0 else speedKmh, bearing, area = if (fraction >= 0.99) b.area else a.area,
             clue = "粗粒度模拟阶段：${a.area}→${b.area}；非真实道路、非导航级，无已核验当地节点。" +
-                "区域与移动方向是模拟场景输入，可据此解释有新理解价值的稳定通用机制；不声称用户看见了具体建筑或桥梁，无新价值就保持安静。")
+                "行政章节是粗粒度场景元数据，不是精确边界；可解释高置信稳定地方关联；不声称用户看见了具体建筑或桥梁，无新价值就保持安静。",
+            administrative = if (fraction >= 0.99) b.administrative else a.administrative)
     }
     override fun start(onFix: (Fix) -> Unit) {
         stop(); completed = false; travelMs = initialTravelMs

@@ -5,7 +5,7 @@ import java.util.Locale
 
 data class Fix(val latitude: Double, val longitude: Double, val timeMs: Long,
     val speedKmh: Double = 0.0, val bearing: Double = 0.0, val altitude: Double? = null,
-    val accuracy: Double = 0.0, val area: String = "", val clue: String = "") {
+    val accuracy: Double = 0.0, val area: String = "", val clue: String = "", val administrative: AreaIdentity? = null) {
     fun valid() = latitude.isFinite() && latitude in -90.0..90.0 && longitude.isFinite() &&
         longitude in -180.0..180.0 && speedKmh.isFinite() && speedKmh in 0.0..350.0 &&
         bearing.isFinite() && accuracy.isFinite() && accuracy in 0.0..200.0 && (altitude == null || altitude.isFinite())
@@ -20,10 +20,12 @@ interface LocationSource { fun start(onFix: (Fix) -> Unit); fun stop() }
 
 class ContextPipeline {
     private val recent = ArrayDeque<Fix>()
-    fun reset() = recent.clear()
+    val areas = AreaCards()
+    fun reset() { recent.clear(); areas.clear() }
     fun accept(fix: Fix) {
         if (!fix.valid() || (recent.lastOrNull()?.timeMs ?: Long.MIN_VALUE) > fix.timeMs) return
         recent.addLast(fix)
+        areas.accept(fix.administrative)
         while (recent.size > 120 || (recent.firstOrNull()?.timeMs ?: fix.timeMs) < fix.timeMs - 1200000) recent.removeFirst()
     }
     fun card(journey: Journey, time: Long): String {
@@ -42,6 +44,7 @@ class ContextPipeline {
             appendLine("【最近行驶】短期约 ${distance.toInt()} m；${climb?.let { "海拔变化约 ${it.toInt()} m" } ?: "海拔趋势未知"}")
             appendLine("【附近/前方可靠线索】${fix?.clue?.ifBlank { "无地图增强；不猜桥名、河名和道路" } ?: "无"}")
             appendLine("【最近讲过】${journey.recentTopics.joinToString("；").ifBlank { "无" }}")
+            areas.active?.let { appendLine(it.text(journey.recentFamilies.toList())) }
             appendLine("【当前交互状态】${journey.state}；${if (journey.foreground) "前台" else "后台/锁屏，不主动提问"}；距上次讲话：${if (journey.lastSpeech == 0L) "无" else "${(time - journey.lastSpeech) / 1000} 秒"}")
             journey.simulatedTravelMs?.let { travel ->
                 appendLine("【开发模拟节奏】累计模拟行驶 ${travel / 1000} 秒 / ${journey.simulatedMeters?.toInt()} m；距上次讲话的模拟行驶：${journey.simulatedSinceSpeechMs?.let { "${it / 1000} 秒" } ?: "无"}。")
