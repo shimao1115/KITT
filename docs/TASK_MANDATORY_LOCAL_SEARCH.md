@@ -305,11 +305,68 @@ For each researched chapter, acceptance evidence should show:
 5. Director opportunity;
 6. chosen topic or truthful SILENT reason.
 
-For Sanxingdui, search should produce enough grounded material that the Director is not limited to one shallow sentence or one pre-written thesis.
+For Sanxingdui, search should produce enough grounded material that the Director is not limited to one shallow sentence or one pre-written thesis. The resulting narration should also be understandable to a first-time outsider with no prior knowledge of Sanxingdui or ancient Shu.
 
 For ordinary towns, demonstrate that the search finds concrete local material where reliable material exists.
 
 ---
+
+
+## L. Audience model and narration depth
+
+KITT should assume the listener is **a first-time visitor from another place with little or no local background knowledge**.
+
+Do not write as if the listener already knows:
+- the local historical context;
+- what a named person, dynasty, site, craft or protected-heritage designation means;
+- why a place is famous;
+- how two local places/figures/events are related;
+- the cultural significance of an object, custom or engineering work.
+
+### Default narration style
+
+Narration should be:
+- **detailed enough to stand on its own**;
+- concrete rather than compressed;
+- explanatory rather than name-dropping;
+- friendly to someone with no specialist knowledge;
+- rich enough that the listener can understand why this place/object/person is worth remembering.
+
+When introducing a local subject, give enough context to answer the listener's likely implicit questions, such as:
+- What is this?
+- Where/what kind of place is it?
+- Why is it known?
+- What happened here / what is distinctive about it?
+- Why does this matter in local or broader history/culture?
+- What should a first-time visitor understand about it?
+
+These are **coverage goals, not a mandatory rhetorical template**. The Director may structure the story however it wants.
+
+### Avoid overly terse output
+
+Do not default to one or two compressed sentences for a substantial local subject merely to be concise.
+
+For a normal worthwhile chapter topic, prefer a reasonably complete explanation.
+For major nodes (for example Sanxingdui, a major mountain/river system, nationally important heritage, major engineering works), allow substantially deeper narration.
+
+Do not impose a hard word-count or minute quota in code, but the product expectation is:
+- ordinary worthwhile topics often need more than a short paragraph;
+- important topics may reasonably run for multiple minutes;
+- major nodes may be several minutes when the material supports it.
+
+### Explain proper nouns and context
+
+If the narration uses a proper noun, specialist term or local cultural reference that an outsider may not know, briefly explain it in plain language.
+
+Examples:
+- do not only say “古蜀文明” — explain what “古蜀” refers to in this context;
+- do not only say “全国重点文物保护单位” — explain that it is a nationally protected cultural relic/site designation when relevant;
+- do not only name a historical figure — say who the person was and why they are connected to this place;
+- do not only name a non-heritage craft/custom — explain what people actually make/do and why it is locally distinctive.
+
+The goal is:
+> **听众第一次来、第一次听，也能听明白，而且听完能记住一点东西。**
+
 
 ## Non-goals
 
