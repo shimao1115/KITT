@@ -40,7 +40,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     }
     fun check() {
         journey.tick()
-        if (pending || !journey.shouldCheck()) return
+        if (pending || !journey.shouldCheck(context.proximity.opportunity)) return
         counters.opportunity()
         dispatch(null)
     }
@@ -52,6 +52,11 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     private fun dispatch(utterance: String?, image: ImageInput? = null) {
         requestActive = utterance != null
         val ticket = journey.ticket(utterance != null)
+        val landmarkIds = context.proximity.ids
+        if (!ticket.active) {
+            if (context.proximity.opportunity) diagnostic("landmark opportunity ids=${landmarkIds.joinToString()}")
+            context.proximity.consumeOpportunity()
+        }
         val input = DirectorRequest(sessionInstructions = journey.instructions,
             contextCard = context.card(journey, now()), userUtterance = utterance, image = image)
         counters.dispatch(ticket.active)
@@ -71,7 +76,9 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
                     else "看图暂时没完成，请确认所选模型支持图片，并检查连接。"
                 null
             }
-            val outcome = journey.deliver(ticket, raw, activeFailure) { user(it) }
+            val parsed = raw?.let { runCatching { DirectorContract.parse(it) }.getOrNull() }
+            val outcome = journey.deliver(ticket, raw, activeFailure, context.proximity.guard(parsed, ticket.active, landmarkIds)) { user(it) }
+            if (outcome == DeliveryOutcome.SPEAK_NOW && parsed != null) context.proximity.delivered(parsed)
             counters.terminal(ticket.active, outcome)
             diagnostic("terminal active=${ticket.active} outcome=$outcome ${counters.summary()}")
         }

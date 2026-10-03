@@ -18,15 +18,17 @@ data class Fix(val latitude: Double, val longitude: Double, val timeMs: Long,
 fun angleDifference(a: Double, b: Double) = abs(((a - b + 540) % 360) - 180)
 interface LocationSource { fun start(onFix: (Fix) -> Unit); fun stop() }
 
-class ContextPipeline {
+class ContextPipeline(landmarks: List<Landmark> = emptyList()) {
     private val recent = ArrayDeque<Fix>()
     val areas = AreaCards()
+    val proximity = LandmarkProximity(landmarks)
     var routeHint = ""
-    fun reset() { recent.clear(); areas.clear(); routeHint = "" }
+    fun reset() { recent.clear(); areas.clear(); proximity.clear(); routeHint = "" }
     fun accept(fix: Fix) {
         if (!fix.valid() || (recent.lastOrNull()?.timeMs ?: Long.MIN_VALUE) > fix.timeMs) return
         recent.addLast(fix)
         areas.accept(fix.administrative)
+        proximity.accept(fix)
         while (recent.size > 120 || (recent.firstOrNull()?.timeMs ?: fix.timeMs) < fix.timeMs - 1200000) recent.removeFirst()
     }
     fun card(journey: Journey, time: Long): String {
@@ -47,6 +49,7 @@ class ContextPipeline {
             appendLine("【附近/前方可靠线索】${fix?.clue?.ifBlank { "无地图增强；不猜桥名、河名和道路" } ?: "无"}")
             appendLine("【最近讲过】${journey.recentTopics.joinToString("；").ifBlank { "无" }}")
             areas.active?.let { appendLine(it.text(journey.recentFamilies.toList())) }
+            append(proximity.card())
             appendLine("【当前交互状态】${journey.state}；${if (journey.foreground) "前台" else "后台/锁屏，不主动提问"}；距上次讲话：${if (journey.lastSpeech == 0L) "无" else "${(time - journey.lastSpeech) / 1000} 秒"}")
             journey.simulatedTravelMs?.let { travel ->
                 appendLine("【开发模拟节奏】累计模拟行驶 ${travel / 1000} 秒 / ${journey.simulatedMeters?.toInt()} m；距上次讲话的模拟行驶：${journey.simulatedSinceSpeechMs?.let { "${it / 1000} 秒" } ?: "无"}。")

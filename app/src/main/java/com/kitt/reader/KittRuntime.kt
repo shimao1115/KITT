@@ -22,7 +22,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         revision.intValue++
         checkpointIfChanged()
     }
-    val pipeline = ContextPipeline()
+    val pipeline = ContextPipeline(context.assets.open("landmarks.json").bufferedReader().use { LandmarkCatalog.parse(it.readText()) })
     var config = settings.read()
     fun provider(): DirectorProvider = when (config.kind) {
         ProviderKind.CHATGPT -> ChatGptProvider(chatGpt, config)

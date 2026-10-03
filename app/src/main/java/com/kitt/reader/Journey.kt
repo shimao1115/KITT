@@ -121,11 +121,12 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         }
         changed()
     }
-    fun shouldCheck(): Boolean {
+    fun shouldCheck(landmarkOpportunity: Boolean = false): Boolean {
         val position = fix ?: return false
         if (!running || isQuiet || speaking || listening || imageInteraction || cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
         if (lastCheckFix == null) return true
         val elapsed = cadenceNow() - lastCheckAt
+        if (landmarkOpportunity && elapsed >= 45000) return true
         simulationProgress?.let {
             val traveled = it() - lastCheckProgress
             val areaChanged = position.area != lastCheckFix!!.area
@@ -179,12 +180,14 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun finishImageInteraction() {
         imageInteraction = false; cooldownUntil = cadenceNow() + 30000; changed()
     }
-    fun deliver(ticket: Ticket, raw: String?, activeFailure: String? = null, onAnswer: (String) -> Unit = {}): DeliveryOutcome {
+    fun deliver(ticket: Ticket, raw: String?, activeFailure: String? = null, proximityBlock: DeliveryOutcome? = null,
+        onAnswer: (String) -> Unit = {}): DeliveryOutcome {
         if (!running || ticket.epoch != epoch) return DeliveryOutcome.CANCELLED
         if (now() - ticket.at > 45000) return DeliveryOutcome.STALE
         if (!ticket.active && (isQuiet || speaking || listening || ticket.fix == null || fix == null ||
                     now() - fix!!.timeMs > 60000 || ticket.fix.distanceTo(fix!!) > 1500 ||
                     angleDifference(ticket.fix.bearing, fix!!.bearing) > 65)) return DeliveryOutcome.STALE
+        if (proximityBlock != null) return proximityBlock
         val response = runCatching { DirectorContract.parse(raw ?: error("Provider unavailable")) }
         if (response.isFailure) {
             diagnostic("Director response unavailable or failed schema validation")

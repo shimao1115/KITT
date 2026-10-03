@@ -1,0 +1,42 @@
+[
+  {
+    "id": "sanxingdui",
+    "name": "三星堆",
+    "lat": 31.003,
+    "lon": 104.219,
+    "radius_m": 12000,
+    "kind": "RUINS",
+    "family": "HERITAGE",
+    "grounding": "广汉稳定文化关联；三星堆博物馆 https://www.sxd.cn/。坐标为粗粒度区域参考，不是实测入口；不推断眼前可见、精确距离或开放状态。"
+  },
+  {
+    "id": "mianzhu-newyear-art",
+    "name": "绵竹年画村",
+    "lat": 31.215,
+    "lon": 104.302,
+    "radius_m": 5500,
+    "kind": "HERITAGE",
+    "family": "CULTURAL_GEOGRAPHY",
+    "grounding": "孝德镇年画村稳定关联；绵竹市政府 https://www.mz.gov.cn/gk/zfxxgk/fdzdnr/cdgz/1594150.htm。粗粒度乡镇参考点，不断言准确入口或当前活动。"
+  },
+  {
+    "id": "longmen-front",
+    "name": "龙门山山前地带",
+    "lat": 31.50,
+    "lon": 104.20,
+    "radius_m": 16000,
+    "kind": "LANDFORM",
+    "family": "GEOGRAPHY",
+    "grounding": "安州处于龙门山与四川盆地结合部的区域背景；安州公开水保报告 https://www.azfzjt.com/uploads/20250904/68363b3c4a3f74e4936006e936ceaec3.pdf。宽范围代表点，不是山峰坐标或真实视线；不得臆测具体峰名、海拔或地质年代。"
+  },
+  {
+    "id": "jushui-taiping-bridge",
+    "name": "雎水太平桥",
+    "lat": 31.501,
+    "lon": 104.242,
+    "radius_m": 4000,
+    "kind": "BRIDGE",
+    "family": "CULTURAL_GEOGRAPHY",
+    "grounding": "雎水太平桥及踩桥民俗的稳定关联；四川统一战线 https://www.sctyzx.gov.cn/my/202409/54308962.html。坐标为镇级区域参考，不是桥体测量点；不声称正在过桥或活动开放。"
+  }
+]

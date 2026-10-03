@@ -10,18 +10,19 @@ enum class Action { SILENT, SPEAK_NOW, PREPARE, ASK_USER }
 data class DirectorResult(
     val action: Action, val topic: String = "", val narration: String = "",
     val question: String = "", val prepareHint: String = "", val memoryUpdate: String = "",
-    val topicFamily: TopicFamily? = null
+    val topicFamily: TopicFamily? = null, val landmarkId: String = ""
 ) {
     fun json(): String = buildJsonObject {
         put("action", action.name); put("topic", topic); put("narration", narration)
         put("question", question); put("prepare_hint", prepareHint); put("memory_update", memoryUpdate)
         put("topic_family", topicFamily?.name ?: "")
+        put("landmark_id", landmarkId)
     }.toString()
 }
 
 object DirectorContract {
     private val legacyKeys = setOf("action", "topic", "narration", "question", "prepare_hint", "memory_update")
-    val keys = legacyKeys + "topic_family"
+    val keys = legacyKeys + setOf("topic_family", "landmark_id")
     val schema = buildJsonObject {
         put("type", "object"); put("additionalProperties", false)
         put("required", JsonArray(keys.map(::JsonPrimitive)))
@@ -36,7 +37,7 @@ object DirectorContract {
     fun parse(raw: String): DirectorResult {
         require(raw.length <= 16000) { "Response too large" }
         val obj = Json.parseToJsonElement(raw).jsonObject
-        require(obj.keys == keys || obj.keys == legacyKeys) { "Unexpected or missing fields" }
+        require(obj.keys == keys || obj.keys == legacyKeys + "topic_family" || obj.keys == legacyKeys) { "Unexpected or missing fields" }
         fun field(key: String, max: Int): String {
             val value = obj.getValue(key).jsonPrimitive
             require(value.isString && value.content.length <= max) { "Invalid $key" }
@@ -44,7 +45,8 @@ object DirectorContract {
         }
         val result = DirectorResult(Action.valueOf(field("action", 16)), field("topic", 120),
             field("narration", 6000), field("question", 200), field("prepare_hint", 400), field("memory_update", 240),
-            if ("topic_family" in obj) field("topic_family", 32).takeIf(String::isNotBlank)?.let(TopicFamily::valueOf) else null)
+            if ("topic_family" in obj) field("topic_family", 32).takeIf(String::isNotBlank)?.let(TopicFamily::valueOf) else null,
+            if ("landmark_id" in obj) field("landmark_id", 64).also { require(it.isEmpty() || it.matches(Regex("[a-z0-9_-]+"))) } else "")
         with(result) {
             when (action) {
                 Action.SILENT -> require(narration.isEmpty() && question.isEmpty() && prepareHint.isEmpty())
@@ -62,6 +64,8 @@ object DirectorContract {
         地方史、古镇、遗址、博物馆、文化名胜、地名习俗、产业饮食和有依据的人物故事与自然地理、工程同样重要。
         优先不同于最近题材的、有依据且价值高的候选；广汉关联的三星堆等重要文化节点通常胜过重复的道路机制。
         候选的价值排序不是必须播放的规则。进入镇乡街道只刷新背景，仍可 SILENT；不设旁白数量或题材配额。
+        区域章节是主容器，但接近有依据的重要山峰、河流渡口、湖库、特殊地貌、桥坝隧道、地标建筑、博物馆遗址和遗产节点是独立机会，即使行政章节未变。
+        独立地标接近候选通常胜过另一段泛泛道路/聚落解释；仍服从安静、最新用户意图和去重。位置是粗粒度参考时只谈区域关联，不伪装视线或实测距离。
         用户最新明确意图优先。能问一句解决就 ASK_USER，不猜目的地。
         稳定通用机制可以解释；不确定当地事实要查证。精确数字、纪录、日期和实时状态必须查证，查不到就删。
         当前 Adapter 没有联网搜索能力：允许高置信、稳定、广为人知的当地关联，以保守措辞解释。
@@ -74,8 +78,9 @@ object DirectorContract {
         PREPARE 只输出目标和重新确认条件，不生成待播正文、秒数或播放预约；同一时间最多一个。
         ASK_USER 只问一个短问题，未回答就放弃。不要在后台问需要即时回答的问题。
         目的地“未提供”表示已经问过而无回答，不再追问目的地；位置年龄过大时不假装知道眼前现场。
-        只输出严格 JSON，包含 action, topic, narration, question, prepare_hint, memory_update, topic_family 七个字符串字段。
+        只输出严格 JSON，包含 action, topic, narration, question, prepare_hint, memory_update, topic_family, landmark_id 八个字符串字段。
         topic_family 讲述时选择 GEOGRAPHY/TRANSPORT/EVERYDAY_LIFE/HISTORY/HISTORIC_SETTLEMENT/HERITAGE/CULTURAL_SITE/CULTURAL_GEOGRAPHY/ECONOMY/PEOPLE，其他动作可空。
+        从独立地标接近候选选题时，landmark_id 必须使用 Context 中该节点的 id；其他主题为空。不用旧地标冒充当前接近。
         action 只选 SILENT/SPEAK_NOW/PREPARE/ASK_USER；无用字段空字符串；memory_update 是极短主题摘要。
     """.trimIndent()
 }

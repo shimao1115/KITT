@@ -60,7 +60,7 @@ class AreaChapterTest {
         }
         assertEquals(8, journey.recentFamilies.size)
         assertTrue(runCatching { DirectorContract.parse(DirectorResult(Action.SILENT).json().replace("\"topic_family\":\"\"", "\"topic_family\":\"INVALID\"")) }.isFailure)
-        val legacy = DirectorResult(Action.SILENT).json().replace(",\"topic_family\":\"\"", "")
+        val legacy = DirectorResult(Action.SILENT).json().replace(",\"topic_family\":\"\"", "").replace(",\"landmark_id\":\"\"", "")
         assertEquals(Action.SILENT, DirectorContract.parse(legacy).action)
         journey.end(); assertTrue(journey.recentFamilies.isEmpty())
     }
