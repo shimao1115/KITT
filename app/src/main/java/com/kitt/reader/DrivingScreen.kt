@@ -6,11 +6,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
 @Composable
 fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
@@ -26,7 +32,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
                     JourneyStatus(journey)
                     Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleMedium)
                     VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(64.dp))
-                    Text(if (journey.isQuiet) quietLabel(journey) else journey.topic, maxLines = 2,
+                    Text(if (journey.isQuiet) quietLabel(quietRemainingNow(journey)) else journey.topic, maxLines = 2,
                         overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleLarge)
                     if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2)
                 }
@@ -51,8 +57,24 @@ private fun placeLabel(journey: Journey) = journey.fix?.let {
         java.lang.String.format(java.util.Locale.ROOT, "GPS %.3f, %.3f", it.latitude, it.longitude)
     }
 } ?: if (journey.running) "等待可靠位置" else "其余的，跟它说就行。"
-private fun quietLabel(journey: Journey) = if (journey.quietRemaining == Long.MAX_VALUE) "等你叫我" else
-    "剩余 ${journey.quietRemaining / 60000}:${((journey.quietRemaining / 1000) % 60).toString().padStart(2, '0')}"
+private fun quietLabel(remaining: Long) = if (remaining == Long.MAX_VALUE) "等你叫我" else
+    "剩余 ${remaining / 60000}:${((remaining / 1000) % 60).toString().padStart(2, '0')}"
+
+/**
+ * `quietUntil` is an absolute deadline, so no observed value changes while the seconds pass and the
+ * countdown would freeze at whatever it first showed. Re-read the remaining time from composition.
+ */
+@Composable
+private fun quietRemainingNow(journey: Journey): Long {
+    val observed = journey.quietRemaining
+    var remaining by remember(journey.isQuiet) { mutableLongStateOf(observed) }
+    LaunchedEffect(journey.isQuiet) {
+        if (!journey.isQuiet) return@LaunchedEffect
+        remaining = journey.quietRemaining
+        while (journey.isQuiet) { delay(1000); remaining = journey.quietRemaining }
+    }
+    return if (journey.isQuiet) remaining else observed
+}
 
 @Composable
 private fun JourneyStatus(journey: Journey) {
@@ -89,7 +111,7 @@ private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart
         Spacer(Modifier.weight(1f))
         VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(if (compact) 48.dp else 80.dp))
         if (journey.isQuiet) {
-            Text(quietLabel(journey), style = MaterialTheme.typography.headlineSmall)
+            Text(quietLabel(quietRemainingNow(journey)), style = MaterialTheme.typography.headlineSmall)
         } else Text(journey.topic, style = MaterialTheme.typography.titleLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
         if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.weight(1f))
