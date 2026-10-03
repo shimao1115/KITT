@@ -101,11 +101,29 @@ Driving-safety UX:
 
 Possible later milestone: **M1.6 Visual Talk** (or combine plumbing work with M1.5 while keeping the two intents separate).
 
+## 5. UI visual polish — deliberately later
+
+The user wants a dedicated UI beautification pass, but **after the core interaction, voice, route-reference, and visual-talk behavior are stable**.
+
+Principle:
+- Do not spend time polishing surfaces while core phone UX is still changing.
+- First make KITT functionally right; then give it a coherent visual identity.
+
+Later visual direction can build on the previously discussed KITT feel:
+- restrained dark/black base;
+- red scanner / pulse / glow language;
+- large, glanceable driving-safe hierarchy;
+- speaking/listening/quiet states expressed visually;
+- avoid decorative complexity that competes with driving attention.
+
+Possible later milestone: **M1.7 UI Polish / KITT Visual Identity**.
+
 ## Priority / sequencing
 
 1. Finish **M1.3 accelerated simulation Director fix** first.
 2. Then address **Voice Experience** (speech recognition diagnostics + dynamic listening UI + dynamic AI-speaking UI + TTS voice selection).
 3. Then address **Route Reference image**.
 4. Then address **In-trip Visual Talk**, optionally sharing the image transport/picker plumbing built for Route Reference.
+5. Then do the broader **UI visual-polish pass**.
 
 These are remembered backlog items, not active implementation instructions yet.
