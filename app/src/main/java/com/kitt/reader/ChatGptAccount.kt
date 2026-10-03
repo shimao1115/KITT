@@ -51,6 +51,7 @@ class ChatGptAccount(
     var models by mutableStateOf<List<ChatGptModel>>(emptyList()); private set
     var message by mutableStateOf(""); private set
     var busy by mutableStateOf(false); private set
+    var catalogLoading by mutableStateOf(false); private set
     var lastFailure: ChatGptFailure? = null; private set
     private var paused = false
     private var retryAfter = 0L
@@ -61,7 +62,8 @@ class ChatGptAccount(
     private fun save(value: ChatGptRecord) { store.saveChatGpt(value.encode()); record = value }
     private fun failure(error: Exception) {
         lastFailure = error as? ChatGptFailure
-        diagnostic("failure: ${error.javaClass.simpleName}" + (lastFailure?.let { " status=${it.status} code=${it.code} request_id=${it.requestId} shape=${it.shape}" } ?: ""))
+        val location = error.stackTrace.firstOrNull { it.className.startsWith("com.kitt.reader.") }
+        diagnostic("failure: ${error.javaClass.simpleName} location=$location" + (lastFailure?.let { " status=${it.status} code=${it.code} request_id=${it.requestId} shape=${it.shape}" } ?: ""))
         message = if (error is ChatGptFailure) error.userMessage else "连接未完成，请重试。请确保浏览器和 KITT 未被系统关闭。"
         if (error is ChatGptFailure && error.pausesRequests) paused = true
         retryAfter = clock() + 60000 // No retry storm; a later explicit Settings action may reset this.
@@ -90,6 +92,7 @@ class ChatGptAccount(
                         val attempt = ChatGptAttempt(local.redirectUri, selected.hostId, selected, consent)
                         withContext(Dispatchers.Main) { openBrowser(attempt.url); diagnostic("system browser opened") }
                         val (code, client) = local.receive(attempt)
+                        local.close(); listener = null
                         diagnostic("callback state and registration validated")
                         ensureActive()
                         mutex.withLock {
@@ -158,12 +161,22 @@ class ChatGptAccount(
         check(record.planEnabled && record.expiresAt > clock()) { "ChatGPT 授权已过期，请重新连接。" }
         return record.accessToken
     }
-    private fun loadModelsLocked() { models = ChatGptModels.parse(transport.get("${ChatGptProtocol.RESOURCE}/models", accessLocked())) }
-    suspend fun refreshModels() = withContext(Dispatchers.IO) {
-        mutex.withLock {
-            try { paused = false; retryAfter = 0; loadModelsLocked(); message = "已更新账号模型。" }
-            catch (e: Exception) { if (e is CancellationException) throw e; failure(e) }
-        }
+    private fun loadModelsLocked() {
+        diagnostic("model catalog request started")
+        val raw = transport.get("${ChatGptProtocol.RESOURCE}/models", accessLocked())
+        diagnostic("model catalog received; parsing")
+        models = ChatGptModels.parse(raw)
+        diagnostic("model catalog parsed: ${models.size} listed models")
+    }
+    suspend fun refreshModels() {
+        if (catalogLoading) return
+        catalogLoading = true
+        try { withContext(Dispatchers.IO) {
+            mutex.withLock {
+                try { paused = false; retryAfter = 0; loadModelsLocked(); message = "已更新账号模型。" }
+                catch (e: Exception) { if (e is CancellationException) throw e; failure(e) }
+            }
+        } } finally { catalogLoading = false }
     }
     suspend fun infer(model: String, body: (ChatGptModel) -> String): String = withContext(Dispatchers.IO) {
         mutex.withLock {

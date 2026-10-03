@@ -104,7 +104,7 @@ class ChatGptProtocolTest {
         }
     }
     @Test fun modelCatalogUsesOnlyVisibleSlugsAndExplicitCapabilityMetadata() {
-        val models = ChatGptModels.parse("""{"models":[{"slug":"a","display_name":"First","visibility":"list","supported_reasoning_levels":[{"effort":"low"}]},{"slug":"hidden","visibility":"hide"},{"slug":"b","visibility":"list"},{"slug":"not-listed"}]}""")
+        val models = ChatGptModels.parse("""{"models":[{"slug":"a","display_name":"First","visibility":"list","supported_reasoning_levels":[{"effort":"low"}]},{"slug":"hidden","visibility":"hide"},{"slug":"b","visibility":"list","supported_reasoning_levels":null},{"slug":"not-listed"}]}""")
         assertEquals(listOf("a", "b"), models.map { it.slug }); assertEquals("First", models.first().displayName)
         assertEquals(listOf("low"), models.first().efforts); assertTrue(models.last().efforts.isEmpty())
     }
@@ -122,6 +122,14 @@ class ChatGptProtocolTest {
         val failed = "data: {\"type\":\"response.failed\",\"response\":{\"error\":{\"code\":\"subscription_sharing_usage_limit_exceeded\"}}}\n\n"
         val error = runCatching { ChatGptStream.read(failed.reader().buffered(), "req_id") }.exceptionOrNull() as ChatGptFailure
         assertEquals("subscription_sharing_usage_limit_exceeded", error.code); assertTrue(error.pausesRequests)
+    }
+    @Test fun streamedTextIsValidatedOnlyAfterCompletionEvenWhenFinalSnapshotIsEmpty() {
+        val delta = "data: {\"type\":\"response.output_text.delta\",\"delta\":${JsonPrimitive(result)}}\n\n"
+        val terminal = "data: {\"type\":\"response.completed\",\"response\":{\"status\":\"completed\",\"output\":[]}}\n\n"
+        assertEquals(result, ChatGptStream.read((delta + terminal).reader().buffered()))
+        assertTrue(runCatching { ChatGptStream.read(delta.reader().buffered()) }.isFailure)
+        val done = "data: {\"type\":\"response.output_text.done\",\"text\":${JsonPrimitive(result)}}\n\n"
+        assertEquals(result, ChatGptStream.read((done + terminal).reader().buffered()))
     }
 }
 

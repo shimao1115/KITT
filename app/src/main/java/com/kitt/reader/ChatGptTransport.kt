@@ -66,7 +66,9 @@ class ChatGptHttpsTransport : ChatGptTransport {
         return c.inputStream.bufferedReader(Charsets.UTF_8)
     }
     override fun get(url: String, bearer: String): String = connection(url, bearer).let { c ->
-        try { checked(c).use { bounded(it, 256000) } } finally { c.disconnect() }
+        // The live account catalog includes substantial per-model metadata (>256 KB on the acceptance account).
+        val limit = if (url == "${ChatGptProtocol.RESOURCE}/models") 4_000_000 else 256000
+        try { checked(c).use { bounded(it, limit) } } finally { c.disconnect() }
     }
     override fun form(url: String, body: String): String = connection(url, type = "application/x-www-form-urlencoded").let { c ->
         try {
@@ -93,6 +95,7 @@ class ChatGptHttpsTransport : ChatGptTransport {
 object ChatGptStream {
     fun read(reader: BufferedReader, requestId: String = ""): String {
         var total = 0; val event = StringBuilder()
+        val deltas = StringBuilder(); val doneTexts = linkedMapOf<String, String>()
         val deadline = System.nanoTime() + 25_000_000_000L
         while (true) {
             require(System.nanoTime() < deadline) { "ChatGPT stream timed out" }
@@ -111,6 +114,15 @@ object ChatGptStream {
                 if (raw == "[DONE]") throw ChatGptFailure(code = "interrupted_stream", requestId = requestId)
                 val obj = Json.parseToJsonElement(raw).jsonObject
                 when (obj["type"]?.jsonPrimitive?.content) {
+                    "response.output_text.delta" -> {
+                        deltas.append(obj.getValue("delta").jsonPrimitive.content)
+                        require(deltas.length <= 16000) { "Director response too large" }
+                    }
+                    "response.output_text.done" -> {
+                        val key = "${obj["output_index"]}:${obj["content_index"]}"
+                        doneTexts[key] = obj.getValue("text").jsonPrimitive.content
+                        require(doneTexts.values.sumOf { it.length } <= 16000) { "Director response too large" }
+                    }
                     "response.failed", "error" -> {
                         val source = obj["response"] as? JsonObject ?: obj
                         throw ChatGptFailure.from(0, source.toString(), requestId)
@@ -119,12 +131,16 @@ object ChatGptStream {
                     "response.completed" -> {
                         val response = obj.getValue("response").jsonObject
                         require(response["status"]?.jsonPrimitive?.content == "completed")
-                        val text = response.getValue("output").jsonArray.flatMap { item ->
+                        val snapshot = response["output"]?.jsonArray?.flatMap { item ->
                             item.jsonObject["content"]?.jsonArray?.mapNotNull { part ->
                                 val p = part.jsonObject
                                 if (p["type"]?.jsonPrimitive?.content == "output_text") p["text"]?.jsonPrimitive?.content else null
                             } ?: emptyList()
-                        }.joinToString("")
+                        }?.joinToString("").orEmpty()
+                        // The live direct route can complete with an empty output snapshot.
+                        // Stream text remains untrusted until this terminal event and strict schema validation.
+                        val text = snapshot.ifBlank { deltas.toString().ifBlank { doneTexts.values.joinToString("") } }
+                        require(text.isNotBlank()) { "Completed response contained no Director text" }
                         DirectorContract.parse(text)
                         return text
                     }
@@ -142,7 +158,7 @@ object ChatGptModels {
         .map { it.jsonObject }.filter { it["visibility"]?.jsonPrimitive?.content == "list" }.map { item ->
             val slug = item.getValue("slug").jsonPrimitive.content; require(slug.isNotBlank())
             // Only server-advertised levels. Missing capability metadata means omit reasoning.
-            val efforts = item["supported_reasoning_levels"]?.jsonArray?.mapNotNull { level ->
+            val efforts = (item["supported_reasoning_levels"] as? JsonArray)?.mapNotNull { level ->
                 (level as? JsonObject)?.get("effort")?.jsonPrimitive?.content
             } ?: emptyList()
             ChatGptModel(slug, item["display_name"]?.jsonPrimitive?.content ?: slug, efforts.distinct())

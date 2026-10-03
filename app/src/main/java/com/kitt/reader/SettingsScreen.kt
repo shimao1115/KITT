@@ -65,7 +65,9 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
                 scope.launch { account.disconnect() }
             }, enabled = !account.busy) { Text("断开 ChatGPT") }
             if (registration.planEnabled) {
-                TextButton({ scope.launch { account.refreshModels() } }, enabled = !account.busy) { Text("刷新账号模型") }
+                TextButton({ scope.launch { account.refreshModels() } }, enabled = !account.busy && !account.catalogLoading) {
+                    Text(if (account.catalogLoading) "正在加载账号模型…" else "刷新账号模型")
+                }
                 var expanded by remember { mutableStateOf(false) }
                 val chosen = account.models.find { it.slug == model }
                 Box {
