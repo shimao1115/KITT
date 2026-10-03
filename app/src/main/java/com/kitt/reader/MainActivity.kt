@@ -90,6 +90,7 @@ class MainActivity : ComponentActivity() {
                             Text("当前 ${runtime.acceleration.toInt()}×；模拟速度 ${runtime.simulationSpeed.toInt()} km/h")
                             Row { listOf(40.0, 80.0, 100.0).forEach { speed -> TextButton({ runtime.developer(speedKmh = speed) }, enabled = !runtime.journey.running) { Text("${speed.toInt()} km/h") } } }
                             if (runtime.journey.running) {
+                                if (runtime.simulation) Text(runtime.loop.counters.summary())
                                 OutlinedTextField(developerText, { developerText = it.take(800) }, label = { Text("模拟一句用户输入（语音不可用时）") })
                                 TextButton({ runtime.loop.user(developerText); developerText = ""; developer = false }, enabled = developerText.isNotBlank()) { Text("提交到同一 Director") }
                             }

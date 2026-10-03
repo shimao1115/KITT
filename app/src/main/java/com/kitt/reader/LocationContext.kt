@@ -43,6 +43,11 @@ class ContextPipeline {
             appendLine("【附近/前方可靠线索】${fix?.clue?.ifBlank { "无地图增强；不猜桥名、河名和道路" } ?: "无"}")
             appendLine("【最近讲过】${journey.recentTopics.joinToString("；").ifBlank { "无" }}")
             appendLine("【当前交互状态】${journey.state}；${if (journey.foreground) "前台" else "后台/锁屏，不主动提问"}；距上次讲话：${if (journey.lastSpeech == 0L) "无" else "${(time - journey.lastSpeech) / 1000} 秒"}")
+            journey.simulatedTravelMs?.let { travel ->
+                appendLine("【开发模拟节奏】累计模拟行驶 ${travel / 1000} 秒 / ${journey.simulatedMeters?.toInt()} m；距上次讲话的模拟行驶：${journey.simulatedSinceSpeechMs?.let { "${it / 1000} 秒" } ?: "无"}。")
+                appendLine("只压缩交互之间的行驶；思考、讲话、监听时暂停移动，语音和安静计时仍是真实时间。按模拟行驶变化判断新现场价值，无新价值仍应 SILENT。")
+                if (journey.destination == "未询问") appendLine("首次定位后的旅程意图尚未询问，可以先问一次目的地；‘未询问’不表示用户已拒绝回答。")
+            }
             journey.prepared?.let { appendLine("【待重新确认】${it.topic}：${it.hint}。必须用当前现场重新判断；不补播。") }
         }
     }

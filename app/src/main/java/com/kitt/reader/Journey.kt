@@ -8,6 +8,7 @@ interface VoicePort {
 }
 data class Prepared(val topic: String, val hint: String, val at: Long, val anchor: Fix)
 data class Ticket(val epoch: Long, val at: Long, val fix: Fix?, val active: Boolean)
+enum class DeliveryOutcome { SILENT, SPEAK_NOW, PREPARE, ASK_USER, STALE, CANCELLED, FAILURE, SUPPRESSED }
 data class TripSummary(val started: Long, val ended: Long, val destination: String, val topics: List<String>, val skipped: Int)
 
 /** All transitions run on the main thread in Android; fake clock/voice make races testable on JVM. */
@@ -36,6 +37,18 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     private var skippedCount = 0
     private var lastCheckAt = Long.MIN_VALUE / 2
     private var lastCheckFix: Fix? = null
+    private var simulationClock: (() -> Long)? = null
+    private var simulationProgress: (() -> Double)? = null
+    private var lastCheckProgress = 0.0
+    private var lastSpeechTravelMs: Long? = null
+    val simulatedTravelMs get() = simulationClock?.invoke()
+    val simulatedMeters get() = simulationProgress?.invoke()
+    val simulatedSinceSpeechMs get() = lastSpeechTravelMs?.let { simulatedTravelMs?.minus(it) }
+    private fun cadenceNow() = simulationClock?.invoke() ?: now()
+    /** Explicit developer sessions only. Quiet, freshness, ticket and PREPARE expiry stay on wall time. */
+    fun simulationCadence(clock: () -> Long, progress: () -> Double) {
+        simulationClock = clock; simulationProgress = progress
+    }
     val state: JourneyState get() = when {
         !running -> JourneyState.IDLE
         listening -> JourneyState.LISTENING
@@ -50,6 +63,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         epoch++; speaking = false; listening = false; voice.stop()
     }
     fun start() {
+        simulationClock = null; simulationProgress = null; lastCheckProgress = 0.0; lastSpeechTravelMs = null
         invalidate(); running = true; started = now(); quietUntil = 0; destination = "未询问"
         instructions = ""; topic = ""; notice = ""; fix = null; prepared = null
         recentTopics.clear(); skippedTopics.clear(); asked.clear(); skippedCount = 0
@@ -75,8 +89,8 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     }
     fun resume() {
         if (!running) return
-        invalidate(); quietUntil = 0; prepared = null; cooldownUntil = now() + 10000
-        lastCheckAt = now(); lastCheckFix = fix; changed()
+        invalidate(); quietUntil = 0; prepared = null; cooldownUntil = cadenceNow() + 10000
+        lastCheckAt = cadenceNow(); lastCheckFix = fix; lastCheckProgress = simulationProgress?.invoke() ?: 0.0; changed()
     }
     fun tick() {
         if (quietUntil != 0L && quietUntil != Long.MAX_VALUE && now() >= quietUntil) resume()
@@ -86,7 +100,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun skip() {
         if (!running) return
         if (topic.isNotBlank()) { skippedTopics[topic] = now() + 1800000; skippedCount++ }
-        invalidate(); prepared = null; topic = ""; cooldownUntil = now() + 45000; changed()
+        invalidate(); prepared = null; topic = ""; cooldownUntil = cadenceNow() + 45000; changed()
     }
     fun location(next: Fix) {
         if (!running || !next.valid() || now() - next.timeMs > 60000 || next.timeMs > now() + 10000) return
@@ -101,9 +115,15 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     }
     fun shouldCheck(): Boolean {
         val position = fix ?: return false
-        if (!running || isQuiet || speaking || listening || now() < cooldownUntil || now() - position.timeMs > 60000) return false
+        if (!running || isQuiet || speaking || listening || cadenceNow() < cooldownUntil || now() - position.timeMs > 60000) return false
         if (lastCheckFix == null) return true
-        val elapsed = now() - lastCheckAt
+        val elapsed = cadenceNow() - lastCheckAt
+        simulationProgress?.let {
+            val traveled = it() - lastCheckProgress
+            val areaChanged = position.area != lastCheckFix!!.area
+            // About 13–15 opportunities on this 110 km fixture, without per-second requests.
+            return elapsed >= 45000 && (traveled >= 9000 || (areaChanged && traveled >= 5000))
+        }
         val distance = lastCheckFix!!.distanceTo(position)
         val sinceSpeech = if (lastSpeech == 0L) Long.MAX_VALUE else now() - lastSpeech
         val threshold = if (sinceSpeech < 180000) 3000.0 else 1500.0
@@ -111,7 +131,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     }
     fun ticket(active: Boolean): Ticket {
         if (active) invalidate()
-        else { lastCheckAt = now(); lastCheckFix = fix }
+        if (!active || simulationClock != null) {
+            lastCheckAt = cadenceNow(); lastCheckFix = fix; lastCheckProgress = simulationProgress?.invoke() ?: 0.0
+        }
         return Ticket(epoch, now(), fix, active)
     }
     fun requestInput(text: String): Boolean {
@@ -126,7 +148,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         }
         if (listOf("多讲", "少讲", "详细一点", "简单一点", "孩子", "偏好").any { it in clean })
             instructions = (instructions.lines().filter(String::isNotBlank).takeLast(3) + clean).joinToString("\n").takeLast(600)
-        cooldownUntil = now() + 30000; changed(); return true
+        cooldownUntil = cadenceNow() + 30000; changed(); return true
     }
     fun beginListening(onResult: (String) -> Unit) {
         if (!running) return
@@ -137,21 +159,22 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                 listening = false
                 if (value.isNullOrBlank()) {
                     if (destinationQuestion) { destination = "未提供"; destinationQuestion = false }
-                    notice = "没听清，想说时再点一下。"; cooldownUntil = now() + 30000; changed()
+                    notice = "没听清，想说时再点一下。"; cooldownUntil = cadenceNow() + 30000; changed()
                 } else { changed(); onResult(value) }
             }
         }
     }
-    fun deliver(ticket: Ticket, raw: String?, onAnswer: (String) -> Unit = {}) {
-        if (!running || ticket.epoch != epoch || now() - ticket.at > 45000) return
+    fun deliver(ticket: Ticket, raw: String?, onAnswer: (String) -> Unit = {}): DeliveryOutcome {
+        if (!running || ticket.epoch != epoch) return DeliveryOutcome.CANCELLED
+        if (now() - ticket.at > 45000) return DeliveryOutcome.STALE
         if (!ticket.active && (isQuiet || speaking || listening || ticket.fix == null || fix == null ||
                     now() - fix!!.timeMs > 60000 || ticket.fix.distanceTo(fix!!) > 1500 ||
-                    angleDifference(ticket.fix.bearing, fix!!.bearing) > 65)) return
+                    angleDifference(ticket.fix.bearing, fix!!.bearing) > 65)) return DeliveryOutcome.STALE
         val response = runCatching { DirectorContract.parse(raw ?: error("Provider unavailable")) }
         if (response.isFailure) {
             diagnostic("Director response unavailable or failed schema validation")
             if (ticket.active) say("刚才没连上，稍后再试。", false, true, onAnswer)
-            changed(); return
+            changed(); return DeliveryOutcome.FAILURE
         }
         val result = response.getOrThrow()
         when (result.action) {
@@ -166,10 +189,10 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                     asked.add(normalized); lastQuestion = now()
                     if (destination == "未询问") { destinationQuestion = true; destination = "等待回答" }
                     say(result.question, true, ticket.active, onAnswer)
-                }
+                } else return DeliveryOutcome.SUPPRESSED
             }
             Action.SPEAK_NOW -> {
-                if (!ticket.active && (skippedTopics[result.topic] ?: 0) > now()) return
+                if (!ticket.active && (skippedTopics[result.topic] ?: 0) > now()) return DeliveryOutcome.SUPPRESSED
                 prepared = null; topic = result.topic
                 if (result.topic !in recentTopics) {
                     recentTopics.addLast(result.memoryUpdate.ifBlank { result.topic })
@@ -179,12 +202,16 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             }
         }
         changed()
+        return DeliveryOutcome.valueOf(result.action.name)
     }
     private fun say(text: String, ask: Boolean, active: Boolean, onAnswer: (String) -> Unit) {
         speaking = true; val token = epoch; changed()
         voice.speak(text) { success ->
             if (epoch == token && running && speaking) {
-                speaking = false; lastSpeech = now(); cooldownUntil = now() + if (active) 30000 else 60000
+                speaking = false; lastSpeech = now()
+                lastSpeechTravelMs = simulatedTravelMs
+                cooldownUntil = cadenceNow() + if (active) 30000 else 60000
+                diagnostic("Voice completed success=$success active=$active ask=$ask")
                 if (!success) {
                     notice = "语音播放不可用，请检查系统中文语音。"
                     if (destinationQuestion) { destination = "未提供"; destinationQuestion = false }
@@ -194,7 +221,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             }
         }
     }
-    fun invalidateProvider() { if (running) { invalidate(); prepared = null; cooldownUntil = now() + 10000; changed() } }
+    fun invalidateProvider() { if (running) { invalidate(); prepared = null; cooldownUntil = cadenceNow() + 10000; changed() } }
 }
 
 fun quietCommand(text: String): Long? {

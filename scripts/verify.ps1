@@ -25,12 +25,13 @@ try {
     New-Item -ItemType Directory -Path artifacts -Force | Out-Null
     Copy-Item -LiteralPath app\build\outputs\apk\debug\app-debug.apk -Destination artifacts\kitt-v0-debug.apk -Force
     Copy-Item -LiteralPath app\build\acceptance\full-simulation.txt -Destination artifacts\full-simulation.txt -Force
+    Copy-Item -LiteralPath app\build\acceptance\accelerated-simulation.txt -Destination artifacts\accelerated-simulation.txt -Force
     $taskHash = (Get-FileHash -LiteralPath artifacts\kitt-v0-debug.apk -Algorithm SHA256).Hash
     "$taskHash  kitt-v0-debug.apk" | Set-Content -LiteralPath artifacts\SHA256.txt -Encoding utf8
     [ordered]@{
         build='PASS'; tests=$taskTests; failures=$taskFailures; lint='PASS'; signature='PASS'
         simulation='PASS with Fake Provider and fake Voice'; apk='kitt-v0-debug.apk'; sha256=$taskHash
-        deviceAcceptance='Remaining: GPS, Chinese TTS/ASR, Android Keystore, lock-screen/OEM behavior'
+        deviceAcceptance='Exact M1.1/M1.2/M1.3 phone evidence and remaining physical/OEM checks are recorded in HANDOFF.md.'
         liveProvider='ChatGPT plan adapter implemented; exact live phone acceptance is recorded in HANDOFF.md. API-key providers remain optional alternatives.'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8
     Write-Output "PASS: $taskTests tests; install artifacts\kitt-v0-debug.apk"

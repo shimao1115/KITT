@@ -1,4 +1,18 @@
-# KITT V0 + M1.2 — acceptance handoff
+# KITT V0 + M1.3 — acceptance handoff
+
+Status as of **2026-10-03 (Asia/Shanghai)**: **M1.3 accelerated-simulation delivery gate verified on vivo V2405A (API 36)**. Explicit simulation now compresses driving between interactions: route progress drives roughly 14 automatic opportunities, and travel pauses during Director requests, TTS and one-shot listening. Real-GPS cadence, the 1,500 m stale threshold, wall-clock quiet durations and ChatGPT M1.1 adapters remain unchanged. Debug/Release builds, lint and **70 tests per variant** pass, preserving all original 60. The final APK is installed; the human user confirmed hearing an automatic real-ChatGPT narration. No authorization/key step is required on this phone.
+
+## M1.3 phone acceptance
+
+Reproduced the old **100 km/h + 16×** silent route on the installed M1.2 phone build. A retained regression reproduces six delayed valid auto responses all becoming spatially stale, with zero voice outputs. After the cadence/pause fix, a complete live route returned **14 genuine SILENT, zero stale/failure**; this established a Context-quality issue separately from the acceleration bug. Only then, a minimal simulation-only Context adjustment clarified fixture area stages, simulated versus wall elapsed time, and the not-yet-asked destination. The system constitution, real-GPS Context and ChatGPT provider implementation are unchanged; no narration is forced or replaced with Fake text.
+
+The final live ChatGPT run automatically asked the destination and delivered **SPEAK_NOW** at **15,590 m** after **12.53 seconds** of provider latency. Request/terminal progress was identical; TTS then completed successfully after **33.3 seconds**, and accelerated movement resumed. The user explicitly confirmed hearing the question and automatic narration. A second automatic SPEAK_NOW also survived about 15 seconds of latency at **73,076 m**. Full route: **14 requests = 11 SILENT + 2 SPEAK_NOW + 1 ASK_USER; 0 stale/cancel/failure**. Both automatic narrations completed TTS successfully. The installed APK hash matches the packaged artifact. Settings system Back and the next ordinary Start were rechecked: main returned correctly, the real GPS listener registered at 2 seconds / 5 m, and ending cleared the route label. The phone is left at real-GPS idle with no active trip. See [M1.3 acceptance](docs/ACCEPTANCE_M1_3.md).
+
+The one system-recognition window returned no recognized destination; successful ASR transcription is not claimed. The phone uses vivo Copilot recognition, and the existing developer text fallback remains available. This is separate from the now verified automatic ChatGPT/TTS gate. Remaining broader checks are outdoor physical GPS reception, reliable Chinese ASR, subjective content quality and OEM lock-screen endurance. The fixture remains coarse and non-navigation-grade.
+
+Shortest M1.3 recheck: title five taps → **100 km/h / 16× / 开始** → allow automatic decisions and listen. During thinking/voice/listening, movement pauses; between interactions it accelerates. View counters through the same hidden entry or `adb logcat -s KITTSim`. SILENT is valid and reported distinctly from stale/cancel/failure. **安静一会儿** still means 10 real minutes. End explicitly; ordinary Start must return to **手机 GPS**. Existing phone configuration remains **ChatGPT / gpt-5.6-luna / high**; fresh installations still default to Fake.
+
+M1.2's completed acceptance is preserved below as historical evidence.
 
 Status as of **2026-10-03 (Asia/Shanghai)**: **M1.2 navigation/source fixes PASS on the connected vivo V2405A (Android API 36)**. Settings system Back now returns to the main screen; main idle Back retains Android's exit behavior. Ordinary Start always uses phone GPS, for every Provider. Only an explicit hidden developer Start uses the fixture. Ending/stopping simulation clears its source and route/completion label. Legacy persisted `simulation=true` is removed on upgrade; speed/acceleration preferences and explicit unfinished-trip recovery remain available. M1.1 and D0–D11 regression scenarios pass.
 
@@ -37,7 +51,7 @@ Implementation, lifecycle boundaries and official sources: [M1.1](docs/CHATGPT_S
 & "$env:ANDROID_HOME\platform-tools\adb.exe" shell am start -n com.kitt.reader/.MainActivity
 ```
 
-The final M1.2 APK has been installed and launched on the connected phone. Original D0–D11 audio/GPS/OEM background behavior still requires the acceptance run below; the focused M1.2 checks do not establish those broader behaviors.
+The final M1.3 APK has been installed and launched on the connected phone. Automatic real-ChatGPT Chinese TTS is now heard and verified; broader D0–D11 GPS/ASR/OEM background and subjective quality checks remain as described below.
 
 ## Default Provider and real-AI setup
 
@@ -52,7 +66,7 @@ Keys are encrypted with Android Keystore in private on-device settings and exclu
 ## One final acceptance run
 
 1. Open the app. Leave Fake selected for a credential-free technical test, or configure the real Provider first as above for content-quality acceptance.
-2. Tap the top **路上读山河** title **five times**. Select **80 km/h** and **16×** (roughly five minutes for the coarse route; 60× is a faster smoke test). The only fixture is 成都→德阳→绵阳. Click the developer dialog's **开始** to explicitly start this simulated trip. Ordinary main-screen Start always uses phone GPS. Grant precise location and notification permissions when requested. Location permission is used for the foreground journey even with simulated input.
+2. Tap the top **路上读山河** title **five times**. Select **80 km/h** and **16×** (roughly five minutes of compressed driving, plus time spent thinking/speaking/listening; 60× is a faster smoke test). Use **100 km/h + 16×** for the M1.3 regression. The only fixture is 成都→德阳→绵阳. Click the developer dialog's **开始** to explicitly start this simulated trip. Ordinary main-screen Start always uses phone GPS. Grant precise location and notification permissions when requested. Location permission is used for the foreground journey even with simulated input.
 3. After the first location arrives, hear **今天准备去哪儿？**. Allow the microphone when the one listening window requests it; say **去绵阳**. Expect a short acknowledgement, then quiet until a worthwhile narration. No response should produce repeated nagging. If system voice recognition is unavailable, the same hidden developer entry accepts one typed user utterance into the same Director loop; use that fallback to continue the technical test.
 4. During narration, tap **说点什么**: audio must stop immediately. Say **再讲一点**, then **今天多讲工程**. Expect the same Director to respond and keep the temporary preference for this trip. Fake uses fixed replies; only the real Provider can prove semantic/content quality.
 5. Tap **安静一会儿**: show **10:00** and the large **结束安静** control. Resume early. Try **跳过** during speech: stop without resuming the old narration. Natural-language **安静半小时**, **安静一个小时** and **先别讲，等我叫你** are implemented. Ten-minute expiry without forced speech is already covered by clock tests; leaving it to expire on the phone is optional.
@@ -74,7 +88,7 @@ If Chinese TTS is unavailable, select/install a **zh-CN system TTS voice** in An
 - Explicitly started location foreground service, quiet/end notification actions, progressive permissions, foreground screen-on and no automatic screen wake.
 - Lightweight JSON recovery and last 20 summaries, at most eight recent themes, five local ratings and optional feedback. No full GPS/transcript/search history storage.
 - ChatGPT OAuth plan provider, Fake, OpenAI Responses and compatible API adapters; Provider/model/effort controls, encrypted credentials, TTS rate and notification status. M1.1 adds dynamic registration, RS256 OIDC validation, rotating-token renewal, revocation, account models and completion-gated SSE.
-- Hidden simulation controls: one fixture, physical speed 40/80/100 km/h, time acceleration 1/16/60×, explicit session start/stop, typed voice fallback. Only speed preferences persist; ordinary starts use real GPS. Explicit recovery may continue an unfinished simulation. Acceleration changes travel distance, not the ten-minute quiet timer.
+- Hidden simulation controls: one fixture, physical speed 40/80/100 km/h, time acceleration 1/16/60×, explicit session start/stop, typed voice fallback and action counters. Only speed preferences persist; ordinary starts use real GPS. Explicit recovery may continue an unfinished simulation. M1.3 pauses travel during requests/TTS/listening and uses route progress for opportunities; quiet durations remain real time.
 
 ## Build/test evidence
 
@@ -88,20 +102,21 @@ cd H:\CODEX\KITT
 
 Result: **PASS**. The packaging command verifies Debug build/tests/lint/signature; the second command also builds Release and runs all unit-test variants plus Release lint.
 
-- **60 tests in each of Debug and Release**, **0 failures, 0 errors, 0 skips**: the existing 34 D0–D11 and 18 M1.1 scenarios, plus eight M1.2 regressions. Two existing tests now launch simulation explicitly / assert persistent speed preferences to reflect the corrected behavior. The three original Compose UI tests use the declared MainActivity as their test host so they also work in Release; their behavior assertions remain intact. All 18 OAuth/inference tests remain green.
+- **70 tests in each of Debug and Release**, **0 failures, 0 errors, 0 skips**: the original 34 D0–D11, 18 M1.1 and eight M1.2 scenarios, plus ten M1.3 regressions. No original test was removed. The M1.3 tests cover delayed 100 km/h + 16× delivery, route opportunities, 60× smoke behavior, interaction pauses, real quiet timing, unchanged real-GPS behavior, cancellation/PREPARE/stale safety, and simulation Context reset. All 18 OAuth/inference tests remain green.
 - Lint: **0 errors** in Debug and Release; four existing newer-dependency warnings in Debug, one warning in Release. Pinned working toolchain: JDK 17, Gradle 8.9, AGP 8.7.3, Kotlin/Compose compiler 2.0.21, SDK 35.
 - APK signature: **PASS**, v2 scheme. SHA-256: `artifacts/SHA256.txt`; machine-readable gate result: `artifacts/verification.json`.
 - Full route: **110,452 m**, **80 km/h**, **82 simulated minutes**, **64 Director checks**, **4 voice outputs**. Production Context/Director/Journey with Fake Provider and fake Voice. No subjective real-AI product PASS is implied.
+- Accelerated delayed-provider route: **100 km/h + 16×**, **14 automatic opportunities**, **15 total requests**, **13 automatic SPEAK_NOW + one ASK_USER + one active reply**, **0 stale/cancel/failure**; five-second provider latency and 20-second fake TTS. Evidence: `artifacts/accelerated-simulation.txt` and [M1.3](docs/ACCEPTANCE_M1_3.md).
 - Detailed evidence: [Acceptance](docs/ACCEPTANCE.md), `artifacts/full-simulation.txt`, `app/build/reports/tests/testDebugUnitTest/index.html`, `app/build/reports/lint-results-debug.html`.
 
 This machine already has `JAVA_HOME=C:\Users\Church\AppData\Local\CodexToolchains\jdk-17` and `ANDROID_HOME=C:\Users\Church\AppData\Local\Android\Sdk`. On a fresh machine omit `-Offline` to fetch dependencies. No runtime environment setup is needed on the phone beyond installation, permissions and the system voice components.
 
 ## Remaining external checks and limitations
 
-M1.1's phone authorization, account models, real Director and disconnect/reconnect gates passed. Remaining original V0 checks: physical GPS/Chinese audio/recognition, full driving content quality and lock-screen/OEM journey-service behavior. A Platform API key is optional. Those broader D0–D11 phone behaviors are not implied by the focused M1.1 Settings acceptance.
+M1.1's phone authorization, account models, real Director and disconnect/reconnect gates passed. M1.3 adds an audible automatic real-ChatGPT narration gate. Remaining original V0 checks: physical GPS, reliable Chinese recognition, full driving content quality and lock-screen/OEM journey-service behavior. A Platform API key is optional.
 
 - Fixture is **coarse, non-navigation-grade**, with no promised AMap screenshot supplied. Replacing `app/src/main/assets/chengdu-mianyang.json` later refines the fixture; the screenshot is optional for the current technical acceptance.
-- Map enrichment/search are not connected. The constitution explicitly limits unverified local specifics, exact figures, records and real-time claims. Fake explains general mechanisms and labels demonstration content. Real factual/narrative quality remains to be judged after credentials are supplied.
+- Map enrichment/search are not connected. The constitution explicitly limits unverified local specifics, exact figures, records and real-time claims. Fake explains general mechanisms and labels demonstration content. Real factual/narrative quality still requires broader judgment; the connected phone already has ChatGPT credentials.
 - PREPARE is conservatively bound to the current position/heading and a short lifetime; it is always revalidated, never cached speech or an inferred navigation target.
 - Last 20 summaries are saved locally; there is no historical-trip browser, navigation, backend, car integration or continuous microphone. These are outside V0 or explicitly allowed lightweight fallbacks.
 - The ready artifact is a debug acceptance build, not a store release.
@@ -130,6 +145,8 @@ Milestones on `main` (including the original D0–D11 history and the M1.1 task 
 | M1.1 handoff | `bc41ff3` | Final M1.1 phone evidence |
 | M1.2 task | `464f8e3` | Navigation and simulation isolation acceptance contract |
 | M1.2 | `3f4d994` | Navigation/source isolation fixes, regression tests and phone acceptance |
-| M1.2 handoff | final `HEAD` | Current APK, build/test evidence and minimal recheck steps |
+| M1.2 handoff | `1d54588` | Phone-verified source/navigation and all-variant gates |
+| M1.3 task | `87097c4` | Accelerated simulation cadence and live delivery contract |
+| M1.3 | final `HEAD` | Simulation progress/pause fix, ten regressions, real ChatGPT audible acceptance |
 
 The final tracked working tree is clean. `artifacts/`, Gradle/Kotlin caches and build/test outputs are intentionally ignored and remain available locally. `git log --oneline -13` shows the exact final commit hashes, including D11.

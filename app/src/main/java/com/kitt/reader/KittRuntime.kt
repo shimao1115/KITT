@@ -30,7 +30,9 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             ProviderKind.FAKE -> FakeProvider()
             else -> ApiProvider(config)
         }
-    }) { Log.w("KITT", it) }
+    }, failure = { Log.w("KITT", it) }, diagnostic = {
+        if (simulation) Log.i("KITTSim", "$it progressMeters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt() ?: 0}")
+    })
     var simulation = false; private set
     var acceleration = settings.acceleration
     var simulationSpeed = settings.simulationSpeed
@@ -43,7 +45,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     var notificationChanged: (() -> Unit)? = null
     init {
         (voice as? AndroidVoice)?.speechRate = settings.speechRate
-        journey.diagnostic = { Log.w("KITT", it) }
+        journey.diagnostic = { if (simulation) Log.i("KITTSim", it) else if (!it.startsWith("Voice completed")) Log.w("KITT", it) }
     }
     val sourceLabel: String get() = if (simulation) "成都→绵阳 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
     fun start(simulated: Boolean = false) {
@@ -55,13 +57,18 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             acceleration = saved.acceleration
             journey.restore(saved.started, saved.destination, saved.instructions, saved.topics, saved.quietUntil)
         } else journey.start()
-        loop.reset()
+        loop.reset(); loop.counters.clear()
         source = if (simulation) {
             val fixture = context.assets.open("chengdu-mianyang.json").bufferedReader().use { RouteFixture.parse(it.readText()) }
-            SimulatedLocationSource(fixture, scope, System::currentTimeMillis, speedKmh = simulationSpeed, acceleration = acceleration, initialTravelMs = saved?.travelMs ?: 0L) {
+            SimulatedLocationSource(fixture, scope, System::currentTimeMillis, speedKmh = simulationSpeed, acceleration = acceleration,
+                initialTravelMs = saved?.travelMs ?: 0L, paused = { loop.pending || journey.speaking || journey.listening }) {
+                Log.i("KITTSim", "route completed ${loop.counters.summary()}")
                 sourceNotice = "模拟已到终点"; revision.intValue++
             }
         } else RealLocationSource(context) { sourceNotice = it; revision.intValue++ }
+        (source as? SimulatedLocationSource)?.let { simulatedSource ->
+            journey.simulationCadence({ simulatedSource.simulatedTravelMs }, { simulatedSource.traveledMeters })
+        }
         source?.start(loop::location)
         ticker = scope.launch {
             var quiet = journey.isQuiet

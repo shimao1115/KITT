@@ -21,17 +21,19 @@ data class RouteFixture(val name: String, val speedKmh: Double, val points: List
     }
 }
 
-/** Linear coarse fixture interpolation. Acceleration changes travel distance only, not quiet/voice clocks. */
+/** Compress driving between interactions; never compress quiet or voice clocks. */
 class SimulatedLocationSource(
     val fixture: RouteFixture, private val scope: CoroutineScope, private val now: () -> Long,
     val speedKmh: Double = fixture.speedKmh, val acceleration: Double = 1.0,
-    private val initialTravelMs: Long = 0L, private val onFinished: () -> Unit = {}
+    private val initialTravelMs: Long = 0L, private val paused: () -> Boolean = { false },
+    private val onFinished: () -> Unit = {}
 ) : LocationSource {
     private val lengths = fixture.points.zipWithNext().map { (a, b) -> Fix(a.lat, a.lon, 0).distanceTo(Fix(b.lat, b.lon, 0)) }
     val totalMeters = lengths.sum()
     var traveledMeters = 0.0; private set
     var completed = false; private set
     var travelMs = initialTravelMs; private set
+    val simulatedTravelMs get() = (travelMs * acceleration).toLong()
     private var job: Job? = null
     init { require(speedKmh in 1.0..200.0 && acceleration in 1.0..120.0) }
     fun sample(elapsedMs: Long, timeMs: Long): Fix {
@@ -45,14 +47,21 @@ class SimulatedLocationSource(
         val bearing = (Math.toDegrees(atan2(sin(lon) * cos(lat2), cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(lon))) + 360) % 360
         return Fix(a.lat + (b.lat - a.lat) * fraction, a.lon + (b.lon - a.lon) * fraction, timeMs,
             if (traveledMeters >= totalMeters) 0.0 else speedKmh, bearing, area = if (fraction >= 0.99) b.area else a.area,
-            clue = "粗粒度模拟测试线索；非真实道路、非导航级，无已核验当地节点。")
+            clue = "粗粒度模拟阶段：${a.area}→${b.area}；非真实道路、非导航级，无已核验当地节点。" +
+                "区域与移动方向是模拟场景输入，可据此解释有新理解价值的稳定通用机制；不声称用户看见了具体建筑或桥梁，无新价值就保持安静。")
     }
     override fun start(onFix: (Fix) -> Unit) {
-        stop(); completed = false; val startTime = now()
+        stop(); completed = false; travelMs = initialTravelMs
         job = scope.launch {
+            var previousTime = now()
+            var wasPaused = paused()
             do {
-                travelMs = initialTravelMs + now() - startTime
-                onFix(sample(travelMs, now()))
+                val time = now(); val isPaused = paused()
+                // Conservatively omit transition intervals: no catch-up jump after an interaction.
+                if (!wasPaused && !isPaused) travelMs += (time - previousTime).coerceAtLeast(0)
+                previousTime = time
+                onFix(sample(travelMs, time)) // Fresh timestamps even while the position is frozen.
+                wasPaused = paused()
                 if (traveledMeters >= totalMeters) { completed = true; onFinished(); break }
                 delay(1000)
             } while (isActive)
