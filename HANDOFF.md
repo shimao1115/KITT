@@ -92,3 +92,21 @@ API研究有自身计费，设置写明；兼容聊天 API 不被当作支持搜
 | `bc92395` | 独立地标接近、节点去重与过时保护 |
 
 上游 `0b5694d` 的主动搜索任务补充与未来语音 BACKLOG已经继承；当前未完成的是外部真实研究／内容Gate，不是重新施工已接受ASR。
+
+## 2026-10-03 Google ASR 只读重新探测补充
+
+用户确认同一 vivo 手机 Gboard 中文语音输入可用，随后进行了独立普通 App 公共接口探测。
+详细设备版本、全部服务、可见性和完整 callback 在 [GOOGLE_ASR_REPROBE.md](docs/GOOGLE_ASR_REPROBE.md)。
+
+- 当前存在启用、导出且普通 PM 可解析的 Google 服务：
+  `com.google.android.tts/com.google.android.apps.speech.tts.googletts.service.GoogleTTSRecognitionService`。
+  Google App 的旧识别组件仍禁用；Gboard 自身不声明可见 RecognitionService。
+- 三句显式调用第一轮均 ready 后 `ERROR_NETWORK(2)`；用户自行设全局代理后，完整三句均 ready / beginningOfSpeech，
+  仍无 partial / end / final / error，30秒由诊断程序取消。**结论 C，不是 no-match，中文质量未能评估。**
+- `isOnDeviceRecognitionAvailable=false`；默认识别仍为 vivo，其公共默认入口 `ERROR_CLIENT(5)`。
+  Agent未修改默认输入法或默认识别；最终识别值仍是vivo，输入法由探测初始Gboard变为豆包，变化来源未验证，未擅自切回。
+  不能从 Gboard 能用推断沿途公共识别可用。
+- 独立探测 APK 编译／签名／真机枚举通过，无生产代码改动；临时诊断 App 已卸载，源码及电脑日志保留。
+  沿途 `0.3.0 / versionCode 5`、现有 Vosk fallback 和已验收UI保持原状，不重开生产构建／模拟Gate。
+- 当前不加 Google 到 backend 优先级；若未来公共路径可靠返回三句中文，再做显式组件的最小接入及失败语义测试。
+  无需用户现在提供 key／授权。当前任务没有证明具体网络失败根因，不要求继续改代理或调用私有接口。
