@@ -92,21 +92,22 @@ SpeechEngine { id, watchdogMs, start(sink), cancel() }   RecognitionSink { onRea
 
 ## 已知限制及延后的 Gate
 
-**必须在最终 APK 上补做的一次实机复验（本批次唯一未完成项）**：真人发声验收是在**同语义但早于一次小重构**的构建上完成的
-（重构只把 `AudioRecord` 创建从工作线程移到带权限守卫的调用处，逻辑未变）。手机当时断开，所以下面三项请在接上手机后复验：
-1. 用 0.2.1／SHA `D0C1634E…` 这个包再说一遍四句验收语；
-2. **`安静十分钟` 的真人识别**（上一轮日志里没有出现这句话，只有键盘路径证明过它进安静）；
-3. **安静倒计时 visibly 逐秒下降**（修复后）。
-复验若在真声上失败，应视为 ASR 未通过，而不是把结果改回“没听清”。
+**真人语音验收已在最终发布包上完成**（0.2.1／versionCode 3／SHA `D0C1634E…`，vivo V2405A）：
+`再讲一点`／`跳过`／`安静十分钟`／`三星堆为什么这么有名` 四句全部逐字正确；不出声得到 `TIMEOUT` 而非编造文字；
+讲述中打断后仍能听；第一次系统识别失败之后整个窗口都不再重复探测它；安静倒计时按真实秒速下降。
+完整表格与原始日志见 [中文语音输入恢复](docs/ACCEPTANCE_CHINESE_ASR.md)。
 
 其余限制：
 
 - **离线中文模型的准确率是有代价的**：Vosk `small-cn` 自报 CER 23.5 %（speechio_02）／38.3 %（speechio_06）。
   四句验收语（含命名实体“三星堆”）逐字正确，但**这不等于长句、口音、自由口述同样好**。
-  若真机上自由口述质量不够，升级路径是 sherpa-onnx（Apache-2.0，paraformer-zh-small-int8 82 MB 或 SenseVoice-int8 237 MB），
+  实机已观察到一次较长句子被端点检测提前截断、只剩尾部两个字（`EndpointerMode.LONG` 已是较宽档）。
+  若真路上自由口述质量不够，升级路径是 sherpa-onnx（Apache-2.0，paraformer-zh-small-int8 82 MB 或 SenseVoice-int8 237 MB），
   代价是要在库里提交 38–50 MB AAR 或引入 JitPack；已有 `SpeechEngine` 接缝，换引擎不需要再动 Journey／Director。
 - **噪声幻觉已挡住但门限是实测调出来的**：模型会把接近静音的噪声编成看着合理的句子（实机出现过 `我要去绵羊`），
   现在没有 voice energy（RMS>300）就不接受转写。极端安静的车厢可能把轻声判成 `没等到语音`，这时应该重说而不是怀疑后端。
+- 两次安静在我采样约 20 秒后自行结束，时间点与用户结束测试、按屏幕上「结束安静」重合；
+  **放置 60 秒不动则稳定保持**，所以没有证据表明存在自发作废，但留作观察项，不宣布已排除。
 - 模型常驻进程：`AndroidVoice.close()` 在生产路径**没有调用者**，所以模型一旦用过就驻留（实机 TOTAL PSS ≈ 212 MB／RSS ≈ 250 MB）。
   现代手机可接受，但这是明确的资源代价；低内存设备的表现属人工验收范围。
 - 首次使用语音要等模型解包（实测约 8 s），期间监听条处于“准备中”。
@@ -116,22 +117,27 @@ SpeechEngine { id, watchdogMs, start(sink), cancel() }   RecognitionSink { onRea
   通用素材条目只是方向提示，模型不得据此编造当地事实；Adapter 未启用搜索。
 - 系统Geocoder可用性依设备；API33+超时8s。Windows Robolectric 不能替代实体麦克风／FileProvider URI／硬件表现。
 - 手机专属能力（真实 GPS／地点／地标时机、OEM 锁屏长运行、TTS 主观表现、后台清理）仍 **DEFERRED TO COMBINED PHONE ACCEPTANCE**。
+- ASR 完成后，上游新增的 `docs/TASK_POST_ASR_YANTU_V03.md`（沿途 V0.3）与 `docs/TASK_MANDATORY_LOCAL_SEARCH.md`
+  两张任务卡的前置条件已经解除，是下一个 Destination 的候选；本批次没有开始它们。
 
-## 最短人工总验收（语音部分，接上手机即可）
+## 最短人工总验收（语音部分，本批次已在最终包上跑过）
 
 ```
 adb install -r artifacts/kitt-v0-debug.apk
 adb shell am start -n com.kitt.reader/.MainActivity     # 开始读山河 → 点“说点什么”
 ```
 说 `再讲一点`／`跳过`／`安静十分钟`／`三星堆为什么这么有名`，然后
-`adb logcat -d -s KITTVoice` 应当看到 `backend=system … outcome=CLIENT code=5` → `falling back to vosk-cn`
-→ `outcome=SUCCESS … text=<你说的原话>`。不出声应得到 `TIMEOUT` 而不是编出文字；
-安静时屏幕上的“剩余 M:SS”应逐秒减少。
+`adb logcat -d -s KITTVoice` 应当看到 **进程内第一次** `engine=system error code=5` → `falling back to vosk-cn`
+→ `outcome=SUCCESS … text=<你说的原话>`。之后各次监听会**直接用 `vosk-cn`，不再出现 `engine=system`**
+（坏后端已被记住，这正是“不重复探测”的期望行为，不是日志缺失）。首次点语音先等模型解包（约 8 s，状态为“准备中”）。
+不出声应得到 `TIMEOUT` 而不是编出文字；安静时屏幕上的“剩余 M:SS”应逐秒减少。
 
 ## 最近 milestone commits
 
 | Commit | Destination |
 | --- | --- |
+| `dcdeafd` | V0.2：中文语音输入在 vivo 实机上真正可用（离线模型回落） |
+| `0a8c397` | fix：安静倒计时真的在倒数 |
 | `2b156ce` | docs：中文 ASR 恢复任务卡 |
 | `d201a38` | V0.2：把编辑自由度交回 Director |
 | `bc92395` | 独立地理／地标机会，节点去重和接近过时保护 |
