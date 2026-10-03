@@ -1,6 +1,6 @@
 # Task Card — 沿途 V0.3：品牌重命名 + 搜索驱动内容 + 触发增强
 
-Status: **WAITING — execute only after `docs/TASK_CHINESE_ASR_RECOVERY.md` is complete**
+Status: **ACTIVE — Chinese ASR recovery is complete; execute from current `main`**
 Source of truth after ASR: this file
 Absorbs: `docs/TASK_MANDATORY_LOCAL_SEARCH.md` + the latest product decisions in Issue #10
 Internal codename: KITT may remain
@@ -21,7 +21,7 @@ Product definition:
 
 The old name **“路上读山河”** is no longer the product name. It is too narrow because mountains/rivers are now only one part of the content.
 
-Do not start this batch until Chinese ASR recovery is finished and committed to `main`. Then inherit the latest state and implement this batch as one coherent update.
+Chinese ASR recovery is now complete on `main`. Inherit the latest state and implement this batch as one coherent update.
 
 ---
 
@@ -393,7 +393,7 @@ Preserve:
 
 # 15. Deliverable
 
-After `TASK_CHINESE_ASR_RECOVERY` is complete:
+With `TASK_CHINESE_ASR_RECOVERY` complete:
 
 - rebase/inherit latest `main`;
 - implement this batch autonomously;
@@ -410,4 +410,4 @@ After `TASK_CHINESE_ASR_RECOVERY` is complete:
 - commit/push `main`;
 - leave tracked working tree clean.
 
-Do not start this batch before the ASR task is complete, so the user can validate the current content while Qoder works on voice input and then receive one coherent follow-up build.
+The ASR prerequisite is satisfied. This is now the next active Destination.
