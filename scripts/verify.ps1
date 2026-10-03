@@ -36,13 +36,13 @@ try {
     $taskHash = (Get-FileHash -LiteralPath artifacts\kitt-v0-debug.apk -Algorithm SHA256).Hash
     "$taskHash  kitt-v0-debug.apk" | Set-Content -LiteralPath artifacts\SHA256.txt -Encoding utf8
     [ordered]@{
-        version='0.2.0'; build='PASS (Debug/Release)'; variants=$taskCounts; lint='PASS (Debug/Release)'; signature='PASS'
+        version='0.2.1'; build='PASS (Debug/Release)'; variants=$taskCounts; lint='PASS (Debug/Release)'; signature='PASS'
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk='kitt-v0-debug.apk'; sha256=$taskHash
-        deviceAcceptance='DEFERRED TO COMBINED PHONE ACCEPTANCE: docs/COMBINED_PHONE_ACCEPTANCE.md. This batch accessed no phone.'
+        deviceAcceptance='Chinese voice input accepted on the vivo V2405A; see docs/ACCEPTANCE_CHINESE_ASR.md. Remaining subjective-content gates stay in docs/COMBINED_PHONE_ACCEPTANCE.md.'
         liveProvider='Real provider narrative/image quality DEFERRED; historical M1.1-M1.4 phone evidence preserved in HANDOFF.md.'
-        chineseASR='Explicitly out of scope for this batch and combined acceptance.'
+        chineseASR='System recogniser still fails ERROR_CLIENT before ready; the bundled offline Vosk Chinese model is the working path on this device.'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8
     Write-Output "PASS: Debug $($taskCounts.Debug.tests) + Release $($taskCounts.Release.tests) tests; install artifacts\kitt-v0-debug.apk"
 } finally { Pop-Location }

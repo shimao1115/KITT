@@ -1,27 +1,31 @@
 # KITT V0.2 — 当前交接
 
-截至 **2026-10-03（Asia/Shanghai）**：`docs/TASK_EDITORIAL_FREEDOM.md` 的**编辑自由度／Prompt 重置已完整实施**
-（不再是只改措辞：宪法、候选语义、章节进入机会、题材分类开放度和回归测试全部重写）。
-**Debug/Release 各136测试、两个构建、两个 lint 全部 PASS**；本次同样没有连接或操作手机。
-中文 ASR 仍不在范围内，手机专属 Gate 全部 **DEFERRED TO COMBINED PHONE ACCEPTANCE**。
-首个剩余 Destination 仍是[联合手机验收](docs/COMBINED_PHONE_ACCEPTANCE.md)，无需重复施工历史阶段。
+截至 **2026-10-03（Asia/Shanghai）**：**中文语音输入已在实机上真正可用**（`docs/TASK_CHINESE_ASR_RECOVERY.md`），
+方式是保留原有「点一下→听一次→把交回原 Director」交互不变，在系统识别被证实不可用后回落到**打包进 APK 的离线中文模型**。
+同时修掉一个用户实测报出的旧缺陷：**安静倒计时数字一直不走**（只是显示，时长逻辑原本就是对的）。
+**Debug/Release 各 154 测试、两个构建、两个 lint 全部 PASS**；四句验收语由真人发声逐字识别正确。
+编辑自由度／章节机会／地标／路线图／看图／OAuth／模拟 GPS 等既有能力**本批次未改动逻辑**。
 
 ## 直接安装与验收
 
-最新可安装 APK：`H:\CODEX\KITT\artifacts\kitt-v0-debug.apk`，**0.2.0 / versionCode 2 / Android 8.0+**。
-本地 `adb install -r artifacts/kitt-v0-debug.apk`，或将 APK 在手机打开安装；本批次没有执行安装。
-APK v2 签名验证 PASS；SHA-256：
-`907B25FDCCA76D00D7ED68BC4240A54F4CCC35DCBF89CCC31733502B8D6B7ABE`。
+最新可安装 APK：`H:\CODEX\KITT\artifacts\kitt-v0-debug.apk`，**0.2.1 / versionCode 3 / Android 8.0+ / 73.9 MB**。
+本地 `adb install -r artifacts/kitt-v0-debug.apk`。APK v2 签名验证 PASS；SHA-256：
+`D0C1634E3614DA7CFD163BC2FBE1D08B5B1BF1F88A57F067853E06C845C8797C`。
+**体积从 9.5 MB 涨到 73.9 MB**：离线中文模型解压 68 MB（随包发布，不走下载）＋只保留 arm64／armeabi-v7a 的原生库。
+**第一次使用语音**时模型会从包内解到应用私有目录（实测约 8 秒，之后每次开听只需 76–91 ms）；不语音输入则完全不付出这个代价。
 
 最短合并顺序：TTS声音试听／保存 → 普通开始验证真实GPS → 结束 → 添加可选路线截图
-→ 标题点五次，**100km/h / 16× / 开始** → 全程观察章节素材架、讲述机会与独立地标，期间追问、安静、旅途看图
+→ 标题点五次，**100km/h / 16× / 开始** → 全程观察章节素材架、讲述机会与独立地标，期间**用语音**追问、安静、旅途看图
 → 后台／锁屏 → 结束纪要 → 普通GPS重启 → 横竖屏。逐项标准见[11项清单](docs/COMBINED_PHONE_ACCEPTANCE.md)。
-开发文本输入可测试用户接管，不算 ASR 成功；无需先修复 vivo 识别服务。
-内容质量这一项现在按“编辑自由度”判：角度是否多样、形式是否不再千篇一律、经过有内容的乡镇是否不再全程沉默。
+语音部分现在**必须真声验收**，键盘文本输入不再算作 ASR 成功。完整语音验收记录：[中文语音输入恢复](docs/ACCEPTANCE_CHINESE_ASR.md)。
 
 ## 当前可运行能力
 
+- **中文语音输入**：点「说点什么」→ 立刻停止朗读 → 听一次 → 中文转写 → 交回原 Director／安静／跳过路径。
+  优先手机系统识别，坏掉时自动回落本地离线模型；RMS 监听条、结构化错误文案、TTS 声音选择器全部保留。
 - Journey 开始／结束、10分钟真实时间安静与提前退出、跳过、最新用户意图、一次 ASK_USER、一个失效型 PREPARE、简短纪要。
+- **安静倒计时现在真的会走**：过去停在第一次画出的数字上，因为绝对截止时间不产生任何可观察变化、Compose 不重组这一行。
+  现在在组合里按秒重读剩余时间；时长、到点恢复、墙钟计算逻辑一行都没改。
 - GPS 压缩 Context；区县背景＋镇乡街道章节，本旅程缓存；现实位置 best-effort 系统逆地理编码，限频且不阻塞 GPS。
 - **本地素材架**：每个章节交出一整面中性主题／实体清单（地方史与建置、古镇老街、各级文物保护单位与历史建筑、
   遗址考古与博物馆、寺庙信仰、风景名胜、文学艺术与地方人物、传说轶闻、非遗与民间工艺、民俗节庆、方言地名、
@@ -31,88 +35,108 @@ APK v2 签名验证 PASS；SHA-256：
   看图与位置新鲜度门槛；被压制的那次唤醒直接丢弃，不排队。有依据充足的材料时倾向于开口，SILENT 仍合法，
   不设篇数或题材配额。区县变化同样可触发背景机会。
 - 最近题材只作为弱反重复提示（“不是黑名单，也不要求轮换题材”）；不再有按题材降权的候选排序。
-- `topic_family` 增加 `OTHER`：模型找到映射不到现有类别的高价值素材时不因此被压制；严格八字段 JSON 契约不变。
+- `topic_family` 增加 `OTHER`；严格八字段 JSON 契约不变。
 - 有依据的地标接近仍可独立唤起检查，优先于泛泛道路／聚落解释，**规则与几何完全保留**：14类支持、
   每节点每趟一次机会、成功交付节点去重、主动深入不受自动去重限制、驶离后晚到内容直接死亡。
-  当前仍是四个粗粒度参考节点，独立于模拟 fixture，真实 GPS 同样可用；不新增全国 POI 或固定坐标点。
-- 可选路线图由当前多模态 Provider **只分析一次**，保存≤240字会话 RouteHint；以后仅传文字，GPS优先。取消／结束／服务丢失清空，不落恢复文件。
-- 乘客／停车时“旅途看图”→ 系统相机／选图＋可选短问题，经主动 Director／本地TTS回答。旧图不带入自动检查，不长期保存，不新增相机或存储权限。
-- 黑红夜间／高对比日间界面，大按钮与简洁地点；竖屏／横屏驾驶页不滚动；保留 M1.4 RMS监听条和慢速讲述scanner语义。
-- ChatGPT账号隔离授权／目录／SSE，Fake／Responses／兼容API；实时位置与开发模拟独立，普通开始始终手机GPS。无新后台、导航、地图数据栈或多Agent。
+- 可选路线图由当前多模态 Provider **只分析一次**，保存≤240字会话 RouteHint；取消／结束／服务丢失清空，不落恢复文件。
+- 乘客／停车时“旅途看图”→ 系统相机／选图＋可选短问题，经主动 Director／本地TTS回答。不长期保存，不新增权限。
+- 黑红夜间／高对比日间界面，大按钮与简洁地点；竖屏／横屏驾驶页不滚动。
+- ChatGPT账号隔离授权／目录／SSE，Fake／Responses／兼容API；实时位置与开发模拟独立，普通开始始终手机GPS。
 
-## 编辑自由度前后对照（完整表见[批次证据](docs/ACCEPTANCE_EDITORIAL_FREEDOM.md)）
+## 语音识别的后端选择规则（这次新增的唯一一层）
 
-| 之前 | 现在 |
-| --- | --- |
-| `只选此刻最值得理解的一件事：眼前切入→一个问题→解释一层→落回眼前→停。` | `当此刻有值得听的东西，就用最合适的方式讲给同行的人；不必每次提问，不必每次升华，不必每次总结。` |
-| `道路只是一个视角，不是整段旅程的主角。` ＋ “三星堆通常胜过重复的道路机制” | 类别清单平等＋`OTHER` 兜底；不再点名规定谁胜过谁 |
-| `进入镇乡街道只刷新背景，仍可 SILENT` | `每进入一个新的镇乡街道都值得检查一次…有依据充足的材料时倾向于开口` |
-| 候选标题“三星堆与古蜀文化：遗物怎样改变对这片土地的理解” | “三星堆 / 古蜀文明”“三星堆代表性器物与考古发现”（三星堆可用但不强制） |
-| 候选“地形水系怎样塑造土地使用” | 候选“本地水系、山川与地貌” |
-| 候选排序＝价值×3 − 最近题材惩罚 | 不排序、不降权，题材历史只提示别重复同样内容 |
+```
+SpeechEngine { id, watchdogMs, start(sink), cancel() }   RecognitionSink { onReady/onRms/onEndOfSpeech/onFinish }
+  ├─ system    原 Android 框架识别（代码搬家，语义不变）
+  └─ vosk-cn   AudioRecord 16 kHz + 包内离线中文模型 + 内置端点检测
+```
+
+- 顺序：系统识别 → 本地模型。**只有「从未进入 ready」且失败属于后端损坏**才回落。
+- `NO_MATCH`／`TIMEOUT` 是声学结果，**永不**触发回落，也不会被写成后端故障。
+- `UNAVAILABLE`／`CLIENT` 会被记住，之后不再重复探测坏掉的后端（本地模型失败同样记住）；
+  `BUSY`／`NETWORK`／`SERVER` 视为瞬时，下次仍给系统识别机会。全部坏掉时保留准确文案 `系统语音识别暂不可用。`
+- 每次点击只交付一个结果：`serial` 之外再加 per-attempt `closed`，被放弃尝试的 watchdog 不可能再触发第二次回落。
+  这条是实机日志里抓出来的真实缺陷（旧版会在 15 s 后打出一条过期 watchdog），已修并有测试。
+- **隐私**：麦克风只在一次「说点什么」期间打开；音频只进一个 100 ms 短数组，用完立刻 `stop/release`，
+  不落盘、无录音历史、无常驻监听、无唤醒词。模型文件是应用私有目录，卸载即清。
+- 没有引入：付费服务、需要 API key 的 ASR、订阅、按分钟计费、云端 TTS、后台识别、RAG／向量库、多 Agent。
 
 ## 默认 Provider／外部步骤
 
-**新安装默认 Fake；模型／effort 无实际用途**，无需账号、AI key或地图key即可跑完整技术闭环。
-Fake 固定演示只验证交互链，明确不代表编辑策略或真实内容质量，且明确拒绝图片。
-真实AI首选设置中的 ChatGPT 账号及账号实际返回模型／effort，模型接受图片时走原生图像请求；
-不支持或服务报错会简短解释，不隐藏换Provider或计费fallback。
-
-历史 M1.4 手机最后已验证配置为 **ChatGPT / gpt-5.6-luna / high**，TTS **yue**。
-这只是历史事实，**本批次没有重验当前会话／模型可用性**。已有有效授权可直接使用；新装或过期时，用户本人完成系统浏览器授权。
+**新安装默认 Fake；模型／effort 无实际用途**，无需账号、AI key 或地图 key 即可跑完整技术闭环。
+真实AI首选设置中的 ChatGPT 账号及账号实际返回模型／effort；不支持或服务报错会简短解释，不隐藏换 Provider 或计费 fallback。
 普通 API 是可选替代，需自己的 key。本地 `OPENAI_API_KEY` 存在性检查为否，未读任何手机或桌面账号 token。
-**没有阻塞 Fake／离线验收的密钥或素材待办**；无需用户先提供路线截图。
+**语音识别不需要任何 key、账号或网络**——这条是本次刻意守住的边界。
+
+历史 M1.4 手机最后已验证配置为 **ChatGPT / gpt-5.6-luna / high**，TTS **yue**（本次实机朗读日志同样是 `voice=yue`）。
+本批次**没有重验当前会话／模型可用性**；已有有效授权可直接使用，新装或过期时由用户本人完成系统浏览器授权。
 
 ## 模拟结果与工程证据
 
 路线 fixture 不变：**成都市新都区 → 青白江／广汉／德阳／绵竹 → 绵阳市安州区雎水镇**，
-**29点、13个镇街章节、90,912m 测试折线**；坐标、道路线形及章节边界仍为粗粒度，非导航真值。
-旧110km fixture留在test resources。
+**29点、13个镇街章节、90,912m 测试折线**。
 
-- **章节素材架回归（100km/h / 16×，确定性 Provider／fake Voice，5s请求＋20s TTS）**：
-  13章节缓存／13次章节进入机会、14段素材、6个题材家族、三星堆可选且被选两次、**零 stale/cancel/failure**。
-- **安静与冷却**：脚本 SILENT 的 Provider 仍能完成 8–15 次普通机会且全程不出声；被安静／冷却挡住的章节唤醒不补播。
-- **独立地标回归**：生产参考集四节点各选一次、18机会＝14 SILENT＋4 SPEAK_NOW、零 stale/cancel/failure（规则未动）。
-- **M1.2 晚到再现**：章节唤醒把该场景请求数从6提升到10，其中9条仍判 STALE，行车途中零播放；
-  唯一一次交付发生在轨迹终点位置不再变化之后，因此不属于过时补播。
-- **M1.3 对话节奏**：14次自动机会＋1次主动请求、13段自动讲述、零 stale；**Fake 黄金路径** 68模拟分钟／55检查／4语音输出。
-  这两份报告是不同测试情景，不是篇数配额。
+- 最终门禁：`scripts/verify.ps1` 完成 **assembleDebug/Release、testDebug/ReleaseUnitTest、lintDebug/Release**，
+  **154＋154 tests，0 failures/errors/skips**；lint **0 errors**；APK v2 签名 PASS。
+  本批次保留原有 136 项，新增 18 项（12 项识别后端选择／回落／取消／静音／权限，3 项安静倒计时，3 项其余）。
+- **章节素材架回归**：13 章节缓存／13 次章节进入机会、14 段素材、6 个题材家族、三星堆可选且被选两次、零 stale/cancel/failure。
+- **独立地标回归**：四节点各选一次、18 机会＝14 SILENT＋4 SPEAK_NOW、零 stale/cancel/failure（规则未动）。
+- **M1.2 晚到再现／M1.3 对话节奏／Fake 黄金路径**：与上一批一致，见下档。
 
-最终门禁：`scripts/verify.ps1 -Offline` 完成 **assembleDebug/Release、testDebug/ReleaseUnitTest、lintDebug/Release**，
-**136＋136 tests，0 failures/errors/skips**；lint **0 errors**，Debug 6／Release 3 条提示（依赖更新与 framework ExifInterface 建议），
-APK v2 签名 PASS。本批次保留原有 127 项并新增 9 项编辑自由度／章节机会回归（其中含替换掉的旧候选排序断言）。
-完整证据：[编辑自由度批次](docs/ACCEPTANCE_EDITORIAL_FREEDOM.md)、[上一批 Post-M1.4](docs/ACCEPTANCE_POST_M1_4.md)、
-空间规则：[独立地标](docs/LANDMARK_PROXIMITY.md)。
-本地报告：`artifacts/final-verification.log`、`verification.json`、`SHA256.txt`、`full-simulation.txt`、
-`accelerated-simulation.txt`、`batch-simulation.txt`、`landmark-simulation.txt`。
-构建／APK／本地日志忽略入Git，可通过验证脚本重建。
+完整证据：[中文语音输入恢复](docs/ACCEPTANCE_CHINESE_ASR.md)、[编辑自由度批次](docs/ACCEPTANCE_EDITORIAL_FREEDOM.md)、
+[Post-M1.4 批次](docs/ACCEPTANCE_POST_M1_4.md)、空间规则：[独立地标](docs/LANDMARK_PROXIMITY.md)。
+本地报告：`artifacts/final-verification.log`、`verification.json`、`SHA256.txt`、`verify-run.txt`、
+`phone-asr-session-A.txt`（真人发声原始日志）、`phaseA-reprobe.txt`、`ASR_PHASE_A_FINDINGS.txt`。
+构建／APK／本地日志忽略入Git，可通过验证脚本重建；**离线中文模型本身随 `app/src/main/assets/` 提交进仓库**，
+因为打包发布比新增下载／校验／断点子系统更简单，且最大单文件 26 MB 远低于 GitHub 限制。
 
 ## 已知限制及延后的 Gate
 
-**主观内容质量尚未在真实模型下验证**：素材架更宽、模板已拆，但真实 ChatGPT 是否因此讲得更杂、更自然，
-以及“经过多数乡镇不应大面积沉默”是否在真机成立，属于[联合手机验收](docs/COMBINED_PHONE_ACCEPTANCE.md)第3／4／8项。
-确定性 Provider 只证明管道会创造并利用机会，不证明内容好听。
+**必须在最终 APK 上补做的一次实机复验（本批次唯一未完成项）**：真人发声验收是在**同语义但早于一次小重构**的构建上完成的
+（重构只把 `AudioRecord` 创建从工作线程移到带权限守卫的调用处，逻辑未变）。手机当时断开，所以下面三项请在接上手机后复验：
+1. 用 0.2.1／SHA `D0C1634E…` 这个包再说一遍四句验收语；
+2. **`安静十分钟` 的真人识别**（上一轮日志里没有出现这句话，只有键盘路径证明过它进安静）；
+3. **安静倒计时 visibly 逐秒下降**（修复后）。
+复验若在真声上失败，应视为 ASR 未通过，而不是把结果改回“没听清”。
 
-当前只有 **三星堆、绵竹年画村、龙门山山前地带、雎水太平桥** 四个带来源的空间区域参考，
-不承诺全国 POI 自动发现；参考位置不证明建筑可见、实际过桥、精确距离或开放情况。
-通用素材条目只是方向提示，模型仍不得据此编造当地事实；当前 Adapter 未启用搜索，
-仅允许保守稳定事实，不能核实的数字／日期／现状删去；账号搜索探测属于可选后续增强。
-系统Geocoder可用性依设备；API33+超时8s，旧API单个IO调用无法强制中断，但GPS继续且不堆并发。
+其余限制：
 
-真实ChatGPT题材／图片能力、相机URI授权／照片方向、当前物理GPS／地点／地标时机、主观TTS／屏幕表现、
-OEM锁屏长时间运行、手机结束清理均 **DEFERRED TO COMBINED PHONE ACCEPTANCE**。
-Windows Robolectric不能替代Android FileProvider实体URI或硬件表现；声明／数据边界／生命周期已有自动测试。
-历史vivo公开ASR服务问题原证据保留，但**不是当前批次待办，也不要求用户先解决**。
+- **离线中文模型的准确率是有代价的**：Vosk `small-cn` 自报 CER 23.5 %（speechio_02）／38.3 %（speechio_06）。
+  四句验收语（含命名实体“三星堆”）逐字正确，但**这不等于长句、口音、自由口述同样好**。
+  若真机上自由口述质量不够，升级路径是 sherpa-onnx（Apache-2.0，paraformer-zh-small-int8 82 MB 或 SenseVoice-int8 237 MB），
+  代价是要在库里提交 38–50 MB AAR 或引入 JitPack；已有 `SpeechEngine` 接缝，换引擎不需要再动 Journey／Director。
+- **噪声幻觉已挡住但门限是实测调出来的**：模型会把接近静音的噪声编成看着合理的句子（实机出现过 `我要去绵羊`），
+  现在没有 voice energy（RMS>300）就不接受转写。极端安静的车厢可能把轻声判成 `没等到语音`，这时应该重说而不是怀疑后端。
+- 模型常驻进程：`AndroidVoice.close()` 在生产路径**没有调用者**，所以模型一旦用过就驻留（实机 TOTAL PSS ≈ 212 MB／RSS ≈ 250 MB）。
+  现代手机可接受，但这是明确的资源代价；低内存设备的表现属人工验收范围。
+- 首次使用语音要等模型解包（实测约 8 s），期间监听条处于“准备中”。
+- **主观内容质量尚未在真实模型下验证**：素材架更宽、模板已拆，但真实 ChatGPT 是否讲得更杂更自然，
+  以及“经过多数乡镇不应大面积沉默”是否在真机成立，属[联合手机验收](docs/COMBINED_PHONE_ACCEPTANCE.md)第3／4／8项。
+- 当前只有 **三星堆、绵竹年画村、龙门山山前地带、雎水太平桥** 四个带来源的空间区域参考，不承诺全国 POI 自动发现。
+  通用素材条目只是方向提示，模型不得据此编造当地事实；Adapter 未启用搜索。
+- 系统Geocoder可用性依设备；API33+超时8s。Windows Robolectric 不能替代实体麦克风／FileProvider URI／硬件表现。
+- 手机专属能力（真实 GPS／地点／地标时机、OEM 锁屏长运行、TTS 主观表现、后台清理）仍 **DEFERRED TO COMBINED PHONE ACCEPTANCE**。
+
+## 最短人工总验收（语音部分，接上手机即可）
+
+```
+adb install -r artifacts/kitt-v0-debug.apk
+adb shell am start -n com.kitt.reader/.MainActivity     # 开始读山河 → 点“说点什么”
+```
+说 `再讲一点`／`跳过`／`安静十分钟`／`三星堆为什么这么有名`，然后
+`adb logcat -d -s KITTVoice` 应当看到 `backend=system … outcome=CLIENT code=5` → `falling back to vosk-cn`
+→ `outcome=SUCCESS … text=<你说的原话>`。不出声应得到 `TIMEOUT` 而不是编出文字；
+安静时屏幕上的“剩余 M:SS”应逐秒减少。
 
 ## 最近 milestone commits
 
 | Commit | Destination |
 | --- | --- |
-| `c794840` | M1.5：区域章节、本地候选、题材偏好 |
-| `169fb38` | Phase D：29点新都→雎水、完整模拟、地理／图片边界 |
+| `2b156ce` | docs：中文 ASR 恢复任务卡 |
+| `d201a38` | V0.2：把编辑自由度交回 Director |
 | `bc92395` | 独立地理／地标机会，节点去重和接近过时保护 |
-| `8cf0e58` | Phase E：黑红状态／横竖屏、127测试门禁、打包与合并验收 |
-| `543163d` … `ef395b5` | docs：编辑自由度／Prompt 重置任务卡（4 次细化提交） |
+| `8cf0e58` | Phase E：黑红状态／横竖屏、打包与合并验收 |
 
-当前交接与批次证据作为后续文档提交；已完成的历史 M1.1–M1.4 证据原文保留在
-[历史交接](docs/HANDOFF_PRE_V0_2.md)。以本文件顶部状态为当前真相；历史安装与ASR记录不构成本次手机PASS。
+已完成的历史 M1.1–M1.4 证据原文保留在[历史交接](docs/HANDOFF_PRE_V0_2.md)。
+以本文件顶部状态为当前真相；**历史 vivo ASR 失败记录已被本次实机复现确认仍然存在**，
+所以任何“语音能用”都必须同时记录 `recognitionSource`（`system` 或 `vosk-cn`），不能只说“能听”。

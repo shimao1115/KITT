@@ -182,13 +182,18 @@ class AndroidVoiceExperienceTest {
         assertEquals(VoiceDetail(), voice.detail); assertTrue(recognizer.isDestroyed); voice.close()
     }
     @Test fun permissionDenialAndUnavailableServiceHaveAccurateOutcomes() {
-        val voice = AndroidVoice(app); var result: ListeningResult? = null
+        // The bundled fallback is stubbed here: this test is about honest outcomes, not about loading a model.
+        val voice = AndroidVoice(app) { _, handler ->
+            listOf(SystemSpeechEngine(app, handler), FixedOutcomeEngine("vosk-cn", ListeningOutcome.UNAVAILABLE))
+        }
+        var result: ListeningResult? = null
         voice.listenOutcome { result = it }; assertEquals(ListeningOutcome.PERMISSION_DENIED, result?.outcome)
         voice.requestMicrophone = {}; voice.listenOutcome { result = it }
         assertEquals(VoicePhase.PREPARING_LISTEN, voice.detail.phase)
         voice.permissionResult(false); assertEquals(ListeningOutcome.PERMISSION_DENIED, result?.outcome)
         shadowOf(app).grantPermissions(Manifest.permission.RECORD_AUDIO)
-        voice.listenOutcome { result = it }; assertEquals(ListeningOutcome.UNAVAILABLE, result?.outcome)
+        voice.listenOutcome { result = it }; idle(); assertEquals(ListeningOutcome.UNAVAILABLE, result?.outcome)
+        assertEquals("系统语音识别暂不可用。", result?.notice); assertFalse(result!!.notice.contains("没听清"))
         assertEquals(VoiceDetail(), voice.detail); voice.close()
     }
     @Test fun permissionCancellationDoesNotStartARecognizerAfterGrant() {

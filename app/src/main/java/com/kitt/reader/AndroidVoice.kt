@@ -2,17 +2,10 @@ package com.kitt.reader
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import android.provider.Settings
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
@@ -32,7 +25,10 @@ fun speechChunks(text: String, max: Int = 1800): List<String> {
     return chunks
 }
 
-class AndroidVoice(private val context: Context) : VoicePort {
+class AndroidVoice(
+    private val context: Context,
+    private val engineFactory: (Context, Handler) -> List<SpeechEngine> = ::defaultSpeechEngines,
+) : VoicePort {
     private val handler = Handler(Looper.getMainLooper())
     private var tts: TextToSpeech? = null
     private var ready: Boolean? = null
@@ -41,7 +37,8 @@ class AndroidVoice(private val context: Context) : VoicePort {
     private var pendingSpeech: (() -> Unit)? = null
     private var complete: ((Boolean) -> Unit)? = null
     private var finalId = ""
-    private var recognizer: SpeechRecognizer? = null
+    private var engines: List<SpeechEngine>? = null
+    private val unusableEngines = mutableSetOf<String>()
     private var pendingListen: ((ListeningResult) -> Unit)? = null
     private var activeListen: ((ListeningResult) -> Unit)? = null
     private var watchdog: Runnable? = null
@@ -49,6 +46,8 @@ class AndroidVoice(private val context: Context) : VoicePort {
     var detail by mutableStateOf(VoiceDetail()); private set
     var voices by mutableStateOf<List<TtsVoiceOption>>(emptyList()); private set
     var voiceMessage by mutableStateOf("正在加载系统中文声音…"); private set
+    /** Which recogniser served the current or most recent attempt, so the accepted behaviour is never ambiguous. */
+    var recognitionSource by mutableStateOf("未使用"); private set
     var requestMicrophone: (() -> Unit)? = null
     var speechRate = 1.0f
     var voiceName = ""
@@ -88,7 +87,7 @@ class AndroidVoice(private val context: Context) : VoicePort {
         val cancelled = activeListen ?: pendingListen
         pendingListen = null; activeListen = null
         clearWatchdog()
-        tts?.stop(); releaseRecognizer()
+        tts?.stop(); speechEngines().forEach(SpeechEngine::cancel)
         feedback.reset(); detail = VoiceDetail()
         if (cancelled != null) {
             Log.i("KITTVoice", "asr cancelled session=${serial - 1}")
@@ -96,10 +95,7 @@ class AndroidVoice(private val context: Context) : VoicePort {
         }
     }
     private fun clearWatchdog() { watchdog?.let(handler::removeCallbacks); watchdog = null }
-    private fun releaseRecognizer() {
-        val old = recognizer; recognizer = null
-        runCatching { old?.cancel() }; runCatching { old?.destroy() }
-    }
+    private fun speechEngines(): List<SpeechEngine> = engines ?: engineFactory(context, handler).also { engines = it }
     private fun applyVoice(name: String, rate: Float): Boolean {
         val engine = tts ?: return false
         val chosen = selectedChineseVoice(name, voices, defaultVoice)
@@ -170,52 +166,62 @@ class AndroidVoice(private val context: Context) : VoicePort {
         if (granted) startRecognition(result) else finishBeforeStart(result, ListeningOutcome.PERMISSION_DENIED)
     }
     private fun startRecognition(result: (ListeningResult) -> Unit) {
-        if (!SpeechRecognizer.isRecognitionAvailable(context)) { finishBeforeStart(result, ListeningOutcome.UNAVAILABLE); return }
-        val token = serial; activeListen = result
+        val candidates = speechEngines().filterNot { it.id in unusableEngines }
+        if (candidates.isEmpty()) { finishBeforeStart(result, ListeningOutcome.UNAVAILABLE); return }
+        activeListen = result
+        runAttempt(candidates, 0, result)
+    }
+
+    /**
+     * Attempts the recognised backends in order. A backend is only replaced when it fails before it ever
+     * started listening, so silence and no-match stay honest acoustic results instead of becoming a fallback.
+     */
+    private fun runAttempt(candidates: List<SpeechEngine>, index: Int, result: (ListeningResult) -> Unit) {
+        val engine = candidates[index]
+        val token = serial
         val began = SystemClock.elapsedRealtime()
+        recognitionSource = engine.id
+        var ready = false
+        var closed = false
         var rmsCount = 0; var rmsMin = Float.POSITIVE_INFINITY; var rmsMax = Float.NEGATIVE_INFINITY
-        fun event(name: String) { Log.i("KITTVoice", "asr session=$token elapsedMs=${SystemClock.elapsedRealtime() - began} $name") }
+        fun event(name: String) { Log.i("KITTVoice", "asr session=$token backend=${engine.id} elapsedMs=${SystemClock.elapsedRealtime() - began} $name") }
         fun finish(value: ListeningResult) {
-            if (token != serial) return
-            val callback = activeListen ?: return; activeListen = null
-            clearWatchdog(); releaseRecognizer(); feedback.reset(); detail = feedback.detail
-            event("finish outcome=${value.outcome} code=${value.androidCode} rmsCallbacks=$rmsCount rmsMin=${if (rmsCount == 0) 0f else rmsMin} rmsMax=${if (rmsCount == 0) 0f else rmsMax} textLength=${value.text.length}")
+            if (closed || token != serial) return
+            if (!ready && SpeechEngine.isStartupFailure(value)) {
+                // UNAVAILABLE/CLIENT mean the recogniser cannot serve this device at all, so stop paying for
+                // the probe on every tap. BUSY/NETWORK/SERVER may be momentary and stay eligible next time.
+                if (value.outcome == ListeningOutcome.UNAVAILABLE || value.outcome == ListeningOutcome.CLIENT) unusableEngines += engine.id
+                if (index + 1 < candidates.size) {
+                    event("unusable outcome=${value.outcome} code=${value.androidCode}; falling back to ${candidates[index + 1].id}")
+                    closed = true; clearWatchdog(); engine.cancel()
+                    runAttempt(candidates, index + 1, result)
+                    return
+                }
+            }
+            closed = true
+            val callback = activeListen ?: return
+            activeListen = null
+            clearWatchdog(); engine.cancel()
+            feedback.reset(); detail = feedback.detail
+            event("finish outcome=${value.outcome} code=${value.androidCode} rmsCallbacks=$rmsCount rmsMin=${if (rmsCount == 0) 0f else rmsMin} rmsMax=${if (rmsCount == 0) 0f else rmsMax} text=${value.text.take(80)}")
             callback(value)
         }
-        fun live(block: () -> Unit) { handler.post { if (token == serial && activeListen != null) block() } }
-        try {
-            val service = Settings.Secure.getString(context.contentResolver, "voice_recognition_service")
-            event("start service=$service language=zh-CN onDeviceAvailable=${Build.VERSION.SDK_INT >= 31 && SpeechRecognizer.isOnDeviceRecognitionAvailable(context)}")
-            recognizer = SpeechRecognizer.createSpeechRecognizer(context)
-            recognizer?.setRecognitionListener(object : RecognitionListener {
-                override fun onReadyForSpeech(params: Bundle?) { live { event("ready"); feedback.ready(); detail = feedback.detail } }
-                override fun onBeginningOfSpeech() { live { event("beginning"); feedback.ready(); detail = feedback.detail } }
-                override fun onRmsChanged(rmsdB: Float) { live {
-                    if (rmsdB.isFinite()) {
-                        rmsCount++; rmsMin = minOf(rmsMin, rmsdB); rmsMax = maxOf(rmsMax, rmsdB)
-                        feedback.rms(rmsdB); detail = feedback.detail
-                    }
-                } }
-                override fun onBufferReceived(buffer: ByteArray?) {} // never retained
-                override fun onEndOfSpeech() { live { event("end"); feedback.endSpeech(); detail = feedback.detail } }
-                override fun onError(error: Int) { live { event("error code=$error"); finish(ListeningResult.error(error)) } }
-                override fun onResults(results: Bundle?) {
-                    val value = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
-                    live { event("results"); finish(ListeningResult.recognized(value)) }
+        fun live(block: () -> Unit) { handler.post { if (!closed && token == serial && activeListen != null) block() } }
+        val sink = object : RecognitionSink {
+            override fun onReady() { live { event("ready"); ready = true; feedback.ready(); detail = feedback.detail } }
+            override fun onRms(level: Float) { live {
+                if (level.isFinite()) {
+                    rmsCount++; rmsMin = minOf(rmsMin, level); rmsMax = maxOf(rmsMax, level)
+                    feedback.rms(level); detail = feedback.detail
                 }
-                override fun onPartialResults(partialResults: Bundle?) { live { event("partial") } }
-                override fun onEvent(eventType: Int, params: Bundle?) { live { event("event type=$eventType") } }
-            })
-            watchdog = Runnable { event("watchdog"); finish(ListeningResult(ListeningOutcome.TIMEOUT)) }
-            handler.postDelayed(watchdog!!, 15000)
-            recognizer?.startListening(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "zh-CN")
-                putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, false)
-                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-            })
-        } catch (error: Exception) {
-            event("startup exception=${error.javaClass.simpleName}")
+            } }
+            override fun onEndOfSpeech() { live { event("end"); feedback.endSpeech(); detail = feedback.detail } }
+            override fun onFinish(value: ListeningResult) { live { if (value.outcome == ListeningOutcome.SUCCESS) event("results") else event("finish-sink outcome=${value.outcome} code=${value.androidCode}"); finish(value) } }
+        }
+        watchdog = Runnable { event("watchdog"); finish(ListeningResult(ListeningOutcome.TIMEOUT)) }
+        handler.postDelayed(watchdog!!, engine.watchdogMs)
+        try { engine.start(sink) } catch (error: Exception) {
+            event("start exception=${error.javaClass.simpleName}")
             finish(ListeningResult(if (error is SecurityException) ListeningOutcome.PERMISSION_DENIED else ListeningOutcome.CLIENT))
         }
     }
