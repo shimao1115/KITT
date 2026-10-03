@@ -1,5 +1,9 @@
 # ChatGPT OAuth hosted research transport probe — 2026-10-04
 
+> Capability conclusion superseded by [the minimal SSE capability probe](ACCEPTANCE_MINIMAL_SEARCH_CAPABILITY.md):
+> same saved OAuth account/model completed search with sources and response.completed in 6699ms (A).
+> The non-streaming parameter rejection and full-dossier timeout below remain accurate historical observations.
+
 ## Scope and fixed inputs
 
 Based on upstream `e01f301` / accepted V0.3.1. No production Provider, Journey, Director,

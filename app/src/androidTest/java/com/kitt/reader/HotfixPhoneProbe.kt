@@ -15,6 +15,10 @@ class HotfixPhoneProbe : Instrumentation() {
         try {
             lateinit var runtime: KittRuntime
             runOnMainSync { runtime = (targetContext.applicationContext as KittApp).runtime }
+            if (mode == "search-capability") {
+                startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                finish(0, searchCapabilityPhoneProbe(runtime, targetContext)); return
+            }
             if (mode in setOf("research-transport", "research-transport-sse")) {
                 startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 finish(0, researchPhoneProbe(runtime, targetContext, streamOnly = mode == "research-transport-sse")); return
