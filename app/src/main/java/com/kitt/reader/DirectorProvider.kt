@@ -82,13 +82,17 @@ object DirectorContract {
 data class DirectorRequest(
     val systemConstitution: String = DirectorContract.constitution,
     val sessionInstructions: String = "", val contextCard: String,
-    val userUtterance: String? = null
+    val userUtterance: String? = null, val image: ImageInput? = null
 )
-fun interface DirectorProvider { suspend fun direct(request: DirectorRequest): String }
+fun interface DirectorProvider {
+    suspend fun direct(request: DirectorRequest): String
+    val acceptsImages: Boolean get() = false
+}
 
 /** Deterministic demo only; never a substitute for real AI content acceptance. */
 class FakeProvider : DirectorProvider {
     override suspend fun direct(request: DirectorRequest): String {
+        if (request.image != null) throw UnsupportedImage()
         val user = request.userUtterance
         val card = request.contextCard
         val result = when {
@@ -144,6 +148,8 @@ class HttpsTransport : JsonTransport {
 }
 
 class ApiProvider(private val config: ProviderConfig, private val transport: JsonTransport = HttpsTransport()) : DirectorProvider {
+    // Protocol support only: model/server rejection is surfaced, never silently stripped.
+    override val acceptsImages get() = true
     fun payload(request: DirectorRequest): JsonObject {
         val input = "本次 Session Instructions：${request.sessionInstructions}\n${request.contextCard}\n" +
             (request.userUtterance?.let { "用户当前明确输入：$it" } ?: "自动导演检查。可以保持安静。")
@@ -151,7 +157,10 @@ class ApiProvider(private val config: ProviderConfig, private val transport: Jso
             put("model", config.model)
             if (config.kind == ProviderKind.OPENAI) {
                 put("store", false); put("instructions", request.systemConstitution)
-                put("input", input)
+                if (request.image == null) put("input", input)
+                else put("input", buildJsonArray { add(buildJsonObject {
+                    put("role", "user"); put("content", imageContent(input, request.image, true))
+                }) })
                 put("text", buildJsonObject { put("format", buildJsonObject {
                     put("type", "json_schema"); put("name", "director"); put("strict", true); put("schema", DirectorContract.schema)
                 }) })
@@ -160,7 +169,11 @@ class ApiProvider(private val config: ProviderConfig, private val transport: Jso
             } else {
                 put("messages", buildJsonArray {
                     add(buildJsonObject { put("role", "system"); put("content", request.systemConstitution) })
-                    add(buildJsonObject { put("role", "user"); put("content", input) })
+                    add(buildJsonObject {
+                        put("role", "user")
+                        if (request.image == null) put("content", input)
+                        else put("content", imageContent(input, request.image, false))
+                    })
                 })
                 put("response_format", buildJsonObject { put("type", "json_object") })
             }

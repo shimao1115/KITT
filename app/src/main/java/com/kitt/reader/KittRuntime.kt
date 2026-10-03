@@ -24,12 +24,14 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     }
     val pipeline = ContextPipeline()
     var config = settings.read()
+    fun provider(): DirectorProvider = when (config.kind) {
+        ProviderKind.CHATGPT -> ChatGptProvider(chatGpt, config)
+        ProviderKind.FAKE -> FakeProvider()
+        else -> ApiProvider(config)
+    }
+    val routeReference = RouteReference(scope, ::provider)
     val loop = DirectorLoop(journey, pipeline, scope, System::currentTimeMillis, {
-        when (config.kind) {
-            ProviderKind.CHATGPT -> ChatGptProvider(chatGpt, config)
-            ProviderKind.FAKE -> FakeProvider()
-            else -> ApiProvider(config)
-        }
+        provider()
     }, failure = { Log.w("KITT", it) }, diagnostic = {
         if (simulation) Log.i("KITTSim", "$it progressMeters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt() ?: 0}")
     })
@@ -50,6 +52,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     }
     val sourceLabel: String get() = if (simulation) "成都→绵阳 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
     fun start(simulated: Boolean = false) {
+        val routeHint = routeReference.beginJourney()
         val saved = if (resumeRequested) recovery else null
         resumeRequested = false
         stopSources(); travelCheckpointMs = saved?.travelMs ?: 0L; summary = null; sourceNotice = ""; recovery = null
@@ -59,6 +62,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             journey.restore(saved.started, saved.destination, saved.instructions, saved.topics, saved.quietUntil)
         } else journey.start()
         loop.reset(); loop.counters.clear()
+        pipeline.routeHint = routeHint
         source = if (simulation) {
             val fixture = context.assets.open("chengdu-mianyang.json").bufferedReader().use { RouteFixture.parse(it.readText()) }
             SimulatedLocationSource(fixture, scope, System::currentTimeMillis, speedKmh = simulationSpeed, acceleration = acceleration,
@@ -86,6 +90,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         notificationChanged?.invoke()
     }
     fun end() {
+        routeReference.clear()
         if (!journey.running && recovery == null) { stopSources(); return }
         if (journey.running) summary = journey.end()
         else recovery?.let { summary = TripSummary(it.started, System.currentTimeMillis(), it.destination, it.topics, 0) }
@@ -105,6 +110,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         if (journey.running && key != lastCheckpoint) { lastCheckpoint = key; checkpoint() }
     }
     fun serviceLost() {
+        routeReference.clear()
         checkpoint(); stopSources()
         if (journey.running) {
             val saved = store.recovery(); journey.end(); recovery = saved; revision.intValue++

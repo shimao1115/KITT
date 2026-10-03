@@ -23,3 +23,23 @@ Sources checked: [OpenAI preview limitations](https://developers.openai.com/siwc
 
 User refinement during this batch: final fixture must start in 成都市新都区 and end in
 绵阳市安州区雎水镇, with more detailed chapters. Final route evidence supersedes this intermediate fixture.
+
+## Phase B — route-reference image
+
+Android single-image photo picker (older devices use its document-picker fallback); no storage permission.
+Images are source-bounded, downsampled, orientation-corrected and JPEG re-encoded without EXIF metadata.
+One selected-provider request uses native Responses `input_image` or compatible Chat Completions
+`image_url` parts. ChatGPT uses the existing account adapter, completion gate and strict schema.
+Protocol support does not imply every selected model supports images; errors explicitly explain this.
+Fake rejects images before reading them. No hidden provider switch or paid fallback.
+
+Only a <=240-character RouteHint remains in session memory, reused as text. GPS and user intent
+stay authoritative. Start cancels unfinished analysis; clear, end and service loss discard the hint.
+No persistent URI permission, image file upload endpoint, backend or trip-photo persistence.
+
+Same six-task all-variant command: PASS, **102 tests per variant**, zero failures/errors/skips,
+lint zero errors. Log: `artifacts/phase-b-gates.log`.
+Photo picker on vivo, screenshot interpretation and real selected-model image support:
+**DEFERRED TO COMBINED PHONE ACCEPTANCE**.
+Interface sources: [OpenAI images and vision](https://developers.openai.com/api/docs/guides/images-vision),
+[Android photo picker](https://developer.android.com/training/data-storage/shared/photo-picker).

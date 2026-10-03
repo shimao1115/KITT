@@ -166,12 +166,16 @@ object ChatGptModels {
 }
 
 class ChatGptProvider(private val account: ChatGptAccount, private val config: ProviderConfig) : DirectorProvider {
+    override val acceptsImages get() = true
     fun payload(request: DirectorRequest, model: ChatGptModel): JsonObject = buildJsonObject {
         put("model", model.slug); put("store", false); put("stream", true)
         put("instructions", request.systemConstitution)
         put("input", buildJsonArray { add(buildJsonObject {
-            put("role", "user"); put("content", "本次 Session Instructions：${request.sessionInstructions}\n${request.contextCard}\n" +
-                (request.userUtterance?.let { "用户当前明确输入：$it" } ?: "自动导演检查。可以保持安静。"))
+            put("role", "user")
+            val input = "本次 Session Instructions：${request.sessionInstructions}\n${request.contextCard}\n" +
+                (request.userUtterance?.let { "用户当前明确输入：$it" } ?: "自动导演检查。可以保持安静。")
+            if (request.image == null) put("content", input)
+            else put("content", imageContent(input, request.image, true))
         }) })
         put("text", buildJsonObject { put("format", buildJsonObject {
             put("type", "json_schema"); put("name", "director"); put("strict", true); put("schema", DirectorContract.schema)

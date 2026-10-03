@@ -21,7 +21,8 @@ interface LocationSource { fun start(onFix: (Fix) -> Unit); fun stop() }
 class ContextPipeline {
     private val recent = ArrayDeque<Fix>()
     val areas = AreaCards()
-    fun reset() { recent.clear(); areas.clear() }
+    var routeHint = ""
+    fun reset() { recent.clear(); areas.clear(); routeHint = "" }
     fun accept(fix: Fix) {
         if (!fix.valid() || (recent.lastOrNull()?.timeMs ?: Long.MIN_VALUE) > fix.timeMs) return
         recent.addLast(fix)
@@ -35,6 +36,7 @@ class ContextPipeline {
         val climb = if (first?.altitude != null && fix?.altitude != null) fix.altitude - first.altitude else null
         return buildString {
             appendLine("【旅程意图】\n目的地：${journey.destination}\n本次临时偏好：${journey.instructions.ifBlank { "无" }}")
+            if (routeHint.isNotBlank()) appendLine("【路线参考】${routeHint.take(240)}。截图仅为意图提示，当前 GPS 优先，不能据此推断已经到达或更改目的地。")
             appendLine("【当前位置】")
             if (fix == null) appendLine("暂无可靠位置，不断言现场。") else {
                 appendLine(String.format(Locale.ROOT, "坐标：%.4f, %.4f；速度：%.0f km/h；方向：%.0f°；精度：%.0f m", fix.latitude, fix.longitude, fix.speedKmh, fix.bearing, fix.accuracy))

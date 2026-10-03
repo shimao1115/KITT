@@ -11,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -19,12 +20,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.core.app.NotificationManagerCompat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     private val runtime get() = (application as KittApp).runtime
     private var startAfterPermission = false
     private var startSimulation = false
     private var microphonePermissionPending = false
+    private val routePicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null && !runtime.journey.running) runtime.routeReference.analyze {
+            withContext(Dispatchers.IO) { AndroidImageReader.read(this@MainActivity, uri) }
+        }
+    }
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (hasLocation() && startAfterPermission) requestNotificationAndStart()
         else if (startAfterPermission) runtime.locationUnavailable("请允许精确定位后再开始。")
@@ -76,7 +84,9 @@ class MainActivity : ComponentActivity() {
                         { startJourney() }, runtime.loop::speak, ::endJourney,
                         { if (runtime.journey.running) unavailableSettings = true else settings = true },
                         { taps++; if (taps >= 5) { developer = true; taps = 0 } },
-                        (runtime.voice as? AndroidVoice)?.detail ?: VoiceDetail())
+                        (runtime.voice as? AndroidVoice)?.detail ?: VoiceDetail(),
+                        onRouteImage = { routePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+                        routeNotice = runtime.routeReference.notice, onClearRoute = runtime.routeReference::clear)
                     if (unavailableSettings) AlertDialog(onDismissRequest = { unavailableSettings = false },
                         title = { Text("请结束旅程后调整设置") }, confirmButton = { TextButton({ unavailableSettings = false }) { Text("知道了") } })
                     if (runtime.recovery != null) AlertDialog(onDismissRequest = {}, title = { Text("继续刚才的旅程？") },
