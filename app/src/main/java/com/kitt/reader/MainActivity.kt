@@ -12,12 +12,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.core.app.NotificationManagerCompat
 import kotlinx.coroutines.Dispatchers
@@ -72,8 +70,7 @@ class MainActivity : ComponentActivity() {
             BackHandler(enabled = settings) { settings = false }
             var unavailableSettings by remember { mutableStateOf(false) }
             var developerText by remember { mutableStateOf("") }
-            MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme(primary = Color(0xFF9BD2C0)) else
-                lightColorScheme(primary = Color(0xFF205D52), surface = Color(0xFFF4F5EF))) {
+            KittTheme {
                 Surface(Modifier.fillMaxSize()) {
                     val summary = runtime.summary
                     if (settings) SettingsScreen(runtime, NotificationManagerCompat.from(this).areNotificationsEnabled(), {

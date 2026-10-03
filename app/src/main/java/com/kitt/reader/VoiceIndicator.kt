@@ -47,6 +47,8 @@ fun VoiceIndicator(state: JourneyState, detail: VoiceDetail, modifier: Modifier 
             val color = MaterialTheme.colorScheme.tertiary
             Canvas(modifier.testTag("speaking-indicator").semantics { contentDescription = "正在讲述，语音播放中" }) {
                 val width = size.width * 0.8f; val start = size.width * 0.1f
+                drawRoundRect(color.copy(alpha = 0.07f), Offset(start + position * width * 0.7f, size.height * 0.24f),
+                    Size(width * 0.3f, size.height * 0.52f), CornerRadius(size.height))
                 drawRoundRect(color.copy(alpha = 0.18f), Offset(start, size.height * 0.42f),
                     Size(width, size.height * 0.16f), CornerRadius(size.height))
                 drawRoundRect(color, Offset(start + position * width * 0.7f, size.height * 0.35f),

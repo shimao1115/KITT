@@ -6,6 +6,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.Modifier
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
@@ -39,7 +42,7 @@ fun VisualTalkDialog(runtime: KittRuntime) {
     }
     AlertDialog(onDismissRequest = visual::clear,
         title = { Text("旅途看图") }, text = {
-            Column {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
                 Text("由乘客操作，或停车后使用。图片仅用于这次问答。")
                 TextButton({
                     try {

@@ -1,11 +1,15 @@
 package com.kitt.reader
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -13,24 +17,25 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail = VoiceDetail(),
     onRouteImage: () -> Unit = {}, routeNotice: String = "", onClearRoute: () -> Unit = {}, onVisualTalk: () -> Unit = {}) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
+        val availableHeight = maxHeight
         if (maxWidth > maxHeight) {
             Row(Modifier.fillMaxSize().safeDrawingPadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                 Column(Modifier.weight(1f)) {
                     Row { TextButton(onDeveloper) { Text("路上读山河") }; TextButton(onSettings) { Text("设置") } }
                     Text(sourceLabel, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelMedium)
-                    Text(stateLabel(journey), style = MaterialTheme.typography.headlineSmall)
-                    Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    JourneyStatus(journey)
+                    Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleMedium)
                     VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(64.dp))
-                    Text(journey.topic, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    if (journey.isQuiet) Text(quietLabel(journey))
+                    Text(if (journey.isQuiet) quietLabel(journey) else journey.topic, maxLines = 2,
+                        overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleLarge)
                     if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2)
                 }
                 Column(Modifier.weight(1.2f).fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
-                    DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk)
+                    DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact = availableHeight < 400.dp)
                 }
             }
         } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper, voiceDetail,
-            onRouteImage, routeNotice, onClearRoute, onVisualTalk)
+            onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact = maxHeight < 700.dp)
     }
 }
 
@@ -50,33 +55,51 @@ private fun quietLabel(journey: Journey) = if (journey.quietRemaining == Long.MA
     "剩余 ${journey.quietRemaining / 60000}:${((journey.quietRemaining / 1000) % 60).toString().padStart(2, '0')}"
 
 @Composable
+private fun JourneyStatus(journey: Journey) {
+    val accent = when (journey.state) {
+        JourneyState.SPEAKING -> MaterialTheme.colorScheme.tertiary
+        JourneyState.LISTENING -> MaterialTheme.colorScheme.primary
+        JourneyState.QUIET -> MaterialTheme.colorScheme.secondary
+        else -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
+    Surface(color = accent.copy(alpha = 0.10f), shape = RoundedCornerShape(12.dp),
+        modifier = Modifier.testTag("journey-state-${journey.state.name}")) {
+        Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Box(Modifier.size(8.dp).background(accent, CircleShape))
+            Text(stateLabel(journey), style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        }
+    }
+}
+
+@Composable
 private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail,
-    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit) {
+    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit, compact: Boolean) {
     Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onDeveloper) { Text("路上读山河", style = MaterialTheme.typography.titleLarge) }
             Spacer(Modifier.weight(1f)); TextButton(onSettings) { Text("设置") }
         }
         Text(sourceLabel, style = MaterialTheme.typography.labelMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        Spacer(Modifier.height(12.dp))
-        Text(stateLabel(journey), style = MaterialTheme.typography.headlineMedium)
-        Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.bodyMedium)
+        Spacer(Modifier.height(if (compact) 8.dp else 12.dp))
+        JourneyStatus(journey)
+        Text(placeLabel(journey), maxLines = if (compact) 1 else 2, overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
-        VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(80.dp))
+        VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(if (compact) 48.dp else 80.dp))
         if (journey.isQuiet) {
             Text(quietLabel(journey), style = MaterialTheme.typography.headlineSmall)
-        } else Text(journey.topic, style = MaterialTheme.typography.headlineSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        } else Text(journey.topic, style = MaterialTheme.typography.titleLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
         if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.weight(1f))
-        DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk)
+        DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact)
     }
 }
 
 @Composable
 private fun DrivingControls(journey: Journey, onStart: () -> Unit, onSpeak: () -> Unit, onEnd: () -> Unit,
-    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit) {
+    onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit, compact: Boolean = false) {
     Column {
         if (!journey.running) {
             TextButton(onRouteImage, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("添加路线参考图（可选）") }
@@ -84,19 +107,19 @@ private fun DrivingControls(journey: Journey, onStart: () -> Unit, onSpeak: () -
                 Text(routeNotice, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodySmall)
                 TextButton(onClearRoute) { Text("清除路线参考") }
             }
-            Button(onStart, Modifier.fillMaxWidth().height(88.dp)) { Text("开始读山河", style = MaterialTheme.typography.titleLarge) }
+            Button(onStart, Modifier.fillMaxWidth().height(if (compact) 80.dp else 88.dp), shape = RoundedCornerShape(20.dp)) { Text("开始读山河", style = MaterialTheme.typography.titleLarge) }
         } else {
-            Button(if (journey.isQuiet) journey::resume else onSpeak, Modifier.fillMaxWidth().height(88.dp)) {
+            Button(if (journey.isQuiet) journey::resume else onSpeak, Modifier.fillMaxWidth().height(if (compact) 80.dp else 88.dp), shape = RoundedCornerShape(20.dp)) {
                 Text(if (journey.isQuiet) "结束安静" else "说点什么", style = MaterialTheme.typography.titleLarge)
             }
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedButton(journey::skip, Modifier.weight(1f).height(64.dp)) { Text("跳过") }
-                OutlinedButton({ journey.quiet() }, Modifier.weight(1f).height(64.dp)) { Text("安静一会儿") }
+                OutlinedButton(journey::skip, Modifier.weight(1f).height(if (compact) 56.dp else 64.dp), shape = RoundedCornerShape(16.dp)) { Text("跳过") }
+                OutlinedButton({ journey.quiet() }, Modifier.weight(1f).height(if (compact) 56.dp else 64.dp), shape = RoundedCornerShape(16.dp)) { Text("安静一会儿") }
             }
             Row {
-                TextButton(onVisualTalk, Modifier.weight(1f).height(56.dp)) { Text("旅途看图") }
-                TextButton(onEnd, Modifier.weight(1f).height(56.dp)) { Text("结束旅程") }
+                TextButton(onVisualTalk, Modifier.weight(1f).height(if (compact) 48.dp else 56.dp)) { Text("旅途看图", color = MaterialTheme.colorScheme.secondary) }
+                TextButton(onEnd, Modifier.weight(1f).height(if (compact) 48.dp else 56.dp)) { Text("结束旅程") }
             }
         }
     }
