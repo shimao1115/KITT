@@ -68,10 +68,44 @@ Desired behavior:
 
 This can be grouped with M1.4 if convenient.
 
+## 4. In-trip photo / image discussion
+
+User wants a **small camera/image button** available during a journey. This is separate from the route-reference screenshot feature.
+
+Use case:
+- The user encounters something on the road that is hard to describe verbally.
+- They can take a photo or choose an existing image and send it to the AI.
+- The AI discusses the image in the context of the current journey/location/session, so the user can ask things like “这是什么？” or “为什么会这样？”
+
+Desired UX:
+- Keep the button visually secondary and smaller than the primary driving controls.
+- One tap opens a simple choice such as **拍照 / 从相册选择**.
+- After image capture/selection, allow one short spoken or typed question, or default to a concise “帮我看看这个”.
+- Reuse the current location / journey intent / session instructions as contextual grounding.
+- The image should be treated as an **active user message**, not as automatic background narration.
+- After the response, return to the normal driving state without creating a long-lived image queue.
+
+Data / product boundaries:
+- Do not store trip photos long-term by default.
+- Do not repeatedly resend an old image on every later Director check.
+- Do not convert every image into permanent memory unless explicitly requested later.
+- If useful, keep only a tiny session-local summary/topic so later dialogue can refer to “刚才那张照片” without retaining the raw image indefinitely.
+- This feature should use the multimodal image capability of the selected AI Provider when supported; unsupported Providers should show a clear fallback rather than silently failing.
+- Route screenshots and in-trip photos may share the same image plumbing, but they are different product intents:
+  - **Route reference** = pre-trip/session guidance.
+  - **In-trip image** = active multimodal conversation.
+
+Driving-safety UX:
+- The app should not require fine-grained interaction while the vehicle is moving.
+- Camera/image capture should remain a secondary action suitable for a passenger or for use when stopped; the core hands-free voice flow stays primary.
+
+Possible later milestone: **M1.6 Visual Talk** (or combine plumbing work with M1.5 while keeping the two intents separate).
+
 ## Priority / sequencing
 
 1. Finish **M1.3 accelerated simulation Director fix** first.
 2. Then address **Voice Experience** (speech recognition diagnostics + dynamic listening UI + dynamic AI-speaking UI + TTS voice selection).
 3. Then address **Route Reference image**.
+4. Then address **In-trip Visual Talk**, optionally sharing the image transport/picker plumbing built for Route Reference.
 
 These are remembered backlog items, not active implementation instructions yet.
