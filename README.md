@@ -18,17 +18,20 @@ V0 只需要证明一个“魔法瞬间”：
 
 如果这条链成立，V0 就成立。
 
-## 当前可运行 V0
+## 当前可运行 V0.2
 
 原生 Android V0 已实现，默认使用明确标注的离线 Fake Provider；无需 API key 可验收完整交互链。
 
 - 安装包：`artifacts/kitt-v0-debug.apk`（Android 8.0+）。
-- 最短总验收步骤及唯一剩余外部动作：[HANDOFF.md](HANDOFF.md)。
+- 当前交接与限制：[HANDOFF.md](HANDOFF.md)；一次完成的[联合手机验收](docs/COMBINED_PHONE_ACCEPTANCE.md)。中文 ASR 不在本批次范围。
 - 构建/测试/打包：PowerShell 执行 `./scripts/verify.ps1`；缓存齐全时可加 `-Offline`。
-- 测试证据：[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。
+- 本批次证据：[Post-M1.4](docs/ACCEPTANCE_POST_M1_4.md)；初版历史证据：[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。
 - 普通“开始读山河”始终使用手机 GPS，与 AI Provider 无关。
-- 模拟入口：连续点顶部“路上读山河”5次，选择 80 km/h 和 16× 或 60×，点击开发对话框中的“开始”。仅本次旅程使用模拟位置；结束后恢复手机 GPS。加速只推进位置。
-- 真实 AI：旅程结束后在设置选择 OpenAI Responses 或兼容 API，输入 HTTPS 地址、模型和 API key 并保存。密钥在本机通过 Android Keystore 加密保存，不进入 APK/仓库。普通 API fallback 的技术判断见 [Provider Spike](docs/PROVIDER_SPIKE.md)。
+- 模拟入口：连续点顶部“路上读山河”5次，选择 **100 km/h / 16×**，点击开发对话框“开始”。29个粗粒度点覆盖 **成都市新都区 → 青白江／广汉／德阳／绵竹 → 绵阳市安州区雎水镇** 的13章节，约91km测试折线，非导航级路线。思考／讲话／监听／看图暂停移动；安静仍计真实10分钟。结束后普通开始恢复手机 GPS。
+- 内容以区域章节组织，含文化历史、古镇遗产、地理工程、产业习俗等候选；[独立地标接近](docs/LANDMARK_PROXIMITY.md)即使章节不变也可创造机会。目前四个带来源的区域参考，不冒充全国 POI 服务，安静始终有效。
+- 出发页可选路线参考图，一次压缩成文字 RouteHint；旅程中“旅途看图”委托系统相机或选图，随主动问题交给同一 Director。原图不长期保存，后续自动检查不重传。
+- 黑红夜间／高对比日间风格，保留本地 TTS、监听音量条与慢速讲述 scanner。驾驶页大按钮，横竖屏无需滚动。
+- 真实 AI：设置优先选择 **ChatGPT 账号** → 系统浏览器由用户本人授权 → 选择账号实际返回的模型和 effort；[账号说明](docs/CHATGPT_SIWC.md)。OpenAI Responses／兼容 API 是可选替代，需自有 API key；密钥由 Android Keystore 加密保存，不进入 APK/仓库。Fake 明确不支持图片。
 
 Fake 通过闭环验收不代表真实 AI 内容质量通过；手机语音/GPS/锁屏表现与真实 Provider 内容是最后人工验收边界。
 

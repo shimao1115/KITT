@@ -376,6 +376,10 @@ Milestone commits：
 
 # Stop Rules
 
+> 2026-10-03 Post-M1.4 用户授权优先：本批次手机离线不构成施工阻塞；全部手机专属 Gate 合并延后。
+> 中文 ASR 不在本批次范围。当前完成 A–E 的实现、详细新都→雎水模拟及独立地标接近行为后，
+> 首个剩余 Destination 是 `docs/COMBINED_PHONE_ACCEPTANCE.md`，不是重新施工已通过的历史阶段。
+
 以下情况允许开发 Agent停下并等待用户，但必须先完成所有可绕过工作：
 
 - OAuth/账号授权只能由用户本人点击；

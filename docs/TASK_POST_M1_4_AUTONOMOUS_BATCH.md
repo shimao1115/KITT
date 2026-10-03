@@ -1,8 +1,14 @@
 # Task Card — Post-M1.4 Autonomous Batch
 
-Status: **ACTIVE**
+Status: **IMPLEMENTED — phone-only gates DEFERRED TO COMBINED PHONE ACCEPTANCE**
 Owner: Codex / construction agent
 Source of truth: this file + existing milestone docs + HANDOFF.md
+
+2026-10-03 user refinements executed: the coarse simulation now starts in **成都市新都区** and ends in
+**绵阳市安州区雎水镇**, with 29 points / 13 chapters. Area Chapters remain the main content container;
+grounded high-salience geographic/landmark proximity also creates independent Director opportunities inside
+the same chapter, preserving quiet/user/stale/dedup safeguards. See `docs/LANDMARK_PROXIMITY.md` for coverage.
+Phase A–E results: `docs/ACCEPTANCE_POST_M1_4.md`; final phone pass: `docs/COMBINED_PHONE_ACCEPTANCE.md`.
 
 ## User decision
 
