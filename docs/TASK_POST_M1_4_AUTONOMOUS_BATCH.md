@@ -100,7 +100,41 @@ Prefer another grounded, high-value family when available.
 
 Do not enforce a rigid quota.
 
-### A5. Major-node salience
+
+
+### A5. Geographic / Landmark Proximity Triggers
+Administrative chapters are the main content container, but **important physical or built landmarks are independent event triggers**.
+
+When the vehicle approaches or enters the meaningful vicinity of a high-salience feature, KITT should create a Director opportunity and normally narrate it when the fact is grounded and it has not just been covered.
+
+Trigger classes include:
+- mountain ranges / named mountains;
+- prominent peaks;
+- major rivers / river crossings;
+- lakes / reservoirs with clear local significance;
+- canyons / passes / basins / other distinctive landforms;
+- famous bridges / dams / tunnels / transport works;
+- landmark buildings;
+- major monuments / heritage complexes / museums / ruins;
+- other widely recognized local landmarks.
+
+Examples of desired behavior:
+- entering a mountain range → explain what range/landform the user is entering and why it matters;
+- approaching a major river crossing → explain the river and the landscape/city relationship, not just the bridge geometry;
+- passing a famous landmark building or heritage site → surface its human/history/cultural significance;
+- approaching a major lake or reservoir → explain the water body and its relation to the surrounding place.
+
+These are **event triggers layered on top of Area Chapters**, not replacements for them.
+
+Rules:
+- proximity to a high-salience landmark should be a stronger trigger than another generic road/settlement mechanism;
+- do not narrate every minor POI;
+- avoid duplicate narration if the same feature was just covered;
+- quiet mode, active user interaction, stale-position safety, and explicit skip still win;
+- if grounding is weak, prefer a conservative description or silence rather than inventing facts;
+- do not require a fixed radius globally; use a practical feature-dependent proximity rule or coarse fixture/event metadata where exact geometry is unavailable.
+
+### A6. Major-node salience
 High-salience cultural/history nodes may outrank generic explanations.
 
 **Acceptance benchmark: Guanghan / Sanxingdui.**
@@ -110,7 +144,7 @@ When the simulated Chengdu→Deyang→Mianyang run reaches the Guanghan-related 
 - do not hard-code a narration script;
 - do not force it to speak if Director legitimately chooses silence, but the system must be capable of noticing it.
 
-### A6. Current-place display
+### A7. Current-place display
 If AreaResolver provides a human-readable place:
 - show a concise district + town/street label on the driving screen;
 - keep it glanceable;
@@ -188,6 +222,7 @@ After A–C, tune the Director experience.
 - Do not rotate topic categories mechanically.
 - Avoid the M1.3 failure mode where almost all useful content collapses into road/settlement mechanisms.
 - Prefer high-value local culture/history/site content when grounded.
+- Treat entry into / proximity to high-salience mountains, peaks, rivers, lakes, distinctive landforms, major engineering works, and famous landmark buildings/sites as explicit narration opportunities; these should normally produce a useful narration unless suppressed by quiet/user interaction/repetition/safety/grounding constraints.
 - Preserve “再讲一点” as deepening the current topic.
 - Preserve skip/quiet/user-intent priority.
 
@@ -203,6 +238,7 @@ Verify:
 - Area Card refresh/caching;
 - topic-family diversity;
 - Sanxingdui candidate in Guanghan chapter;
+- at least one deterministic landmark-proximity trigger path (for example mountain/river/lake/major landmark) that creates a narration opportunity independently of an administrative-boundary change;
 - no stale/cancel regression;
 - no forced speech from boundary crossing;
 - no retry storm/provider failure cascade.
@@ -291,6 +327,8 @@ At minimum add tests for:
 - Area Card cache;
 - topic-family dedup/diversity;
 - Sanxingdui candidate discovery;
+- landmark-proximity trigger classification and dedup;
+- landmark trigger works independently of administrative-boundary change;
 - boundary change does not force speech;
 - RouteHint lifecycle;
 - unsupported multimodal provider behavior;
