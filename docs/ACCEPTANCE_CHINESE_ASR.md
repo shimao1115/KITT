@@ -257,17 +257,39 @@ lint 0 error，签名 PASS。
 | 无人回答要干净作废 | `anUnansweredExchangeExpiresAndStopsCapturing` |
 | 错误提示与识别文字视觉区分 | `aMissOrASilenceNeverLeavesAnInventedTranscriptOnScreen`、`recognitionTroubleIsShownAsANoticeNotAsTranscriptText` |
 
-### 还需要在真机上补的（手机当时断开）
+### 真机补测结果（0.2.2 / versionCode 4 / SHA `8BBF7042…`）
 
-代码版本 **0.2.2 / versionCode 4**，`kitt-v0-debug.apk` 73.6 MB，SHA-256 `8BBF70421AD4E63342F8EF55B370A290CD76F0E6D12DBEDE8F5A291AA8F138BF`。下面几项只有真人＋真机能判，
-**补做之前不要当作已过**：
+**我自己在这台机器上直接确认到的**（有日志与界面 dump，`artifacts/phone-asr-session-C.txt`）：
 
-1. 说话过程中「在听：…」是否真的逐字出现（离线中文模型的中间结果粒度）；
-2. 说完后「你说：…」是否明确显示；
-3. 四句验收语仍然逐字正确，且 TTS 讲述中打断仍然能听（不回归）；
-4. 打字入口在驾驶页可点、键盘不遮挡、发送后确实进入 Director；
-5. `ASK_USER` 提问后不动嘴、只用打字也能回答；
-6. 取消／系统返回键能清掉屏幕上的识别文字。
+- 中间结果**确实实时上屏并逐字变化**：同一句里先后抓到 `在听：尔康成立是` → `在听：四马尔康县惨烈是`，
+  监听条与「或打字回答／发送／取消」在同一屏共存，驾驶页没有出现可滚动节点；
+- 新一轮监听开始或取消时麦克风被释放（`asr cancelled`）；
+- 不出声得到 `outcome=TIMEOUT`、`voiced=false`、`peakRms` 只有 8–27，**屏幕上不留任何编造的 `你说：`**。
+
+**由用户自行验收确认为通过**（逐字上屏、final 明确显示、打字进入 Director、`ASK_USER` 只打字能答、
+取消／返回键清掉识别文字、四句验收语与 TTS 打断不回归）：用户回报「已经可以了」。
+
+**证据缺口必须说清楚**：这一轮的 `logcat` 我没能归档——手机在用户测完后、我读取日志前又断开了
+（`adb devices` 已空，`logcat -d` 挂住超时）。所以**当前写在档上的逐字识别文本仍来自 0.2.1 那一轮**
+（`artifacts/phone-asr-session-B-final.txt`）。0.2.2 这一轮是「用户确认可用」，不是「我手上有文本记录」。
+下次接上手机只要跑 `adb logcat -d -s KITTVoice > artifacts/phone-asr-session-D.txt` 就能把这一轮补齐。
+
+### 从这轮真机数据里浮出来的准确率问题（不要粉饰）
+
+同一句疑似含「马尔康」的话，在 0.2.2 上被抓成**四种不同结果**：
+
+```
+尔康藏匿是  /  起码尔康类似  /  四马尔康县惨烈是  →  最终  四马尔康县长劣势
+```
+
+而 0.2.1 那一轮四句短指令与「三星堆为什么这么有名」全部逐字正确。合起来读就是：
+**短指令、常见词、命名实体没问题；稍长或地名密集的口语会明显飘**。这与模型自报 CER 23.5 %／38.3 % 一致，
+不是新 bug，而是当初选择最小方案时接受的代价。
+
+由此给出明确建议：**如果实际使用中要口述地名和长句，应当把离线模型升级为
+sherpa-onnx + Paraformer/Zipformer 中文模型**（Apache-2.0，仍然免费、无 key、纯本地）。
+`SpeechEngine` 接缝已经在了，换引擎不需要动 Journey／Director，主要成本是再引入一个 AAR 与更大的模型体积。
+本批次**没有**擅自做这个升级——它改变 APK 体积与依赖来源，属于需要用户拍板的一次决定。
 
 
 ## 顺带发现并修掉的一个旧缺陷（与 ASR 无关）
