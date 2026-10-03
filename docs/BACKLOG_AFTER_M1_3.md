@@ -193,12 +193,10 @@ Possible later milestone: **M1.7 UI Polish / KITT Visual Identity**.
 
 ## Priority / sequencing
 
-1. Finish **M1.3 accelerated simulation Director fix** first.
-2. Then address **Voice Experience** (speech recognition diagnostics + dynamic listening UI + dynamic AI-speaking UI + TTS voice selection).
-3. Then address **Narrative breadth / local enrichment** so KITT is not limited to generic road/settlement explanations.
-4. Then address **Route Reference image**.
-5. Then address **In-trip Visual Talk**, optionally sharing the image transport/picker plumbing built for Route Reference.
-6. Add a concise **current-place display** for real GPS journeys (or fold it into the content-enrichment work if useful).
-7. Then do the broader **UI visual-polish pass**.
+1. **M1.5 Area Chapters / local narrative — PRIORITY NEXT.** Fix the core content model first: district/county background + town/township/street chapters, broader history/culture/site candidates, current-place display.
+2. Then return to **M1.4 Voice Experience** (speech recognition diagnostics + dynamic listening UI + dynamic AI-speaking UI + TTS voice selection).
+3. Then address **Route Reference image**.
+4. Then address **In-trip Visual Talk**, optionally sharing the image transport/picker plumbing built for Route Reference.
+5. Then do the broader **UI visual-polish pass**.
 
 These are remembered backlog items, not active implementation instructions yet.
