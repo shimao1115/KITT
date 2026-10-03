@@ -1,8 +1,23 @@
 # Task Card — Editorial Freedom / Prompt Reset
 
-Status: **NEXT CONTENT FIX**
+Status: **ACTIVE — IMPLEMENT NOW**
 Scope: Director prompt + Area/Landmark candidate semantics
 Chinese ASR: out of scope
+
+## Execution instruction
+
+Implement this as a focused editorial/content update on top of V0.2. Do not reopen completed route-image, Visual Talk, UI-polish, or ASR work unless a regression requires it.
+
+Priority:
+1. loosen the Director constitution;
+2. neutralize thesis-driven candidate wording;
+3. make each town/township/street entry a real narration opportunity;
+4. expose a broad local dossier rather than a narrow category list;
+5. preserve independent high-salience landmark/geographic triggers;
+6. verify with the existing Chengdu/Xindu → Jushui simulation and Sanxingdui benchmark.
+
+Do not wait for phone-only acceptance. Finish non-phone implementation, tests, build/lint, commit/push, and update HANDOFF.md.
+
 
 ## Why
 
