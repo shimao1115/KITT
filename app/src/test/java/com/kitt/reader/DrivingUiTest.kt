@@ -1,9 +1,10 @@
 package com.kitt.reader
 
 import androidx.compose.material3.MaterialTheme
+import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import org.junit.Rule
 import org.junit.Assert.*
 import org.junit.Test
@@ -18,11 +19,11 @@ import java.io.File
 @Config(sdk = [34], qualifiers = "w411dp-h891dp")
 @LooperMode(LooperMode.Mode.PAUSED)
 class DrivingUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<MainActivity>()
     @Test fun drivingButtonsAreVisibleAndOneTapQuietAndEndWork() {
         val revision = mutableIntStateOf(0)
         val journey = Journey({ 1000000 }, TestVoice()) { revision.intValue++ }; var summary: TripSummary? = null
-        compose.setContent { revision.intValue; MaterialTheme { DrivingScreen(journey, "模拟", journey::start, { journey.beginListening {} }, { summary = journey.end() }, {}, {}) } }
+        compose.runOnUiThread { compose.activity.setContent { revision.intValue; MaterialTheme { DrivingScreen(journey, "模拟", journey::start, { journey.beginListening {} }, { summary = journey.end() }, {}, {}) } } }
         compose.onNodeWithText("开始读山河").assertIsDisplayed().performClick()
         compose.onNodeWithText("说点什么").assertIsDisplayed()
         compose.onNodeWithText("跳过").assertIsDisplayed()
@@ -42,10 +43,10 @@ class DrivingUiTest {
 @Config(sdk = [34], qualifiers = "w891dp-h411dp-land")
 @LooperMode(LooperMode.Mode.PAUSED)
 class LandscapeUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<MainActivity>()
     @Test fun landscapeControlsRemainVisibleWithoutScrolling() {
         val journey = Journey({ 1000000 }, TestVoice()); journey.start()
-        compose.setContent { MaterialTheme { DrivingScreen(journey, "粗粒度模拟 · 非导航级", {}, {}, {}, {}, {}) } }
+        compose.runOnUiThread { compose.activity.setContent { MaterialTheme { DrivingScreen(journey, "粗粒度模拟 · 非导航级", {}, {}, {}, {}, {}) } } }
         listOf("说点什么", "安静一会儿", "跳过", "结束旅程").forEach { compose.onNodeWithText(it).assertIsDisplayed() }
         compose.onAllNodes(hasScrollAction()).assertCountEquals(0)
     }
@@ -55,12 +56,12 @@ class LandscapeUiTest {
 @Config(sdk = [34], qualifiers = "w411dp-h891dp")
 @LooperMode(LooperMode.Mode.PAUSED)
 class EndUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<MainActivity>()
     @Test fun endScreenSavesRatingAndReturns() {
         val app = RuntimeEnvironment.getApplication(); val store = TripStore(app)
         val summary = TripSummary(1234, 61234, "绵阳", listOf("道路与生活"), 1); assertTrue(store.finish(summary))
         var returned = false
-        compose.setContent { MaterialTheme { EndScreen(summary, store) { returned = true } } }
+        compose.runOnUiThread { compose.activity.setContent { MaterialTheme { EndScreen(summary, store) { returned = true } } } }
         compose.onNodeWithText("这一程，读过的山河").assertIsDisplayed()
         compose.onNodeWithText("保存评分").performScrollTo().performClick()
         compose.onNodeWithText("已保存在本机").assertIsDisplayed()

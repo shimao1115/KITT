@@ -20,9 +20,9 @@ class AndroidLifecycleTest {
         shadowOf(app).grantPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)
         val activity = Robolectric.buildActivity(MainActivity::class.java).setup()
         assertNotNull(activity.get().window.decorView); assertFalse(app.runtime.journey.running)
-        app.runtime.simulation = true
         val service = Robolectric.buildService(JourneyService::class.java).create()
-        service.get().onStartCommand(Intent(app, JourneyService::class.java).setAction(JourneyService.START), 0, 1)
+        service.get().onStartCommand(Intent(app, JourneyService::class.java).setAction(JourneyService.START)
+            .putExtra(JourneyService.SIMULATED, true), 0, 1)
         assertTrue(app.runtime.journey.running)
         service.get().onStartCommand(Intent(app, JourneyService::class.java).setAction(JourneyService.QUIET), 0, 2)
         assertEquals(JourneyState.QUIET, app.runtime.journey.state)

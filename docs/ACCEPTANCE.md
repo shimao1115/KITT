@@ -1,5 +1,7 @@
 # V0 acceptance evidence — 2026-10-03
 
+This records the original D0–D11 gate. Current Debug/Release and phone evidence: [M1.2 acceptance](ACCEPTANCE_M1_2.md), with the preserved M1.1 phone record in [HANDOFF.md](../HANDOFF.md).
+
 `assembleDebug testDebugUnitTest lintDebug`: PASS. 34 tests, zero failures/errors/skips. APK signature verification: PASS (v2), package `com.kitt.reader`, version `0.1.0`, min SDK 26, target SDK 35. Lint: zero errors; four newer-dependency notices. Versions were deliberately pinned to the available proven toolchain.
 
 Full production-core simulation: PASS with Fake Provider and fake Voice. Fixture distance 110,452 m, speed 80 km/h, about 82 simulated minutes. 64 Director checks, four TTS outputs: destination question, acknowledgement, one general mechanism narration, and an active deeper reply. GPS samples run through the same Fix → Context → DirectorLoop → Journey → VoicePort path as real GPS; there is no simulation branch in Director/Journey.

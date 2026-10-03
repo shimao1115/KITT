@@ -26,7 +26,8 @@ V0 只需要证明一个“魔法瞬间”：
 - 最短总验收步骤及唯一剩余外部动作：[HANDOFF.md](HANDOFF.md)。
 - 构建/测试/打包：PowerShell 执行 `./scripts/verify.ps1`；缓存齐全时可加 `-Offline`。
 - 测试证据：[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。
-- 模拟入口：连续点顶部“路上读山河”5次，开启模拟位置，选择 16× 或 60×，点击开始。实际速度仍为80 km/h，加速只推进位置。
+- 普通“开始读山河”始终使用手机 GPS，与 AI Provider 无关。
+- 模拟入口：连续点顶部“路上读山河”5次，选择 80 km/h 和 16× 或 60×，点击开发对话框中的“开始”。仅本次旅程使用模拟位置；结束后恢复手机 GPS。加速只推进位置。
 - 真实 AI：旅程结束后在设置选择 OpenAI Responses 或兼容 API，输入 HTTPS 地址、模型和 API key 并保存。密钥在本机通过 Android Keystore 加密保存，不进入 APK/仓库。普通 API fallback 的技术判断见 [Provider Spike](docs/PROVIDER_SPIKE.md)。
 
 Fake 通过闭环验收不代表真实 AI 内容质量通过；手机语音/GPS/锁屏表现与真实 Provider 内容是最后人工验收边界。

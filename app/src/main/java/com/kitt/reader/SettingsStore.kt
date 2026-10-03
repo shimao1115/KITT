@@ -34,6 +34,8 @@ class AndroidKeyCipher : SecretCipher {
 }
 class SettingsStore(context: Context, private val secrets: SecretCipher = AndroidKeyCipher()) {
     private val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+    // M1.2: legacy developer mode must never become the next ordinary journey's source.
+    init { prefs.edit().remove("simulation").apply() }
     var credentialUnavailable = false; private set
     fun read(): ProviderConfig {
         val key = prefs.getString("credential", "").orEmpty()
@@ -62,11 +64,10 @@ class SettingsStore(context: Context, private val secrets: SecretCipher = Androi
     @Synchronized fun saveChatGpt(record: String) {
         check(prefs.edit().putString("chatgpt", secrets.encrypt(record)).commit()) { "暂时无法保存 ChatGPT 连接。" }
     }
-    val simulation get() = prefs.getBoolean("simulation", false)
     val acceleration get() = prefs.getFloat("acceleration", 1.0f).toDouble().coerceIn(1.0, 120.0)
     val simulationSpeed get() = prefs.getFloat("simulation_speed", 80.0f).toDouble().coerceIn(1.0, 200.0)
-    fun developer(simulation: Boolean, acceleration: Double, speedKmh: Double = simulationSpeed) {
-        prefs.edit().putBoolean("simulation", simulation).putFloat("acceleration", acceleration.toFloat())
+    fun developer(acceleration: Double, speedKmh: Double = simulationSpeed) {
+        prefs.edit().putFloat("acceleration", acceleration.toFloat())
             .putFloat("simulation_speed", speedKmh.coerceIn(1.0, 200.0).toFloat()).apply()
     }
 }

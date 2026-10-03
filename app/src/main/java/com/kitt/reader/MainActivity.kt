@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -22,11 +23,13 @@ import androidx.core.app.NotificationManagerCompat
 class MainActivity : ComponentActivity() {
     private val runtime get() = (application as KittApp).runtime
     private var startAfterPermission = false
+    private var startSimulation = false
     private var microphonePermissionPending = false
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (hasLocation() && startAfterPermission) requestNotificationAndStart()
         else if (startAfterPermission) runtime.locationUnavailable("请允许精确定位后再开始。")
         startAfterPermission = false
+        if (!hasLocation()) startSimulation = false
     }
     private val notificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { startServiceJourney() }
     private val micPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -34,7 +37,8 @@ class MainActivity : ComponentActivity() {
         (runtime.voice as? AndroidVoice)?.permissionResult(granted)
     }
     private fun hasLocation() = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    private fun startJourney() {
+    private fun startJourney(simulated: Boolean = false) {
+        startSimulation = simulated
         if (hasLocation()) requestNotificationAndStart() else {
             startAfterPermission = true
             locationPermission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
@@ -46,7 +50,9 @@ class MainActivity : ComponentActivity() {
         else startServiceJourney()
     }
     private fun startServiceJourney() {
-        ContextCompat.startForegroundService(this, Intent(this, JourneyService::class.java).setAction(JourneyService.START))
+        ContextCompat.startForegroundService(this, Intent(this, JourneyService::class.java).setAction(JourneyService.START)
+            .putExtra(JourneyService.SIMULATED, startSimulation))
+        startSimulation = false
     }
     private fun endJourney() { runtime.end(); stopService(Intent(this, JourneyService::class.java)) }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +61,7 @@ class MainActivity : ComponentActivity() {
             val r = runtime.revision.intValue
             var developer by remember { mutableStateOf(false) }; var taps by remember { mutableIntStateOf(0) }
             var settings by remember { mutableStateOf(false) }
+            BackHandler(enabled = settings) { settings = false }
             var unavailableSettings by remember { mutableStateOf(false) }
             var developerText by remember { mutableStateOf("") }
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme(primary = Color(0xFF9BD2C0)) else
@@ -66,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     }, { settings = false })
                     else if (summary != null) EndScreen(summary, runtime.store, runtime::dismissSummary)
                     else DrivingScreen(runtime.journey, (if (runtime.config.kind == ProviderKind.FAKE) "离线演示 · " else "") + runtime.sourceLabel,
-                        ::startJourney, runtime.loop::speak, ::endJourney,
+                        { startJourney() }, runtime.loop::speak, ::endJourney,
                         { if (runtime.journey.running) unavailableSettings = true else settings = true },
                         { taps++; if (taps >= 5) { developer = true; taps = 0 } })
                     if (unavailableSettings) AlertDialog(onDismissRequest = { unavailableSettings = false },
@@ -78,7 +85,7 @@ class MainActivity : ComponentActivity() {
                     if (developer) AlertDialog(onDismissRequest = { developer = false }, title = { Text("开发模拟 · 非导航级") }, text = {
                         Column {
                             Text("成都→德阳→绵阳粗粒度 fixture；只替换位置来源。请先结束当前旅程，再切换。")
-                            Row { Text("模拟位置"); Switch(runtime.simulation, { runtime.developer(simulated = it) }, enabled = !runtime.journey.running) }
+                            Text("开始将使用模拟位置；普通开始使用手机 GPS。")
                             Row { listOf(1.0, 16.0, 60.0).forEach { speed -> TextButton({ runtime.developer(speed = speed) }) { Text("${speed.toInt()}×") } } }
                             Text("当前 ${runtime.acceleration.toInt()}×；模拟速度 ${runtime.simulationSpeed.toInt()} km/h")
                             Row { listOf(40.0, 80.0, 100.0).forEach { speed -> TextButton({ runtime.developer(speedKmh = speed) }, enabled = !runtime.journey.running) { Text("${speed.toInt()} km/h") } } }
@@ -86,7 +93,7 @@ class MainActivity : ComponentActivity() {
                                 OutlinedTextField(developerText, { developerText = it.take(800) }, label = { Text("模拟一句用户输入（语音不可用时）") })
                                 TextButton({ runtime.loop.user(developerText); developerText = ""; developer = false }, enabled = developerText.isNotBlank()) { Text("提交到同一 Director") }
                             }
-                            Button({ developer = false; if (runtime.journey.running) endJourney() else startJourney() }) {
+                            Button({ developer = false; if (runtime.journey.running) endJourney() else startJourney(simulated = true) }) {
                                 Text(if (runtime.journey.running) "停止模拟 / 结束" else "开始")
                             }
                         }

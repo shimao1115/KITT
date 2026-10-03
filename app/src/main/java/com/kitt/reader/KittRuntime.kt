@@ -31,7 +31,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             else -> ApiProvider(config)
         }
     }) { Log.w("KITT", it) }
-    var simulation = settings.simulation
+    var simulation = false; private set
     var acceleration = settings.acceleration
     var simulationSpeed = settings.simulationSpeed
     var source: LocationSource? = null; private set
@@ -46,12 +46,13 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         journey.diagnostic = { Log.w("KITT", it) }
     }
     val sourceLabel: String get() = if (simulation) "成都→绵阳 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
-    fun start() {
+    fun start(simulated: Boolean = false) {
         val saved = if (resumeRequested) recovery else null
         resumeRequested = false
         stopSources(); travelCheckpointMs = saved?.travelMs ?: 0L; summary = null; sourceNotice = ""; recovery = null
+        simulation = saved?.simulation ?: simulated
         if (saved != null) {
-            simulation = saved.simulation; acceleration = saved.acceleration
+            acceleration = saved.acceleration
             journey.restore(saved.started, saved.destination, saved.instructions, saved.topics, saved.quietUntil)
         } else journey.start()
         loop.reset()
@@ -84,10 +85,10 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         summary?.let { store.finish(it) }; store.clearRecovery(); revision.intValue++
     }
     fun dismissSummary() { summary = null; revision.intValue++ }
-    fun developer(simulated: Boolean = simulation, speed: Double = acceleration, speedKmh: Double = simulationSpeed) {
+    fun developer(speed: Double = acceleration, speedKmh: Double = simulationSpeed) {
         if (journey.running) return
-        simulation = simulated; acceleration = speed; simulationSpeed = speedKmh
-        settings.developer(simulation, acceleration, simulationSpeed); revision.intValue++
+        acceleration = speed; simulationSpeed = speedKmh
+        settings.developer(acceleration, simulationSpeed); revision.intValue++
     }
     fun checkpoint() { store.checkpoint(journey, simulation, acceleration, (source as? SimulatedLocationSource)?.travelMs ?: travelCheckpointMs) }
     private fun checkpointIfChanged() {
@@ -104,6 +105,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     fun stopSources() {
         travelCheckpointMs = (source as? SimulatedLocationSource)?.travelMs ?: travelCheckpointMs
         ticker?.cancel(); ticker = null; source?.stop(); source = null; loop.reset()
+        simulation = false; sourceNotice = ""; revision.intValue++
     }
     fun locationUnavailable(message: String) { sourceNotice = message; revision.intValue++ }
     fun foreground(value: Boolean, permissionDialog: Boolean = false) {

@@ -25,7 +25,7 @@ class JourneyService : Service() {
                 try {
                     if (Build.VERSION.SDK_INT >= 29) startForeground(ID, notification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION)
                     else startForeground(ID, notification())
-                    if (!runtime.journey.running) runtime.start()
+                    if (!runtime.journey.running) runtime.start(simulated = intent.getBooleanExtra(SIMULATED, false))
                     updateNotification()
                 } catch (_: SecurityException) {
                     android.util.Log.w("KITT", "Location foreground permission unavailable")
@@ -55,5 +55,6 @@ class JourneyService : Service() {
     companion object {
         const val START = "com.kitt.reader.START"; const val END = "com.kitt.reader.END"; const val QUIET = "com.kitt.reader.QUIET"
         const val CHANNEL = "journey"; const val ID = 7
+        const val SIMULATED = "com.kitt.reader.SIMULATED"
     }
 }
