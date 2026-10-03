@@ -101,7 +101,32 @@ Driving-safety UX:
 
 Possible later milestone: **M1.6 Visual Talk** (or combine plumbing work with M1.5 while keeping the two intents separate).
 
-## 5. UI visual polish — deliberately later
+
+## 5. Current location display during a journey
+
+The user wants the main driving screen to show the **current location / place** while KITT is running.
+
+Current implementation note:
+- The driving screen already tries to show `journey.fix.area`.
+- Simulated fixes populate `area`, so simulation can show broad route stages.
+- `RealLocationSource` currently emits only raw GPS coordinates/speed/bearing/altitude/accuracy and leaves `area` empty.
+- Therefore a real-GPS journey currently degrades to the generic label **“GPS 已定位”** instead of a human-readable place.
+
+Desired UX:
+- During a real journey, show a concise, glanceable current-place label on the main screen.
+- Prefer human-readable place context such as district / town / nearby area rather than exposing raw latitude/longitude as the primary display.
+- If human-readable lookup is unavailable, fall back gracefully to a compact coordinate or “GPS 已定位” state rather than blocking the journey.
+- Location display should update at a sensible low frequency; do not reverse-geocode every raw GPS fix.
+- This is informational only; it must not turn KITT into a navigation app.
+- Keep location lookup separate from AI Provider selection.
+
+Implementation direction to evaluate later:
+- Android platform reverse geocoding / Geocoder is the lightest first option if sufficiently reliable on target phones.
+- Optional map-provider enrichment can remain a later enhancement; do not add an AMap SDK solely to render a place label unless needed.
+
+Possible milestone: fold into **M1.4/M1.5 usability pass** before the final visual-polish milestone.
+
+## 6. UI visual polish — deliberately later
 
 The user wants a dedicated UI beautification pass, but **after the core interaction, voice, route-reference, and visual-talk behavior are stable**.
 
@@ -124,6 +149,7 @@ Possible later milestone: **M1.7 UI Polish / KITT Visual Identity**.
 2. Then address **Voice Experience** (speech recognition diagnostics + dynamic listening UI + dynamic AI-speaking UI + TTS voice selection).
 3. Then address **Route Reference image**.
 4. Then address **In-trip Visual Talk**, optionally sharing the image transport/picker plumbing built for Route Reference.
-5. Then do the broader **UI visual-polish pass**.
+5. Add a concise **current-place display** for real GPS journeys.
+6. Then do the broader **UI visual-polish pass**.
 
 These are remembered backlog items, not active implementation instructions yet.
