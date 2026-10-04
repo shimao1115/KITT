@@ -549,3 +549,47 @@ The system should distinguish:
 A 1990 county gazetteer may still be the authoritative source for a Qing-dynasty place-name history, while a 2024 museum opening-hours page may already be stale.
 
 The pack schema should therefore carry a source/fact stability class rather than using one global “last updated” rule.
+
+
+## Rollout order — Chengdu first, Sichuan second
+
+The first real knowledge-pack pilot should be **Chengdu**, not all of Sichuan.
+
+### Phase 1 — Chengdu pilot
+
+Build a complete enough Chengdu package to validate:
+- schema design;
+- district/county/township hierarchy;
+- Overview / Topic / Fact / Source contracts;
+- gazetteer/document ingestion;
+- refreshable public-data ingestion;
+- local SQLite/FTS lookup;
+- phone-side package download/update;
+- runtime latency;
+- Director usability;
+- provenance traceability;
+- package size;
+- incremental update workflow.
+
+Chengdu is the right first scope because it contains enough diversity to stress the schema:
+- dense urban districts;
+- suburban districts;
+- county-level cities;
+- historic towns;
+- temples / gardens / museums / heritage;
+- mountains / rivers / irrigation;
+- agriculture / industry / transport;
+- rich local chronicles and public institutional sources.
+
+Do not treat the Chengdu pilot as a toy. It should be the first production-shaped package.
+
+### Phase 2 — Sichuan expansion
+
+Only after the Chengdu package proves the schema and update workflow should the NAS pipeline expand to Sichuan.
+
+Expansion should reuse the same pack contract and production pipeline rather than creating province-specific schemas.
+
+The key gate is:
+
+> If Chengdu cannot be represented cleanly, queried quickly, updated incrementally, and used naturally by Director, do not scale the crawler.
+
