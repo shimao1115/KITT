@@ -364,3 +364,117 @@ It is intended to improve the core experience:
 - **more detailed**
 
 Treat this as a higher priority than cosmetic polish and most optional future features once the current field-use version has been observed in real travel.
+
+
+## Design priority — schema first, crawler second
+
+The hardest and highest-leverage part of this project is **not crawling**. Crawling can be replaced, retried, parallelized, or delegated to low-cost models.
+
+The durable core is the **knowledge-pack contract**: what a place/topic record looks like, which fields are required, how provenance is represented, how uncertainty/conflicts are stored, how updates work, and how the runtime AI can consume the data with very little prompt/context overhead.
+
+Before building a large crawler, design and validate the pack schema against real examples.
+
+### Schema design goals
+
+The schema should be:
+
+- **AI-friendly**: easy for the Director to read and reason over without a large adapter prompt;
+- **human-auditable**: facts and source provenance are inspectable;
+- **compact**: optimized for local phone storage and fast lookup;
+- **stable**: supports future models without rewriting the database each time;
+- **updateable**: individual facts/topics/sources can be refreshed without rebuilding a whole province;
+- **uncertainty-aware**: conflicting or weak evidence is represented explicitly rather than flattened into false certainty;
+- **location-aware**: facts distinguish administrative association from precise physical proximity;
+- **time-aware**: stable historical facts are separated from time-sensitive state;
+- **narration-neutral**: store evidence/material, not prewritten scripts.
+
+### Fields to prototype first
+
+Do not freeze these names yet; validate them on real records first.
+
+Candidate core entities:
+
+**Area**
+- area_id / administrative_code
+- parent_area_id
+- level
+- canonical_name
+- aliases
+- centroid / optional coarse geometry
+- overview_id
+- pack_version
+
+**Overview**
+- area_id
+- orientation
+- highlights[]
+- source_refs[]
+- updated_at
+- confidence / coverage notes
+
+**Topic**
+- topic_id
+- area_id(s)
+- canonical_name
+- aliases
+- topic_family
+- salience
+- why_it_matters
+- spatial_scope / location relation
+- facts[]
+- source_refs[]
+- uncertainty_notes
+- updated_at
+
+**Fact**
+- fact_id
+- statement / neutral summary
+- source_refs[]
+- confidence
+- date_scope / temporal validity
+- official_designation (if verified)
+- geographic_scope
+- conflict_group / supersedes (optional)
+- verified_at
+
+**Source**
+- source_id
+- url
+- title
+- publisher / organization
+- source_class
+- retrieved_at
+- published_at (if known)
+- fingerprint / version hint
+- authority flags
+
+The phone runtime should be able to fetch an Area Overview plus a small number of relevant Topic records in one fast local query.
+
+### First design exercise
+
+When this work begins, do **not** start with a province-wide crawl.
+
+First hand-design or AI-generate 20–50 representative records from diverse Sichuan examples:
+- historical person;
+- temple;
+- garden;
+- archaeological site;
+- intangible heritage craft;
+- food/specialty;
+- mountain/river;
+- railway/bridge/dam;
+- industrial/agricultural topic;
+- ordinary township with sparse sources;
+- official heritage designation;
+- disputed/uncertain historical claim.
+
+Then test:
+1. Can the same schema represent all of them cleanly?
+2. Can Director answer “what is this / why interesting / tell me more” from it?
+3. Can the same data support Overview and Topic without duplication?
+4. Can one fact be updated without rewriting unrelated records?
+5. Can the runtime distinguish “in this district” from “near the car”?
+6. Can provenance be traced without shipping raw webpages?
+7. Is the prompt/context payload small enough for low latency?
+
+Only after this contract is stable should the NAS crawler/production pipeline scale up.
