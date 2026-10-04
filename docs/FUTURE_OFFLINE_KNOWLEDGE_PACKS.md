@@ -197,6 +197,71 @@ Do **not** start with:
 
 Add those only if simple structured lookup proves insufficient.
 
+
+## Runtime distribution principle — NAS is not a trip-time dependency
+
+The preferred product shape is **download-to-phone**, analogous to offline map packages.
+
+NAS is the builder / publisher / update source, not the runtime database that the phone must query on every trip.
+
+Desired flow:
+
+> NAS builds / refreshes province or route packs
+> → phone downloads the selected pack before travel
+> → phone reads local SQLite / FTS data directly during the trip
+> → live network is used only for missing or time-sensitive information.
+
+This avoids:
+- NAS round-trip latency;
+- home-network/VPN dependency while driving;
+- failures when NAS is asleep or unreachable;
+- extra mobile-data traffic for stable knowledge;
+- repeated hosted-search cost for content already curated.
+
+The phone should be able to use a downloaded pack with no NAS connection at all.
+
+### Package UX
+
+Long-term UX should resemble offline maps:
+
+> 离线地方资料
+> - 四川省 · 已下载 · 版本 2026.10
+> - 湖北省 · 未下载
+> - 阿坝州路线包 · 有更新
+
+User can:
+- download a full province;
+- download only a route / selected prefectures/counties;
+- update an existing pack;
+- delete a pack to reclaim storage.
+
+### Package manifest
+
+Each pack should have a small manifest with:
+- package id;
+- region / administrative scope;
+- version;
+- schema version;
+- created_at / updated_at;
+- byte size;
+- record counts;
+- checksum;
+- minimum app version;
+- optional delta/update metadata.
+
+Phone verifies checksum before activating the new pack and keeps the previous known-good version until replacement succeeds.
+
+### Storage expectation
+
+Because the core material is structured text + source metadata, not map tiles, imagery, audio, or full mirrored webpages, package size should usually be modest relative to offline maps.
+
+Do not optimize prematurely. Measure a real Sichuan pilot first. If needed:
+- use SQLite page compression / compact schemas;
+- deduplicate URLs, aliases, source titles and repeated strings;
+- compress package transport;
+- keep only concise evidence snippets rather than raw pages.
+
+
 ## Pack distribution
 
 Long-term UX may resemble offline maps:
