@@ -478,3 +478,74 @@ Then test:
 7. Is the prompt/context payload small enough for low latency?
 
 Only after this contract is stable should the NAS crawler/production pipeline scale up.
+
+
+## Storage classes — archival sources vs refreshable public knowledge
+
+Keep long-lived documentary sources separate from refreshable public-data knowledge.
+
+### A. Archival / documentary layer
+
+Examples:
+- county gazetteers;
+- local chronicles;
+- historical monographs;
+- digitized archival publications;
+- older museum / institutional publications whose content is primarily historical.
+
+Characteristics:
+- source edition is stable;
+- the document itself may remain valid for decades;
+- re-fetching it on every update cycle has little value;
+- preserve edition metadata, source URL/library identity, file checksum and acquisition date;
+- retain page/section mapping so AI answers can trace back to the original source.
+
+Update policy:
+- immutable-by-version;
+- only re-import when a new edition, corrected scan/OCR, or better source appears;
+- never treat “old publication date” as stale if the fact is historical.
+
+### B. Refreshable public-knowledge layer
+
+Examples:
+- current government public information;
+- cultural-heritage lists;
+- administrative boundaries/names;
+- museum/institution profiles;
+- tourism and public-service information;
+- public infrastructure summaries;
+- official statistics and other periodically revised data.
+
+Characteristics:
+- may change every few years, or sooner depending on field;
+- should carry `retrieved_at`, `published_at`, source fingerprint/version and refresh policy;
+- facts can be superseded without replacing the underlying archival sources.
+
+Update policy:
+- incremental refresh by source/object;
+- different fields can have different refresh intervals;
+- avoid reprocessing unchanged sources.
+
+### C. Realtime layer stays outside the pack
+
+Examples:
+- today's opening status;
+- temporary road closure;
+- current ticket inventory;
+- weather;
+- live traffic;
+- breaking news;
+- temporary activities.
+
+These should not be normalized into the long-lived offline pack except as historical snapshots when there is a specific product reason.
+
+### Why the split matters
+
+The system should distinguish:
+- **source age** from **fact staleness**;
+- **stable historical evidence** from **refreshable current public facts**;
+- **archival edition identity** from **current-state versioning**.
+
+A 1990 county gazetteer may still be the authoritative source for a Qing-dynasty place-name history, while a 2024 museum opening-hours page may already be stale.
+
+The pack schema should therefore carry a source/fact stability class rather than using one global “last updated” rule.
