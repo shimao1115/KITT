@@ -1,5 +1,7 @@
 # 沿途 V0 产品规格
 
+> **V0.3.3 定位可靠性**：保留 GPS，加 Android NETWORK_PROVIDER；一个来源选择器处理精度、单调时钟年龄、合理性与恢复。短暂 LAST_KNOWN 不刷新测量时间，过期为未知；粗定位可支持章节背景，禁止精确地标到达触发。物理位置与 VPN/IP/代理/DNS/搜索推测地理位置隔离；不加地图 SDK、定位付费服务或其他功能。规格见 [HOTFIX_LOCATION_FALLBACK.md](HOTFIX_LOCATION_FALLBACK.md)。
+
 > **V0.3.2 研究链收口**：章节先做轻量 Overview，发现4–8个具体对象与来源；READY 即给 Director 正常机会。
 > 已讲对象或高价值线索再串行做一个 Topic（3–6条事实），后台 pending 不阻塞导演或移动；用户输入抢占，驶离取消未完专题。
 > 完成证据只缓存至旅程结束，仍要求 completed hosted search 和可核对 provenance。主动问题搜索分支、八字段 Director 与语音交互保持。

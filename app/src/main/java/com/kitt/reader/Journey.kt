@@ -33,6 +33,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     var notice by mutableStateOf(""); private set
     var prepared: Prepared? = null; private set
     var fix by mutableStateOf<Fix?>(null); private set
+    val currentFix get() = fix?.takeIf { it.ageMs(now()) in 0..60000 }
     var foreground = true
     var diagnostic: (String) -> Unit = {}
     var epoch = 0L; private set
@@ -111,6 +112,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun tick() {
         if (quietUntil != 0L && quietUntil != Long.MAX_VALUE && now() >= quietUntil) resume()
         prepared?.let { if (now() - it.at > 300000) prepared = null }
+        if (fix?.ageMs(now())?.let { it !in 0..60000 } == true) prepared = null
         // Neither speech nor typing answered: abandon the exchange and hand the microphone back.
         if (awaitingReply && now() > replyUntil) { invalidate(); changed() }
         else changed()
@@ -121,11 +123,11 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         invalidate(); prepared = null; topic = ""; autoSpeechCooldown = false; cooldownUntil = cadenceNow() + 45000; changed()
     }
     fun location(next: Fix) {
-        if (!running || !next.valid() || now() - next.timeMs > 60000 || next.timeMs > now() + 10000) return
-        fix?.let { if (next.timeMs < it.timeMs) return }
+        if (!running || !next.valid() || next.ageMs(now()) !in -10000..60000) return
+        fix?.let { if (next.olderThan(it)) return }
         fix = next
         prepared?.let {
-            if (now() - it.at > 300000 || it.anchor.distanceTo(next) > 2000 ||
+            if (!next.precise(now()) || now() - it.at > 300000 || it.anchor.distanceTo(next) > 2000 ||
                 angleDifference(it.anchor.bearing, next.bearing) > 65 ||
                 (it.anchor.area.isNotEmpty() && next.area != it.anchor.area)) prepared = null
         }
@@ -146,7 +148,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         if (listening || awaitingReply) return "user_exchange"
         if (imageInteraction) return "image_interaction"
         if (cadenceNow() < cooldownUntil && !(landmarkOpportunity && autoSpeechCooldown)) return "cooldown"
-        if (now() - position.timeMs > 60000) return "stale_location"
+        if (position.ageMs(now()) !in 0..60000) return "stale_location"
         if (lastCheckFix == null || freshChapter) return null
         val elapsed = cadenceNow() - lastCheckAt
         if (landmarkOpportunity) return null
@@ -245,7 +247,7 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         // On-demand research is an explicit active request; automatic content still expires in 45s.
         if (now() - ticket.at > if (ticket.active && ticket.researching) 140000 else 45000) return DeliveryOutcome.STALE
         if (!ticket.active && (isQuiet || speaking || listening || ticket.fix == null || fix == null ||
-                    now() - fix!!.timeMs > 60000 || ticket.fix.distanceTo(fix!!) > 1500 ||
+                    fix!!.ageMs(now()) !in 0..60000 || ticket.fix.distanceTo(fix!!) > 1500 ||
                     angleDifference(ticket.fix.bearing, fix!!.bearing) > 65)) return DeliveryOutcome.STALE
         if (proximityBlock != null) return proximityBlock
         val response = runCatching { DirectorContract.parse(raw ?: error("Provider unavailable")) }

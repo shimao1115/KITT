@@ -60,9 +60,9 @@ private fun stateLabel(journey: Journey) = when (journey.state) {
     JourneyState.LISTENING -> "正在听，请说话"
     JourneyState.QUIET -> "安静模式"
 }
-private fun placeLabel(journey: Journey) = journey.fix?.let {
+private fun placeLabel(journey: Journey) = journey.currentFix?.let {
     it.administrative?.label ?: it.area.ifBlank {
-        java.lang.String.format(java.util.Locale.ROOT, "GPS %.3f, %.3f", it.latitude, it.longitude)
+        java.lang.String.format(java.util.Locale.ROOT, "%s %.3f, %.3f", it.source, it.latitude, it.longitude)
     }
 } ?: if (journey.running) "等待可靠位置" else "其余的，跟它说就行。"
 private fun quietLabel(remaining: Long) = if (remaining == Long.MAX_VALUE) "等你叫我" else

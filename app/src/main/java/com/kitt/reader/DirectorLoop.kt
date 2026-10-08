@@ -49,6 +49,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     }
     fun check() {
         journey.tick()
+        if (journey.fix?.precise(now()) != true) context.proximity.expire()
         if (!journey.running) { research.clear(); return }
         if (research.opportunity) journey.noteChapterEntry()
         val delay = if (pending) "director_in_flight" else journey.checkDelayReason(context.proximity.opportunity)
@@ -131,6 +132,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
                 null
             }
             val parsed = raw?.let { runCatching { DirectorContract.parse(it) }.getOrNull() }
+            if (journey.fix?.precise(now()) != true) context.proximity.expire()
             val chapterBlock = if (!ticket.active && chapterKey != context.areas.active?.area?.key) DeliveryOutcome.STALE else null
             val outcome = journey.deliver(deliveryTicket, raw, activeFailure, chapterBlock ?: context.proximity.guard(parsed, ticket.active, landmarkIds)) { user(it) }
             if (outcome == DeliveryOutcome.SPEAK_NOW && parsed != null) {

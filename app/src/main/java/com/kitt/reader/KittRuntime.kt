@@ -71,7 +71,11 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         (voice as? AndroidVoice)?.voiceName = settings.voiceName
         journey.diagnostic = { diagnostics.log(if (simulation) "KITTSim" else "KITT", it) }
     }
-    val sourceLabel: String get() = if (simulation) "新都→安州雎水 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else "手机 GPS · ${sourceNotice.ifBlank { "无地图增强" }}"
+    val sourceLabel: String get() = if (simulation) "新都→安州雎水 · 粗粒度模拟 / ${simulationSpeed.toInt()} km/h / ${acceleration.toInt()}×（非导航级）${sourceNotice}" else {
+        val fix = journey.currentFix
+        if (!journey.running) "手机定位 · GPS / 系统网络辅助" else if (fix == null) "定位未知${sourceNotice.takeIf(String::isNotBlank)?.let { " · $it" }.orEmpty()}" else
+            "${fix.source} · ±${fix.accuracy.toInt()} m · ${fix.ageMs(System.currentTimeMillis()) / 1000} 秒${sourceNotice.takeIf(String::isNotBlank)?.let { " · $it" }.orEmpty()}"
+    }
     fun start(simulated: Boolean = false) {
         visualTalk.clear()
         val routeHint = routeReference.beginJourney()

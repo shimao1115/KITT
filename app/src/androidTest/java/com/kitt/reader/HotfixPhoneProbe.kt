@@ -15,6 +15,10 @@ class HotfixPhoneProbe : Instrumentation() {
         try {
             lateinit var runtime: KittRuntime
             runOnMainSync { runtime = (targetContext.applicationContext as KittApp).runtime }
+            if (mode == "location") {
+                startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                finish(0, locationPhoneProbe(runtime)); return
+            }
             if (mode == "staged-research") {
                 startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 finish(0, stagedResearchPhoneProbe(runtime, targetContext)); return

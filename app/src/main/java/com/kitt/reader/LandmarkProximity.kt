@@ -36,6 +36,7 @@ class LandmarkProximity(private val nodes: List<Landmark>) {
     val opportunity get() = live.any { it.id !in checked && it.id !in spoken }
     val ids get() = live.map { it.id }.toSet()
     fun accept(fix: Fix) {
+        if (fix.source == FixSource.LAST_KNOWN || fix.accuracy > 50) { expire(); return }
         live = nodes.filter { node ->
             val distance = node.distance(fix)
             if (distance > node.radiusMeters) { approaches.remove(node.id); false }
@@ -47,6 +48,7 @@ class LandmarkProximity(private val nodes: List<Landmark>) {
             }
         }
     }
+    fun expire() { live = emptyList(); approaches.clear() }
     fun consumeOpportunity(requested: Set<String> = ids) { checked.addAll(requested) }
     private fun matching(result: DirectorResult): String? = result.landmarkId.takeIf(String::isNotBlank)
         ?: nodes.firstOrNull { it.name in result.topic || it.name in result.memoryUpdate }?.id

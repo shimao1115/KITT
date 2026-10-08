@@ -19,6 +19,8 @@ class ContextTest {
         val a = runSource(source); assertTrue(a.contains("海拔变化约 10 m"))
         assertTrue(a.contains("无地图增强")); assertTrue(a.length < 2000)
         assertFalse(Fix(Double.NaN, 104.0, time).valid())
-        assertFalse(Fix(30.0, 104.0, time, accuracy = 999.0).valid())
+        assertTrue(Fix(30.0, 104.0, time, accuracy = 999.0, source = FixSource.NETWORK).valid())
+        assertFalse(Fix(30.0, 104.0, time, accuracy = 999.0, source = FixSource.NETWORK).precise(time))
+        assertFalse(Fix(30.0, 104.0, time, accuracy = 10001.0).valid())
     }
 }

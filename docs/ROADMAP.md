@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **当前授权任务：V0.3.3 定位可靠性热修复 / Issue #14**。只完成 [HOTFIX_LOCATION_FALLBACK.md](HOTFIX_LOCATION_FALLBACK.md) 的 GPS + Android 网络定位兜底；研究、Journey、Director 和语音行为保持。其他 future 文档不进入本轮施工。验证边界见 [ACCEPTANCE_LOCATION_FALLBACK.md](ACCEPTANCE_LOCATION_FALLBACK.md)。
+
 > 当前轮次只收口 **Overview → Topic 研究链**，真机与回归结果见 [ACCEPTANCE_STAGED_RESEARCH.md](ACCEPTANCE_STAGED_RESEARCH.md)。
 > 验收完成后停止，不启动下一轮功能、架构或 Provider 扩展。此前静音热修复与真实搜索证据规则继续有效。
 

@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
     }
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (hasLocation() && startAfterPermission) requestNotificationAndStart()
-        else if (startAfterPermission) runtime.locationUnavailable("请允许精确定位后再开始。")
+        else if (startAfterPermission) runtime.locationUnavailable("请允许定位后再开始。")
         startAfterPermission = false
         if (!hasLocation()) startSimulation = false
     }
@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
         microphonePermissionPending = false
         (runtime.voice as? AndroidVoice)?.permissionResult(granted)
     }
-    private fun hasLocation() = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    private fun hasLocation() = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
     private fun startJourney(simulated: Boolean = false) {
         startSimulation = simulated
         if (hasLocation()) requestNotificationAndStart() else {
@@ -103,7 +104,7 @@ class MainActivity : ComponentActivity() {
                     if (developer) AlertDialog(onDismissRequest = { developer = false }, title = { Text("开发模拟 · 非导航级") }, text = {
                         Column {
                             Text("新都区→广汉→德阳→绵竹→安州区雎水镇，29 点粗粒度 fixture；只替换位置来源。请先结束当前旅程，再切换。")
-                            Text("开始将使用模拟位置；普通开始使用手机 GPS。")
+                            Text("开始将使用模拟位置；普通开始使用手机 GPS / 系统网络辅助定位。")
                             Row { listOf(1.0, 16.0, 60.0).forEach { speed -> TextButton({ runtime.developer(speed = speed) }) { Text("${speed.toInt()}×") } } }
                             Text("当前 ${runtime.acceleration.toInt()}×；模拟速度 ${runtime.simulationSpeed.toInt()} km/h")
                             Row { listOf(40.0, 80.0, 100.0).forEach { speed -> TextButton({ runtime.developer(speedKmh = speed) }, enabled = !runtime.journey.running) { Text("${speed.toInt()} km/h") } } }

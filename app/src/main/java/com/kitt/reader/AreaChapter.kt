@@ -128,4 +128,4 @@ class GeocodeThrottle {
 
 /** Never carry a town for kilometers while its replacement is being resolved. */
 fun areaCacheValid(anchor: Fix, fix: Fix, time: Long): Boolean =
-    fix.valid() && time - anchor.timeMs in 0..30000 && anchor.distanceTo(fix) <= 450
+    fix.valid() && anchor.ageMs(time) in 0..30000 && fix.ageMs(time) in 0..60000 && anchor.distanceTo(fix) <= 450

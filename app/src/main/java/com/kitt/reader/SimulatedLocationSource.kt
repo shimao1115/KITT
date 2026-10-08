@@ -51,7 +51,7 @@ class SimulatedLocationSource(
             if (traveledMeters >= totalMeters) 0.0 else speedKmh, bearing, area = if (fraction >= 0.99) b.area else a.area,
             clue = "粗粒度模拟阶段：${a.area}→${b.area}；非真实道路、非导航级，无已核验当地节点。" +
                 "行政章节是粗粒度场景元数据，不是精确边界；当地事实须等待实际搜索的 Local Dossier；不声称用户看见了具体建筑或桥梁，无新价值就保持安静。",
-            administrative = if (fraction >= 0.99) b.administrative else a.administrative)
+            administrative = if (fraction >= 0.99) b.administrative else a.administrative, source = FixSource.SIMULATED)
     }
     override fun start(onFix: (Fix) -> Unit) {
         stop(); completed = false; travelMs = initialTravelMs

@@ -25,14 +25,14 @@ class SourceIsolationTest {
     private fun assertReal(runtime: KittRuntime) {
         assertTrue(runtime.source is RealLocationSource)
         assertFalse(runtime.simulation)
-        assertTrue(runtime.sourceLabel.startsWith("手机 GPS"))
+        assertTrue(runtime.sourceLabel.startsWith("定位未知"))
         assertFalse(runtime.sourceLabel.contains("成都"))
     }
     private fun assertIdle(runtime: KittRuntime) {
         assertFalse(runtime.journey.running)
         assertNull(runtime.source)
         assertFalse(runtime.simulation)
-        assertEquals("手机 GPS · 无地图增强", runtime.sourceLabel)
+        assertEquals("手机定位 · GPS / 系统网络辅助", runtime.sourceLabel)
         assertEquals("", runtime.sourceNotice)
     }
     @Test fun upgradeDiscardsLegacySimulationButPreservesProviderAndSpeedPreferences() {

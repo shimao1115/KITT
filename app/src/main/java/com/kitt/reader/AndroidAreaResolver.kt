@@ -40,7 +40,7 @@ class AndroidAreaResolver(context: Context, private val scope: CoroutineScope,
                             geocoder.getFromLocation(fix.latitude, fix.longitude, 1)?.firstOrNull()
                         }
                         // Thoroughfare is a road, not a town. Do not fabricate a chapter from it.
-                        address?.let { AreaIdentity.geocoderFields(it.locality, it.subAdminArea, it.subLocality, it.adminArea) }
+                        address?.let { coordinateArea(it, fix) }
                     }
                 } }
                 ensureActive()
@@ -54,4 +54,12 @@ class AndroidAreaResolver(context: Context, private val scope: CoroutineScope,
         }
     }
     fun stop() { job?.cancel(); job = null; resolved = null; anchor = null }
+}
+
+/** Reverse geocoding enriches the supplied coordinate, never a network-inferred country or position. */
+internal fun coordinateArea(address: Address, fix: Fix): AreaIdentity? {
+    if (!address.hasLatitude() || !address.hasLongitude()) return null
+    val returned = Fix(address.latitude, address.longitude, fix.timeMs)
+    if (!returned.valid() || returned.distanceTo(fix) > maxOf(2000.0, fix.accuracy * 2)) return null
+    return locationArea(AreaIdentity.geocoderFields(address.locality, address.subAdminArea, address.subLocality, address.adminArea), fix)
 }
