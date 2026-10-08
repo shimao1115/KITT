@@ -39,6 +39,19 @@ API依据：[Android LocationManager](https://developer.android.com/reference/an
 
 本轮手机自然定位探针与现场项目结果以最终 HANDOFF 为准。探针只直接运行生产 RealLocationSource，45s内接受自然 Android 回调；不注入坐标、不切换 GPS/Wi-Fi/VPN、不启动旅程/联网研究、不修改 Provider/账号设置。只记录来源/精度/年龄/标签，不保存坐标轨迹。
 
+最终包已覆盖安装至 vivo V2405A / Android16，拉回 base.apk 与交付 Debug SHA256 相同。
+三轮各45s；轮次之间 Instrumentation 重启应用，各轮内部来源选择器持续运行。宿主第二轮临时关闭Wi-Fi，结束后恢复；没有修改GPS/VPN设置。系统连接快照分别为 Wi-Fi/VPN、蜂窝/VPN、恢复后Wi-Fi/VPN；出口国家未确认。
+
+| 本次自然测量窗口 | 来源交付次数（含元数据更新） | 末次 fix | 结果 |
+| --- | --- | --- | --- |
+| Wi-Fi开，周边连接快照 WIFI/VPN | LAST_KNOWN 1 / NETWORK 7 | NETWORK ±30m，年龄3835ms | 收到有效设备网络定位；没有选中GPS |
+| Wi-Fi关，CELLULAR/VPN | LAST_KNOWN 1 / NETWORK 7 | NETWORK ±100m，年龄4603ms | 蜂窝条件网络定位有效；没有选中GPS |
+| Wi-Fi恢复 | LAST_KNOWN 1 / NETWORK 3 / GPS 14 | GPS ±1.7m，年龄2282ms | 同一定位实例约19s自然 NETWORK→GPS，无重启来源 |
+
+三次均 `PASS_CURRENT_CONDITIONS_ONLY`。第三轮日志：22:05:37 NETWORK、22:05:56 GPS，此后约2s一个GPS交付。没有完成同一驾驶旅程的完整 GPS→NETWORK→GPS 外场实验，也没有确认室外条件/外国出口/真实粗定位旁白听感。GPS一直启用；探针没有主动模拟GPS失联。
+初期 reverse-geocoder 返回四川省/成都市/新都区，末次行政标签为空；既有静止缓存/节流可使地理增强短暂缺省，位置仍直接交付。不能把空标签改用IP地理补齐。
+Wi-Fi已恢复，测试APK已卸载，无遗留测试Journey/定位服务。原设置保留 ChatGPT OAuth / gpt-5.6-sol / low，独立研究关闭；本轮没有重新验活OAuth或实听研究/TTS。
+
 开发入口可复现（先结束现有旅程）：
 
 ```powershell
@@ -60,10 +73,10 @@ adb uninstall com.kitt.reader.test
 | --- | --- | --- |
 | 室外 GPS 健康 | GPS、低精度数值与新鲜年龄 | 自然探针若收到GPS，只证明当前条件；室外现场仍需确认 |
 | GPS 弱/丢失 | Android提供网络fix时自动NETWORK，Journey不中止 | 自动/Robolectric证明切换；真实弱GNSS现场需确认 |
-| GPS 恢复 | 无重启回GPS且无异常跳跃 | 自动/Robolectric证明；自然真实恢复需确认 |
+| GPS 恢复 | 无重启回GPS且无异常跳跃 | 同一自然探针 NETWORK→GPS已观察；室外/行车完整循环仍需确认 |
 | 国外VPN/TUN出口（含美国） | 开启已确认国外节点后，现场仍为手机实际本地位置 | 架构隔离/外国跳跃与标签测试完成；国外出口现场需确认 |
-| Wi-Fi关、蜂窝开 | NETWORK仍有有效系统测量（若OEM提供） | 需人工确认此组合 |
-| Wi-Fi开 | 网络辅助fix有效 | 自然探针以当时网络状态为准；与蜂窝对照需确认 |
+| Wi-Fi关、蜂窝开 | NETWORK仍有有效系统测量（若OEM提供） | 本次45s蜂窝/VPN自然NETWORK已验证；持续行车仍需确认 |
+| Wi-Fi开 | 网络辅助fix有效 | 本次45s Wi-Fi/VPN自然NETWORK已验证；持续行车仍需确认 |
 | 粗网络精度 | ≥100m不触发精确地标到达叙述 | 自动Guard完成；真实内容/听感需确认 |
 | 来源切换无远距离跳跃 | 连续观察本地坐标，不瞬移外地/美国 | 异常跳跃回归完成；行车现场需确认 |
 | 原链路 | 开始/安静/接管/研究/讲话/结束正常 | 全量确定性回归；本轮真机另记，不复用历史PASS |

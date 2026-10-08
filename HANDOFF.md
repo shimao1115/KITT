@@ -1,74 +1,80 @@
-# 沿途 V0.3.2 — Overview → Topic 收口交接
+# 沿途 V0.3.3 — 定位可靠性修复交接
 
-截至 **2026-10-04（Asia/Shanghai）**，本轮指定研究链已完成真机验收，**停止，不继续扩功能或架构**。
-实现 commit：`c81f641 feat: finish sourced Overview-to-Topic chapter research on OAuth`。
-完整记录：[两阶段研究验收](docs/ACCEPTANCE_STAGED_RESEARCH.md)。此前诊断交接：[V0.3.1存档](docs/HANDOFF_V031_RESEARCH_DIAGNOSTICS.md)。
+截至 **2026-10-08（Asia/Shanghai）**，Issue #14 的实现、自动回归、APK交付及部分自然真机定位验证完成。完整外场验收仍待人工确认，**不宣称真机全部通过**；Issue 保留待外场验收。
+
+实现 commit：`a61a565 fix: keep physical location reliable across GPS and network handoff (#14)`。
+规格：[HOTFIX_LOCATION_FALLBACK.md](docs/HOTFIX_LOCATION_FALLBACK.md)。详细结果、阈值与操作：[ACCEPTANCE_LOCATION_FALLBACK.md](docs/ACCEPTANCE_LOCATION_FALLBACK.md)。V0.3.2历史研究/真机记录已存档至 [原交接](docs/HANDOFF_V032_STAGED_RESEARCH.md)。
 
 ## 当前可运行能力
 
-- 区县／章节进入后先做轻量 Overview：简短概况、不同具体对象和实际来源，不再一次调查全区长事实。
-- Overview READY 即保留正常 Director opportunity；只可使用有证据的基础介绍，不从标题扩写未证实年代、故事或官方称号。
-- 自动讲过一个对象后，可按该对象或高 salience 线索启动一个后台 Topic；最多一个，不批量并发。
-  新证据补入本章证据卡，pending 不阻塞 Director、GPS、TTS 或模拟移动。
-- 用户输入先取消 Topic，再走原主动决策与必要搜索。“再讲一点”明确指向刚才对象，使用已完成专题的新角度。
-- 驶离取消未完 Topic，晚结果不补播。完成证据只缓存至本次旅程结束，重访可复用。
-- completed hosted search 与真实 provenance 仍是 READY 前提。缺政府 + OFFICIAL 引用的文保／非遗认定事实剔除。
-- V0.3.1静音修复、Journey、GPS、八字段 Director、主动搜索支线、ASR、TTS、独立 OpenAI Responses 备用入口保留。
-  没有新密钥、服务器、RAG、数据库、永久知识库、产品多 Agent 或新 UI 功能。
+- 保留GPS，增加Android NETWORK_PROVIDER双监听；缺Provider/权限独立降级，粗权限也可使用系统网络定位。GPS失效有可用网络fix时自动选择，GPS恢复后自动提升，不需要手动切换。
+- Fix含来源、原始来源、精度、测量时间/单调时间年龄。拒绝过期、无精度、乱序及不合理跳跃；按新鲜度/不确定性选择，来源切换有稳定期与质量门槛，不平滑真实车辆移动。
+- GPS live 15s，NETWORK live 30s，LAST_KNOWN最多原测量年龄60s；短桥接增加不确定性且不刷新timestamp，之后未知。现场精确地标要求≤50m/≤15s且不是LAST_KNOWN，粗定位与晚地标结果不能触发精确到达。
+- VPN/IP/代理/DNS/搜索推测地理位置没有进入物理定位的接口。reverse-geocoder只增强已给定坐标，远离请求坐标的标签拒绝，不改实际位置。
+- Journey、Director八字段、Overview→Topic、用户主动研究、Vosk ASR与Android TTS沿用原实现；仅增加位置质量/过时保护。没有新地图SDK、付费定位服务、Wi-Fi/基站库、新地图或其他功能。
 
-## Provider 与授权
+## Build / test / 模拟
 
-真机沿用 **ChatGPT OAuth / gpt-5.6-luna / 默认 effort**，独立 OpenAI research **未勾选**。
-OAuth 研究仍为 streaming、required web_search、保留 action.sources，生产总时限仍90秒。
-本轮无需新 OAuth、API key 或用户授权步骤，手机原授权／设置保留。新安装仍默认 Fake；真实 Provider 通过既有设置连接账号。
+最终完整 `scripts/verify.ps1 -Offline`：**Debug 285 / Release 272 tests**，失败/错误/跳过均0；两种assemble、lint与签名通过。新增26项定位回归（17 selector/链路 + 9 Robolectric Android34）；既有Journey、安静/接管、ASK_USER、PREPARE、晚内容、失败降级、研究/语音回归保留。脚本拒绝低于上述全量数量的报告。
 
-## 真机验收
+`assembleDebugAndroidTest`通过，新增自然定位探针可复现；它不在生产APK内。
+本地证据：`artifacts/location-full-gates.log`、`location-phone-build.log`、`verification.json`、`location-phone-report.json`。
 
-当前 vivo V2405A，以无答案提示的新都区身份运行生产研究与 Director/Journey/TTS：
+成都新都→绵阳安州雎水粗模拟：**29点 / 90912m**；80km/h完整状态链PASS，Context Card1489字符；100km/h /16×章节模拟 **13章节 /19研究 /13旁白**，零stale/cancel/failure。
+这是Fake研究/Director/Voice与生产状态机的确定性回归，不冒充真实GPS路线、模型内容或本轮真机研究/TTS验收。
 
-- Overview search → response.completed **42991ms**；研究开始 → READY **43018ms**；章节入口 → READY **43041ms**。
-- **5对象 / 6来源**。自动发现：宝光寺、杨升庵祠及桂湖、天府家风馆、新繁棕编、新繁东湖。
-  四个验收目标均发现，人物与祠园合并；没有将验收名称写入生产 prompt/query/fixture。
-- READY 回调立即放行 Director；约49.8秒形成第一段有证据旁白，中文系统 TTS 完整播放成功。
-- 杨升庵祠及桂湖 Topic：search → completed **75199ms**；研究开始 → READY **75215ms**；**3可用事实 / 5来源**。
-  两条缺政府认定依据的事实剔除，不凑数量。
-- “再讲一点”：原判断 USE_CONTEXT，原 Director SPEAK_NOW，补充杨氏家规与公共家风教育；原生 TTS started/completed 均成功。
-- 最终两次研究没有 SSE completion timeout。中间曾有29秒 SocketException和一次模型目录 DNS UnknownHostException；不把它们解释为搜索能力拒绝。
-  开发中发现重复对象和追问切换对象，已分别合并概况线索与补上主题指代，最后重新完成整条真机验收。
-- 探针采用持续更新的静止测试 fix，不修改真实 GPS；测试旅程已结束，androidTest APK 已卸载。
+## 本轮实际真机验证
 
-## Build / test / 签名
+vivo **V2405A / Android16**，最终Debug包覆盖安装；拉回base.apk与交付包同一SHA256，版本0.3.3 / code8。每轮45秒，直接运行生产RealLocationSource，不注入坐标，不启动Journey或联网研究。探针轮次之间应用重启；每轮内来源实例不重启。
 
-完整 `scripts/verify.ps1 -Offline`：**Debug 259 / Release 246 tests**，失败／跳过均0；两种 assemble、lint 通过。
-新增14项两阶段回归；原232项基线及13项Debug传输诊断继续通过。脚本拒绝低于232项的报告，避免把筛选测试误当全量。
-全量日志：`artifacts/staged-research-verified-gates.log`；交付复核：`artifacts/staged-research-package-check.log`。
+| 条件 | 实际来源交付 | 窗口末次 |
+| --- | --- | --- |
+| Wi-Fi开，连接快照Wi-Fi/VPN | LAST_KNOWN 1 / NETWORK 7 | NETWORK ±30m，年龄3835ms |
+| Wi-Fi关，蜂窝/VPN | LAST_KNOWN 1 / NETWORK 7 | NETWORK ±100m，年龄4603ms |
+| Wi-Fi恢复，Wi-Fi/VPN | LAST_KNOWN 1 / NETWORK 3 / GPS 14 | GPS ±1.7m，年龄2282ms |
 
-成都新都→绵阳安州雎水粗粒度模拟仍通过：29点／90912m；章节证据模拟13章节／19研究／13旁白。
-这是 Fake研究／Director／Voice与生产状态机的确定性回归，不冒充全程真实Provider内容验收；真实研究证据另见上文。
+第三轮同一实例约19秒 **NETWORK→GPS**，日志22:05:37 NETWORK→22:05:56 GPS，随后GPS约2秒持续更新；自动恢复真实观察完成。前两轮GPS也一直开启但没有选中GPS。次数包含行政元数据更新，不等于原始传感器采样次数。
 
-交付版本 **0.3.2 / versionCode 7 / Android 8.0+**：
+三轮结果仅为 `PASS_CURRENT_CONDITIONS_ONLY`。没有完成一个连续驾驶旅程的GPS→NETWORK→GPS外场循环；没有证明室外/山路/隧道条件、国外VPN出口国家、真实粗定位旁白听感或长时间背景可靠性。VPN传输可见，**出口国家没有确认**。外国坐标/IP隔离与地标抑制有自动回归证据，不能代替这些现实场景。
 
-- Debug：[kitt-v0-debug.apk](artifacts/kitt-v0-debug.apk)，74654651 bytes，v2签名通过，已安装vivo并核对同一SHA256。
-  SHA256：`0C718DDDED32204023ABE864C41F309C2A4443C5364767881E7DC9531FFE1DF9`。
-- Release测试签名：[kitt-v0-release.apk](artifacts/kitt-v0-release.apk)，70609344 bytes，v2／v3通过。
-  SHA256：`CD8ABCCF1ECD31F5A062336E0C84AB6A32A682E455D472B917F78ACD25979D21`。
-  使用已有Android debug keystore，供验收；没有创建或配置Play发布签名身份。
+宿主为第二轮临时关闭Wi-Fi，已恢复；测试APK已卸载，没有遗留测试Journey/定位前台服务。主APK保留0.3.3供直接验收。
 
-## 已知限制与最短人工复核
+## Provider / 授权
 
-Overview约43秒，尚未达到十几秒目标；Topic约75秒，仍有托管搜索延迟和手机网络波动。未宣称长期成功率或消除所有 SocketException。
-数量为目标区间；证据不足不凑数，官方认定校验可能剔除部分事实。
-手机中文 ASR 保持已验收 Vosk 离线实现；系统 recogniser 的既有 ERROR_CLIENT 限制不在本轮改动。
+本轮未改设置/账号；手机实际保留 **ChatGPT OAuth / gpt-5.6-sol / low**，独立研究关闭。这是本轮手机配置快照，区别于V0.3.2历史luna配置；没有迁移或切换模型。
+新安装仍默认 **Fake / 配置字段gpt-4.1-mini / 默认effort**，Fake不会调用该模型。使用真实AI仍通过原设置连接账号。本轮定位不需要新密钥、OAuth或外部服务授权；没有重新验活OAuth或真人语音/研究内容。
 
-普通复核：打开沿途，保留现有ChatGPT与独立研究关闭设置，开始新都模拟；待Overview完成后听基础介绍，专题完成后说或输入“再讲一点”；结束旅程清掉session资料。
-固定新都现场计时按 [验收文档](docs/ACCEPTANCE_STAGED_RESEARCH.md) 的 androidTest 命令运行；无需导出凭据。
+## APK / 签名
+
+交付 **0.3.3 / versionCode8 / Android8.0+**；推荐Debug覆盖现有安装，保留数据与定位诊断。
+
+- [Debug APK](artifacts/kitt-v0.3.3-debug.apk)：74665375 bytes，v2签名通过，已安装并核对相同哈希。
+  SHA256 `FF793B140B121E02E43351467721CE0A9713DF86F9E06E1D46C35A8EBF6DAC69`。
+- [Release验收APK](artifacts/kitt-v0.3.3-release.apk)：70625728 bytes，v2/v3签名通过。
+  SHA256 `D210CA1131FA6D887E56960B77F0D86A476798B392D61EDB4721079D1E1C32D5`。
+
+Release沿用已有Android debug验收密钥，无新签名身份或Play发布配置。二进制和完整日志不入Git；预发布下载地址：[V0.3.3](https://github.com/shimao1115/KITT/releases/tag/v0.3.3)，附SHA256、自动结果与无轨迹手机报告。
+
+## 已知限制与用户最小动作
+
+Android网络定位是否可用、精度、频率由手机系统/蜂窝/Wi-Fi条件决定；两者均无有效fix时仅短桥接后未知，不以IP代替。没有额外fused/Google依赖。
+地理增强可以缺省：本次初期解析为四川/成都/新都，末次标签为空；原静止缓存/节流可使章节标签短暂未知，原始位置不停。GPS/网络精度不是可见性证明。
+已有研究托管搜索延迟、手机网络波动与系统ASR限制仍见历史交接；本轮没有扩大修复范围。
+
+无代码/授权/密钥阻塞。用户只需做现实外场总验收（停车/乘客观察）：
+
+1. 打开已安装0.3.3，保留原Provider与正常VPN/TUN；开启精确定位，开始旅程，核对本地现场与来源/±精度/年龄。
+2. 室外GPS稳定→进入弱GPS区域但Android有网络定位→回室外，确认同一Journey的GPS→NETWORK→GPS、无瞬移、不中止；没有网络fix记“系统未提供”。
+3. 使用本人确认的国外/美国VPN节点，核对实际本地位置不变；本轮没有代替用户确认出口国家。
+4. 粗NETWORK（≥100m）不说已到地标门口；说点什么立即打断、安静/恢复、研究/旁白、后台/锁屏、结束旅程短验；这些现实听感/硬件场景仍需人工。
+
+逐项标准与ADB复现见 [定位验收](docs/ACCEPTANCE_LOCATION_FALLBACK.md)。未测到的场景保持待确认，再据结果收口Issue #14；无需用户搬运密钥或重配账号。
 
 ## 最近 milestone commits
 
-- `c81f641` — Overview → Topic研究链、真实新都／专题／追问TTS验收、全量回归。
-- `d9e860b` — 最小OAuth hosted search能力与完整SSE真机时间线交接。
-- `801a712` — 最小搜索成功，6699ms，22条来源provenance。
-- `9a2fd17` / `23ee7ca` — 非流式参数拒绝与旧完整研究约87秒完成超时诊断。
-- `e01f301` / `3397221` — V0.3.1静音热修复与真机交接。
+- `a61a565` — V0.3.3 GPS/NETWORK选择、位置质量与跳跃/粗地标保护、全量自动Gate、自然真机探针。
+- 本轮紧随其后的 `docs: hand off V0.3.3 location results and field acceptance limits` — 最终交接/自然手机结果与待外场项（具体SHA见git log）。
+- `14a7432` — 定位兜底紧急规格与Issue #14施工依据。
+- `c81f641` / `51cdbc4` — V0.3.2 Overview→Topic与原真机交接。
 
-**到此收口，后续工作须另有用户任务。**
+本轮到此定位任务收口；其余future文档不施工。完整外场通过前不宣称Issue所有真机Gate已通过。

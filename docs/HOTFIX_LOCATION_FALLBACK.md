@@ -1,7 +1,9 @@
 # Hotfix — GPS + Network Location Fallback
 
-Status: **PRIORITY — fix in the next field-use build**
+Status: **IMPLEMENTED in V0.3.3 — automated gates passed; partial natural vivo validation completed; remaining field acceptance open**
 Origin: real-driving feedback, 2026-10-08.
+
+Implementation: `a61a565`; results and explicit field limits: [ACCEPTANCE_LOCATION_FALLBACK.md](ACCEPTANCE_LOCATION_FALLBACK.md), [HANDOFF.md](../HANDOFF.md). The nine real-phone cases below are acceptance requirements, not a claim that all have passed.
 
 ## Problem
 
