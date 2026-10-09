@@ -8,11 +8,13 @@ import kotlinx.coroutines.*
 /** Explicit adb-only live probe. Uses the phone's saved provider; never exports credentials or changes settings. */
 class HotfixPhoneProbe : Instrumentation() {
     private var mode = "search"
-    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); mode = arguments?.getString("mode") ?: "search"; start() }
+    private var probeArguments: Bundle? = null
+    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); probeArguments = arguments; mode = arguments?.getString("mode") ?: "search"; start() }
     override fun onStart() {
         val result = Bundle()
         val startedAt = System.currentTimeMillis()
         try {
+            if (mode == "fused-location") { finish(0, FusedLocationPhoneProbe(this, probeArguments).run()); return }
             if (mode == "runtime-status") {
                 // A fresh side-by-side install needs an Activity before lazy AndroidVoice initialization.
                 startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

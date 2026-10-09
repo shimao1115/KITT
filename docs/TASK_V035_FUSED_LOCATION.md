@@ -4,6 +4,8 @@
 **Scope: small location-only milestone; Android LocationManager native FUSED_PROVIDER evaluation.**  
 **Baseline:** current `main`, V0.3.4 engineering handoff. Existing user field acceptance of V0.3.4 / #15 and V0.3.3 / #14 remains independent and unresolved until actually done.
 
+**Delivery (2026-10-09): honest negative result, production FUSED disabled.** Native provider exists, but 15 observed FUSED updates mirrored NETWORK and added no fresh fix coverage. Debug329/Release316 and safe runtimecheck upgrade passed. Actual Wi-Fi/outdoor/movement and the original foreground stale symptom remain unestablished; see [ACCEPTANCE_FUSED_LOCATION.md](ACCEPTANCE_FUSED_LOCATION.md). Stop after this milestone.
+
 ## 0. 用户问题与真实目标
 
 2026-10-09 办公室，vivo 上“沿途 0.3.4 验收”显示蜂窝/系统联网已验证、VPN已检测，但定位已过时且等待可靠位置（约40秒）。这证明 **网络已连接并不意味着 Android NETWORK_PROVIDER 会提供新位置**。目前尚未确定究竟是系统没有回调，还是来源有效性/跳跃/时效过滤拒绝了结果。

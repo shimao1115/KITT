@@ -28,7 +28,7 @@ try {
         $taskTests = [int](($taskSuites | Measure-Object tests -Sum).Sum)
         $taskFailures = [int](($taskSuites | Measure-Object failures -Sum).Sum) + [int](($taskSuites | Measure-Object errors -Sum).Sum)
         $taskSkipped = [int](($taskSuites | Measure-Object skipped -Sum).Sum)
-        $taskMinimum = if ($taskVariant -eq 'Debug') { 314 } else { 301 }
+        $taskMinimum = if ($taskVariant -eq 'Debug') { 329 } else { 316 }
         if ($taskTests -lt $taskMinimum -or $taskFailures -gt 0 -or $taskSkipped -gt 0) { throw "$taskVariant reports do not establish the complete $taskMinimum+ passing suite." }
         $taskCounts[$taskVariant] = [ordered]@{ tests=$taskTests; failures=$taskFailures; skipped=$taskSkipped }
     }
@@ -59,7 +59,7 @@ try {
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk="kitt-v$taskVersion-debug.apk"; sha256=$taskHash; releaseApk="kitt-v$taskVersion-release.apk"; releaseSha256=$taskReleaseHash
-        deviceAcceptance='V0.3.4 phone smoke results are recorded separately in docs/ACCEPTANCE_RUNTIME_STATUS.md; this script does not run phone or field tests. Issue #14 still requires field acceptance.'
+        deviceAcceptance='V0.3.5 natural FUSED A/B/A and safe runtimecheck upgrade are recorded separately in docs/ACCEPTANCE_FUSED_LOCATION.md; this script does not run phone or field tests. Issues #14/#15 remain separate.'
         runtimeStatus='PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.'
         locationFallback='PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.'
         liveProvider='Credential-backed Overview/Topic/Director/TTS results are recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md; this script does not run live-provider acceptance.'

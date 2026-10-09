@@ -1,0 +1,296 @@
+{
+  "mode": "natural-native-A-B-A",
+  "sdk": 36,
+  "condition": "indoor-stationary-cellular-vpn",
+  "mock_injection": false,
+  "phase_seconds": 65,
+  "fine_permission": true,
+  "coarse_permission": true,
+  "all_providers": [
+    "passive",
+    "network",
+    "fused",
+    "gps"
+  ],
+  "fused_has_provider": true,
+  "saved_config": {
+    "provider": "CHATGPT",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "account_connected": true,
+    "speech_rate": 1,
+    "independent_research": false
+  },
+  "network_before": {
+    "wifi": false,
+    "cellular": true,
+    "validated": true,
+    "vpn_visible": true
+  },
+  "network_after": {
+    "wifi": false,
+    "cellular": true,
+    "validated": true,
+    "vpn_visible": true
+  },
+  "outcome": "MEASURED",
+  "phases": [
+    {
+      "registrations": {
+        "GPS": {
+          "present": true,
+          "enabled": true,
+          "result": "REGISTERED"
+        },
+        "NETWORK": {
+          "present": true,
+          "enabled": true,
+          "result": "REGISTERED"
+        }
+      },
+      "sources": {
+        "GPS": {
+          "raw_callbacks": 0,
+          "accepted_offers": 0,
+          "cache_received": 0,
+          "first_valid_callback_ms": null,
+          "last_callback_age_ms": null,
+          "rejects": {},
+          "raw_provider_labels": {},
+          "accuracy_min_m": null,
+          "accuracy_p50_m": null,
+          "accuracy_max_m": null,
+          "measurement_age_min_ms": null,
+          "measurement_age_max_ms": null
+        },
+        "NETWORK": {
+          "raw_callbacks": 6,
+          "accepted_offers": 6,
+          "cache_received": 0,
+          "first_valid_callback_ms": 139930,
+          "last_callback_age_ms": 7378,
+          "rejects": {},
+          "raw_provider_labels": {
+            "network": 6
+          },
+          "accuracy_min_m": 30,
+          "accuracy_p50_m": 33,
+          "accuracy_max_m": 58,
+          "measurement_age_min_ms": 2,
+          "measurement_age_max_ms": 8
+        }
+      },
+      "foreground_seconds": 59,
+      "baseline": {
+        "source_seconds": {
+          "UNKNOWN": 7,
+          "NETWORK": 58
+        },
+        "fresh_seconds": 58,
+        "known_seconds": 58,
+        "max_unknown_seconds": 7,
+        "max_no_fresh_seconds": 7,
+        "known_to_unknown": 0,
+        "final_source": "NETWORK",
+        "final_origin": "NETWORK",
+        "final_measurement_age_ms": 7386
+      },
+      "augmented": {
+        "source_seconds": {
+          "UNKNOWN": 7,
+          "NETWORK": 58
+        },
+        "fresh_seconds": 58,
+        "known_seconds": 58,
+        "max_unknown_seconds": 7,
+        "max_no_fresh_seconds": 7,
+        "known_to_unknown": 0,
+        "final_source": "NETWORK",
+        "final_origin": "NETWORK",
+        "final_measurement_age_ms": 7386
+      },
+      "fused_mirrored_measurements": 0,
+      "fused_unmatched_measurements": 0,
+      "fused_extra_fresh_seconds": 0,
+      "phase": "A1"
+    },
+    {
+      "registrations": {
+        "GPS": {
+          "present": true,
+          "enabled": true,
+          "result": "REGISTERED"
+        },
+        "NETWORK": {
+          "present": true,
+          "enabled": true,
+          "result": "REGISTERED"
+        },
+        "FUSED": {
+          "present": true,
+          "enabled": true,
+          "result": "REGISTERED"
+        }
+      },
+      "sources": {
+        "GPS": {
+          "raw_callbacks": 0,
+          "accepted_offers": 0,
+          "cache_received": 0,
+          "first_valid_callback_ms": null,
+          "last_callback_age_ms": null,
+          "rejects": {},
+          "raw_provider_labels": {},
+          "accuracy_min_m": null,
+          "accuracy_p50_m": null,
+          "accuracy_max_m": null,
+          "measurement_age_min_ms": null,
+          "measurement_age_max_ms": null
+        },
+        "NETWORK": {
+          "raw_callbacks": 8,
+          "accepted_offers": 8,
+          "cache_received": 1,
+          "first_valid_callback_ms": 44,
+          "last_callback_age_ms": 7265,
+          "rejects": {},
+          "raw_provider_labels": {
+            "network": 8
+          },
+          "accuracy_min_m": 30,
+          "accuracy_p50_m": 33,
+          "accuracy_max_m": 58,
+          "measurement_age_min_ms": 2,
+          "measurement_age_max_ms": 4190
+        },
+        "FUSED": {
+          "raw_callbacks": 8,
+          "accepted_offers": 8,
+          "cache_received": 1,
+          "first_valid_callback_ms": 81,
+          "last_callback_age_ms": 7251,
+          "rejects": {
+            "cache_expired": 1
+          },
+          "raw_provider_labels": {
+            "network": 8
+          },
+          "accuracy_min_m": 30,
+          "accuracy_p50_m": 33,
+          "accuracy_max_m": 58,
+          "measurement_age_min_ms": 12,
+          "measurement_age_max_ms": 4191
+        }
+      },
+      "foreground_seconds": 65,
+      "baseline": {
+        "source_seconds": {
+          "NETWORK": 65
+        },
+        "fresh_seconds": 65,
+        "known_seconds": 65,
+        "max_unknown_seconds": 0,
+        "max_no_fresh_seconds": 0,
+        "known_to_unknown": 0,
+        "final_source": "NETWORK",
+        "final_origin": "NETWORK",
+        "final_measurement_age_ms": 7271
+      },
+      "augmented": {
+        "source_seconds": {
+          "NETWORK": 65
+        },
+        "fresh_seconds": 65,
+        "known_seconds": 65,
+        "max_unknown_seconds": 0,
+        "max_no_fresh_seconds": 0,
+        "known_to_unknown": 0,
+        "final_source": "NETWORK",
+        "final_origin": "NETWORK",
+        "final_measurement_age_ms": 7271
+      },
+      "fused_mirrored_measurements": 8,
+      "fused_unmatched_measurements": 0,
+      "fused_extra_fresh_seconds": 0,
+      "phase": "B"
+    },
+    {
+      "registrations": {
+        "GPS": {
+          "present": true,
+          "enabled": true,
+          "result": "REGISTERED"
+        },
+        "NETWORK": {
+          "present": true,
+          "enabled": true,
+          "result": "REGISTERED"
+        }
+      },
+      "sources": {
+        "GPS": {
+          "raw_callbacks": 0,
+          "accepted_offers": 0,
+          "cache_received": 0,
+          "first_valid_callback_ms": null,
+          "last_callback_age_ms": null,
+          "rejects": {},
+          "raw_provider_labels": {},
+          "accuracy_min_m": null,
+          "accuracy_p50_m": null,
+          "accuracy_max_m": null,
+          "measurement_age_min_ms": null,
+          "measurement_age_max_ms": null
+        },
+        "NETWORK": {
+          "raw_callbacks": 7,
+          "accepted_offers": 7,
+          "cache_received": 1,
+          "first_valid_callback_ms": 45,
+          "last_callback_age_ms": 4542,
+          "rejects": {},
+          "raw_provider_labels": {
+            "network": 7
+          },
+          "accuracy_min_m": 30,
+          "accuracy_p50_m": 33,
+          "accuracy_max_m": 58,
+          "measurement_age_min_ms": 1,
+          "measurement_age_max_ms": 10
+        }
+      },
+      "foreground_seconds": 65,
+      "baseline": {
+        "source_seconds": {
+          "NETWORK": 65
+        },
+        "fresh_seconds": 65,
+        "known_seconds": 65,
+        "max_unknown_seconds": 0,
+        "max_no_fresh_seconds": 0,
+        "known_to_unknown": 0,
+        "final_source": "NETWORK",
+        "final_origin": "NETWORK",
+        "final_measurement_age_ms": 4550
+      },
+      "augmented": {
+        "source_seconds": {
+          "NETWORK": 65
+        },
+        "fresh_seconds": 65,
+        "known_seconds": 65,
+        "max_unknown_seconds": 0,
+        "max_no_fresh_seconds": 0,
+        "known_to_unknown": 0,
+        "final_source": "NETWORK",
+        "final_origin": "NETWORK",
+        "final_measurement_age_ms": 4550
+      },
+      "fused_mirrored_measurements": 0,
+      "fused_unmatched_measurements": 0,
+      "fused_extra_fresh_seconds": 0,
+      "phase": "A2"
+    }
+  ],
+  "limits": "No simulated fixes; outdoor, movement, driving, long lockscreen and energy are not established"
+}

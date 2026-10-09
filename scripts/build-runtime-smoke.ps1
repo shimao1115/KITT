@@ -31,6 +31,6 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Independent smoke build failed.' }
     $taskApk = Join-Path $taskRoot "artifacts\kitt-v$taskVersion-runtimecheck.apk"
     Copy-Item -LiteralPath (Join-Path $taskCopy 'app\build\outputs\apk\debug\app-debug.apk') -Destination $taskApk -Force
-    Write-Output "Independent package: $taskApk; Fake by default, no access to the original app's account."
+    Write-Output "Independent package: $taskApk; new installs default Fake. Same-signature adb install -r preserves the existing runtimecheck account/settings."
     Get-FileHash -LiteralPath $taskApk -Algorithm SHA256
 } finally { Pop-Location }

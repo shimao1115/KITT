@@ -9,9 +9,13 @@ class PhysicalLocationSelector(private val diagnostic: (String) -> Unit = {}) {
     private var selectedSource: FixSource? = null
 
     fun offer(fix: Fix, now: Long, elapsedNow: Long, lastKnown: Boolean = false): Boolean {
-        if (fix.source !in setOf(FixSource.GPS, FixSource.NETWORK, FixSource.FUSED) ||
-            !fix.valid() || fix.accuracy <= 0 || fix.accuracy > 1500 ||
-            fix.ageMs(now, elapsedNow) !in 0..60_000) return reject("invalid_or_expired")
+        if (fix.source !in setOf(FixSource.GPS, FixSource.NETWORK, FixSource.FUSED)) return reject("unsupported_source")
+        if (!fix.valid()) return reject("invalid_measurement")
+        if (fix.accuracy <= 0) return reject("nonpositive_accuracy")
+        if (fix.accuracy > 1500) return reject("accuracy_limit")
+        val age = fix.ageMs(now, elapsedNow)
+        if (age < 0) return reject("future_measurement")
+        if (age > 60_000) return reject("expired")
         if (live[fix.source]?.let { !it.olderThan(fix) } == true) return reject("out_of_order")
         val anchor = trusted
         if (anchor != null) {

@@ -75,7 +75,7 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
             override fun onLocationChanged(location: Location) {
                 if (generation != session) return
                 val source = providers[location.provider] ?: return
-                val fix = deviceFix(location, source) ?: return
+                val fix = deviceFix(location, source) { android.util.Log.i("KITTLocation", "device rejected source=$source reason=$it") } ?: return
                 if (selector.offer(fix, System.currentTimeMillis(), SystemClock.elapsedRealtime())) publish()
             }
             override fun onProviderDisabled(provider: String) {
@@ -116,8 +116,9 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
 }
 
 /** Attribution comes exclusively from LocationManager; reject fixes without a measurement clock. */
-internal fun deviceFix(location: Location, source: FixSource): Fix? {
-    if (!location.hasAccuracy() || location.elapsedRealtimeNanos <= 0) return null
+internal fun deviceFix(location: Location, source: FixSource, rejected: (String) -> Unit = {}): Fix? {
+    if (!location.hasAccuracy()) { rejected("no_accuracy"); return null }
+    if (location.elapsedRealtimeNanos <= 0) { rejected("no_measurement_clock"); return null }
     return Fix(location.latitude, location.longitude, location.time,
         if (location.hasSpeed()) location.speed.toDouble() * 3.6 else 0.0,
         if (location.hasBearing()) location.bearing.toDouble() else 0.0,
