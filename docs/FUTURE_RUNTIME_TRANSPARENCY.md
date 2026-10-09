@@ -1,6 +1,8 @@
 # Future Task — Runtime Transparency & Diagnostics
 
-Status: **HIGH-PRIORITY BACKLOG — design recorded, do not implement in this documentation change**
+Status: **Stage 1 AUTHORIZED (V0.3.4 / Issue #15); Stage 2 remains BACKLOG**
+
+Active stage-one scope and acceptance: [TASK_V034_RUNTIME_STATUS.md](TASK_V034_RUNTIME_STATUS.md).
 Origin: real-world field-use feedback (2026-10-09).
 
 ## Problem
@@ -152,4 +154,4 @@ Prefer passive events already in production, no continual high-frequency ping/ac
 
 ## Priority relative to other backlog
 
-User reported that unclear silence is a major real-driving friction, so prioritize this near the front of UX improvements after V0.3.3 field verification, together with the repeated-narration problem (#13). No implementation or priority reordering of active work is authorized by this documentation-only record.
+User reported that unclear silence is a major real-driving friction, so prioritize this near the front of UX improvements after V0.3.3 field verification, together with the repeated-narration problem (#13). Stage 1 implementation is authorized by the user; Stage 2 remains future work, and Issue #14 still awaits field acceptance.
