@@ -13,6 +13,13 @@ class HotfixPhoneProbe : Instrumentation() {
         val result = Bundle()
         val startedAt = System.currentTimeMillis()
         try {
+            if (mode == "runtime-status") {
+                // A fresh side-by-side install needs an Activity before lazy AndroidVoice initialization.
+                startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                lateinit var runtime: KittRuntime
+                runOnMainSync { runtime = (targetContext.applicationContext as KittApp).runtime }
+                finish(0, runtimeStatusPhoneProbe(runtime)); return
+            }
             lateinit var runtime: KittRuntime
             runOnMainSync { runtime = (targetContext.applicationContext as KittApp).runtime }
             if (mode == "location") {

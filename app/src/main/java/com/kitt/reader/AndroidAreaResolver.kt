@@ -1,6 +1,8 @@
 package com.kitt.reader
 
 import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import android.location.Geocoder
 import android.location.Address
 import android.os.Build
@@ -11,6 +13,7 @@ import kotlin.coroutines.resume
 /** Platform enrichment on IO; raw GPS is delivered immediately and never waits for the service. */
 class AndroidAreaResolver(context: Context, private val scope: CoroutineScope,
     private val diagnostic: (String) -> Unit = {}) {
+    var pendingSince by androidx.compose.runtime.mutableStateOf<Long?>(null); private set
     private val geocoder = Geocoder(context, Locale.SIMPLIFIED_CHINESE)
     private val throttle = GeocodeThrottle()
     private var job: Job? = null
@@ -20,6 +23,7 @@ class AndroidAreaResolver(context: Context, private val scope: CoroutineScope,
     fun resolve(fix: Fix, complete: (AreaIdentity?) -> Unit) {
         if (!throttle.begin(fix, System.currentTimeMillis())) return
         diagnostic("area lookup started speedKmh=${fix.speedKmh.toInt()}")
+        pendingSince = android.os.SystemClock.elapsedRealtime()
         job = scope.launch {
             try {
                 val area = withTimeout(8000) { withContext(Dispatchers.IO) {
@@ -50,10 +54,10 @@ class AndroidAreaResolver(context: Context, private val scope: CoroutineScope,
             } catch (_: TimeoutCancellationException) { diagnostic("area lookup timed out; GPS continues") }
             catch (e: CancellationException) { throw e }
             catch (_: Exception) { diagnostic("area lookup failed; GPS continues") }
-            finally { throttle.complete() }
+            finally { pendingSince = null; throttle.complete() }
         }
     }
-    fun stop() { job?.cancel(); job = null; resolved = null; anchor = null }
+    fun stop() { pendingSince = null; job?.cancel(); job = null; resolved = null; anchor = null }
 }
 
 /** Reverse geocoding enriches the supplied coordinate, never a network-inferred country or position. */

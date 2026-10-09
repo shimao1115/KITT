@@ -27,18 +27,19 @@ import kotlinx.coroutines.delay
 fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail = VoiceDetail(),
     onRouteImage: () -> Unit = {}, routeNotice: String = "", onClearRoute: () -> Unit = {}, onVisualTalk: () -> Unit = {},
-    transcript: TranscriptText = TranscriptText(), onCancelReply: () -> Unit = {}) {
+    transcript: TranscriptText = TranscriptText(), onCancelReply: () -> Unit = {}, runtimeStatus: ((Long) -> DrivingRuntimeSnapshot)? = null,
+    statusVisible: Boolean = true) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val availableHeight = maxHeight
         if (maxWidth > maxHeight) {
             Row(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                 Column(Modifier.weight(1f)) {
                     Row { TextButton(onDeveloper) { Text("沿途") }; TextButton(onSettings) { Text("设置") } }
-                    Text(sourceLabel, maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelMedium)
-                    JourneyStatus(journey)
-                    Text(placeLabel(journey), maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleMedium)
-                    VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(64.dp))
-                    Text(if (journey.isQuiet) quietLabel(quietRemainingNow(journey)) else journey.topic, maxLines = 2,
+                    RuntimeStatusBlock(journey, sourceLabel, runtimeStatus, statusVisible, compact = availableHeight < 400.dp)
+                    if (availableHeight >= 400.dp || !journey.awaitingReply) Text(placeLabel(journey), maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleMedium)
+                    if (availableHeight >= 400.dp || !journey.awaitingReply)
+                        VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(if (availableHeight < 400.dp) 28.dp else 64.dp))
+                    if (availableHeight >= 400.dp || !journey.awaitingReply) Text(if (journey.isQuiet) quietLabel(quietRemainingNow(journey)) else journey.topic, maxLines = 2,
                         overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleLarge)
                     if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, modifier = Modifier.testTag("journey-notice"))
                     ReplySurface(journey, transcript, onCancelReply, compact = availableHeight < 400.dp)
@@ -49,7 +50,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
             }
         } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper, voiceDetail,
             onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact = maxHeight < 700.dp,
-            transcript = transcript, onCancelReply = onCancelReply)
+            transcript = transcript, onCancelReply = onCancelReply, runtimeStatus = runtimeStatus, statusVisible = statusVisible)
     }
 }
 
@@ -61,9 +62,7 @@ private fun stateLabel(journey: Journey) = when (journey.state) {
     JourneyState.QUIET -> "安静模式"
 }
 private fun placeLabel(journey: Journey) = journey.currentFix?.let {
-    it.administrative?.label ?: it.area.ifBlank {
-        java.lang.String.format(java.util.Locale.ROOT, "%s %.3f, %.3f", it.source, it.latitude, it.longitude)
-    }
+    it.administrative?.label ?: it.area.ifBlank { "地区名称未解析" }
 } ?: if (journey.running) "等待可靠位置" else "其余的，跟它说就行。"
 private fun quietLabel(remaining: Long) = if (remaining == Long.MAX_VALUE) "等你叫我" else
     "剩余 ${remaining / 60000}:${((remaining / 1000) % 60).toString().padStart(2, '0')}"
@@ -85,7 +84,7 @@ private fun quietRemainingNow(journey: Journey): Long {
 }
 
 @Composable
-private fun JourneyStatus(journey: Journey) {
+private fun JourneyStatus(journey: Journey, primary: String = stateLabel(journey), compact: Boolean = false) {
     val accent = when (journey.state) {
         JourneyState.SPEAKING -> MaterialTheme.colorScheme.tertiary
         JourneyState.LISTENING -> MaterialTheme.colorScheme.primary
@@ -97,7 +96,9 @@ private fun JourneyStatus(journey: Journey) {
         Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Box(Modifier.size(8.dp).background(accent, CircleShape))
-            Text(stateLabel(journey), style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(primary, modifier = Modifier.testTag("runtime-activity"),
+                style = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge,
+                minLines = 2, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
     }
 }
@@ -106,27 +107,51 @@ private fun JourneyStatus(journey: Journey) {
 private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail,
     onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit, compact: Boolean,
-    transcript: TranscriptText, onCancelReply: () -> Unit) {
+    transcript: TranscriptText, onCancelReply: () -> Unit, runtimeStatus: ((Long) -> DrivingRuntimeSnapshot)?, statusVisible: Boolean) {
     Column(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onDeveloper) { Text("沿途", style = MaterialTheme.typography.titleLarge) }
             Spacer(Modifier.weight(1f)); TextButton(onSettings) { Text("设置") }
         }
-        Text(sourceLabel, style = MaterialTheme.typography.labelMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        Spacer(Modifier.height(if (compact) 8.dp else 12.dp))
-        JourneyStatus(journey)
-        Text(placeLabel(journey), maxLines = if (compact) 1 else 2, overflow = TextOverflow.Ellipsis,
+        RuntimeStatusBlock(journey, sourceLabel, runtimeStatus, statusVisible, compact)
+        if (!compact || !journey.awaitingReply) Text(placeLabel(journey), maxLines = if (compact) 1 else 2, overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
-        VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(if (compact) 48.dp else 80.dp))
+        VoiceIndicator(journey.state, voiceDetail, Modifier.fillMaxWidth().height(if (compact && journey.awaitingReply) 20.dp else if (compact) 48.dp else 80.dp))
         if (journey.isQuiet) {
             Text(quietLabel(quietRemainingNow(journey)), style = MaterialTheme.typography.headlineSmall)
-        } else Text(journey.topic, style = MaterialTheme.typography.titleLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        } else if (!compact || !journey.awaitingReply) Text(journey.topic, style = MaterialTheme.typography.titleLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
         if (journey.notice.isNotBlank()) Text(journey.notice, maxLines = 2, style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.testTag("journey-notice"))
         ReplySurface(journey, transcript, onCancelReply, compact)
         Spacer(Modifier.weight(1f))
         DrivingControls(journey, onStart, onSpeak, onEnd, onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact)
+    }
+}
+
+/** Only this small surface ticks. The effect stops while the Activity is not visible. */
+@Composable
+private fun RuntimeStatusBlock(journey: Journey, sourceLabel: String, snapshot: ((Long) -> DrivingRuntimeSnapshot)?,
+    visible: Boolean, compact: Boolean) {
+    var elapsed by remember { mutableLongStateOf(android.os.SystemClock.elapsedRealtime()) }
+    LaunchedEffect(visible, journey.running, snapshot != null) {
+        elapsed = android.os.SystemClock.elapsedRealtime()
+        if (!visible || snapshot == null || !journey.running) return@LaunchedEffect
+        while (journey.running) { delay(1000); elapsed = android.os.SystemClock.elapsedRealtime() }
+    }
+    val status = snapshot?.invoke(maxOf(elapsed, android.os.SystemClock.elapsedRealtime()))
+    Column(Modifier.fillMaxWidth().testTag("runtime-status")) {
+        Text(status?.position ?: sourceLabel, Modifier.testTag("runtime-position"),
+            style = MaterialTheme.typography.labelMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        if (status != null) {
+            Text(status.network, Modifier.testTag("runtime-network"), style = MaterialTheme.typography.labelMedium,
+                maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(status.services, Modifier.testTag("runtime-services"), style = MaterialTheme.typography.labelMedium,
+                minLines = 2, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        }
+        JourneyStatus(journey, status?.primary ?: stateLabel(journey), compact)
+        if (status != null && (!compact || !journey.awaitingReply)) Text(status.hint, Modifier.testTag("runtime-hint"),
+            style = MaterialTheme.typography.labelSmall, minLines = 1, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -148,7 +173,7 @@ private fun ReplySurface(journey: Journey, transcript: TranscriptText, onCancelR
     Column(verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 10.dp)) {
         if (transcript.present) Text(
             (if (transcript.final) "你说：" else "在听：") + transcript.text,
-            maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.primary,
+            maxLines = if (compact) 1 else 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("spoken-transcript"))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(draft, { draft = it.take(400) },
@@ -159,8 +184,9 @@ private fun ReplySurface(journey: Journey, transcript: TranscriptText, onCancelR
                 maxLines = if (compact) 1 else 2, textStyle = MaterialTheme.typography.bodyLarge,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { submit() }))
             Button(submit, Modifier.testTag("send-reply"), enabled = draft.isNotBlank()) { Text("发送") }
+            if (compact) TextButton(onCancelReply, Modifier.testTag("cancel-reply")) { Text("取消") }
         }
-        TextButton(onCancelReply, Modifier.testTag("cancel-reply")) { Text("取消") }
+        if (!compact) TextButton(onCancelReply, Modifier.testTag("cancel-reply")) { Text("取消") }
     }
 }
 

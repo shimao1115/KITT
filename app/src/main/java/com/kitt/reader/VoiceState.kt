@@ -32,7 +32,7 @@ data class ListeningResult(val outcome: ListeningOutcome, val text: String = "",
     }
 }
 
-enum class VoicePhase { IDLE, PREPARING_LISTEN, LISTENING, PROCESSING, SPEAKING }
+enum class VoicePhase { IDLE, PREPARING_LISTEN, LISTENING, PROCESSING, PREPARING_SPEECH, SPEAKING }
 data class VoiceDetail(val phase: VoicePhase = VoicePhase.IDLE, val level: Float = 0f)
 
 /**

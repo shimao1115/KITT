@@ -1,5 +1,7 @@
 package com.kitt.reader
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -18,6 +20,8 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
     private var listener: LocationListener? = null
     private var areaScope: CoroutineScope? = null
     private var resolver: AndroidAreaResolver? = null
+    var waitingSince by androidx.compose.runtime.mutableStateOf<Long?>(null); private set
+    val areaLookupSince get() = resolver?.pendingSince
     private var latest: Fix? = null
     private var generation = 0L
     override fun start(onFix: (Fix) -> Unit) {
@@ -45,7 +49,11 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
                 else -> ""
             }
             if (notice != lastNotice) { lastNotice = notice; unavailable(notice) }
-            if (selected == null) { latest = null; return }
+            if (selected == null) {
+                if (waitingSince == null) waitingSince = SystemClock.elapsedRealtime()
+                latest = null; return
+            }
+            waitingSince = null
             // A bridge keeps the previous chapter as uncertain background; it cannot create a new chapter.
             val area = if (selected.source == FixSource.LAST_KNOWN) latest?.administrative
                 else locationArea(lookup.cached(selected), selected)
@@ -100,6 +108,7 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
     }
     private fun granted(permission: String) = ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
     override fun stop() {
+        waitingSince = null
         generation++
         listener?.let { try { manager.removeUpdates(it) } catch (_: SecurityException) {} }; listener = null
         resolver?.stop(); resolver = null; areaScope?.cancel(); areaScope = null; latest = null

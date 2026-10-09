@@ -89,7 +89,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
             if (!ticket.active) { research.checked(); context.proximity.consumeOpportunity(landmarkIds) }
             diagnostic("director started active=${ticket.active} research_pending=${research.pending} chapter=$chapterKey")
             var activeFailure: String? = null
-            val raw = try { withTimeout(if (ticket.active) 140000 else 35000) {
+            val raw = try { withTimeout(if (ticket.active) 140000 else 35000) { withContext(RuntimeRequestOwner(ticket.epoch)) {
                 val selected = provider()
                 if (image != null && !selected.acceptsImages) throw UnsupportedImage()
                 var groundedInput = input
@@ -121,7 +121,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
                         "\n【本次未联网】现有证据或一般常识足够直接回答；不能声称‘我刚查到’。")
                 }
                 withTimeout(35000) { selected.direct(groundedInput) }
-            } }
+            } } }
             catch (e: TimeoutCancellationException) { failure("Provider timeout"); null }
             catch (e: CancellationException) { throw e }
             catch (e: Exception) {

@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
                         routeNotice = runtime.routeReference.notice, onClearRoute = runtime.routeReference::clear,
                         onVisualTalk = runtime.visualTalk::begin,
                         transcript = (runtime.voice as? AndroidVoice)?.transcript ?: TranscriptText(),
-                        onCancelReply = ::cancelReply)
+                        onCancelReply = ::cancelReply, runtimeStatus = runtime::statusSnapshot, statusVisible = runtime.foregroundVisible)
                     if (runtime.visualTalk.open) VisualTalkDialog(runtime)
                     if (unavailableSettings) AlertDialog(onDismissRequest = { unavailableSettings = false },
                         title = { Text("请结束旅程后调整设置") }, confirmButton = { TextButton({ unavailableSettings = false }) { Text("知道了") } })

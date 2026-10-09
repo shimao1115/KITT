@@ -45,7 +45,7 @@ fun VoiceIndicator(state: JourneyState, detail: VoiceDetail, modifier: Modifier 
             val position by transition.animateFloat(0f, 1f, infiniteRepeatable(tween(1600, easing = FastOutSlowInEasing),
                 RepeatMode.Reverse), label = "scanner position")
             val color = MaterialTheme.colorScheme.tertiary
-            Canvas(modifier.testTag("speaking-indicator").semantics { contentDescription = "正在讲述，语音播放中" }) {
+            Canvas(modifier.testTag("speaking-indicator").semantics { contentDescription = if (detail.phase == VoicePhase.PREPARING_SPEECH) "正在准备语音" else "正在讲述，语音播放中" }) {
                 val width = size.width * 0.8f; val start = size.width * 0.1f
                 drawRoundRect(color.copy(alpha = 0.07f), Offset(start + position * width * 0.7f, size.height * 0.24f),
                     Size(width * 0.3f, size.height * 0.52f), CornerRadius(size.height))

@@ -43,6 +43,7 @@ class AndroidVoice(
     private var activeListen: ((ListeningResult) -> Unit)? = null
     private var watchdog: Runnable? = null
     private val feedback = ListeningFeedback()
+    var speechQueuedSince by mutableStateOf<Long?>(null); private set
     var detail by mutableStateOf(VoiceDetail()); private set
     var voices by mutableStateOf<List<TtsVoiceOption>>(emptyList()); private set
     var voiceMessage by mutableStateOf("正在加载系统中文声音…"); private set
@@ -85,6 +86,7 @@ class AndroidVoice(
         })
     }
     override fun stop() {
+        speechQueuedSince = null
         serial++; pendingSpeech = null; complete = null; finalId = ""
         val cancelled = activeListen ?: pendingListen
         pendingListen = null; activeListen = null
@@ -113,7 +115,7 @@ class AndroidVoice(
     fun preview(name: String, rate: Float, complete: (Boolean) -> Unit) =
         speakWith("你好，我是沿途。读懂沿途的世界，陪你听懂正在经过的地方。", name, rate, complete)
     private fun speakWith(text: String, name: String, rate: Float, complete: (Boolean) -> Unit) {
-        stop(); this.complete = complete; val token = serial
+        stop(); speechQueuedSince = SystemClock.elapsedRealtime(); detail = VoiceDetail(VoicePhase.PREPARING_SPEECH); this.complete = complete; val token = serial
         val execute = {
             if (serial == token) {
                 if (ready != true || !applyVoice(name, rate)) finishSpeech(false) else {
@@ -139,7 +141,7 @@ class AndroidVoice(
     }
     private fun finishSpeech(success: Boolean) {
         val callback = complete ?: return; complete = null; finalId = ""
-        clearWatchdog(); detail = VoiceDetail()
+        clearWatchdog(); speechQueuedSince = null; detail = VoiceDetail()
         if (!success) tts?.stop()
         Log.i("KITTVoice", "tts finished session=$serial success=$success")
         callback(success)
