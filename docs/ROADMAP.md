@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **当前授权任务：V0.3.5 Android 原生融合定位与连续性实测 / Issue #16**。按 [TASK_V035_FUSED_LOCATION.md](TASK_V035_FUSED_LOCATION.md) 先做 GPS/NETWORK 与 FUSED 的自然设备对照；只有证据支持时才启用生产第三来源。保留 Android 8.0+、VPN/IP定位隔离、旧定位时效与状态显示；不要顺带开发其他内容。Issue #14 的外场验收与 Issue #15 的用户验收仍独立待处理。
+
 > **V0.3.4 运行状态透明化第一阶段 / Issue #15 已完成工程交付，等待用户总验收**。Debug314/Release301、构建/lint/签名PASS；独立手机包完成当前条件冒烟，原包保留账号覆盖升级等待原签名密钥。详见 [TASK_V034_RUNTIME_STATUS.md](TASK_V034_RUNTIME_STATUS.md)、[运行状态验收](ACCEPTANCE_RUNTIME_STATUS.md) 和根 HANDOFF。到此停止，不做展开式诊断/日志、不修 Issue #13；Issue #14 仍等待实车验收。
 
 > 上一轮 V0.3.3 定位可靠性热修复 / Issue #14 的规格、自动回归及待外场验收详见 [HOTFIX_LOCATION_FALLBACK.md](HOTFIX_LOCATION_FALLBACK.md) 与 [ACCEPTANCE_LOCATION_FALLBACK.md](ACCEPTANCE_LOCATION_FALLBACK.md)。
