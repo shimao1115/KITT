@@ -1,6 +1,7 @@
 # V0.3.4 — Runtime Status Transparency (Stage 1)
 
-Status: **AUTHORIZED FOR CODE IMPLEMENTATION** (2026-10-09)
+Status: **STAGE 1 ENGINEERING COMPLETE — AWAITING USER / FIELD ACCEPTANCE** (2026-10-09)
+Implementation: `d841c2e`; Debug 314 / Release 301 tests, build/lint/signatures PASS. Phone smoke uses an independent package because the original 0.3.3 signing key is unavailable; final recheck used its saved ChatGPT configuration. Exact evidence, upgrade blocker and remaining conditions: [ACCEPTANCE_RUNTIME_STATUS.md](ACCEPTANCE_RUNTIME_STATUS.md) and root HANDOFF.md. Stop after this milestone; Stage 2 is not authorized.
 Scope: **one small milestone**, driver-screen transparency, NOT a full diagnostics platform.
 
 Product goal:

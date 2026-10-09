@@ -1,6 +1,6 @@
 # KITT V0 Roadmap — Destination Chain
 
-> **当前授权任务：V0.3.4 运行状态透明化（第一阶段）/ Issue #15**。只完成 [TASK_V034_RUNTIME_STATUS.md](TASK_V034_RUNTIME_STATUS.md) 的主驾驶页状态摘要与等待原因，不做展开式诊断/日志、不修 Issue #13 重复播报。此前 V0.3.3 定位实现已交付，Issue #14 仍等待实车验收；以根目录 HANDOFF 和本轮任务卡为准。
+> **V0.3.4 运行状态透明化第一阶段 / Issue #15 已完成工程交付，等待用户总验收**。Debug314/Release301、构建/lint/签名PASS；独立手机包完成当前条件冒烟，原包保留账号覆盖升级等待原签名密钥。详见 [TASK_V034_RUNTIME_STATUS.md](TASK_V034_RUNTIME_STATUS.md)、[运行状态验收](ACCEPTANCE_RUNTIME_STATUS.md) 和根 HANDOFF。到此停止，不做展开式诊断/日志、不修 Issue #13；Issue #14 仍等待实车验收。
 
 > 上一轮 V0.3.3 定位可靠性热修复 / Issue #14 的规格、自动回归及待外场验收详见 [HOTFIX_LOCATION_FALLBACK.md](HOTFIX_LOCATION_FALLBACK.md) 与 [ACCEPTANCE_LOCATION_FALLBACK.md](ACCEPTANCE_LOCATION_FALLBACK.md)。
 
