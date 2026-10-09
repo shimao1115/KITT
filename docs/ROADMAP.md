@@ -1,6 +1,8 @@
 # KITT V0 Roadmap — Destination Chain
 
-> **当前授权任务：V0.3.3 定位可靠性热修复 / Issue #14**。只完成 [HOTFIX_LOCATION_FALLBACK.md](HOTFIX_LOCATION_FALLBACK.md) 的 GPS + Android 网络定位兜底；研究、Journey、Director 和语音行为保持。其他 future 文档不进入本轮施工。验证边界见 [ACCEPTANCE_LOCATION_FALLBACK.md](ACCEPTANCE_LOCATION_FALLBACK.md)。
+> **当前授权任务：V0.3.4 运行状态透明化（第一阶段）/ Issue #15**。只完成 [TASK_V034_RUNTIME_STATUS.md](TASK_V034_RUNTIME_STATUS.md) 的主驾驶页状态摘要与等待原因，不做展开式诊断/日志、不修 Issue #13 重复播报。此前 V0.3.3 定位实现已交付，Issue #14 仍等待实车验收；以根目录 HANDOFF 和本轮任务卡为准。
+
+> 上一轮 V0.3.3 定位可靠性热修复 / Issue #14 的规格、自动回归及待外场验收详见 [HOTFIX_LOCATION_FALLBACK.md](HOTFIX_LOCATION_FALLBACK.md) 与 [ACCEPTANCE_LOCATION_FALLBACK.md](ACCEPTANCE_LOCATION_FALLBACK.md)。
 
 > 当前轮次只收口 **Overview → Topic 研究链**，真机与回归结果见 [ACCEPTANCE_STAGED_RESEARCH.md](ACCEPTANCE_STAGED_RESEARCH.md)。
 > 验收完成后停止，不启动下一轮功能、架构或 Provider 扩展。此前静音热修复与真实搜索证据规则继续有效。
