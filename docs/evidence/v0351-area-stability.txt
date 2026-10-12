@@ -1,0 +1,3 @@
+PASS: production RealLocationSource + resolver + AreaCards; Robolectric API34, synthetic NETWORK 30m.
+600s, 302 publications, 6 geocodes (success/empty/error/8s timeout/success/success), 0 null or street drops after first success, 1 chapter transition.
+Not vivo/OEM service, actual network, real driving or UI screenshot evidence.

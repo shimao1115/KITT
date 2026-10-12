@@ -1,6 +1,6 @@
 # CURRENT TASK CARD — KITT V0.3.5.1 / Issue #17
 
-**状态：已授权施工，等待施工 Agent 实际领取与提交；非“已完成”或“已启动 Agent”的声明。**
+**状态：工程修复、自测与APK打包已完成，工程commit `74161cf`；真机离线，停止等待本小版本人工验收。构建/安装入口与缺测边界见 [HANDOFF.md](HANDOFF.md) 和 [独立验收](docs/ACCEPTANCE_AREA_STABILITY.md)。不宣称本轮已覆盖安装、保留账号或通过vivo静止验收。**
 **当前唯一施工 Destination：修复真实定位场景中行政区/街道名称闪烁。**
 **任务真相源：** [Issue #17](https://github.com/shimao1115/KITT/issues/17)（现场证据、代码致因、边界与验收），本文为施工入口。
 **顺序：** 完成本卡并停下人工验收 → #18 跨旅程知识缓存 → #13 语义去重 → 后续离线新都区试点。不要自行进入下一项。

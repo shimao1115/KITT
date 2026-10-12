@@ -1,0 +1,44 @@
+{
+  "version": "0.3.5.1",
+  "product": "沿途",
+  "build": "PASS (Debug/Release)",
+  "variants": {
+    "Debug": {
+      "tests": 349,
+      "failures": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 336,
+      "failures": 0,
+      "skipped": 0
+    }
+  },
+  "lint": "PASS (Debug/Release)",
+  "signature": "PASS; Release uses existing debug acceptance key",
+  "simulation": "PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director",
+  "route": "29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x",
+  "apk": "kitt-v0.3.5.1-debug.apk",
+  "sha256": "183BA0FBCA2FC5740D8C1A2698D56EE98B076BFB744653F48338C87A2A241D6E",
+  "releaseApk": "kitt-v0.3.5.1-release.apk",
+  "releaseSha256": "5EFC4913185CEE39F652552BC5027A3F2ABB5B22E581EDFBBF61193EB0AF3B89",
+  "deviceAcceptance": "V0.3.5.1 phone OFFLINE: upgrade/account preservation and vivo stationary 5-10min are NOT RUN. Prior V0.3.5 evidence does not prove this version. See docs/ACCEPTANCE_AREA_STABILITY.md; Issues #14/#15 remain separate.",
+  "areaStability": "PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.",
+  "runtimeStatus": "PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.",
+  "locationFallback": "PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.",
+  "liveProvider": "Credential-backed Overview/Topic/Director/TTS results are recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md; this script does not run live-provider acceptance.",
+  "chineseASR": "System recogniser still fails ERROR_CLIENT before ready; the bundled offline Vosk Chinese model is the working path on this device.",
+  "localResearch": "Overview -> Topic regression PASS; this script does not run credential-backed search. Current phone evidence is in docs/ACCEPTANCE_STAGED_RESEARCH.md.",
+  "silenceHotfix": "PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.",
+  "xinduBenchmark": "NOT RUN BY THIS SCRIPT: fresh production-provider phone discovery is recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md.",
+  "runtimecheck": {
+    "package": "com.kitt.reader.runtimecheck",
+    "versionCode": 11,
+    "apk": "kitt-v0.3.5.1-runtimecheck.apk",
+    "sha256": "2302CD463836A14E7636EF281278C1175F4E7A7412BAEB23707D2E71A33DED75",
+    "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "build": "PASS assembleDebug/assembleDebugAndroidTest/lintDebug",
+    "signature": "PASS matches prior V0.3.5 runtimecheck artifact",
+    "installAndAccountPreservation": "NOT RUN: phone offline"
+  }
+}

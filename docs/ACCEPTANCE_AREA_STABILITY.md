@@ -2,6 +2,8 @@
 
 日期：2026-10-12（Asia/Shanghai）。仅修复行政区 enrichment 生命周期；真机离线，vivo 现场与覆盖安装尚未执行。当前交付结果、APK/hash/commit 见根 [HANDOFF](../HANDOFF.md)。
 
+实际门禁：`scripts/verify.ps1 -Offline` **Debug349 / Release336，失败/错误/跳过均0；两种assemble/lint/签名PASS**。runtimecheck独立包assemble/测试APK构建/lint与证书核对PASS，证书匹配V0.3.5交付包；没有执行手机测试APK。工程commit `74161cf`，[十分钟报告](evidence/v0351-area-stability.txt) 与 [摘要](evidence/v0351-verification.json) 已入Git。
+
 ## 原因与修复
 
 确定性测试在旧实现上失败：新鲜同地定位持续到第31秒，成功 geocode 的30秒锚点寿命与静止120秒复查之间出现名称空窗。空 Geocoder 结果覆盖旧成功值也是独立确定路径。这证明代码通路，不证明每次手机闪烁都是同一原因。

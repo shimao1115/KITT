@@ -1,55 +1,56 @@
-# 沿途 V0.3.5 — 原生 FUSED 实验交接
+# 沿途 V0.3.5.1 — 地区名称稳定性修复交接
 
-截至 **2026-10-09（Asia/Shanghai）**，Issue #16 条件式实验交付完成，Android8.0+，**0.3.5 / code10**。结论：**当前室内蜂窝 + VPN 条件下无实质增益，生产继续 GPS + NETWORK，不启用 FUSED。** 没有证明办公室定位过时问题已解决；到此停止，不开展其他功能。
+截至 **2026-10-12（Asia/Shanghai）**，**0.3.5.1 / code11**，Issue #17工程修复、自测与APK打包完成。**真机离线：覆盖升级、账号保留和vivo室内静止5–10分钟均未验证。交付后停止等待本版本人工验收，不进入#18、#13或离线包。**
 
-工程 commit：`1329bb1`。完整三来源数据、拒绝统计、工具校正和未测范围见 [验收报告](docs/ACCEPTANCE_FUSED_LOCATION.md)；V0.3.4能力/限制存档见 [原交接](docs/HANDOFF_V034_RUNTIME_STATUS.md)。
+工程commit：[`74161cf`](https://github.com/shimao1115/KITT/commit/74161cf3f4b263cbddaefd96c9fa45b5305c2e0a)。独立说明：[地区稳定性验收](docs/ACCEPTANCE_AREA_STABILITY.md)；上一版本：[V0.3.5交接存档](docs/HANDOFF_V035_FUSED_LOCATION.md)。
 
-## 当前能力与实测
+## 原因、修复与当前能力
 
-V0.3.4真实定位/网络/VPN/AI/研究状态及等待原因保持；Journey、安静/接管、Overview→Topic、Director、图片、文字/语音、Vosk、本地TTS、模拟路线及评分保持。GPS活跃15s、NETWORK活跃30s、LAST_KNOWN最多60s，测量单调、跳跃、粗位置地标和过时护栏均不变。生产代码只细分定位拒绝日志；FUSED仅用于显式短时测试。没有修改播报策略或引入Play定位/地图依赖。
+修复前新增确定性测试在第31秒失败，证明30秒geocode锚点寿命与静止120秒复查产生名称空窗；空结果覆盖成功值也是确定代码路径。没有用真机事件日志证明每一次闪烁都由此导致。
 
-vivo V2405A / Android16 / API36：原生FUSED存在、启用且注册成功。两轮完整前台B阶段分别观察8和7次FUSED回调，**15/15镜像NETWORK（同测量时钟、相距<1m），额外测量0、额外fresh覆盖秒数0**。基线与加FUSED选择器均连续65个一秒观察点使用NETWORK；停止重启双来源的A2也各65点有效。GPS在这些室内窗口无回调。两轮FUSED旧缓存各因超过60s拒绝一次；有效B的deviceFix/活跃offer拒绝均0。
+地区缓存仅含本次运行的一个成功锚点：当前持续新鲜、可信、同来源、距成功锚点≤450m时保留名称，空/异常/超时不覆盖；可靠不同区域或仅区县结果直接替换。复查按原时间/距离节流，间隔使用单调时钟。位置过时/缺失/观测中断、来源变化、越距撤销缓存；回原地或回切不能复活已失效名称，晚结果受失效版本和当前位置校验。粗定位撤销镇街，LAST_KNOWN只带不确定区县背景，不查询、不保留镇街。缓存不持久化，应用/旅程重启不能携带旧名称。
 
-Wi-Fi开关开启后默认网络仍为蜂窝，不能算实际Wi-Fi联网验收。A1受后台/锁屏影响，不用其TTFF/UNKNOWN采样评价前台连续性。原办公室40s过时症状未复现，室外、真实移动/弱GPS恢复、驾驶切换与长期锁屏未测，没有定量CPU/电量结论。
+GPS活跃15秒、NETWORK活跃30秒、LAST_KNOWN原测量最多60秒，物理定位选择、跳跃/乱序、行政越界护栏保持。生产只注册LocationManager GPS+NETWORK，FUSED不接入。经纬度不受IP/VPN/DNS/搜索影响。新增日志仅事件/失效原因，无坐标、地区名、轨迹或认证信息。
 
-## 安全升级 / Provider / 授权
+Vosk/本地TTS、主动说话立即打断、打字/看图、安静/提前恢复、研究Overview→Topic、Director、模拟路线、运行状态与结束评分保持；没有扩展知识缓存、语义去重、地图栈或新UI配置。
 
-已成功 `adb install -r` 将 **`com.kitt.reader.runtimecheck`** 从0.3.4/code9覆盖升级，保留账号/设置/原旅程恢复提示。手机拉回base.apk与交付包SHA256完全一致；升级前后及实验结束后设置文件摘要不变，没有导出凭据/设置内容。测试APK已卸载，无测试Journey或定位前台服务；wifi恢复为0、mobile_data为1，VPN未改。
+## Build / tests / 成都→绵阳
 
-保存配置仍为 **ChatGPT / gpt-6.1-sol / low**，语速1，独立研究关闭；账号记录可解密且connected=true。本轮未重新验证真实AI服务或刷新登录。**无需新增密钥/登录动作**。新安装默认Fake（配置字段gpt-4.1-mini/default，不调用该模型）。vivo安装可能要求本人指纹。
+实际执行 `scripts/verify.ps1 -Offline`：**Debug349 / Release336 tests，失败、错误、跳过均0；两种assemble、lint、Debug/Release验收签名全部PASS**。新增20项执行覆盖生命周期、刷新失败、连续性与负例；旧驾驶解析测试修改为验证当前位置新鲜度，450m与过时负例保留。runtimecheck独立工作区的assembleDebug、assembleDebugAndroidTest、lintDebug也PASS；测试APK只构建，未安装/执行。
 
-## Build / test / 成都→绵阳
+- GPS/NETWORK各600秒新鲜同地缓存测试，AreaCards只进入一次；生产RealLocationSource链的合成NETWORK ±30m测试连续600秒，**302次发布 / 6次查询 / 首次成功后0次null或镇街消失 / 1次章节进入**，跨过空、异常、8秒超时及恢复。
+- 从未成功300秒保持未解析，仅3次查询；可靠不同区县即时替换。100km/h越450m、旧位置过时、观测缺口、GPS↔NETWORK切换、粗定位/粗权限、LAST_KNOWN、停止/重启及晚结果均覆盖。Geocoder缺失在API26/34不崩溃。
+- 六组模拟PASS：成都新都→绵阳安州雎水 **29点 / 90912m**；80km/h主链57次Director/4次TTS、Context Card1489字符；100km/h/16×研究 **13章节 / 19次研究 / 13段旁白**，零stale/cancel/failure。快进、素材架、独立地标与驾驶解析回归通过；GPS↔NETWORK另由确定性设备回调覆盖。这是Fake/确定性Provider、fake Voice与生产Context/Journey/Director，不能替代真实路线、搜索、自然GPS或听感。
 
-完整 `scripts/verify.ps1 -Offline`：**Debug329 / Release316 tests，失败/错误/跳过均0；assemble、lint、Debug/Release签名全部PASS**。新增15项执行覆盖候选FUSED重传/乱序/切换/GPS恢复/跳跃/缓存/桥接/粗定位与状态，以及API26/30/31/34的原双来源注册/清理。最终探针APK也完成assemble/lint；最后工具启动/汇总改进未重新真机执行，自然数据来自同一统计逻辑的前版，不冒充最新探针真机全通过。
+入Git的脱敏证据：[验证摘要](docs/evidence/v0351-verification.json)、[十分钟发布报告](docs/evidence/v0351-area-stability.txt)、[SHA256](docs/evidence/v0351-SHA256.txt)。本地全量日志：`artifacts/area-stability-delivery-gates.log`、`area-stability-runtime-build.log`、`area-stability-red.log`与六份模拟报告。私钥、二进制和原始账户数据不入Git。
 
-六组模拟PASS：成都新都→绵阳安州雎水 **29点 /90912m**；80km/h主链57次Director/4次TTS、Context Card1489字符；100km/h/16×章节研究 **13章节 /19次研究 /13段旁白**，零stale/cancel/failure。确定性/Fake Provider、fake Voice与生产Context/Journey/Director，不替代真路线、真人内容或听感。
+## APK / 安全升级 / Provider
 
-本地证据：`artifacts/fused-delivery-gates.log`（全量重跑）、`fused-final-packaging.log`、`verification.json`、六份simulation报告、自然phone JSON与APK。脱敏自然汇总已入Git。
-
-## APK交付
-
-[V0.3.5预发布及校验文件](https://github.com/shimao1115/KITT/releases/tag/v0.3.5)。**当前手机已升级，无需卸载重装。** 保留现有账号使用runtimecheck；标准包属于另一应用数据空间。
+[V0.3.5.1预发布与校验文件](https://github.com/shimao1115/KITT/releases/tag/v0.3.5.1)。已有手机账号使用 **runtimecheck** 包；标准Debug/Release是另一应用数据空间。不要卸载旧App或清数据。
 
 | APK | bytes | SHA256 |
 | --- | ---: | --- |
-| [同签名runtimecheck](artifacts/kitt-v0.3.5-runtimecheck.apk) | 74279068 | `F4914802647FD97271E4B4C30FD005F71A2D8CB07BF13D4F15BF17963B65A752` |
-| [标准Debug](artifacts/kitt-v0.3.5-debug.apk) | 74279044 | `500BD750087FF1C5F85D218B9A047280B09708B3F4BD37506EC324BAEAB2F004` |
-| [Release验收包](artifacts/kitt-v0.3.5-release.apk) | 70642112 | `B848EF2132A3E0DEF0A8603642C6930CE3E06EC656908B14ACEF41C1CBDF379B` |
+| [runtimecheck原位升级包](artifacts/kitt-v0.3.5.1-runtimecheck.apk) | 74279072 | `2302CD463836A14E7636EF281278C1175F4E7A7412BAEB23707D2E71A33DED75` |
+| [标准Debug](artifacts/kitt-v0.3.5.1-debug.apk) | 74279048 | `183BA0FBCA2FC5740D8C1A2698D56EE98B076BFB744653F48338C87A2A241D6E` |
+| [Release验收包](artifacts/kitt-v0.3.5.1-release.apk) | 70642112 | `5EFC4913185CEE39F652552BC5027A3F2ABB5B22E581EDFBBF61193EB0AF3B89` |
 
-统一沿用办公室验收密钥，证书SHA256：`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。密钥/完整日志/二进制不入Git。可选location-probe APK只用于复测，哈希见预发布SHA256.txt；普通验收无需安装。
+aapt已核对runtimecheck包名 **`com.kitt.reader.runtimecheck`**、code11、version0.3.5.1、标签“沿途0.3.5.1验收”。三包apksigner验证成功，证书SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**，与V0.3.5 runtimecheck交付包及本机现有签名密钥匹配。具备覆盖升级签名条件；设备离线，**本轮没有执行adb install -r，也没有验证账号/设置保留**。
 
-## 最短人工总验收与限制
+上次真机保存配置记录为 **ChatGPT / gpt-6.1-sol / low**、语速1、独立研究关闭；本轮未读取账户数据、验活登录或调用真实AI。新安装仍默认Fake（配置字段gpt-4.1-mini/default，不调用该模型）。没有新增授权/API key步骤；若手机原账号后续过期，重新授权须本人完成。
 
-1. 打开“沿途0.3.5验收”，按保留的原旅程恢复提示继续/结束；停车或乘客操作，真实旅程中核对来源、精度、年龄和独立网络/AI状态。
-2. 安静/提前恢复、说话/取消/打字、打断、后台切回、结束；真人听感、平板、真实AI内容和长期锁屏仍沿用V0.3.4人工边界。
-3. 再现前台联网正常但位置过时的现场时，按验收报告运行短时探针，保持解锁/页面可见并确认真实网络；只有观察到FUSED独立可靠新测量才重新评估接入。实际Wi-Fi、室外/移动仍需现场条件。
+## 最短人工验收与限制
 
-Issue #14外场与#15用户验收继续独立开放；#13未施工。无已知新增生产崩溃。本轮是负结果实验交付，不宣称已经改善弱GPS连续性。
+1. 手机上线后，在仓库根目录执行 `adb install -r artifacts/kitt-v0.3.5.1-runtimecheck.apk`；若vivo要求指纹则本人确认。启动确认0.3.5.1与原账号/模型/设置仍在，按原旅程恢复提示继续/结束。若安装被拒绝，不卸载旧App。
+2. 室内静止、保持前台与新鲜NETWORK/GPS ±30m，首次解析成功后连续5–10分钟看地区名称，跨30秒和120秒复查不消失、不出现章节假切换。无首次成功时“未解析”仍是正确降级。
+3. 停车或乘客操作，验证临时断网/服务失败保留可信同地名称；真正移动、失去新鲜定位、切换来源时不能保留旧街道冒充新现场，可靠新解析应更新地区。切换/失效后可能暂时未解析，复查仍受原节流约束。
+4. 主动说话/打字打断、安静/提前恢复、100km/h/16×模拟与结束冒烟。以上真机项、室外/真实边界、自然GPS/NETWORK恢复、真实Geocoder/VPN环境、真人内容/ASR/TTS与长期锁屏均待验收。#14/#15仍独立开放。
+
+450m是沿用的保守距离护栏，并非行政边界数据库。Android26–32同步Geocoder可能不能被协程立即终止，期间只保留一个pending，GPS持续，晚结果仍校验；8秒超时自动证据来自可取消注入查询，vivo Android16走平台异步接口。无已知新增生产崩溃；自动测试不能替代真实设备总验收。
 
 ## 最近 milestone commits
 
-- `1329bb1` — V0.3.5原生FUSED自然对照、拒绝原因、兼容/安全回归与负结果验收。
-- 随后的 `docs: hand off V0.3.5 negative FUSED trial and preserved runtime account` — 当前交接与安装/缺测范围。
-- `b7e5ed9` / `ab43a25` — 授权V0.3.5实验。
-- `d841c2e` / `9fbc88e` — V0.3.4状态透明化与交接。
-- `a61a565` / `39afed5` — V0.3.3定位回退与外场交接。
+- `74161cf` — V0.3.5.1 / #17地区缓存连续性、失败保留、失效/晚结果防护、20项新增执行与打包门禁。
+- 随后的 `docs: hand off V0.3.5.1 area stability for offline-phone acceptance` — 当前交接、脱敏证据、安装/待验收与Stop rule。
+- `83c2275` — V0.3.5.1当前唯一任务卡。
+- `1329bb1` / `7644286` — V0.3.5 FUSED负结果实验与账号保留交接。
+- `d841c2e` / `9fbc88e` — V0.3.4运行状态与交接。
