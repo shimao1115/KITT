@@ -16,6 +16,20 @@ android {
         // The offline recogniser ships native libraries; x86 ABIs would double the APK without serving any phone.
         ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a") }
     }
+    // Project-specific acceptance signing: identical private key on office and home PCs.
+    // An absent key still permits local unit-test/debug compilation, but acceptance scripts
+    // must fail closed. Do not substitute a newly generated ~/.android/debug.keystore.
+    signingConfigs {
+        getByName("debug") {
+            val canonical = java.io.File(System.getProperty("user.home"), ".kitt/signing/acceptance.keystore")
+            if (canonical.isFile) {
+                storeFile = canonical
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        }
+    }
     buildFeatures { compose = true; buildConfig = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
