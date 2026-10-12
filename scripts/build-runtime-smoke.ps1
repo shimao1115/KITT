@@ -5,6 +5,9 @@ $taskRoot = Split-Path -Parent $PSScriptRoot
 $taskCopy = Join-Path $taskRoot 'artifacts\runtime-smoke-workspace'
 Push-Location $taskRoot
 try {
+    # Acceptance APKs must always use the phone's existing signature, never a random local Debug key.
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1')
+    if ($LASTEXITCODE -ne 0) { throw 'Canonical KITT signing preflight failed.' }
     # Independent package only: do not uninstall a configured app when another machine's key differs.
     $taskFiles = & git -c core.quotepath=false ls-files --cached --others --exclude-standard
     if ($LASTEXITCODE -ne 0) { throw 'Cannot enumerate the working source.' }
@@ -31,6 +34,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Independent smoke build failed.' }
     $taskApk = Join-Path $taskRoot "artifacts\kitt-v$taskVersion-runtimecheck.apk"
     Copy-Item -LiteralPath (Join-Path $taskCopy 'app\build\outputs\apk\debug\app-debug.apk') -Destination $taskApk -Force
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath $taskApk
     Write-Output "Independent package: $taskApk; new installs default Fake. Same-signature adb install -r preserves the existing runtimecheck account/settings."
     Get-FileHash -LiteralPath $taskApk -Algorithm SHA256
 } finally { Pop-Location }
