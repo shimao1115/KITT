@@ -1,3 +1,16 @@
+# KITT 施工前置门禁：办公室与家用电脑签名统一（2026-10-12）
+
+用户要求在 V0.3.5.2 跨旅程研究缓存开始前先统一签名。**当前唯一工作项 [#19](https://github.com/shimao1115/KITT/issues/19)**；原 [#18](https://github.com/shimao1115/KITT/issues/18) 的产品授权仍有效，但施工须等待双机签名门禁。当前已落库项目专用签名配置与预检，**尚未实际获取私钥、运行办公室和家庭电脑的签名预检、执行跨电脑原位升级，不宣称签名统一已完成或本次脚本通过构建**。
+
+- **唯一标准**：手机保留账户/设置的 `com.kitt.reader.runtimecheck` V0.3.5.1/code11，已验证证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
+- **私有密钥位置**：两机各自 `%USERPROFILE%\.kitt\signing\acceptance.keystore`；必须使用现有办公室私钥的**相同字节**安全复制，不要覆盖其他项目的全局 `~/.android/debug.keystore`，不得入 GitHub、Issue 或聊天。
+- **构建工具**：`app/build.gradle.kts` Debug 签名（存在项目私钥时使用）；`scripts/check-kitt-signing.ps1` 用指纹验私钥/APK；`scripts/verify.ps1` 和 `scripts/build-runtime-smoke.ps1` 先执行预检，不符合证书不能产出合规验收 APK。
+- **下一个必须实际验证的动作**：办公室确认原密钥证书与手机相同，再安全复制到家庭电脑；两机分别执行 `scripts/check-kitt-signing.ps1` 并对 runtimecheck APK 做 `-ApkPath` 证书复核。完整操作 [docs/SIGNING_UNIFICATION.md](docs/SIGNING_UNIFICATION.md)。没有私钥不能在本聊天远程完成最后一步。
+- **注意**：同签名只解决签名冲突；覆盖升级还要求相同 `applicationId`（手机为 runtimecheck）和合法递增 `versionCode`。0.3.5.2 尚未开工，也尚未生成新 APK。
+- **旧版事实保持**：V0.3.5.1 地区稳定修复工程通过、实机部分待验收（600秒中305秒定位新鲜，期间名称消失0），定位不新鲜仍在 #14，旧 #17 未正式签实机完整 PASS。
+
+---
+
 # KITT 当前施工入口（2026-10-12）
 
 **用户决定：V0.3.5.1 地区名称修复按“工程通过、真机部分待验收”阶段性收口，允许推进下一小版本 V0.3.5.2 / [Issue #18](https://github.com/shimao1115/KITT/issues/18)。** 这只是任务授权与派发，**0.3.5.2 尚无工程交付、测试结果或可安装 APK**。当前唯一施工入口为 [TASK_CARD.md](TASK_CARD.md)；完成后施工 Agent 更新本 HANDOFF 为 0.3.5.2 正式交接并停止等待验收。
