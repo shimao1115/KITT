@@ -1,6 +1,8 @@
 # KITT V0 Roadmap — Destination Chain
 
-> **当前唯一Destination：V0.3.5.1 / Issue #17工程交付完成，停止等待剩余验收。** Debug349/Release336、构建/lint/签名与六组模拟PASS。设备上线后同签名原位升级、账号记录/设置保留已验证；自然600秒采样305秒新鲜、新鲜位置下名称消失0，但定位间断、连续镇街未建立，不能签全程静止PASS。详见 [验收](ACCEPTANCE_AREA_STABILITY.md) 与根HANDOFF。#18、#13、离线包不施工；下文为历史Destination记录，不重开Golden Path。
+> **当前唯一授权施工 Destination：V0.3.5.2 / Issue #18 跨旅程研究证据缓存（2026-10-12）**。施工入口：[根 TASK_CARD.md](../TASK_CARD.md)。从当前 0.3.5.1 / code11 继承，复用既有 Overview/Topic/来源事实结构，成功搜索后保存在手机私有持久存储，下次 Journey/App 重启命中时不得重复研究。只施工 #18；完成测试、APK和交接后立即停止，#13语义去重及离线知识包等待下一轮授权。本状态是任务派发，**不意味着 #18 已完成或施工 Agent 已被实际启动**。
+
+> **上一里程碑 V0.3.5.1 / Issue #17 阶段性收口：工程通过、真机部分待验收。** Debug349/Release336、构建/lint/签名与六组模拟据交接报告 PASS；同签名原位升级、账号记录/设置保留已验证。自然600秒中仅305秒定位新鲜、新鲜位置下名称消失0，连续镇街仍未确认，因此 **不签完整真机 PASS**；#17 保留待实地补验，定位不新鲜另见 #14。详见 [地区稳定性验收](ACCEPTANCE_AREA_STABILITY.md) 与根 HANDOFF。此处仅阶段性接受已完成的修复，不授权改定位源或延长过时位置信任。
 
 > **V0.3.5 / Issue #16 已完成条件式实验交付**：vivo自然室内对照的15次FUSED回调全部镜像NETWORK，未观察到独立新鲜测量或连续性增益，生产保留GPS+NETWORK。Debug329/Release316、构建/lint/签名与模拟回归PASS；同签名runtimecheck覆盖升级保留账号/设置。实际Wi-Fi联网、室外/移动及原办公室40s过时症状未建立，详见 [验收](ACCEPTANCE_FUSED_LOCATION.md) 与根HANDOFF。到此停止；Issue #14外场与#15用户验收仍独立待处理。
 
