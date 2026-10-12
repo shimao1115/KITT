@@ -24,7 +24,7 @@ V0 只需要证明一个“魔法瞬间”：
 
 原生 Android V0 已实现，默认使用明确标注的离线 Fake Provider；无需 API key 可验收完整交互链。
 
-- 安装包：[V0.3.5.1 预发布](https://github.com/shimao1115/KITT/releases/tag/v0.3.5.1)（Android 8.0+）；已有 ChatGPT 账号的手机选择同包名、同签名的 `kitt-v0.3.5.1-runtimecheck.apk` 覆盖升级，勿卸载清数据。本轮真机离线，安装与账号保留待验证。
+- 安装包：[V0.3.5.1 预发布](https://github.com/shimao1115/KITT/releases/tag/v0.3.5.1)（Android 8.0+）；已有账号选择同签名runtimecheck包，勿卸载清数据。vivo已原位升级，账号记录/设置保留；自然十分钟仅305秒新鲜，不能签完整静止镇街PASS，详见交接。
 - V0.3.5.1修复持续新鲜同地位置下名称30秒失效及空Geocoder覆盖成功值的问题，保留移动/过时/切换/粗定位失效边界；[验收](docs/ACCEPTANCE_AREA_STABILITY.md)。V0.3.4运行状态与V0.3.5定位选择规则保持，生产仍用GPS+NETWORK，FUSED不接入。包名/签名/账号边界见 [当前交接](HANDOFF.md)。
 - 当前交接与限制：[HANDOFF.md](HANDOFF.md)；[沿途 V0.3 证据与剩余搜索验收](docs/ACCEPTANCE_YANTU_V03.md)。已验收的中文 ASR、文字上屏和打字交互保持。
 - 构建/测试/打包：PowerShell 执行 `./scripts/verify.ps1`；缓存齐全时可加 `-Offline`。

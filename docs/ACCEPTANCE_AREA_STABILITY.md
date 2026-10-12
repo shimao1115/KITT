@@ -1,8 +1,20 @@
 # 沿途 V0.3.5.1 地区名称稳定性验收 — Issue #17
 
-日期：2026-10-12（Asia/Shanghai）。仅修复行政区 enrichment 生命周期；真机离线，vivo 现场与覆盖安装尚未执行。当前交付结果、APK/hash/commit 见根 [HANDOFF](../HANDOFF.md)。
+日期：2026-10-12（Asia/Shanghai）。仅修复行政区 enrichment 生命周期。首次离线交付后设备上线，原位升级/账号设置保留已验证；十分钟现场因定位间断未达到全程PASS，详见以下接续。APK/hash/commit见根 [HANDOFF](../HANDOFF.md)。
 
-实际门禁：`scripts/verify.ps1 -Offline` **Debug349 / Release336，失败/错误/跳过均0；两种assemble/lint/签名PASS**。runtimecheck独立包assemble/测试APK构建/lint与证书核对PASS，证书匹配V0.3.5交付包；没有执行手机测试APK。工程commit `74161cf`，[十分钟报告](evidence/v0351-area-stability.txt) 与 [摘要](evidence/v0351-verification.json) 已入Git。
+## 真机接续结果
+
+vivo V2405A / Android16，室内原地由用户确认；同签名adb install -r成功，手机base.apk与交付runtimecheck SHA256一致，设置文件升级前/后/采样后摘要一致。ChatGPT记录可解密且connected=true，gpt-6.1-sol/low保持；没有验活网络登录。
+
+修正测试活动启动后，自然采样600次/613309ms，全部前台/交互/解锁。生产RealLocationSource和DrivingScreen，临时Journey/AreaCards不写TripStore、不调用AI/研究、不改网络/VPN。92次发布，首次名称成功1507ms；新鲜NETWORK305秒，精度30–45m、最大年龄29654ms、距锚点最大17.54m。**新鲜位置下名称消失0；全状态235次非新鲜位置缺名、3次章节进入，不能称全程无切换。**40次UI抽查24次匹配地区、0次“地区名称未解析”；16次未匹配，未逐次记录等待文案/章节转移因果。截图只证明区县“新都区”，连续镇街未建立。
+
+判定 **POSITION_GAPS_REQUIRE_REVIEW**，不是完整静止PASS；Android自然定位有过时/恢复，不能以沿用旧地区代替新鲜位置。latest回调来源统计可能含过期LAST_KNOWN，fresh另校验等待/年龄/精度。KITTArea日志不可观测，geo事件全0不能作为没有查询/失效的证据，真机120秒复查次数未建立。[脱敏报告](evidence/v0351-area-stability-phone.json)保留原计数并附解释。最后仅加日志说明的探针版本构建/lint通过，未重新实机跑文字补充，采样逻辑相同。
+
+测试APK已卸载、临时常亮标记清除、无测试JourneyService，普通App已打开；设置摘要不变，无新增原始账户/轨迹导出。真实Journey/前台服务、≥5分钟持续新鲜且曾取得镇街、外场移动/真实失败注入及真人ASR/TTS仍待验收。停止在#17，不扩定位架构。
+
+可选重跑：`scripts/build-runtime-smoke.ps1 -Offline`后只安装该工作区`app-debug-androidTest.apk`，执行`adb shell am instrument -w -e mode area-stability com.kitt.reader.runtimecheck.test/com.kitt.reader.HotfixPhoneProbe`；结果在应用cache/area-stability-phone.json。该模式显示临时采样界面，需原旅程未运行。完成后仅卸载`com.kitt.reader.runtimecheck.test`，普通应用保留；不能用无新鲜位置的窗口签PASS。
+
+实际门禁：`scripts/verify.ps1 -Offline` **Debug349 / Release336，失败/错误/跳过均0；两种assemble/lint/签名PASS**。runtimecheck独立包assemble/测试APK构建/lint与证书核对PASS，证书匹配V0.3.5交付包；设备接续只执行上述area-stability模式。工程commit `74161cf`，[确定性十分钟报告](evidence/v0351-area-stability.txt) 与 [摘要](evidence/v0351-verification.json) 已入Git。
 
 ## 原因与修复
 
@@ -26,7 +38,7 @@ GPS当前年龄≤15秒、NETWORK≤30秒，精度必须>0且≤1500m；超过45
 
 ## 最短人工验收
 
-1. 设备上线后对runtimecheck执行同签名`adb install -r`；不要卸载/清数据。确认版本0.3.5.1、原ChatGPT账号/模型/设置仍在。构建证书与V0.3.5交付包一致，但本轮未实机验证安装与账号保留。
+1. 手机已原位升级并核对设置/连接记录保留，直接打开0.3.5.1普通“开始沿途”，不要卸载/清数据。
 2. 室内原地前台、保持新鲜NETWORK/GPS ±30m。首次成功名称后连续看5–10分钟，跨30秒及120秒刷新仍有地区名称，无章节假退出/重复研究。首次始终无结果保持“未解析”是正常降级。
 3. 停车或乘客操作：无网络/临时服务失败仍有可信同地名称；真实离开、来源切换或位置过时应撤销镇街，不能拿旧街道当新现场。恢复可靠新解析后新地区应取代旧值。
 4. 说话/打字打断、安静/提前恢复、模拟100km/h/16×与结束正常。来源切换可能短暂未解析，这是本版保守失效策略；无可靠新位置不能要求持续挂旧名称。

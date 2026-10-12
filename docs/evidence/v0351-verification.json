@@ -22,7 +22,7 @@
   "sha256": "183BA0FBCA2FC5740D8C1A2698D56EE98B076BFB744653F48338C87A2A241D6E",
   "releaseApk": "kitt-v0.3.5.1-release.apk",
   "releaseSha256": "5EFC4913185CEE39F652552BC5027A3F2ABB5B22E581EDFBBF61193EB0AF3B89",
-  "deviceAcceptance": "V0.3.5.1 phone OFFLINE: upgrade/account preservation and vivo stationary 5-10min are NOT RUN. Prior V0.3.5 evidence does not prove this version. See docs/ACCEPTANCE_AREA_STABILITY.md; Issues #14/#15 remain separate.",
+  "deviceAcceptance": "Device reconnected: adb install -r PASS; installed base.apk matches delivery SHA256; settings digest unchanged and stored ChatGPT record decrypts/connected=true. Natural 600 observations: fresh NETWORK 305s, fresh name drops 0; POSITION_GAPS_REQUIRE_REVIEW, no continuous town/street proof. No live account network validation or ordinary Journey/FGS acceptance.",
   "areaStability": "PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.",
   "runtimeStatus": "PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.",
   "locationFallback": "PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.",
@@ -39,6 +39,6 @@
     "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
     "build": "PASS assembleDebug/assembleDebugAndroidTest/lintDebug",
     "signature": "PASS matches prior V0.3.5 runtimecheck artifact",
-    "installAndAccountPreservation": "NOT RUN: phone offline"
+    "installAndAccountPreservation": "PASS upgrade/package/hash/unchanged settings digest/stored record decrypts; account service validity NOT tested"
   }
 }

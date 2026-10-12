@@ -1,6 +1,6 @@
 # KITT V0 Roadmap — Destination Chain
 
-> **当前唯一Destination：V0.3.5.1 / Issue #17已完成工程修复，停止等待本版本人工验收。** Debug349/Release336、两种assemble/lint/签名、runtimecheck打包与六组模拟PASS；持续新鲜同地位置下保留成功地区，失败不覆盖，移动/过时/切换/粗定位/重启负例覆盖。真机离线，本轮未覆盖安装、未验证账号保留或vivo静止5–10分钟；详见 [验收](ACCEPTANCE_AREA_STABILITY.md) 与根HANDOFF。#18、#13、离线包不施工；下文为历史Destination记录，不重开Golden Path。
+> **当前唯一Destination：V0.3.5.1 / Issue #17工程交付完成，停止等待剩余验收。** Debug349/Release336、构建/lint/签名与六组模拟PASS。设备上线后同签名原位升级、账号记录/设置保留已验证；自然600秒采样305秒新鲜、新鲜位置下名称消失0，但定位间断、连续镇街未建立，不能签全程静止PASS。详见 [验收](ACCEPTANCE_AREA_STABILITY.md) 与根HANDOFF。#18、#13、离线包不施工；下文为历史Destination记录，不重开Golden Path。
 
 > **V0.3.5 / Issue #16 已完成条件式实验交付**：vivo自然室内对照的15次FUSED回调全部镜像NETWORK，未观察到独立新鲜测量或连续性增益，生产保留GPS+NETWORK。Debug329/Release316、构建/lint/签名与模拟回归PASS；同签名runtimecheck覆盖升级保留账号/设置。实际Wi-Fi联网、室外/移动及原办公室40s过时症状未建立，详见 [验收](ACCEPTANCE_FUSED_LOCATION.md) 与根HANDOFF。到此停止；Issue #14外场与#15用户验收仍独立待处理。
 

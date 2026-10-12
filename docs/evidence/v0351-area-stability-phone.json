@@ -1,0 +1,53 @@
+{
+  "version": "0.3.5.1",
+  "mock_injection": false,
+  "mode": "natural-source-production-screen-temporary-journey",
+  "window_seconds": 600,
+  "saved_config": {
+    "provider": "CHATGPT",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "account_connected": true,
+    "credential_unavailable": false,
+    "speech_rate": 1,
+    "independent_research": false,
+    "recovery_present": false
+  },
+  "outcome": "POSITION_GAPS_REQUIRE_REVIEW",
+  "elapsed_ms": 613309,
+  "publications": 92,
+  "first_success_ms": 1507,
+  "fresh_seconds": 305,
+  "foreground_seconds": 600,
+  "interactive_seconds": 600,
+  "unlocked_seconds": 600,
+  "sources": {
+    "LAST_KNOWN": 294,
+    "NETWORK": 306
+  },
+  "name_drops_after_success": 235,
+  "source_transitions": 5,
+  "fresh_name_drops_after_success": 0,
+  "chapter_transitions": 3,
+  "accuracy_min_m": 30,
+  "accuracy_max_m": 45,
+  "age_max_ms": 29654,
+  "max_anchor_distance_m": 17.541040334713525,
+  "ui_samples": 40,
+  "ui_label_matched": 24,
+  "ui_unresolved": 0,
+  "ui_unavailable": 0,
+  "geocode_events": {
+    "geo_started": 0,
+    "geo_success": 0,
+    "geo_empty": 0,
+    "geo_error": 0,
+    "geo_timeout": 0,
+    "geo_discarded": 0,
+    "cache_invalidated": 0
+  },
+  "limits": "Temporary local Journey/AreaCards + production screen/source; no AI/research, real journey writes, movement, injected failures, radio/VPN changes, or account network validation",
+  "geocode_events_note": "No observable KITTArea output; zero counts are not query or invalidation evidence",
+  "source_counts_note": "Counts of latest callback source; expired bridge may remain in last callback. Fresh seconds additionally validate waiting state, age and accuracy <=500m.",
+  "observed_ui_note": "Screenshot at first minute shows Xindu district only. Continuous town/street evidence NOT established."
+}
