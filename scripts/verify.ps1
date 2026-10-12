@@ -4,6 +4,11 @@ Set-StrictMode -Version Latest
 $taskRoot = Split-Path -Parent $PSScriptRoot
 Push-Location $taskRoot
 try {
+    $taskKeystore = Join-Path $env:USERPROFILE '.kitt\signing\acceptance.keystore'
+    if ($SigningKeystore -and ([IO.Path]::GetFullPath($SigningKeystore) -ne [IO.Path]::GetFullPath($taskKeystore))) {
+        throw 'Pass only the project canonical keystore; do not sign acceptance builds with another certificate.'
+    }
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1')
     if (-not $env:JAVA_HOME -or -not (Test-Path (Join-Path $env:JAVA_HOME 'bin\java.exe'))) {
         throw 'Set JAVA_HOME to JDK 17 before building.'
     }
@@ -34,18 +39,14 @@ try {
     }
     New-Item -ItemType Directory -Path artifacts -Force | Out-Null
     Copy-Item -LiteralPath app\build\outputs\apk\debug\app-debug.apk -Destination artifacts\kitt-v0-debug.apk -Force
-    $taskKeystore = if ($SigningKeystore) { [IO.Path]::GetFullPath($SigningKeystore) } else { Join-Path $env:USERPROFILE '.android\debug.keystore' }
-    if (-not (Test-Path -LiteralPath $taskKeystore)) { throw 'Existing debug keystore is required for the acceptance Release APK.' }
-    if ($SigningKeystore) {
-        & $taskSigner sign --ks $taskKeystore --ks-key-alias androiddebugkey --ks-pass pass:android --key-pass pass:android --v4-signing-enabled false --out artifacts\kitt-v0-debug.apk app\build\outputs\apk\debug\app-debug.apk
-        if ($LASTEXITCODE -ne 0) { throw 'Debug acceptance re-signing failed.' }
-        & $taskSigner verify --verbose artifacts\kitt-v0-debug.apk
-        if ($LASTEXITCODE -ne 0) { throw 'Debug acceptance signature verification failed.' }
-    }
+    # Debug is signed by the canonical project signingConfig inside Gradle.
+    # Never re-sign a random local-debug APK and present it as a phone-upgrade candidate.
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath 'artifacts\kitt-v0-debug.apk'
     & $taskSigner sign --ks $taskKeystore --ks-key-alias androiddebugkey --ks-pass pass:android --key-pass pass:android --v4-signing-enabled false --out artifacts\kitt-v0-release.apk app\build\outputs\apk\release\app-release-unsigned.apk
     if ($LASTEXITCODE -ne 0) { throw 'Acceptance Release APK signing failed.' }
     & $taskSigner verify --verbose artifacts\kitt-v0-release.apk
     if ($LASTEXITCODE -ne 0) { throw 'Acceptance Release APK signature verification failed.' }
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath 'artifacts\kitt-v0-release.apk'
     Copy-Item -LiteralPath artifacts\kitt-v0-debug.apk -Destination "artifacts\kitt-v$taskVersion-debug.apk" -Force
     Copy-Item -LiteralPath artifacts\kitt-v0-release.apk -Destination "artifacts\kitt-v$taskVersion-release.apk" -Force
     foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt', 'area-stability.txt')) {
@@ -55,7 +56,7 @@ try {
     $taskReleaseHash = (Get-FileHash -LiteralPath artifacts\kitt-v0-release.apk -Algorithm SHA256).Hash
     @("$taskHash  kitt-v$taskVersion-debug.apk", "$taskReleaseHash  kitt-v$taskVersion-release.apk") | Set-Content -LiteralPath artifacts\SHA256.txt -Encoding utf8
     [ordered]@{
-        version=$taskVersion; product='沿途'; build='PASS (Debug/Release)'; variants=$taskCounts; lint='PASS (Debug/Release)'; signature='PASS; Release uses existing debug acceptance key'
+        version=$taskVersion; product='沿途'; build='PASS (Debug/Release)'; variants=$taskCounts; lint='PASS (Debug/Release)'; signature='PASS; Debug and Release use canonical KITT signing certificate'
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk="kitt-v$taskVersion-debug.apk"; sha256=$taskHash; releaseApk="kitt-v$taskVersion-release.apk"; releaseSha256=$taskReleaseHash
