@@ -15,6 +15,9 @@ import kotlinx.coroutines.*
 
 /** GPS and Android's cellular/Wi-Fi assisted provider share one physical-fix selector. No GeoIP. */
 class RealLocationSource(context: Context, private val unavailable: (String) -> Unit) : LocationSource {
+    private var areaLookup: (suspend (Fix) -> AreaIdentity?)? = null
+    internal constructor(context: Context, unavailable: (String) -> Unit,
+        areaLookup: suspend (Fix) -> AreaIdentity?) : this(context, unavailable) { this.areaLookup = areaLookup }
     private val context = context.applicationContext
     private val manager = context.getSystemService(LocationManager::class.java)
     private var listener: LocationListener? = null
@@ -33,7 +36,7 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
         }
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         areaScope = scope
-        val lookup = AndroidAreaResolver(context, scope) { android.util.Log.i("KITTArea", it) }
+        val lookup = AndroidAreaResolver(context, scope, { android.util.Log.i("KITTArea", it) }, areaLookup)
         resolver = lookup
         val selector = PhysicalLocationSelector { android.util.Log.i("KITTLocation", it) }
         val providers = mapOf(LocationManager.GPS_PROVIDER to FixSource.GPS, LocationManager.NETWORK_PROVIDER to FixSource.NETWORK)
@@ -50,26 +53,23 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
             }
             if (notice != lastNotice) { lastNotice = notice; unavailable(notice) }
             if (selected == null) {
+                lookup.cached(null)
                 if (waitingSince == null) waitingSince = SystemClock.elapsedRealtime()
                 latest = null; return
             }
             waitingSince = null
-            // A bridge keeps the previous chapter as uncertain background; it cannot create a new chapter.
-            val area = if (selected.source == FixSource.LAST_KNOWN) latest?.administrative
-                else locationArea(lookup.cached(selected), selected)
-            val enriched = selected.copy(administrative = area)
+            // A bridge keeps only county background, never the previous street identity.
+            val cached = lookup.cached(selected)
+            val area = if (selected.source == FixSource.LAST_KNOWN) locationArea(latest?.administrative, selected)
+                else locationArea(cached, selected)
+            val enriched = selected.copy(administrative = if (fine) area else area?.copy(chapter = ""))
             if (enriched != latest) {
                 latest = enriched
                 android.util.Log.i("KITTLocation", "accepted source=${selected.source} origin=${selected.originSource} accuracy=${selected.accuracy.toInt()} age_ms=${selected.ageMs(now)}")
                 onFix(enriched)
             }
             // Last-known is continuity only; never starts a new geocode from a stale coordinate.
-            if (selected.source != FixSource.LAST_KNOWN) lookup.resolve(selected) { resolved ->
-                if (generation == session) latest?.takeIf { it.source != FixSource.LAST_KNOWN && areaCacheValid(selected, it, System.currentTimeMillis()) }?.let { current ->
-                    val updated = current.copy(administrative = locationArea(resolved, current))
-                    if (updated != latest) { latest = updated; onFix(updated) }
-                }
-            }
+            if (selected.source != FixSource.LAST_KNOWN) lookup.resolve(selected) { publish() }
         }
         val callback = object : LocationListener {
             override fun onLocationChanged(location: Location) {

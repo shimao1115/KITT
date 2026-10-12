@@ -25,7 +25,7 @@ try {
     $taskManifest = Join-Path $taskCopy 'app\src\main\AndroidManifest.xml'
     (Get-Content -LiteralPath $taskManifest -Raw).Replace('android:label="沿途"', "android:label=`"沿途 $taskVersion 验收`"") |
         Set-Content -LiteralPath $taskManifest -Encoding utf8
-    $taskArguments = @('-p', $taskCopy, 'assembleDebug', 'assembleDebugAndroidTest', '--console=plain')
+    $taskArguments = @('-p', $taskCopy, 'assembleDebug', 'assembleDebugAndroidTest', 'lintDebug', '--console=plain')
     if ($Offline) { $taskArguments += '--offline' }
     & .\gradlew.bat @taskArguments
     if ($LASTEXITCODE -ne 0) { throw 'Independent smoke build failed.' }

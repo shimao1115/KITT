@@ -28,7 +28,7 @@ try {
         $taskTests = [int](($taskSuites | Measure-Object tests -Sum).Sum)
         $taskFailures = [int](($taskSuites | Measure-Object failures -Sum).Sum) + [int](($taskSuites | Measure-Object errors -Sum).Sum)
         $taskSkipped = [int](($taskSuites | Measure-Object skipped -Sum).Sum)
-        $taskMinimum = if ($taskVariant -eq 'Debug') { 329 } else { 316 }
+        $taskMinimum = if ($taskVariant -eq 'Debug') { 349 } else { 336 }
         if ($taskTests -lt $taskMinimum -or $taskFailures -gt 0 -or $taskSkipped -gt 0) { throw "$taskVariant reports do not establish the complete $taskMinimum+ passing suite." }
         $taskCounts[$taskVariant] = [ordered]@{ tests=$taskTests; failures=$taskFailures; skipped=$taskSkipped }
     }
@@ -48,7 +48,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Acceptance Release APK signature verification failed.' }
     Copy-Item -LiteralPath artifacts\kitt-v0-debug.apk -Destination "artifacts\kitt-v$taskVersion-debug.apk" -Force
     Copy-Item -LiteralPath artifacts\kitt-v0-release.apk -Destination "artifacts\kitt-v$taskVersion-release.apk" -Force
-    foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt')) {
+    foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt', 'area-stability.txt')) {
         Copy-Item -LiteralPath (Join-Path app\build\acceptance $taskReport) -Destination (Join-Path artifacts $taskReport) -Force
     }
     $taskHash = (Get-FileHash -LiteralPath artifacts\kitt-v0-debug.apk -Algorithm SHA256).Hash
@@ -59,7 +59,8 @@ try {
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk="kitt-v$taskVersion-debug.apk"; sha256=$taskHash; releaseApk="kitt-v$taskVersion-release.apk"; releaseSha256=$taskReleaseHash
-        deviceAcceptance='V0.3.5 natural FUSED A/B/A and safe runtimecheck upgrade are recorded separately in docs/ACCEPTANCE_FUSED_LOCATION.md; this script does not run phone or field tests. Issues #14/#15 remain separate.'
+        deviceAcceptance='V0.3.5.1 phone OFFLINE: upgrade/account preservation and vivo stationary 5-10min are NOT RUN. Prior V0.3.5 evidence does not prove this version. See docs/ACCEPTANCE_AREA_STABILITY.md; Issues #14/#15 remain separate.'
+        areaStability='PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.'
         runtimeStatus='PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.'
         locationFallback='PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.'
         liveProvider='Credential-backed Overview/Topic/Director/TTS results are recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md; this script does not run live-provider acceptance.'

@@ -126,6 +126,48 @@ class GeocodeThrottle {
     fun complete() { pending = false }
 }
 
-/** Never carry a town for kilometers while its replacement is being resolved. */
+/** Name reuse is bounded by the current device measurement, not the age of a geocode request. */
 fun areaCacheValid(anchor: Fix, fix: Fix, time: Long): Boolean =
-    fix.valid() && anchor.ageMs(time) in 0..30000 && fix.ageMs(time) in 0..60000 && anchor.distanceTo(fix) <= 450
+    anchor.valid() && freshAreaFix(fix, time) && anchor.source == fix.source && anchor.distanceTo(fix) <= 450
+
+private fun freshAreaFix(fix: Fix, time: Long): Boolean =
+    fix.valid() && fix.accuracy > 0 && fix.accuracy <= 1500 &&
+        fix.source in setOf(FixSource.GPS, FixSource.NETWORK) &&
+        fix.ageMs(time) in 0..(if (fix.source == FixSource.GPS) 15000L else 30000L)
+
+/** One in-memory successful label. A lost continuity cannot be repaired by returning to an old anchor. */
+internal class AreaResolutionCache(private val diagnostic: (String) -> Unit = {}) {
+    private var current: Fix? = null
+    private var anchor: Fix? = null
+    private var area: AreaIdentity? = null
+    var revision = 0L; private set
+
+    fun cached(fix: Fix?, time: Long): AreaIdentity? {
+        val previous = current
+        val reason = when {
+            fix == null || !freshAreaFix(fix, time) -> "position_untrusted"
+            previous != null && (!freshAreaFix(previous, time) || previous.source != fix.source) -> "continuity_lost"
+            anchor?.let { !areaCacheValid(it, fix, time) } == true -> "distance_limit"
+            else -> null
+        }
+        if (reason != null) clear(reason)
+        current = fix?.takeIf { freshAreaFix(it, time) }
+        // Accuracy recovery alone cannot restore a street that was withdrawn during coarse positioning.
+        area = current?.let { locationArea(area, it) }
+        return area
+    }
+
+    fun success(request: Fix, result: AreaIdentity?, requestRevision: Long, time: Long): Boolean {
+        val fix = current ?: return false
+        if (result == null || revision != requestRevision || !areaCacheValid(request, fix, time)) return false
+        anchor = request
+        area = locationArea(result, fix)
+        return true
+    }
+
+    fun clear(reason: String = "session_stop") {
+        if (area != null) diagnostic("cache_invalidated reason=$reason")
+        if (current != null || anchor != null) revision++
+        current = null; anchor = null; area = null
+    }
+}

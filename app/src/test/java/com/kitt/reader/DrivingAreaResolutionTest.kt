@@ -22,11 +22,15 @@ class DrivingAreaResolutionTest {
         }
         File("build/acceptance").mkdirs(); File("build/acceptance/driving-area-resolution.txt").writeText(report.toString())
     }
-    @Test fun cachedTownExpiresByDistanceAndAgeAndLateLookupCannotLabelNewGps() {
-        val anchor = Fix(30.0, 104.0, 1000000, 100.0)
+    @Test fun cachedTownUsesCurrentFreshnessAndDistanceRatherThanGeocodeAnchorAge() {
+        val anchor = Fix(30.0, 104.0, 1000000, 100.0, accuracy = 30.0)
         assertTrue(areaCacheValid(anchor, anchor.copy(timeMs = 1015000, latitude = 30.003), 1015000))
         assertFalse(areaCacheValid(anchor, anchor.copy(timeMs = 1020000, latitude = 30.005), 1020000))
-        assertFalse(areaCacheValid(anchor, anchor.copy(timeMs = 1030001), 1030001))
+        for (seconds in 0..600) {
+            val now = 1000000L + seconds * 1000
+            assertTrue("stationary second=$seconds", areaCacheValid(anchor, anchor.copy(timeMs = now), now))
+        }
+        assertFalse(areaCacheValid(anchor, anchor, 1060001))
         assertFalse(areaCacheValid(anchor, anchor.copy(timeMs = 1040000, latitude = 30.02), 1040000))
     }
     @Test fun stationaryFailuresAreBoundedAndPendingLookupsNeverMultiply() {
