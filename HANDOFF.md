@@ -1,11 +1,30 @@
-# KITT 当前独立任务：家庭电脑原签名导入与验签 / #19（2026-10-13）
+# KITT 家庭签名迁移与验证完成 / #19（2026-10-13）
 
-用户已将办公室原私钥副本安全带至家中，并授权在**家庭电脑本地**由 Codex 执行 [TASK_CARD.md](TASK_CARD.md) 的 #19 导入/验签流程。**任务卡已经下发，本仓库没有访问家庭 F 盘或执行本地 Codex，家庭实际迁移和构建目前仍 PENDING。** 具体源文件路径只通过本机私密 Codex 会话提供，不写公共仓库、Issue或日志。
+**双机签名统一 PASS：办公室端为历史实测证据，家庭端已在本机完成原私钥导入、限权、预检和 V0.3.6/code13 构建验签。** 从最新 main `eded04d` 干净快进继承，仅提交本段交接与[脱敏家庭证据](docs/evidence/signing-home-verification.json)，没有生产代码、版本号或签名配置修改。任务完成后 STOP，不开启其他 Issue 或版本。下方交接均保留为历史，其家庭签名 PENDING 已由本段实际结果取代。
 
-- 办公室端签名 PASS（历史）；家庭端按原证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba` 校验 PrivateKeyEntry，原样复制至各家用电脑的 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，限制文件访问；如目标已有不同文件先停止，不覆盖。
-- 家用机签名与 `0.3.6/code13` runtimecheck 构建和 APK 验签后，才可判 #19 两端 PASS。本轮**不向手机安装相同 code13**，不清数据/导出账号；不可碰 #13/离线包等其他功能。
-- 同步目录中原密钥的隐私风险需要提醒用户，但**未经用户明确授权不得删除、移动或上传源文件**。本轮工作后立即停止。
-- V0.3.6 工程已完成、真人语义/听感仍 PENDING，#13 保持开放；此前记录不因家庭签名迁移改写。
+- 源文件先经 `scripts/check-kitt-signing.ps1` 实核为原 PrivateKeyEntry；目标原先不存在，原样复制到仓库外专用签名位置。源/目标 SHA256 内部比较及逐字节比较一致；目录和文件 ACL 均只允许当前用户与 SYSTEM，禁用继承，并在验收末尾再次核对。源文件保留，全局 debug.keystore 未修改，没有生成、提取或上传私钥。
+- 源和家庭目标预检、runtimecheck 生产/测试 APK、标准 Debug/Release 验收 APK 均为唯一原证书：`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。本地私钥实际路径、密码、文件字节和私钥文件摘要均未写入本次公共交接或证据。
+- 家庭实际执行 `scripts/build-runtime-smoke.ps1 -Offline`：assembleDebug、assembleDebugAndroidTest、lintDebug PASS；4m25s，75任务执行。62个生产文件与 main 一致，只有既有脚本在独立工作区修改包名和应用标签。交付后再次运行 `check-kitt-signing.ps1 -ApkPath artifacts\kitt-v0.3.6-runtimecheck.apk -ExpectedApplicationId com.kitt.reader.runtimecheck`，包名、0.3.6/code13、唯一原证书 PASS；测试包仅构建验签，没有执行 instrumentation。
+- 家庭实际执行 `scripts/verify.ps1 -Offline`：Debug395 / Release382，失败、错误、跳过均0；两种 Variant 的 tests、assemble、lint 全部 EXECUTED PASS。12m35s，115任务中61执行/54复用；单测实际重新执行，未借用办公室测试数。JDK Temurin17.0.19、SDK35/build-tools35.0.0，离线依赖齐备。
+- 家庭实际执行 `scripts/test-kitt-signing.ps1 -RuntimeApkPath artifacts\kitt-v0.3.6-runtimecheck.apk`：2接受+6拒绝 PASS，包括缺密钥/缺APK/无APK包名约束/错包名/未签名APK/匹配公钥但无私钥；临时公开证书样本已清理。
+
+## 家庭 V0.3.6/code13 产物
+
+三个生产 APK 均为0.3.6/code13并通过原证书验签，APK和构建日志仅保留在本地忽略的 artifacts。办公室/家庭 APK 字节摘要可以不同；标准包 `com.kitt.reader` 仍不能替代已有 runtimecheck 数据空间。
+
+| 家庭产物 | applicationId | APK SHA256 |
+| --- | --- | --- |
+| [runtimecheck](artifacts/kitt-v0.3.6-runtimecheck.apk) | com.kitt.reader.runtimecheck | 554be971d07249fc1093666f92a66aa73c5011931df45ddb0fd1ac528030cf23 |
+| [Debug](artifacts/kitt-v0.3.6-debug.apk) | com.kitt.reader | 7ec61418556c8b3ec8544d0faa87964a4ffaae0ce17921654daf3fd869baee0c |
+| [Release验收](artifacts/kitt-v0.3.6-release.apk) | com.kitt.reader | 3461772f8ee13cbb48df780fa0a2175e03db9bf1424b74ae21b68eec3562ed76 |
+
+## 模拟、限制与最小待办
+
+- 本机全量测试重新生成成都新都→广汉→德阳→绵竹→绵阳安州雎水六组报告：full80km/h、68模拟分钟、57调用/4声音；accelerated22调用/22声音；batch13章/23主题/23调用；landmark4节点/28调用；dossier13讲述/33调用/19唯一研究；driving-area-resolution合成700m章节12/10查询、最短16s。均为确定性/Fake Provider和fake Voice，非真实路线、模型内容或真人听感验收，报告摘要见家庭证据。
+- 本轮无 adb、手机安装/卸载/降级/清数据、账号/凭据或设置读写，也未调用真实 Provider/研究搜索。原手机已code13，本轮不重复安装；跨机 APK 原位升级 NOT RUN。#13真人语义/听感/补充重播、#14/#17外场与#18剩余现场验收状态保持。
+- 签名迁移已无授权/密钥待办。新安装默认仍 Fake / gpt-4.1-mini / effort空；原手机 ChatGPT / gpt-6.1-sol / low 为历史配置，本轮未读写。签名复核最短步骤：在仓库运行上述 runtimecheck `check-kitt-signing.ps1` 命令，核对本表摘要即可，无需操作手机。产品人工总验收仍按下方#13既有步骤另行授权。
+- 已提醒同步目录中的源密钥可能在同步端留存，建议用户验证后自行清理同步副本或转存加密介质；未自动删除、移动源文件或上传额外备份。办公室原密钥使用权不变。
+- 最近相关里程碑：本次家庭验收文档提交（见Git日志）；`eded04d` 家庭导入唯一任务；`8753240` 办公室原签名工具链验证；`0cc7e68` V0.3.6/code13工程。完成提交/推送及 Issue #19 脱敏更新后停止，工作树只包含文档交付。
 
 ---
 
