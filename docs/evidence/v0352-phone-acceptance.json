@@ -1,0 +1,181 @@
+{
+  "version": "0.3.5.2",
+  "versionCode": 12,
+  "issue": 18,
+  "acceptedByUser": false,
+  "overallDeviceAcceptance": "PENDING: user decision; town/Topic/human voice remain unverified",
+  "verifiedAt": "2026-10-13T10:37:20+08:00",
+  "engineeringCommit": "f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3",
+  "inheritedMain": "4b1f0613884c487ca3f6a648d3902a41c6708fac",
+  "device": {
+    "model": "vivo V2405A",
+    "android": "16",
+    "applicationId": "com.kitt.reader.runtimecheck"
+  },
+  "apk": {
+    "preflight": "PASS",
+    "sha256": "4e9526b932801ca000c00ee552e086d74820023ccf48580b31d328da92fa7b88",
+    "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "singleSigner": true,
+    "signingScript": "PASS",
+    "installedBefore": {
+      "versionName": "0.3.5.1",
+      "versionCode": 11,
+      "certificateMatched": true
+    },
+    "install": {
+      "command": "adb install -r artifacts/kitt-v0.3.5.2-runtimecheck.apk",
+      "result": "Success",
+      "observedAt": "2026-10-13T10:28:31+08:00",
+      "installedApkHashMatched": true,
+      "dataDirectoryInodesUnchanged": true,
+      "firstInstallTimeUnchanged": true,
+      "uninstalledOrCleared": false
+    }
+  },
+  "settings": {
+    "result": "PASS",
+    "accountDisplayUnchanged": true,
+    "accountComparison": "UI text compared in memory; no account text/digest persisted",
+    "provider": "ChatGPT",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "speechRate": 1,
+    "voice": "system default Chinese",
+    "notificationAllowed": true,
+    "separateResponsesResearchEnabled": false,
+    "credentialFilesAccessed": false,
+    "onlineScope": "First live Overview succeeded; after restart an automatic Director failed with UnknownHostException; later active search-decision/search completed"
+  },
+  "location": {
+    "mode": "ordinary journey / natural NETWORK; no injection",
+    "freshDistrictIdentity": true,
+    "townIdentityEstablished": false,
+    "firstSample": {
+      "ageSeconds": 0,
+      "accuracyMeters": 30
+    },
+    "restartSample": {
+      "ageSeconds": 0,
+      "accuracyMeters": 36
+    },
+    "vpnUsedAsLocation": false,
+    "coordinatesPersisted": false
+  },
+  "cache": {
+    "districtOverview": {
+      "result": "PASS",
+      "first": {
+        "researchCalls": 1,
+        "searchStarted": 1,
+        "searchCompleted": 1,
+        "write": 1,
+        "overviewReady": 1,
+        "objects": 4,
+        "facts": 4,
+        "elapsedMs": 47865
+      },
+      "processRestart": {
+        "method": "normal end then adb shell am force-stop",
+        "oldProcessAbsent": true,
+        "newProcessObserved": true
+      },
+      "secondBeforeTimeliness": {
+        "overviewHits": 1,
+        "overviewResearchCalls": 0,
+        "topicResearchCalls": 0,
+        "searchStarted": 0,
+        "searchCompleted": 0,
+        "write": 0,
+        "districtReady": 1,
+        "automaticDirectorStarted": 2
+      },
+      "secondAfterTimeliness": {
+        "overviewHits": 1,
+        "overviewResearchCalls": 0,
+        "write": 0
+      },
+      "sourceValidation": "Existing completed hosted-search/provenance contract accepted; not independent semantic audit"
+    },
+    "townOverview": {
+      "result": "PENDING",
+      "reason": "No complete natural fresh town identity",
+      "firstWrite": null,
+      "processRestartHit": null,
+      "duplicateResearchCalls": null
+    },
+    "topic": {
+      "result": "PENDING",
+      "reason": "No naturally completed sourced Topic",
+      "firstWrite": null,
+      "processRestartHit": null,
+      "duplicateResearchCalls": null
+    }
+  },
+  "directorAfterRestart": {
+    "opportunityRebuilt": "PASS",
+    "automaticAttempts": 2,
+    "observedTerminalOutcomes": [
+      "STALE",
+      "FAILURE"
+    ],
+    "failureClass": "UnknownHostException",
+    "sustainedOnlineNarration": "PENDING"
+  },
+  "timeliness": {
+    "pathAndHonestFailure": "PASS",
+    "answerQuality": "PENDING",
+    "questionsSubmitted": 1,
+    "questionCategory": "today weather",
+    "decision": "SEARCH_REQUIRED",
+    "searchStarted": 1,
+    "searchCompleted": 1,
+    "activeResearchReady": 0,
+    "activeResearchFailed": 1,
+    "rejectionClass": "IllegalArgumentException",
+    "terminalOutcome": "FAILURE",
+    "explicitCannotConfirmMessageObserved": true,
+    "ttsCompletedCallback": 1,
+    "stableCacheWrites": 0,
+    "duplicateOverviewResearchCalls": 0,
+    "rawResponseRetained": false,
+    "rootCause": "Not determined; no retry or business fix"
+  },
+  "smoke": {
+    "startEndAndReturn": "PASS",
+    "quiet10MinutesAndEarlyExit": "PASS (mode/countdown, not full 10-minute wait)",
+    "typedEntryFocusAndSubmit": "PASS",
+    "tts": "Platform start observed; successful completion callback in each process, human listening quality PENDING",
+    "asr": "One-shot UI observed; successful human transcription PENDING",
+    "interruptionDuringPlayback": "PENDING: no reliable in-playback interruption sample",
+    "observedFatalExceptionsInSecondProcess": 0,
+    "finalScreen": "Journey ended / departure screen"
+  },
+  "diagnosticWindows": {
+    "first": {
+      "from": "2026-10-13T02:29:03.075Z",
+      "to": "2026-10-13T02:31:34.804Z"
+    },
+    "secondBeforeWeather": {
+      "from": "2026-10-13T02:32:55.499Z",
+      "to": "2026-10-13T02:33:02.531Z"
+    },
+    "secondAfterWeather": {
+      "from": "2026-10-13T02:32:55.499Z",
+      "to": "2026-10-13T02:36:30.621Z"
+    },
+    "collection": "Phone-side awk reduces diagnostics to counts and exception types before transfer; no raw logs persisted"
+  },
+  "tests": "No rebuild/retest; business source and APK unchanged; prior engineering tests/Fake simulation remain historical evidence",
+  "pending": [
+    "Town Overview",
+    "Topic",
+    "Human ASR/TTS quality and interruption",
+    "Issue #14 field location",
+    "Issue #17 continuous town identity",
+    "Issue #19 home signing",
+    "Final user acceptance"
+  ],
+  "stop": "Acceptance/documentation only; no #13, offline pack, location/UI changes or new business development",
+  "tokenSavingsPercent": null
+}

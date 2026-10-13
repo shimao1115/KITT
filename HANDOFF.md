@@ -1,14 +1,17 @@
 # 当前验收任务：V0.3.5.2 / #18 真实手机原位升级与缓存复用（2026-10-13）
 
-用户已授权将本次工程交付转为手机验收任务，施工端按根目录 [TASK_CARD.md](TASK_CARD.md) 执行。**任务卡已下发，但本条目不是验收结果；目前真实手机升级、账号保留、本地资料跨进程复用均 PENDING。**
+**实际验收：2026-10-13 10:28–10:37（Asia/Shanghai），vivo V2405A / Android16。安全原位升级 PASS，账号/设置保留 PASS，真实新都区 Overview 跨进程缓存 PASS；镇街、Topic、真人语音与手机总验收 PENDING。#18 保持 OPEN，等待用户最终决定。** 脱敏实测见 [验收记录](docs/ACCEPTANCE_RESEARCH_CACHE.md#2026-10-13-真实手机验收) 和 [手机计数摘要](docs/evidence/v0352-phone-acceptance.json)。
 
-- 预期办公室已构建的 `artifacts/kitt-v0.3.5.2-runtimecheck.apk`，`com.kitt.reader.runtimecheck` / versionCode12 / 文件 SHA256 `4e9526b932801ca000c00ee552e086d74820023ccf48580b31d328da92fa7b88` / 签名证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`；文件只在办公室本地，不在 GitHub。先证书/包名/版本/文件哈希核对，才能同签名 `adb install -r`，不卸载或清数据。
-- **真实缓存最小验收**：区县首次成功研究写盘 → 结束/终止进程 → 同区县新 Journey 命中、0次相同 Overview 重复网络研究、Director仍有新机会。镇街和专题依自然可靠定位、真实来源研究情况分别打 PASS/PENDING，不要假冒 0/0/0 全部自然实测。
-- 只做验收和脱敏交接，不改定位/研究业务、不开 #13/离线包。真实结果随后写入当前 HANDOFF、[docs/ACCEPTANCE_RESEARCH_CACHE.md](docs/ACCEPTANCE_RESEARCH_CACHE.md) 和 #18。#19 家庭端依旧 PENDING。
+- 办公室现成 APK 的摘要、唯一签名、包名/code12 和原手机 code11/同证书全部实核；`check-kitt-signing.ps1` PASS。仅执行 `adb install -r`，返回 Success；安装后手机 base.apk 摘要一致，数据目录标识和首次安装时间不变。未卸载、清数据、降级或替换标准包。
+- 常规设置界面升级前后账号显示在内存中比对一致；ChatGPT、GPT-6.1-Sol/low、语速1.0×、系统默认中文声音、通知允许、独立 Responses 研究未启用均保留。没有读取或导出凭据/原始账号文件。首趟真实研究成功证明当次在线能力；不保证后续网络恒定可用。
+- **区县实测链**：自然新鲜 NETWORK、完整四川省/成都市/新都区身份；首趟 Overview研究调用=1、搜索开始/完成=1/1、来源校验完成、facts=4、write=1 → 正常结束 → `am force-stop` 后进程不存在 → 新进程普通开始、新鲜同区县 → overview hit=1、重复 Overview研究调用=0；Director自动启动2次。没有套用合成0/0/0。镇街身份未建立，Topic未自然完成，各自PENDING。
+- 新进程自动Director先出现 STALE、随后 `UnknownHostException`/FAILURE；缓存仍成功载入并无重复研究。主动打字问一次今日天气，Director判 SEARCH_REQUIRED，实际搜索开始/完成=1/1，但结果校验 `IllegalArgumentException`，App明确显示“刚才没查到可靠资料，暂时无法确认。”，语音完成回调=1；没有写稳定缓存。实时路径/诚实失败 PASS，今日天气内容 PENDING；不自动重试或修复别的issue。
+- 启动/结束页/回到出发页、安静10分钟/提前结束、打字提交短测PASS；TTS有实际开始和完成回调，但真人听感、实际说话识别和播放中打断未签PASS。观察窗口无 AndroidRuntime FATAL EXCEPTION；不是无限期无崩溃保证。手机已正常结束旅程并停在出发页。
+- 本轮仅验收与文档，未重建或重跑既有工程测试、模拟。下面保留安装前工程交付历史；Debug365/Release352和成都→绵阳六组模拟仍仅代表确定性/Fake结果。没有新密钥或OAuth待办；最小用户动作是审阅本次阶段性结果并决定接受与否，真人语音/连续镇街按现场可用性补验。#14/#17外场与#19家庭签名仍PENDING，不开发#13或离线包。
 
 ---
 
-# 沿途 V0.3.5.2 — 地区研究证据缓存交接
+# 安装前工程交付历史：沿途 V0.3.5.2 — 地区研究证据缓存交接
 
 **2026-10-13（Asia/Shanghai），0.3.5.2 / code12，#18 工程交付 PASS；手机原位升级、杀进程重启与真实内容验收 PENDING。到此停止，等待一次小版本人工验收。** 工程提交 [`f7cbd6b`](https://github.com/shimao1115/KITT/commit/f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3)，[精简验收](docs/ACCEPTANCE_RESEARCH_CACHE.md)、[本版验证摘要](docs/evidence/v0352-verification.json)、[零重复研究对照](docs/evidence/v0352-research-cache.txt)。#18 保留 OPEN 等待人工验收，未启动 #13、离线包、定位重构或下一轮 UI。
 
@@ -75,6 +78,8 @@
 
 ## 最近 milestone commits
 
+- `4b1f061` — 本轮安全code12原位升级/真实区县缓存验收任务交接，随后实测结果见本文件顶部。
+- `32fd345` — V0.3.5.2工程交付、签名APK与合成验收交接；手机结果当时PENDING。
 - `f7cbd6b` — V0.3.5.2/#18有来源地区研究持久化、16项新测试、历史证据/实时语义与code12。
 - `8faf246` — 最新恢复#18授权，家庭签名后续不再阻塞。
 - `8753240` — #19办公室原密钥构建/验签与签名正负例。
