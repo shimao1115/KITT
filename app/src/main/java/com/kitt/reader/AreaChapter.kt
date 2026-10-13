@@ -42,7 +42,7 @@ data class AreaCard(val area: AreaIdentity, val orientation: String, val candida
         }
         appendLine("这是素材架，不是播放清单：顺序、类别和条数都不构成要求，可以任选一条、把几条真正相关的串起来，也可以在确实没有值得讲的东西时保持安静。")
         appendLine("标题只标明可讲的对象，不规定切入方式、结构、深度或结论；形式按素材本身决定。")
-        appendLine("整面素材架是研究方向，预存对象与来源注记也不代表本章已实际搜索。当地事实必须来自本趟已就绪的 Local Dossier；没有证据时不可用模型记忆补齐。")
+        appendLine("整面素材架是研究方向，预存对象与来源注记也不代表本章已实际搜索。当地事实必须来自已就绪的有来源 Local Dossier（可以是此前研究）；没有证据时不可用模型记忆补齐。")
     }
 }
 

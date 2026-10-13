@@ -65,7 +65,12 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     }, failure = { Log.w("KITT", it) }, diagnostic = {
         diagnostics.log("KITTResearch", it)
         if (simulation) diagnostics.log("KITTSim", "$it progressMeters=${(source as? SimulatedLocationSource)?.traveledMeters?.toInt() ?: 0}")
-    }, researchProvider = ::researchProvider, researchChanged = { revision.intValue++ })
+    }, researchProvider = ::researchProvider,
+        evidenceStore = ResearchEvidenceStore(java.io.File(context.filesDir, "research-evidence-v1"),
+            diagnostic = { diagnostics.log("KITTResearch", it) }),
+        persistentAllowed = { !simulation && config.kind != ProviderKind.FAKE &&
+            (settings.readResearch() ?: config).kind != ProviderKind.FAKE },
+        researchChanged = { revision.intValue++ })
     val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
     var acceleration = settings.acceleration

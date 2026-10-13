@@ -127,7 +127,7 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
         } else Text("无需登录。演示内容用于闭环验收，真实 AI 内容质量需接通 Provider 后验证。")
         Spacer(Modifier.height(12.dp))
         Text("本地事实研究", style = MaterialTheme.typography.titleMedium)
-        Text("每个新章节先搜索证据，再讲述。ChatGPT 账号通路会实际请求搜索；是否支持以服务返回为准。离线演示与兼容聊天 API 不具备搜索能力。")
+        Text("先使用有来源的稳定研究，缺少证据时再搜索；历史缓存不代表本次刚查过。当前状态与明确重新搜索仍需实时查证。ChatGPT 搜索是否支持以服务返回为准；离线演示与兼容聊天 API 不具备搜索能力。")
         Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
             Checkbox(separateResearch, { separateResearch = it }); Text("显式使用独立 OpenAI Responses 研究通路")
         }

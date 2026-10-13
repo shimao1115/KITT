@@ -6,15 +6,17 @@ data class OverviewObject(val title: String, val whyItMatters: String, val famil
     val salience: Int, val sources: List<ResearchSource>)
 
 data class OverviewDossier(val area: AreaIdentity, val searchedAt: Long, val orientation: String,
-    val objects: List<OverviewObject>, val sources: List<ResearchSource>, val gaps: List<String> = emptyList()) {
+    val objects: List<OverviewObject>, val sources: List<ResearchSource>, val gaps: List<String> = emptyList(),
+    val verifiedSearch: Boolean = false, val historical: Boolean = false) {
     // Keep the Director evidence contract. A lead supplies only its short, sourced introduction.
     fun evidence() = LocalDossier(area, searchedAt, orientation, objects.map {
         LocalFact(it.title, it.whyItMatters, it.family, it.salience, "medium", it.sources)
-    }, sources, gaps + "这是概况发现，只可使用以上已证实的基础介绍；未研究的年代、故事和细节不得根据标题扩写。")
+    }, sources, gaps + "这是概况发现，只可使用以上已证实的基础介绍；未研究的年代、故事和细节不得根据标题扩写。", verifiedSearch, historical)
 
     companion object {
         fun from(dossier: LocalDossier) = OverviewDossier(dossier.area, dossier.searchedAt, dossier.orientation,
-            dossier.facts.map { OverviewObject(it.title, it.summary, it.family, it.salience, it.sources) }, dossier.sources, dossier.gaps)
+            dossier.facts.map { OverviewObject(it.title, it.summary, it.family, it.salience, it.sources) }, dossier.sources, dossier.gaps,
+            dossier.verifiedSearch, dossier.historical)
     }
 }
 
@@ -103,7 +105,7 @@ object StagedResearchContract {
 
     fun overviewResponse(raw: String, area: AreaIdentity, at: Long): OverviewDossier {
         val (text, visited) = LocalResearchContract.evidence(raw)
-        return overview(text, area, at, visited)
+        return overview(text, area, at, visited).copy(verifiedSearch = true)
     }
     fun topicResponse(raw: String, area: AreaIdentity, at: Long): LocalDossier {
         val (text, visited) = LocalResearchContract.evidence(raw)
@@ -111,7 +113,7 @@ object StagedResearchContract {
         require(obj.getValue("sources").jsonArray.size in 1..8 && obj.getValue("facts").jsonArray.size in 1..6)
         require(obj.getValue("orientation").jsonPrimitive.content.length <= 150)
         obj.getValue("facts").jsonArray.forEach { require(it.jsonObject.getValue("summary").jsonPrimitive.content.length <= 250) }
-        return LocalResearchContract.parse(text, area, at, visited).also {
+        return LocalResearchContract.parse(text, area, at, visited).copy(verifiedSearch = true).also {
             require(it.facts.isNotEmpty())
             require(!LocalResearchContract.officialClaim(it.orientation) || it.sources.any { source -> source.government && source.kind == SourceClass.OFFICIAL })
         }

@@ -5,7 +5,8 @@ enum class ResearchNeed { USE_CONTEXT, GENERAL_KNOWLEDGE, SEARCH_REQUIRED }
 class ActiveResearchFailure : Exception("Active research unavailable")
 object ActiveResearchPolicy {
     fun forced(text: String): Boolean =
-        Regex("查一下|查一查|查询|查查|搜一下|搜一搜|搜索|搜搜|帮我找|帮忙找|再查|查详细|帮我查|帮忙查").containsMatchIn(text) ||
+        Regex("查一下|查一查|查询|查查|搜一下|搜一搜|搜索|搜搜|帮我找|帮忙找|再查|查详细|帮我查|帮忙查|查最新|重新研究|重新查|重新搜").containsMatchIn(text) ||
+        Regex("开放|开门|票价|天气|临时展览|时事").containsMatchIn(text) ||
         Regex("今天.*(开放|开门|活动|新闻|堵|交通|状态)|今日|最近.*(新闻|活动|发生)|近期|临时关闭|临时封|现在.*(开放|开门|堵|交通|状态)|当前.*(交通|拥堵|状态)|为什么堵|为何.*堵|路况|实时|开放.*今天|活动.*今天").containsMatchIn(text)
     val decisionInstructions = """
         你是沿途的同一个 Director。现在只判断当前主动问题是否需要联网，不生成声音、不改变旅程。

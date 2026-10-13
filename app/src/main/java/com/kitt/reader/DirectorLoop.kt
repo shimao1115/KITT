@@ -25,13 +25,14 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     private val provider: () -> DirectorProvider, private val failure: (String) -> Unit = {},
     private val diagnostic: (String) -> Unit = {},
     private val researchProvider: () -> LocalResearchProvider = { UnavailableResearch() },
+    evidenceStore: ResearchEvidenceStore? = null, persistentAllowed: () -> Boolean = { true },
     researchChanged: () -> Unit = {}) {
     private var request: Job? = null
     private var requestActive = false
     val pending get() = request?.isActive == true
     val counters = DirectorCounters()
     private var lastDelay = ""
-    val research = ChapterResearch(scope, now, researchProvider, diagnostic) { researchChanged(); check() }
+    val research = ChapterResearch(scope, now, researchProvider, diagnostic, evidenceStore, persistentAllowed) { researchChanged(); check() }
     init { context.researchCard = research::card }
     fun location(fix: Fix) {
         journey.location(fix)
