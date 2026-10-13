@@ -1,62 +1,45 @@
-# KITT V0.3.5.2 — 阶段性验收后停止（Issue #18）
+# CURRENT TASK CARD — KITT V0.3.6 / Issue #13 讲述语义去重
 
-**2026-10-13 用户决定：工程、真机 code12 原位升级与账号保留、真实区县 Overview 跨进程缓存阶段性 PASS；手机总验收尚未通过，#18 保持 OPEN。** 本轮验收执行完毕，不再有自动施工任务。详情见 [HANDOFF.md](HANDOFF.md)、[真实设备验收](docs/ACCEPTANCE_RESEARCH_CACHE.md#2026-10-13-真实手机验收) 及 [Issue #18 决定](https://github.com/shimao1115/KITT/issues/18#issuecomment-6137058814)。
+**用户于 2026-10-13 明确授权开工。本轮唯一施工 Destination：[Issue #13](https://github.com/shimao1115/KITT/issues/13)。任务已下发，不代表 Codex 已启动或 V0.3.6 已实现。**
+**执行模式：** Agent 继承仓库当前 main，独立完成理解→实现→单测→模拟→修复→打包→交接，用户仅在这个小版本末验收。完成即 STOP，不自主进入 V0.4.0。
 
-- **已通过**：新都区区县首次 write=1 → 真进程终止后 hit=1、重复 Overview 调用=0，新旅程 Director 可判断；时效问题确实走实时查询，失败没有伪装成已验证结果。
-- **待自然补验**：镇街、专题、持续在线讲述、真人语音/播放中接管；时效答案校验失败根因未确认。#14/#17 定位、#19 家庭签名独立跟踪。
-- **Stop Rule**：仅记录阶段性验收，不改业务代码、不为追求全面 PASS 刷真实搜索、不自动开发 #13 或离线包。下一施工单元需要用户明确授权。
+## 0. 继承现状与禁止回退的边界
 
-以下为**已执行完毕的旧验收任务卡存档**，不可再次领取执行：
+先读 `AGENTS.md`、`HANDOFF.md`、`docs/ROADMAP.md`、`docs/AI_CONTRACT.md`、本任务、#13 及最新 commits；先审计 `Journey.deliver()`、`Journey.speak()`、`DirectorLoop`、Context Card、`ChapterResearch.deepen()`、`VoicePort.speak(text, complete)`，再作最小修改。基线为手机已安装 `com.kitt.reader.runtimecheck` **V0.3.5.2/code12**，已经确认原账号/设置保留；本任务成功交付版本建议 **V0.3.6/code13**，不重写旧版本。
 
----
+**继承的已证实事实**：#18 区县新都区真实首次 `write=1` → force-stop → 新 Journey `hit=1`、Overview 重复研究 0，已阶段性接受；#18 的镇街/Topic、持续在线讲述、真人语音仍 PENDING；#14 GPS↔NETWORK 和新鲜度、#17 连续镇街、#19 家庭签名仍各自开放。不得把上一版真实 Provider 的 `UnknownHostException` / `STALE` 或天气结果校验失败误判为本次去重行为，更不能借本任务改定位/FUSED/VPN-IP 或研究缓存有效性。
 
-# CURRENT TASK CARD — V0.3.5.2 真机原位升级与真实缓存验收 / Issue #18
+## 1. 唯一产品目标
 
-**2026-10-13 用户明确下发本轮任务：只做已交付 0.3.5.2/code12 的真机安装与小版本验收。不得启动 V0.3.6/#13、离线包、#14 定位修复或新业务开发。**
-**最新工程状态：** main 提交 `f7cbd6b`、交接 `32fd345`，Debug365 / Release352、六组确定性模拟、构建/lint/签名与合成缓存对照已经报告 PASS。**这不等于真实手机/ChatGPT 缓存验收已通过。**
-**事实源：** [#18](https://github.com/shimao1115/KITT/issues/18)、[HANDOFF.md](HANDOFF.md)、[docs/ACCEPTANCE_RESEARCH_CACHE.md](docs/ACCEPTANCE_RESEARCH_CACHE.md)、[docs/evidence/v0352-verification.json](docs/evidence/v0352-verification.json)。
+在同一 Journey 中，同一对象/同一事实/同一讲述角度已经实际讲过时，下一轮自动 Director 不应通过换措辞再次讲述；但新事实、新对象、高价值独立地标、跨区新章节仍有机会正常播报。主动要求“再讲一点”只在可核验的新材料上深入；明确说“再说一遍”允许重播。**去重绝不能以全局 SILENT、每章节只能讲一次或惩罚新知识为代价。**
 
-## 0. 先继承安全边界
+## 2. 已知缺陷与最小实现边界
 
-先读 `AGENTS.md`、最新 `HANDOFF.md`、`docs/ROADMAP.md`、上述 #18 / 验收文档，检查当前 main 与本机工作树。优先使用**办公室已签名并校验的现成产物**，不为验收顺手改业务代码或重复做昂贵研究。
+- 目前 `Journey.deliver(SPEAK_NOW)` 用 `result.topic !in recentTopics` 判断，却向 `recentTopics` 写入 `memoryUpdate.ifBlank { topic }`：**主题身份和讲述摘要混用**；且在语音播放成功/被打断前就记录为已讲。先以确定性测试固定此回归。
+- 按**本趟旅程**保留有界的近期语义记忆：至少区分对象/主题身份、覆盖的核心事实/角度、实际播放生命周期。复用现有 `topic`、`memory_update`、地区和已研究来源结构，将“哪些事实已经覆盖”以短摘要进入下一次 Context/Director 请求。不要持久保存全文旁白、用户对话、位置轨迹；不要把 #18 的持久证据当已讲记录。
+- **播放状态诚实**：明确 pending/已排队/开始TTS/回调完成/失败/中断 的取舍。仅把有充分成功证据的材料作为“已完成”；如 TTS 接口无法可靠证明用户确实听完，应在交接中写明证据边界，设计被打断/失败不误记完整讲完，也不在每次刷新时自动重放半截。取消、旧epoch回调、PREPARE、主动打断均必须安全。
+- 重复过滤优先用现有结构化对象与已讲摘要、最少必要的 Director 指令约束，不以字符串完全相等当语义去重，不叠加第二次 LLM 语义审查、embedding/向量数据库、额外 Reviewer Agent、昂贵调用或复杂自造规则树。没有真实证据不要过度设计。
+- 主动 `再讲一点` 和 `再说一遍` 走不同路径；其他普通问题不可被自动去重逻辑误杀。没有新证据时可简短说“目前没有可靠的新内容”，不能捏造历史文化事实或强制持续输出。
+- 保留已经存在的主动问话立即接管、静音/提前恢复、PREPARE 再确认、后台 Topic 研究、独立地标优先、stale/cancel、定位可信性、来源约束、模拟、评分、签名和登录行为。
 
-**手机目标**：`com.kitt.reader.runtimecheck`；原机预期安装 V0.3.5.1 / code11，拥有应保留的 ChatGPT 配置、设置和应用数据。标准 `com.kitt.reader` 包不能替换这套数据空间。
+## 3. 实际测试门禁
 
-**待安装文件（办公室本地，不存在于 GitHub）**：
-`artifacts/kitt-v0.3.5.2-runtimecheck.apk`
-- 应有 `applicationId=com.kitt.reader.runtimecheck`、`versionName=0.3.5.2`、`versionCode=12`。
-- APK SHA256 应为 `4e9526b932801ca000c00ee552e086d74820023ccf48580b31d328da92fa7b88`。
-- APK 签名证书 SHA256 应为 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
-- 本机文件缺失、APK摘要/证书/包名不符、手机现有同包名不是 code11 或存在其他签名/用户数据意外情况时，**STOP，不安装，记录异常等待用户决定**；不要下载或用标准包代替，也不要编一个新签名 APK 冒充。
+A. 同一地区同一对象的自动再选与换说法同事实，合理抑制；`topic` 和 `memory_update` 不等的负例必须覆盖。**同一对象但出现全新可信事实可以继续讲**。
 
-## 1. 安全原位升级 Gate
+B. Overview → Topic 回流、章内重复检查、从章节离开再返回、PREPARE 重新检查、独立地标出现仍触发相应机会；不同地区的同名对象不会错误跨章被压制。不允许把 10 分钟安静模式之类的独立功能当去重实现。
 
-1. 在办公室 Windows 环境核对 `git status`，已有已签名 APK 的 SHA256、`aapt` 的 package/versionCode、`apksigner verify --print-certs`；如有条件，先以 `scripts/check-kitt-signing.ps1 -ApkPath ... -ExpectedApplicationId com.kitt.reader.runtimecheck` 验收。不要在结果中显示凭据。
-2. 手机连接并完成必要的用户授权后，用 `adb shell dumpsys package com.kitt.reader.runtimecheck` 等只读检查当前应用版本和包名；版本/状态不符先暂停。用户本人需要解锁或批准安装时让用户本人完成，不绕过。
-3. **仅在预检全部通过时** `adb install -r artifacts\kitt-v0.3.5.2-runtimecheck.apk`。严禁卸载、清数据、使用 `-d` 降级、覆盖其他包或转储 ChatGPT 账号/密钥。
-4. 安装后核对包名、code12、版本、安装数据保留；在 App 常规界面确认原 ChatGPT Provider/模型/effort、语速/设置与旅程入口仍正常。连接状态/凭据可解密 ≠ 已验证在线授权生效；需要真实调用时才确认在线能力。禁止导出凭据/原始账号文件。
+C. TTS 成功/失败/开始后打断/尚未开始播放/迟到回调，分别证明“已讲”记忆与自动补播行为恰当；旧进程/新 Journey 不携带上一趟假定已讲事实，必要的原有恢复摘要兼容且不误判完整播报。
 
-## 2. 真实地区缓存的最小验收：先区县，再镇街/专题
+D. 用户说/打字 `再讲一点`（有新来源/没有新来源）与 `再说一遍`、正常主动提问、图像问话接管不被自动去重过滤；待播语音可打断，后续自然恢复。
 
-在手机的**真实定位**环境用普通“开始沿途”，不要注入 GPS、不把 VPN 出口当当前位置。
+E. 成都新都→广汉→德阳→绵竹→绵阳安州雎水六组确定性/Fake 模拟，比较前后 SPEAK_NOW/SILENT/STALE、有效的新对象/新事实输出，明确不出现整段失声或随意补播。**模拟无法独立证明真实语义或真人听感通过。**
 
-- **A 首次学习**：至少一项经成功来源核验的四川省/成都市/新都区 Overview 真正完成并有 `evidence_cache write` 证据。保留脱敏诊断的 stage、search_call、write 计数即可；不要存入完整网页、URL、坐标或账户内容。真模型研究尽量只触发**一次必要研究**，不为刷日志反复搜索；无有效来源就标记 PENDING，不要造研究记录。
-- **B 真正跨进程**：正常结束 Journey；在不清数据、不卸载的前提下结束 App 进程（可用 `adb shell am force-stop com.kitt.reader.runtimecheck`，确认不等于 `pm clear`），再启动 App，于**仍然可信的新鲜相同区域身份**重新开始。验证区县 `evidence_cache hit`，相同区县 Overview 的重复研究网络调用 **0**，新一趟 Director 仍有正常判断/讲述机会。不要误把重复讲述本身判为缓存失败（语义去重属于 #13）。
-- **C 可用再测**：如果真实定位能持续解析到完整镇乡街道身份，再做对应 Overview；若能够自然完成一个 Topic 才检验其缓存跨重启命中。**不因定位新鲜度/Geocoder 不足而伪造镇街结果；分别记录“区县PASS、镇街PENDING、Topic PENDING”。**
-- **D 时效性少量冒烟**：对“今天开放吗 / 最新票价 / 天气如何 / 重新搜索”选一个有代表性的问题，确认旧稳定缓存不会被当成实时证据；实时搜索确实发生或网络失败时明确表示无法确认。不需要反复实际付费查询。
-- **E 旧功能冒烟**：启动/结束、安静/提前恢复、主动打字或说话中断、TTS/ASR 按设备当前可用性最短检查即可；遇到定位不新鲜、账号会话过期，明确区分环境/PENDING，不擅自修复其他 issue。
+F. 真模型/真机：先确认至少**一次**可靠的网络 Provider + Director 自动讲述链真实完成，区分网络异常/过时定位/研究失败与去重结果；同路段再次检查、用户请求补充/重播、真人听感由用户停车或乘客状态下验证。无法取得稳定网络或真实TTS完成时明确 PENDING，不得声称真实语义 PASS；不为验收反复付费搜索。
 
-## 3. 必须如实呈现的证据
+G. 在可用环境运行 `scripts/verify.ps1 -Offline`，Debug/Release 单测、assemble、lint、签名、回归；保留 V0.3.5.2 的区县持久缓存与 code12 安全护栏。实际列出通过数及未执行项，禁止把旧版 Debug365/Release352 直接复制为本版成绩。
 
-- 分开列出：APK/升级 PASS 或 FAIL；ChatGPT 原账户/设置保留；自然新鲜地区身份是否建立；区县、镇街、Topic 三个范围各自的 **first write → 真进程重启 → hit → 重复研究调用数**。
-- `0/0/0` 是以前的**合成测试**结论，严禁直接充当本次真实手机结果。只有确实观测到才能宣称真实设备零重复研究；没有相应诊断就标记证据不足，不要根据“没有讲到”推定 hit。真模型节省的 Tokens 比例本轮不强制量化。
-- 明确系统逆地理编码本来不保证室内连续新鲜；#17 连续街道与 #14 定位新鲜度仍各自待验收。用户本人必要的现场权限/解锁由用户操作，不为达到 PASS 牺牲定位安全。
-- 仅收集脱敏结果与必要时间/调用计数，不导出账号、密码、token、坐标轨迹、个人对话、原始日志中的敏感内容。
+## 4. 交付与停止
 
-## 4. 最终交付和 Stop Rule
-
-执行完后更新 `HANDOFF.md`、`docs/ACCEPTANCE_RESEARCH_CACHE.md` 和 [#18](https://github.com/shimao1115/KITT/issues/18)，附最简人工可复验步骤与真实 PASS/FAIL/PENDING 矩阵。如果真正实现了本轮必测 Gate，再请求用户作最终验收决定；**不得把工程交付自动改写成手机总验收 PASS**。
-
-- 如果只验证了安全原位升级：记录升级 PASS、缓存真机 PENDING，允许停止，不强制多次查询。
-- #19 家庭电脑签名仍 OPEN/PENDING，不影响这次办公室真机验收；勿代用户上传私钥。
-- 完成本任务立即停止，不开发 #13、离线包、地图/定位/UI 改造。手机验收如果揭示真实新缺陷，再提出最小后续 Hotfix 供用户决策，不顺手扩张。
+- 在原签名可用环境产出 **V0.3.6/code13** 可安装 `com.kitt.reader.runtimecheck` APK，核对唯一签名证书 SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**，包名和 versionCode >12；只接受原位覆盖升级，**不能卸载、清数据、导出 ChatGPT 凭据或把标准 `com.kitt.reader` 当原账户包**。若运行环境没有原签名私钥，如实记录不可安装，禁止生成新私钥冒充。
+- 更新 `HANDOFF.md`、`docs/ROADMAP.md`、独立精简验收记录、#13；交付 commit、文件/证书 SHA256、覆盖范围、测试事实、真机待验清单与最短安全安装步骤。仅提供真实可验证的 APK 产物路径，不在仓库提交私钥或账号资料。
+- 只完成 #13。**STOP：不得顺手修 #14/#17 的定位、#18 的尚未完成自然 Topic/镇街验收、#19 家庭签名、在线网络传输/天气资料校验，也不得开始 V0.4.0 离线知识包。** 真遇到会阻塞 V0.3.6 的网络故障时，先通过确定性模拟实现其余全部内容，并把实机限制准确交接。
