@@ -1,3 +1,15 @@
+# KITT 当前施工交接 — V0.3.6 讲述语义去重已授权（2026-10-13）
+
+**用户已授权下一小版本 V0.3.6 / [Issue #13](https://github.com/shimao1115/KITT/issues/13)，当前唯一任务 [TASK_CARD.md](TASK_CARD.md)。这是施工入口和授权，不表示 Agent 已运行、功能已实现或 APK 已产出。** 前一版本关于“不得自动开 #13”的 stop rule 已在小版本阶段性验收后由本次**明确授权**取代；前一版未完成的验收和安全约束依旧有效。
+
+- **正式目标**：纠正 Journey `topic` 与 `memory_update` 混用，避免重复讲同一对象/事实/角度，只有确有证据时记录播报完成；“再讲一点”提供新证据、“再说一遍”允许主动重播。禁止压成整趟 SILENT，不添加额外语义模型判重、向量库或大规模架构。
+- **基线**：手机当前 `com.kitt.reader.runtimecheck` V0.3.5.2/code12；区县新都区真实 `write=1 → force-stop → hit=1 / 重复Overview研究=0`、账号/设置保留已获用户阶段性 PASS；#18 镇街/Topic、持续在线讲述/真人语音未全验收，不因升级改成 PASS。
+- **要先区分真实音频与网络故障**：先看当下真实 Provider 是否能完成至少一段自动 Director→TTS 讲述；上版真机出现 `UnknownHostException` / `STALE` 与天气资料校验 `IllegalArgumentException`，这些不是证明语义去重有效或无效的依据。若当时网络无法可靠使用，不阻塞单测和模拟开发，但真机听感必须标 PENDING。
+- **同签名原位升级边界**：建议V0.3.6/code13；证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`；只允许同包名 `com.kitt.reader.runtimecheck`、版本号合法递增，不卸载、清数据或导出登录信息。办公室签名通过，#19 家庭端仍 PENDING。
+- **施工 stop**：只完成 #13，测试/交付并更新HANDOFF、ROADMAP、Issue后停止。#14/#17定位、#18剩余现场、#19家庭签名、V0.4.0离线知识包均不自动施工。
+
+---
+
 # KITT V0.3.5.2 用户阶段性验收决定（2026-10-13）
 
 **用户接受阶段性结果：工程 PASS；手机安全升级、账号设置保留、真实新都区 Overview 跨进程缓存 PASS。#18 仍 OPEN，以补齐镇街/Topic、持续在线讲述和真人语音的现场证据；这不是“手机总验收 PASS”。** [用户验收决定已记录在 Issue #18](https://github.com/shimao1115/KITT/issues/18#issuecomment-6137058814)。
