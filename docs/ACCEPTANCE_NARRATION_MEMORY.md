@@ -70,3 +70,5 @@
 有效Probe简短主题为“杨慎（杨升庵）与升庵祠、桂湖”，只保存状态和短主题，不保存完整旁白/录音/坐标/账号文字。用户允许同签名测试包安装。测试设置临时偏好前显式取消首个自动请求，诊断见CANCELLED1；随后地区就绪的自动请求完成。98s是正式观察窗口，不含Activity启动等待。普通UI另一次开始自然ASK_USER/TTS完成及地区就绪前STALE单独记录，不混进有效Probe计数。
 
 Probe终端字段`research_request_outcome=NEVER_ATTEMPTED`只是当时可见状态回退；诊断已见`Topic started`，不能由它推断没有后台研究或网络调用，更不证明Topic成功。没有补签#18。Probe已正常结束回出发页，启动清理使短期诊断文件不再存在；不得用缺失日志所得的0计数替代原观察。保留脱敏结果及这个解释，真人听感和真实语义由下一次实际聆听确认。
+
+用户随后明确授权再次调用一次以现场聆听。[该次脱敏结果](evidence/v036-phone-listening-retry.json)：180s观察/171s新鲜位置，FAILURE1，SPEAK_NOW/已完成均0，配置不变，runner code0。当次诊断确认Provider返回`server_is_overloaded`，未进入TTS；之前取消的请求另见HTTP传输IOException。研究终端字段仍不充当网络调用数。没有听到旁白是本次请求失败，不能证明音频故障、语义去重或上一轮失败；正常结束后停止，保留上一轮成功证据，真人听感仍PENDING。

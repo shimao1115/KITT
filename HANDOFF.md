@@ -37,6 +37,7 @@
 - **真实自动讲述链 PASS_ENGINE_CALLBACK_ONLY**：修正后Probe观察98s、新鲜位置98s，ChatGPT/gpt-6.1-sol/low自然地区自动SPEAK_NOW1，STARTED→COMPLETED1，STALE/FAILURE/SUPPRESSED均0。简短主题为“杨慎（杨升庵）与升庵祠、桂湖”。没有注入坐标/移动，测试临时旅程偏好不问目的地；不是连续行驶或真人语义验收。终端研究字段NEVER_ATTEMPTED不代表无研究：当次诊断见后台Topic started，未证明Topic完成或网络调用数，#18不改PASS。
 - 首轮Probe测试文案“无资料可安静”误触安静命令，180s观察/170s新鲜位置但无讲述，该次无效，不算去重成功。仅测试文案改为“无资料则SILENT”并断言非安静；生产代码及APK未变。另一次普通UI开始自然ASK_USER/TTS完成，并有地区就绪前STALE，单独记录，不混入上述旁白计数。有效Probe正常结束并回出发页；进程重启清除了临时诊断日志，只留脱敏结果，不把空日志计数冒充0。
 - **真人听感/同路段语义/补充/重播PENDING**：用户回答“没听到或当时不在旁边”；既不能证明听见，也不能判定无声故障。没有为补听继续调用模型。新安装默认仍 **Fake / gpt-4.1-mini / effort空**；原手机既有 **ChatGPT / gpt-6.1-sol / low** 已实际运行，本版无新增OAuth/密钥步骤，生产包与测试包vivo安装授权均由用户完成。
+- 用户随后明确要求“再次调用一次我再听听看”，另运行一次有界Probe：180s观察/171s新鲜位置，自动FAILURE1、SPEAK_NOW/COMPLETED均0，Provider返回`server_is_overloaded`，未触发TTS；instrumentation code0、配置不变，正常结束。该次是请求失败，不是无声或去重证据；不覆盖上一轮成功链，未继续手动重试。[本次结果](docs/evidence/v036-phone-listening-retry.json)。
 - 下一次最小动作：停车/乘客状态普通开始，实际听完一段后，在**同一Journey、结束之前**试“再说一遍”和“再讲一点”，检查同段不换词重复、新事实仍开口及打断/安静；再结束/新Journey。当前Probe已结束，上一段重播正文按设计清空。不要为刷日志重复付费搜索。**本轮到此停止。**
 - #18真实区县缓存的阶段性接受仍有效，镇街/Topic及真人语音未全验收；#14/#17外场定位、#19家庭签名仍独立PENDING。未做定位、网络/天气校验修复或V0.4.0离线包。
 
