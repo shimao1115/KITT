@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-13 最新阶段：#18 V0.3.5.2 工程交付完成后，用户已下发真机验收任务卡。** 当前唯一工作是按 [TASK_CARD.md](../TASK_CARD.md) 在办公室进行已签名 code12/runtimecheck 的只升级不卸载，以及真实区县 Overview → 结束 → App 进程重启 → 缓存命中、0重复研究调用的最小证据验收。镇街/Topic 在真实地名与来源不稳定时可以分别保持 PENDING；不把合成0/0/0当自然现场结论。此时仍是**真机验收待执行**，并非已升级/已PASS；不启动 #13 或离线包。#19 家庭签名仍 OPEN/PENDING。
+
 > **2026-10-13：V0.3.5.2 / code12 / #18 工程交付 PASS，停止等待小版本人工验收。** [`f7cbd6b`](https://github.com/shimao1115/KITT/commit/f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3) 保存已核验来源的稳定 Overview/Topic；结束/重建后合成对照命中0重复研究，新旅程 Director 再判断，实时请求仍新查。最终实际 Debug365/Release352、assemble/lint/原签名及六组模拟/驾驶解析回归 PASS，办公室 runtimecheck 0.3.5.2/code12 已验签产出；手机升级、杀进程重启及真实内容/Tokens采样 PENDING。见 [验收](ACCEPTANCE_RESEARCH_CACHE.md)、[本版证据](evidence/v0352-verification.json) 和根 HANDOFF。#18 保留 OPEN 等人工验收；不开展 #13、离线包、定位重构或下一轮 UI。
 
 > **2026-10-13：#19签名前置门禁办公室 PASS，家庭 PENDING。** 已实地确认办公室原密钥、原样复制到 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，修复 Gradle 编译并验证 runtimecheck、标准 Debug/Release 的构建/lint及唯一指定证书；签名正负例回归通过。**家庭安全传输、两机实际验证与跨机原位升级尚未完成，不可声称双机统一成功；但该后续已经被用户明确解除为 #18 的代码施工阻塞。** 详见根 HANDOFF、[签名文档](SIGNING_UNIFICATION.md) 和 [TASK_CARD.md](../TASK_CARD.md)。签名里程碑交付时版本仍0.3.5.1/code11、未安装手机；此前 #18 暂停指令已由上方最新授权替换。
