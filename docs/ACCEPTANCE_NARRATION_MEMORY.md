@@ -35,7 +35,7 @@
 | Gate | 本轮实际结果 |
 | --- | --- |
 | `scripts/verify.ps1 -Offline` | Debug395 / Release382；失败/错误/跳过全0，新增30项两种Variant均执行；tests、assemble、lint均EXECUTED PASS，最终115任务33执行/82复用 |
-| runtimecheck构建 | assembleDebug / assembleDebugAndroidTest / lintDebug均EXECUTED PASS；75任务13执行/62复用；40个生产Kotlin文件与最终源码一致 |
+| runtimecheck构建 | assembleDebug / compileDebugAndroidTestKotlin / lintDebug最终EXECUTED PASS；assembleDebugAndroidTest本版首轮EXECUTED PASS、最终UP-TO-DATE；75任务13执行/62复用；40个生产Kotlin文件与最终源码一致 |
 | 原签名 | 三个生产APK唯一原签名、code13、0.3.6；测试APK同证书；2接受+6拒绝签名回归PASS |
 | 施工前红测 | 旧实现两项实际失败，修复后通过；全量过程发现的播放前题材历史/整节点过滤旧断言已迁移到完成历史/事实过滤，最终无失败 |
 | 六组模拟 | 下表为本轮实际前后对照；Fake/确定性，不是真语义或手机听感 |

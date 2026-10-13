@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-13 V0.3.6 / #13 工程交付PASS，STOP等待小版本验收。** [`0cc7e68`](https://github.com/shimao1115/KITT/commit/0cc7e68a867742852c46e000fdc506386eab3862)完成同趟对象/事实覆盖与诚实语音生命周期，单Director原请求语义约束、本地标签保护、补充/0调用重播、地标新事实与恢复摘要边界。最终Debug395/Release382、assemble/lint/原签名及六组前后模拟PASS，code13/runtimecheck已产出且`adb install -r`Success、首装时间不变；自动UI账号/设置保留检查未通过、具体差异未确定。**用户明确暂停真机验收，真实自动旁白/语义/听感及完整保留Gate PENDING，不再连接手机。** 见[精简验收](ACCEPTANCE_NARRATION_MEMORY.md)、[验证JSON](evidence/v036-verification.json)、根HANDOFF。#13保持OPEN；#14/#17、#18剩余现场、#19家庭端、V0.4.0不继续施工。其下“已授权/任务下发”是历史状态。
+
 > **2026-10-13 用户最新授权 V0.3.6 / [Issue #13](https://github.com/shimao1115/KITT/issues/13) 正式施工，当前唯一 Destination 为“同趟已讲事实/角度语义去重，不能造成整段静音”。** 根 [TASK_CARD.md](../TASK_CARD.md) 是施工入口；在已确认的 V0.3.5.2/code12 上完成最小修复、回归、签名 APK 与交接后即停止。**任务下发不代表 Codex 已实际运行或版本已交付。** #18 区县真实缓存阶段性 PASS，镇街/Topic 和在线讲述/真人语音仍待验；#14/#17 定位及 #19 家庭签名独立追踪。先验证已有真机网络/Director 能否实际完成一段讲述，不能把网络FAILURE/STALE误判成去重；缺真机条件则自动测试后保留PENDING。禁止顺手做离线包或定位/实时响应 Hotfix。
 
 > **2026-10-13 用户正式阶段性接受 V0.3.5.2 / #18（不是整机总验收）。** 工程和 code12 同签名真机原位升级 PASS，账号设置保留 PASS；真实新都区区县 Overview 首次 write=1 → 应用 force-stop 后新进程 hit=1、重复研究=0，Director 机会重建 PASS；天气实时路径/失败如实说明 PASS，在线答案质量 PENDING。镇街/Topic、持续在线讲述、真人语音及播放中打断仍 PENDING。#18 保持 OPEN 追踪未完成自然验收，**立即停止，不重做已通过缓存，也不自动开 #13、离线包**。详细见 [验收矩阵](ACCEPTANCE_RESEARCH_CACHE.md#2026-10-13-真实手机验收) 与 [Issue 决定](https://github.com/shimao1115/KITT/issues/18#issuecomment-6137058814)。其下有关“尚未升级/待决定”的条目仅作历史，不再是当前状态。

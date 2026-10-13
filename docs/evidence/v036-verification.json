@@ -33,7 +33,7 @@
   "silenceHotfix": "PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.",
   "xinduBenchmark": "NOT RUN BY THIS SCRIPT: fresh production-provider phone discovery is recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md.",
   "verificationRun": {
-    "date": "2026-10-13T11:46:46.2784755+08:00",
+    "date": "2026-10-13T11:50:34.0373216+08:00",
     "baseline": "1e17de1",
     "gates": {
       "testDebugUnitTest": "EXECUTED PASS",
@@ -54,7 +54,8 @@
     "sha256": "28795780faeff52b394255cd4c73aa540d64572d4ce72304638f084f48626a81",
     "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
     "assembleDebug": "EXECUTED PASS",
-    "assembleDebugAndroidTest": "EXECUTED PASS",
+    "assembleDebugAndroidTest": "UP-TO-DATE PASS in final run; EXECUTED PASS in this version initial run",
+    "compileDebugAndroidTestKotlin": "EXECUTED PASS in final run",
     "lintDebug": "EXECUTED PASS",
     "testApkCertificate": "PASS original single signer",
     "instrumentation": "NOT INSTALLED OR EXECUTED",
@@ -71,7 +72,7 @@
         "            KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)",
         "            Director calls: 57; TTS outputs: 4; bounded Context Card: 1499 chars"
       ],
-      "finalGeneratedAt": "2026-10-13T11:39:48.1427720+08:00",
+      "finalGeneratedAt": "2026-10-13T11:39:48.142772+08:00",
       "finalSha256": "ca3d4bafaecc3a639c9a9951922dd896cc4272fb8d8151cecc5d7e996d21926b",
       "finalSummary": [
         "            KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)",
@@ -88,7 +89,7 @@
         "opportunities=21 dispatched=22 activeDispatched=1 auto=SILENT:0,SPEAK_NOW:20,PREPARE:0,ASK_USER:1,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:1,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
         "Voice outputs=22; distance=90912m"
       ],
-      "finalGeneratedAt": "2026-10-13T11:42:22.3387850+08:00",
+      "finalGeneratedAt": "2026-10-13T11:42:22.338785+08:00",
       "finalSha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
       "finalSummary": [
         "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS",
@@ -119,7 +120,7 @@
     {
       "name": "landmark-simulation.txt",
       "mode": "EXECUTED deterministic/Fake; not real semantic/content/hearing acceptance",
-      "baselineGeneratedAt": "2026-10-13T11:01:21.4446230+08:00",
+      "baselineGeneratedAt": "2026-10-13T11:01:21.444623+08:00",
       "baselineSha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
       "baselineSummary": [
         "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)",
@@ -181,5 +182,6 @@
     "runtimeProductionSourceComparison": "40 main Kotlin files match runtime build workspace; 0 differences",
     "phoneAcceptance": "PENDING, user requested pause",
     "stop": "Only Issue #13; stop after delivery, no V0.4.0/other issue implementation"
-  }
+  },
+  "sourceCommit": "0cc7e68a867742852c46e000fdc506386eab3862"
 }

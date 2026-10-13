@@ -1,4 +1,56 @@
-# KITT 当前施工交接 — V0.3.6 讲述语义去重已授权（2026-10-13）
+# KITT V0.3.6 / #13 工程交付 — 停止等待验收（2026-10-13）
+
+**工程施工、全量测试、六组模拟与原签名打包完成，代码提交 [`0cc7e68`](https://github.com/shimao1115/KITT/commit/0cc7e68a867742852c46e000fdc506386eab3862)。用户已明确暂停真机验收、手机暂时离线；不再进行手机操作，不自动开启下一版本。#13保持OPEN等待本小版本人工验收。** [精简验收](docs/ACCEPTANCE_NARRATION_MEMORY.md)、[本版实际验证](docs/evidence/v036-verification.json)、[手机阶段性事实](docs/evidence/v036-phone-acceptance.json)。下方旧授权/旧交接只作历史。
+
+## 当前可运行能力
+
+同趟最近32条覆盖分开记录地区、对象、事实/角度标签、landmark_id与播放生命周期，不再将topic与memory_update混用。相同对象已覆盖标签的子集/重排不自动重讲，同对象新事实、不同对象、跨区同名与独立地标仍有机会。单一Director在原请求中判断换措辞/别名/Overview→Topic回流的语义重复，沿用对象title和事实标签；没有新Schema、额外语义模型、Reviewer、向量库或数据库。
+
+排队、真正onStart、最终成功回调、失败、未开始取消、开始后打断分别记QUEUED/STARTED/COMPLETED/FAILED/CANCELLED/INTERRUPTED；仅成功完成进入已讲摘要，epoch和语音序号拒绝旧/重复回调。失败/半截不冒称完整听过，也不自动重放。**引擎完成不证明真人听见；模型将同义事实改成全新对象/标签仍可能逃过本地防线，真实语义/听感待验。**
+
+“再讲一点”复用原主动查证链，只补未覆盖材料，重复/无可靠新料简短说明；普通问题/看图正常接管。“再说一遍”本地重播本进程最新一段，0额外Director/研究调用；只留这一段内存正文，不写恢复文件，结束/新Journey/进程重建清空。旧恢复摘要仍兼容，但标为未验证背景，不变成完成覆盖。PREPARE/安静/用户中断/过时与来源规则保持；#18持久来源缓存不作为已讲记录。独立地标只消费额外唤醒，空间有效时新事实仍可用。
+
+## 本轮实际 build / tests / 回归
+
+- 最终 `scripts/verify.ps1 -Offline`：**Debug395 / Release382，失败、错误、跳过全0**；新增30项两种Variant均实际执行。Debug/Release的tests、assemble、lint均EXECUTED PASS，生产包签名PASS；115任务33执行/82复用。没有复制旧版365/352成绩。编译器既有deprecated警告不影响通过。
+- 最终 `scripts/build-runtime-smoke.ps1 -Offline`：assembleDebug、compileDebugAndroidTestKotlin、lintDebug均EXECUTED PASS，75任务13执行/62复用；assembleDebugAndroidTest本版首轮EXECUTED PASS，最终复核UP-TO-DATE。生产/测试APK唯一原证书，40个生产Kotlin文件与最终施工源码逐一一致。**仅构建测试APK，未安装或执行本版手机instrumentation。**
+- `scripts/test-kitt-signing.ps1`：2接受+6拒绝实际PASS，未生成/导出/提交私钥。旧实现两条红测确实失败；迁移播放前题材历史/整节点去重旧断言后最终全量通过。
+- 同一粗粒度路线13章刻意3次检查：**26新对象/事实输出、13重复SUPPRESSED、SILENT0、STALE/FAILURE0**。这只是标签/状态确定性证据，不是真模型语义。
+- 成都新都→广汉→德阳→绵竹→绵阳安州雎水六组前后均本轮实际执行：full57调用/4声音；accelerated22/22；batch13章/23主题/23调用；landmark4节点/28调用（SPEAK4/SILENT24）；dossier13讲述/33调用/19唯一研究（SPEAK13/SILENT20）；driving-area-resolution合成700m章节80/100km/h含报速0为12/10查询、最短16s。前后计数保持，正常组无STALE/cancel/failure；Fake/假Voice、29点90912m，非实车/真人内容验收。详表与报告时间/摘要见验证JSON。
+
+## V0.3.6/code13 本地原签名产物
+
+三个生产APK均0.3.6/code13，唯一证书SHA256：`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。APK及原始构建日志只在本地忽略的artifacts，未提交到GitHub。
+
+| 文件 | 包名 | APK SHA256 |
+| --- | --- | --- |
+| [手机runtimecheck](H:/CODEX/KITT/artifacts/kitt-v0.3.6-runtimecheck.apk) | com.kitt.reader.runtimecheck | 28795780faeff52b394255cd4c73aa540d64572d4ce72304638f084f48626a81 |
+| [标准Debug](H:/CODEX/KITT/artifacts/kitt-v0.3.6-debug.apk) | com.kitt.reader | 7a536b523c9832a2a53b60d1bdc57ac632ff088275dd7bccd52f015794f451af |
+| [标准Release验收](H:/CODEX/KITT/artifacts/kitt-v0.3.6-release.apk) | com.kitt.reader | 5bf3df44ccef5f59413aa4ee616ac7bf751158579a464b2f4934aa7c89aa161f |
+
+标准包不是原手机账号的数据空间，不能替换runtimecheck。若在其他未升级设备安装，先核对原包名/证书和现有code<13，再用 `adb install -r artifacts\kitt-v0.3.6-runtimecheck.apk`；不卸载、不清数据、不降级。原手机已code13，无需重复安装。
+
+## 手机事实 / Provider / 用户最小待办
+
+- 原手机code12/base.apk已核同证书、同包名。用户本人允许vivo“超级守护”安装后，`adb install -r`返回**Success**；已核0.3.6/code13，更新时点11:34:03，首次安装时间2026-10-09 09:42:45不变。没有卸载、清数据、降级或标准包替换。
+- **完整账号/设置保留Gate PENDING：自动正常UI保留检查未通过，具体比较差异未留存、尚未确定。** 随后用户明确要求暂停真机验收，未继续检查；不能仅据安装成功认定完整保留PASS，也没有证据认定数据丢失。不读取/导出凭据或原始账号文件。
+- 此版真实网络Director→自动旁白→TTS完成、同路段语义/补充/重播真人听感均**NOT RUN/PENDING**。施工前code12一次自然ASK_USER与TTS成功仅证明问话链，不是旁白或本版验收。准备好的180秒有界自然手机Probe未安装/执行。
+- 新安装默认仍 **Fake / gpt-4.1-mini / effort空**。原手机升级前既有 **ChatGPT / gpt-6.1-sol / low**，本版不修改Provider、登录或设置默认；升级后的完整保留/在线能力尚未确认。没有新增密钥或OAuth步骤，vivo本次安装授权已由用户完成。
+- 用户恢复手机验收后的最小动作：先看正常设置的连接/Provider/模型/effort、语速/声音；如有不符保留现场，不擅自清数据/重新连接。然后停车/乘客状态普通开始，一段真实自动旁白完成后，检查同段不换词重复、新事实仍开口、“再讲一点”与“再说一遍”、打断/安静/结束/新Journey。不要为刷日志重复付费搜索。**不自动恢复真机操作。**
+- #18真实区县缓存的阶段性接受仍有效，镇街/Topic及真人语音未全验收；#14/#17外场定位、#19家庭签名仍独立PENDING。未做定位、网络/天气校验修复或V0.4.0离线包。
+
+## 最近milestone commits
+
+- `0cc7e68` — V0.3.6/#13覆盖记忆、诚实播放生命周期、补充/本地重播、地标新事实、30项新回归、code13与本版证据。
+- `1e17de1` — 当前任务卡/授权基线，只开V0.3.6，保留V0.3.5.2阶段性结果。
+- `519743f` — code12真机原位升级及真实区县跨进程缓存验证。
+- `f7cbd6b` — V0.3.5.2/#18持久有来源研究、code12。
+
+**STOP：其余工程工作已完成，仅等待用户恢复真机验收并给出本小版本决定。Issue #13保留OPEN，不自动进入下一Destination。**
+
+---
+
+# 历史：V0.3.6 讲述语义去重授权入口（2026-10-13）
 
 **用户已授权下一小版本 V0.3.6 / [Issue #13](https://github.com/shimao1115/KITT/issues/13)，当前唯一任务 [TASK_CARD.md](TASK_CARD.md)。这是施工入口和授权，不表示 Agent 已运行、功能已实现或 APK 已产出。** 前一版本关于“不得自动开 #13”的 stop rule 已在小版本阶段性验收后由本次**明确授权**取代；前一版未完成的验收和安全约束依旧有效。
 
