@@ -340,6 +340,15 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
             }
         }
     }
+    /** Reuse the discovered object's identity and research area across Overview -> Topic returns.
+     * No guessed aliases: the Director must select the supplied object title when using its evidence.
+     */
+    fun subject(topic: String): Pair<AreaIdentity, String>? {
+        val area = active ?: return null
+        return listOf(area, area.copy(chapter = "")).distinctBy { it.key }.firstNotNullOfOrNull { identity ->
+            cache[identity.key]?.overview?.objects?.firstOrNull { it.title == topic }?.let { identity to it.title }
+        }
+    }
     /** One background topic, chosen only from completed Overview evidence. No queue or retries. */
     fun deepen(preferred: String = "") {
         val area = active ?: return

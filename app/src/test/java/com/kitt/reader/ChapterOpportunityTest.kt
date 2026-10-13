@@ -93,9 +93,16 @@ class ChapterOpportunityTest {
         val node = Landmark("test-site", "共同对象", 30.0, 104.0, 500.0, LandmarkKind.HERITAGE, TopicFamily.HERITAGE, "测试依据")
         val proximity = LandmarkProximity(listOf(node)); proximity.accept(Fix(30.0, 104.0, 1))
         val dossierSpeech = DirectorResult(Action.SPEAK_NOW, "共同对象的历史", "正文", memoryUpdate = "共同对象")
+        val voice = TestVoice(); val journey = Journey({ 1_000_000 }, voice); journey.start()
+        journey.location(Fix(30.0, 104.0, 1_000_000))
+        journey.deliver(journey.ticket(false), dossierSpeech.json(), narrationLandmarkId = proximity.identity(dossierSpeech)); voice.finish()
         proximity.delivered(dossierSpeech)
         assertFalse(proximity.opportunity)
-        assertEquals(DeliveryOutcome.SUPPRESSED, proximity.guard(dossierSpeech.copy(landmarkId = node.id), false, proximity.ids))
+        // Spatial eligibility remains live; shared entity/fact coverage belongs to Journey.
+        assertNull(proximity.guard(dossierSpeech.copy(landmarkId = node.id), false, proximity.ids))
+        assertEquals(DeliveryOutcome.SUPPRESSED, journey.deliver(journey.ticket(false), dossierSpeech.copy(landmarkId = node.id).json()))
+        assertEquals(DeliveryOutcome.SPEAK_NOW, journey.deliver(journey.ticket(false), dossierSpeech.copy(landmarkId = node.id, memoryUpdate = "独立新事实").json()))
+        voice.finish()
         assertNull(proximity.guard(dossierSpeech, true, proximity.ids))
     }
 }

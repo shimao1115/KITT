@@ -8,6 +8,8 @@ enum class JourneyState { IDLE, READING, SPEAKING, LISTENING, QUIET }
 interface VoicePort {
     fun stop()
     fun speak(text: String, complete: (Boolean) -> Unit)
+    /** Legacy/fake ports need not claim a start. Only a real engine callback proves it. */
+    fun speakTracked(text: String, started: () -> Unit, complete: (Boolean) -> Unit) = speak(text, complete)
     fun listen(result: (String?) -> Unit)
     fun listenOutcome(result: (ListeningResult) -> Unit) { listen { result(ListeningResult.recognized(it)) } }
 }
@@ -15,6 +17,18 @@ data class Prepared(val topic: String, val hint: String, val at: Long, val ancho
 data class Ticket(val epoch: Long, val at: Long, val fix: Fix?, val active: Boolean, val researching: Boolean = false)
 enum class DeliveryOutcome { SILENT, SPEAK_NOW, PREPARE, ASK_USER, STALE, CANCELLED, FAILURE, SUPPRESSED }
 data class TripSummary(val started: Long, val ended: Long, val destination: String, val topics: List<String>, val skipped: Int)
+
+enum class NarrationPhase { QUEUED, STARTED, COMPLETED, FAILED, CANCELLED, INTERRUPTED }
+/** Session-only coverage, never full narration, dialogue, coordinates or persistent research evidence. */
+data class NarrationMemory(val area: AreaIdentity?, val subject: String, val coverage: String,
+    val landmarkId: String, val family: TopicFamily?, var phase: NarrationPhase = NarrationPhase.QUEUED)
+
+enum class FollowUp { MORE, REPEAT }
+fun followUp(text: String?): FollowUp? = when (text?.trim()?.trimEnd('。', '！', '!', '？', '?')) {
+    "再讲一点", "再讲点", "继续讲", "详细一点", "多讲一点" -> FollowUp.MORE
+    "再说一遍", "再讲一遍", "重播", "重复一遍" -> FollowUp.REPEAT
+    else -> null
+}
 
 /** All transitions run on the main thread in Android; fake clock/voice make races testable on JVM. */
 class Journey(private val now: () -> Long, private val voice: VoicePort, private val changed: () -> Unit = {}) {
@@ -42,6 +56,17 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     private var autoSpeechCooldown = false
     val recentTopics = ArrayDeque<String>()
     val recentFamilies = ArrayDeque<TopicFamily>()
+    private val narrations = ArrayDeque<NarrationMemory>()
+    val narrationMemory get() = narrations.toList()
+    private var pendingNarration: NarrationMemory? = null
+    private var speechSerial = 0L
+    private var restoredTopics = emptyList<String>()
+    val summaryTopics get() = (restoredTopics + recentTopics).takeLast(8)
+    // Only the latest segment is available for explicit replay in this process. Never checkpoint it.
+    var replay: DirectorResult? = null; private set
+    var replayArea: AreaIdentity? = null; private set
+    var replaySubject: String? = null; private set
+    var replayLandmarkId: String? = null; private set
     private val skippedTopics = mutableMapOf<String, Long>()
     private val asked = mutableSetOf<String>()
     private var lastQuestion = Long.MIN_VALUE / 2
@@ -76,6 +101,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     val quietRemaining get() = if (quietUntil == Long.MAX_VALUE) Long.MAX_VALUE else (quietUntil - now()).coerceAtLeast(0)
 
     private fun invalidate() {
+        pendingNarration?.let { it.phase = if (it.phase == NarrationPhase.STARTED) NarrationPhase.INTERRUPTED else NarrationPhase.CANCELLED }
+        pendingNarration = null
+        speechSerial++
         epoch++; speaking = false; listening = false; imageInteraction = false; clearReply(); voice.stop()
     }
     private fun clearReply() { awaitingReply = false; replyEpoch = -1L; replyUntil = 0L; replyHandler = null }
@@ -84,19 +112,25 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         invalidate(); running = true; started = now(); quietUntil = 0; destination = "未询问"
         instructions = ""; topic = ""; notice = ""; fix = null; prepared = null
         recentTopics.clear(); recentFamilies.clear(); skippedTopics.clear(); asked.clear(); skippedCount = 0
+        narrations.clear(); pendingNarration = null; restoredTopics = emptyList(); replay = null
+        replayArea = null; replaySubject = null
+        replayLandmarkId = null
         lastSpeech = 0; cooldownUntil = 0; autoSpeechCooldown = false; lastCheckAt = Long.MIN_VALUE / 2; lastCheckFix = null
         lastQuestion = Long.MIN_VALUE / 2; destinationQuestion = false; chapterEntry = false; changed()
     }
     fun restore(startedAt: Long, intent: String, session: String, topics: List<String>, quiet: Long) {
         start(); started = startedAt; destination = intent; instructions = session
-        recentTopics.addAll(topics.takeLast(8)); quietUntil = quiet.takeIf { it > now() } ?: 0
+        restoredTopics = topics.takeLast(8); quietUntil = quiet.takeIf { it > now() } ?: 0
         // Recovery never restores audio, requests, PREPARE, or a microphone window.
         changed()
     }
     fun end(): TripSummary {
-        val summary = TripSummary(started, now(), destination, recentTopics.toList(), skippedCount)
+        val summary = TripSummary(started, now(), destination, summaryTopics, skippedCount)
         invalidate(); running = false; prepared = null; fix = null; quietUntil = 0; instructions = ""
         destination = "未询问"; topic = ""; recentTopics.clear(); recentFamilies.clear(); asked.clear(); skippedTopics.clear(); chapterEntry = false; changed()
+        narrations.clear(); pendingNarration = null; restoredTopics = emptyList(); replay = null
+        replayArea = null; replaySubject = null
+        replayLandmarkId = null
         return summary
     }
     fun quiet(durationMs: Long = 600000) {
@@ -242,6 +276,8 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         imageInteraction = false; cooldownUntil = cadenceNow() + 30000; changed()
     }
     fun deliver(ticket: Ticket, raw: String?, activeFailure: String? = null, proximityBlock: DeliveryOutcome? = null,
+        narrationArea: AreaIdentity? = ticket.fix?.administrative, subject: String? = null, followUp: FollowUp? = null,
+        narrationLandmarkId: String? = null,
         onAnswer: (String) -> Unit = {}): DeliveryOutcome {
         if (!running || ticket.epoch != epoch) return DeliveryOutcome.CANCELLED
         // On-demand research is an explicit active request; automatic content still expires in 45s.
@@ -257,6 +293,10 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             changed(); return DeliveryOutcome.FAILURE
         }
         val result = response.getOrThrow()
+        if (ticket.active && followUp == FollowUp.MORE && result.action == Action.SILENT) {
+            say("目前没有可靠的新内容。", false, true, onAnswer)
+            return DeliveryOutcome.SPEAK_NOW
+        }
         when (result.action) {
             Action.SILENT -> Unit
             Action.PREPARE -> {
@@ -273,25 +313,45 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             }
             Action.SPEAK_NOW -> {
                 if (!ticket.active && (skippedTopics[result.topic] ?: 0) > now()) return DeliveryOutcome.SUPPRESSED
+                val memory = NarrationMemory(narrationArea, subject ?: result.topic,
+                    result.memoryUpdate, narrationLandmarkId ?: result.landmarkId, result.topicFamily)
+                if ((!ticket.active || followUp == FollowUp.MORE) && alreadyCovered(memory)) {
+                    prepared = null
+                    diagnostic("Narration coverage suppressed active=${ticket.active}")
+                    if (ticket.active) say("目前没有可靠的新内容。", false, true, onAnswer)
+                    changed(); return DeliveryOutcome.SUPPRESSED
+                }
                 prepared = null; topic = result.topic
-                result.topicFamily?.let {
-                    recentFamilies.addLast(it)
-                    while (recentFamilies.size > 8) recentFamilies.removeFirst()
-                }
-                if (result.topic !in recentTopics) {
-                    recentTopics.addLast(result.memoryUpdate.ifBlank { result.topic })
-                    while (recentTopics.size > 8) recentTopics.removeFirst()
-                }
-                say(result.narration, false, ticket.active, onAnswer)
+                replay = result; replayArea = narrationArea; replaySubject = memory.subject
+                replayLandmarkId = memory.landmarkId
+                // This is an attempted delivery, not evidence of completed audio. Interrupted/failed
+                // coverage also blocks automatic replay; explicit user questions/replay bypass it.
+                narrations.addLast(memory); while (narrations.size > 32) narrations.removeFirst()
+                pendingNarration = memory
+                say(result.narration, false, ticket.active, onAnswer, memory)
             }
         }
         changed()
         return DeliveryOutcome.valueOf(result.action.name)
     }
-    private fun say(text: String, ask: Boolean, active: Boolean, onAnswer: (String) -> Unit) {
-        speaking = true; val token = epoch; changed()
-        voice.speak(text) { success ->
-            if (epoch == token && running && speaking) {
+    private fun say(text: String, ask: Boolean, active: Boolean, onAnswer: (String) -> Unit, memory: NarrationMemory? = null) {
+        speaking = true; val token = epoch; val speechId = ++speechSerial; changed()
+        voice.speakTracked(text, started = {
+            if (epoch == token && speechSerial == speechId && running && speaking && pendingNarration === memory) {
+                memory?.phase = NarrationPhase.STARTED; changed()
+            }
+        }) { success ->
+            if (epoch == token && speechSerial == speechId && running && speaking) {
+                memory?.let {
+                    it.phase = if (success) NarrationPhase.COMPLETED else NarrationPhase.FAILED
+                    pendingNarration = null
+                    if (success) {
+                        recentTopics.addLast(it.coverage.ifBlank { it.subject })
+                        while (recentTopics.size > 8) recentTopics.removeFirst()
+                        it.family?.let(recentFamilies::addLast)
+                        while (recentFamilies.size > 8) recentFamilies.removeFirst()
+                    }
+                }
                 speaking = false; lastSpeech = now()
                 lastSpeechTravelMs = simulatedTravelMs
                 cooldownUntil = cadenceNow() + if (active) 30000 else 60000
@@ -305,6 +365,31 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                 if (ask && success && foreground && (active || !isQuiet)) beginListening(onAnswer)
             }
         }
+    }
+    private fun coverageParts(value: String) = value.split(Regex("[；;\\n]+"))
+        .map(::normalizedCoverage).filter(String::isNotBlank).toSet()
+    private fun normalizedCoverage(value: String) = value.lowercase(java.util.Locale.ROOT)
+        .replace(Regex("[\\s，,。！!？?]+"), "").trimEnd('.')
+    private fun alreadyCovered(next: NarrationMemory): Boolean {
+        val same = narrations.filter {
+            if (next.landmarkId.isNotBlank()) it.landmarkId == next.landmarkId
+            else it.landmarkId.isBlank() && it.area?.key == next.area?.key &&
+                normalizedCoverage(it.subject) == normalizedCoverage(next.subject)
+        }
+        val facts = coverageParts(next.coverage)
+        // A legacy blank summary has no fact-level identity. Only suppress its same-subject blank
+        // repeat; a supplied new fact remains eligible. No similarity threshold or topic blacklist.
+        return if (facts.isEmpty()) same.any { it.coverage.isBlank() }
+        else same.flatMap { coverageParts(it.coverage) }.toSet().containsAll(facts)
+    }
+    fun narrationCard() = buildString {
+        if (restoredTopics.isNotEmpty()) appendLine("【恢复摘要（未验证播放完成）】${restoredTopics.joinToString("；")}；仅作背景，不作为本趟已讲事实。")
+        if (narrations.isEmpty()) return@buildString
+        appendLine("【本趟讲述覆盖】以下是对象身份、核心事实/角度及音频生命周期；不是证据来源。")
+        narrations.forEach {
+            appendLine("地区=${it.area?.fullName ?: "未知地区"}；对象=${it.subject}；landmark_id=${it.landmarkId}；状态=${it.phase}；事实/角度=${it.coverage.ifBlank { "旧格式未提供，只知主题" }}")
+        }
+        appendLine("COMPLETED 仅证明TTS引擎成功回调，不证明乘客听见。其他状态不得称完整讲过，自动也不续播或重放半截；用户可主动接管。")
     }
     fun invalidateProvider() { if (running) { invalidate(); prepared = null; autoSpeechCooldown = false; cooldownUntil = cadenceNow() + 10000; changed() } }
 

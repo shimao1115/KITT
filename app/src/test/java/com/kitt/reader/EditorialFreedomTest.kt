@@ -54,11 +54,12 @@ class EditorialFreedomTest {
         journey.location(Fix(30.0, 104.0, time, administrative = area)); pipeline.accept(journey.fix!!)
         journey.deliver(journey.ticket(true), DirectorResult(Action.SPEAK_NOW, "本地水系、山川与地貌", "正文",
             memoryUpdate = "水系", topicFamily = TopicFamily.GEOGRAPHY).json())
+        assertTrue(journey.recentFamilies.isEmpty()) // Queued audio is not completed history.
+        voice.finish()
         val text = pipeline.card(journey, time)
         assertTrue(text.contains("不是黑名单"))
         assertTrue(text.contains("最近题材】GEOGRAPHY"))
         assertEquals(chapterCandidates(area).candidates.size, pipeline.areas.active!!.candidates.size)
-        voice.finish()
     }
     @Test fun unmappedSubjectIsAcceptedByTheStrictContract() {
         val result = DirectorContract.parse(DirectorResult(Action.SPEAK_NOW, "说不清类别的老街", "正文",

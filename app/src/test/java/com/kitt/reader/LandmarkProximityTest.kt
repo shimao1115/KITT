@@ -72,14 +72,29 @@ class LandmarkProximityTest {
         assertTrue(context.proximity.ids.isEmpty()); advanceTimeBy(5000); runCurrent()
         assertTrue(voice.speech.isEmpty()); assertEquals(1, loop.counters.automatic[DeliveryOutcome.STALE])
     }
-    @Test fun entityDedupSurvivesRetitledNarrationButActiveDeepeningIsAllowedAndResetClears() {
+    @Test fun deliveredNodeConsumesOnlyExtraWakeupAndKeepsEvidenceForNewFacts() {
         val proximity = LandmarkProximity(listOf(node())); proximity.accept(fix(30.009, 1000000))
         val ids = proximity.ids; assertNull(proximity.guard(speech(), false, ids)); proximity.delivered(speech())
-        assertEquals(DeliveryOutcome.SUPPRESSED, proximity.guard(speech(topic = "换个标题"), false, ids))
-        assertEquals(DeliveryOutcome.SUPPRESSED, proximity.guard(speech(id = ""), false, ids))
+        assertNull(proximity.guard(speech(topic = "换个标题"), false, ids))
+        assertTrue("landmark_id=site" in proximity.card())
         assertNull(proximity.guard(speech(topic = "再讲一点"), true, ids))
         proximity.accept(fix(30.0, 1060000)); proximity.accept(fix(30.009, 1120000)); assertFalse(proximity.opportunity)
         proximity.clear(); proximity.accept(fix(30.009, 1180000)); assertTrue(proximity.opportunity)
+    }
+    @Test fun sameLandmarkFactIsSuppressedButNewFactInSameChapterCanSpeak() = runTest {
+        var time = 1_000_000L; val voice = TestVoice(); val journey = Journey({ time }, voice); journey.start()
+        var calls = 0
+        val loop = DirectorLoop(journey, ContextPipeline(listOf(node())), this, { time }, { DirectorProvider {
+            calls++
+            speech(topic = if (calls == 2) "换标题" else "测试节点")
+                .copy(memoryUpdate = if (calls < 3) "节点基础事实" else "节点新事实").json()
+        } })
+        loop.location(fix(30.009, time)); runCurrent(); voice.finish()
+        time += 61_000; journey.noteChapterEntry(); loop.location(fix(30.009, time)); runCurrent()
+        assertEquals(1, loop.counters.automatic[DeliveryOutcome.SUPPRESSED])
+        assertEquals(1, voice.speech.size)
+        time += 61_000; journey.noteChapterEntry(); loop.location(fix(30.009, time)); runCurrent(); voice.finish()
+        assertEquals(2, voice.speech.size); loop.reset(); journey.end()
     }
     @Test fun unknownIdCannotCreateAnAutomaticLandmarkAndSchemaRetainsSixAndSevenFieldCompatibility() {
         val proximity = LandmarkProximity(listOf(node())); proximity.accept(fix(30.009, 1000000))
@@ -106,7 +121,7 @@ class LandmarkProximityTest {
         val nodes = LandmarkCatalog.parse(File("src/main/assets/landmarks.json").readText())
         val context = ContextPipeline(nodes); val diagnostics = mutableListOf<String>(); val selected = mutableListOf<String>()
         val loop = DirectorLoop(journey, context, backgroundScope, clock, { DirectorProvider {
-            val current = context.proximity.ids.firstOrNull(); delay(5000)
+            val current = context.proximity.ids.firstOrNull { id -> journey.narrationMemory.none { it.landmarkId == id } }; delay(5000)
             if (current == null) DirectorResult(Action.SILENT).json()
             else {
                 selected += current

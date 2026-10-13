@@ -67,7 +67,16 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     fun user(text: String, image: ImageInput? = null) {
         research.cancelTopic()
         cancel()
-        if (journey.requestInput(text)) dispatch(text, image)
+        if (journey.requestInput(text)) {
+            // Exact replay is a local user intent. No research or model call is needed, and this
+            // process-only segment cannot be resurrected after Journey end/recovery.
+            if (image == null && followUp(text) == FollowUp.REPEAT && journey.replay != null) {
+                val outcome = journey.deliver(journey.ticket(true), journey.replay!!.json(),
+                    narrationArea = journey.replayArea, subject = journey.replaySubject,
+                    narrationLandmarkId = journey.replayLandmarkId)
+                counters.terminal(true, outcome)
+            } else dispatch(text, image)
+        }
     }
     private fun dispatch(utterance: String?, image: ImageInput? = null) {
         requestActive = utterance != null
@@ -83,7 +92,8 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         request = scope.launch {
             // A dispatch cancelled before this coroutine runs has never examined the context.
             // Snapshot evidence at the actual check, including research completed before this coroutine ran.
-            val continuation = if (utterance?.trim() in setOf("再讲一点", "再讲点", "继续讲", "详细一点", "多讲一点") && journey.topic.isNotBlank())
+            val followUp = followUp(utterance).takeIf { image == null }
+            val continuation = if (followUp == FollowUp.MORE && journey.topic.isNotBlank())
                 "\n【当前主题追问】用户要继续刚才的“${journey.topic}”。优先使用该对象已完成专题中的新事实，补充未讲角度，不重复基础介绍，也不另换对象；没有新依据则按原主动搜索规则处理。" else ""
             val input = DirectorRequest(sessionInstructions = journey.instructions,
                 contextCard = context.card(journey, now()) + continuation, userUtterance = utterance, image = image)
@@ -135,8 +145,11 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
             val parsed = raw?.let { runCatching { DirectorContract.parse(it) }.getOrNull() }
             if (journey.fix?.precise(now()) != true) context.proximity.expire()
             val chapterBlock = if (!ticket.active && chapterKey != context.areas.active?.area?.key) DeliveryOutcome.STALE else null
-            val outcome = journey.deliver(deliveryTicket, raw, activeFailure, chapterBlock ?: context.proximity.guard(parsed, ticket.active, landmarkIds)) { user(it) }
-            if (outcome == DeliveryOutcome.SPEAK_NOW && parsed != null) {
+            val subject = parsed?.let { research.subject(it.topic) }
+            val outcome = journey.deliver(deliveryTicket, raw, activeFailure, chapterBlock ?: context.proximity.guard(parsed, ticket.active, landmarkIds),
+                narrationArea = subject?.first ?: ticket.fix?.administrative, subject = subject?.second, followUp = followUp,
+                narrationLandmarkId = parsed?.let(context.proximity::identity)) { user(it) }
+            if (outcome == DeliveryOutcome.SPEAK_NOW && parsed?.action == Action.SPEAK_NOW) {
                 context.proximity.delivered(parsed)
                 // A narrated object (or the highest salient remaining lead) may now be researched in the background.
                 // This does not delay delivery, consume GPS opportunities, or pause simulation.

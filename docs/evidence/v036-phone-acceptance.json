@@ -1,0 +1,35 @@
+{
+  "version": "0.3.6",
+  "versionCode": 13,
+  "date": "2026-10-13",
+  "timezone": "Asia/Shanghai",
+  "applicationId": "com.kitt.reader.runtimecheck",
+  "device": "vivo V2405A / Android16 (inherited device baseline)",
+  "preflight": {
+    "installedBaseline": "0.3.5.2 / code12",
+    "installedApkCertificate": "PASS: pulled base APK verified with original single signer",
+    "candidateCertificate": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "candidateSha256": "28795780faeff52b394255cd4c73aa540d64572d4ce72304638f084f48626a81"
+  },
+  "upgrade": {
+    "command": "adb install -r artifacts/kitt-v0.3.6-runtimecheck.apk",
+    "result": "Success",
+    "vivoGuardAuthorization": "User explicitly confirmed allowing installation on the phone",
+    "installedVersionConfirmed": "0.3.6 / code13",
+    "lastUpdateTime": "2026-10-13 11:34:03",
+    "firstInstallTimeUnchanged": "2026-10-09 09:42:45",
+    "uninstallClearDowngrade": "NONE"
+  },
+  "accountAndSettingsPreservation": {
+    "result": "PENDING",
+    "observation": "The automatic normal-UI preservation check did not pass; it stopped after installation. Its individual comparison results were not persisted, so the specific difference is not established. User then paused device acceptance; no further inspection was performed.",
+    "credentialOrRawAccountFileExport": "NONE",
+    "requiredFollowUp": "When the phone is available, inspect saved ChatGPT connection/provider/model/effort and voice/settings in the normal UI; do not uninstall, clear data or reconnect speculatively."
+  },
+  "baselineCode12Observation": "One natural automatic ASK_USER and successful TTS completion were observed before implementation; not an automatic narration or V0.3.6 semantic acceptance.",
+  "v036LiveAutomaticNarration": "NOT RUN: user paused phone acceptance before production narration-memory instrumentation",
+  "v036PhoneInstrumentation": "BUILT AND SIGNED ONLY; NOT INSTALLED OR EXECUTED",
+  "humanSemanticAndHearing": "PENDING",
+  "pause": "User explicitly requested pausing real-device acceptance because the phone needs to be offline; complete other work first.",
+  "inheritedGates": "Issue #18 district real cache remains stage-accepted; remaining town/Topic/voice, #14/#17 field location and #19 home signing remain independent/PENDING."
+}

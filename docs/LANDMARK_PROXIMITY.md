@@ -1,5 +1,11 @@
 # Independent geographic / landmark opportunities
 
+V0.3.6 / #13 supersedes the blanket spoken-node suppression below: a delivered node still consumes its
+extra approach wake-up, but its evidence remains available while spatially live. Journey now filters
+already attempted/completed fact coverage by landmark ID, allowing independently grounded new facts
+without another node wake-up or automatic partial replay. The same epoch, freshness and departure guards
+apply. Completed audio means the engine's final callback, not proof that the passenger heard it.
+
 V0.3 update: [TASK_POST_ASR_YANTU_V03.md](TASK_POST_ASR_YANTU_V03.md) supersedes the historic cadence below.
 Live unchecked landmark opportunities bypass the ordinary 45s check interval and automatic narration cooldown;
 user conversation/skip/image/quiet cooldowns, freshness, epoch and spatial guards still win. Only an actual

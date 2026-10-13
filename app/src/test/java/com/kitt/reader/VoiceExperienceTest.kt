@@ -134,6 +134,28 @@ class VoiceOutcomeTest {
 class AndroidVoiceExperienceTest {
     private val app get() = RuntimeEnvironment.getApplication()
     private fun idle() = shadowOf(Looper.getMainLooper()).idle()
+    @Test fun platformTtsProgressSeparatesQueuedStartedAndFinalCompletion() {
+        ShadowTextToSpeech.addLanguageAvailability(Locale.SIMPLIFIED_CHINESE)
+        val voice = AndroidVoice(app)
+        shadowOf(ShadowTextToSpeech.getLastTextToSpeechInstance()).onInitListener.onInit(TextToSpeech.SUCCESS); idle()
+        lateinit var j: Journey; val phases = mutableListOf<NarrationPhase>()
+        j = Journey({ 1_000_000 }, voice) { j.narrationMemory.lastOrNull()?.let { phases += it.phase } }
+        j.start(); j.deliver(j.ticket(true), DirectorResult(Action.SPEAK_NOW, "对象", "正文", memoryUpdate = "事实").json())
+        assertEquals(NarrationPhase.QUEUED, j.narrationMemory.single().phase); assertTrue(j.recentTopics.isEmpty())
+        idle()
+        assertTrue(NarrationPhase.STARTED in phases); assertEquals(NarrationPhase.COMPLETED, j.narrationMemory.single().phase)
+        assertEquals(listOf("事实"), j.recentTopics.toList()); j.end(); voice.close()
+    }
+    @Test fun cancelledPlatformQueueIgnoresLateStartAndDone() {
+        ShadowTextToSpeech.addLanguageAvailability(Locale.SIMPLIFIED_CHINESE)
+        val voice = AndroidVoice(app)
+        shadowOf(ShadowTextToSpeech.getLastTextToSpeechInstance()).onInitListener.onInit(TextToSpeech.SUCCESS); idle()
+        val j = Journey({ 1_000_000 }, voice); j.start()
+        j.deliver(j.ticket(true), DirectorResult(Action.SPEAK_NOW, "对象", "正文", memoryUpdate = "事实").json())
+        j.quiet(); idle()
+        assertEquals(NarrationPhase.CANCELLED, j.narrationMemory.single().phase); assertTrue(j.recentTopics.isEmpty())
+        assertTrue(j.isQuiet); assertFalse(j.speaking); j.end(); voice.close()
+    }
     private fun recognizerAvailable() {
         val info = ResolveInfo().apply {
             serviceInfo = ServiceInfo().apply { packageName = "example.recognizer"; name = "Recognition"

@@ -31,7 +31,7 @@ class TripStore(context: Context) {
         if (!journey.running) return
         runCatching { write(current, buildJsonObject {
             put("version", 1); put("started", journey.started); put("destination", journey.destination)
-            put("instructions", journey.instructions); put("topics", JsonArray(journey.recentTopics.map(::JsonPrimitive)))
+            put("instructions", journey.instructions); put("topics", JsonArray(journey.summaryTopics.map(::JsonPrimitive)))
             put("quiet_until", journey.quietUntil); put("simulation", simulation); put("acceleration", acceleration)
             put("travel_ms", travelMs)
         }) }.onFailure { lastError = "旅程恢复信息暂时无法保存。" }

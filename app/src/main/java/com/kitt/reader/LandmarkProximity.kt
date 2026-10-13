@@ -44,27 +44,28 @@ class LandmarkProximity(private val nodes: List<Landmark>) {
                 val approach = approaches.getOrPut(node.id) { Approach(distance) }
                 approach.closest = minOf(approach.closest, distance)
                 // Position noise does not immediately discard a roadside site. Moving clearly away does.
-                distance <= approach.closest + 250 && node.id !in spoken
+                // A delivered node consumes only its extra approach wake-up. Keep its live evidence
+                // available for new facts; Journey owns fact-level automatic replay protection.
+                distance <= approach.closest + 250
             }
         }
     }
     fun expire() { live = emptyList(); approaches.clear() }
     fun consumeOpportunity(requested: Set<String> = ids) { checked.addAll(requested) }
-    private fun matching(result: DirectorResult): String? = result.landmarkId.takeIf(String::isNotBlank)
+    fun identity(result: DirectorResult): String? = result.landmarkId.takeIf(String::isNotBlank)
         ?: nodes.firstOrNull { it.name in result.topic || it.name in result.memoryUpdate }?.id
     fun guard(result: DirectorResult?, active: Boolean, requested: Set<String>): DeliveryOutcome? {
         if (result == null || active || result.action != Action.SPEAK_NOW) return null
-        val id = matching(result) ?: return null
-        if (id in spoken) return DeliveryOutcome.SUPPRESSED
+        val id = identity(result) ?: return null
         if (result.landmarkId.isNotBlank() && id !in requested) return DeliveryOutcome.STALE
         if (id in requested && id !in ids) return DeliveryOutcome.STALE
         return null
     }
-    fun delivered(result: DirectorResult) { matching(result)?.let { spoken += it } }
+    fun delivered(result: DirectorResult) { identity(result)?.let { spoken += it } }
     fun card(): String = if (live.isEmpty()) "" else buildString {
         appendLine("【独立地标接近】以下是当前 GPS 接近的高价值候选，行政章节不变也可检查。不是导航或可见性判断。")
         live.take(4).forEach { node ->
-            appendLine("landmark_id=${node.id}；${node.name}；${node.kind} / ${node.family}；依据：${node.grounding}；${if (node.id in checked) "本次接近已检查，仍须有新价值" else "新的接近机会"}")
+            appendLine("landmark_id=${node.id}；${node.name}；${node.kind} / ${node.family}；依据：${node.grounding}；${if (node.id in checked || node.id in spoken) "本次接近已检查，仍须有新价值" else "新的接近机会"}")
         }
         appendLine("优先有依据的重要地理/地标事件，再考虑重复的道路或聚落机制。可以 SILENT；只讲一个，不要求逐一播放。")
     }

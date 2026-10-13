@@ -11,6 +11,21 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
 class PersistenceTest {
+    @Test fun completedSummarySurvivesCheckpointButPlaybackClaimsAndReplayNeverPersist() {
+        val context = RuntimeEnvironment.getApplication(); val voice = TestVoice()
+        val j = Journey({ 1_000_000 }, voice); j.start()
+        val store = TripStore(context)
+        j.deliver(j.ticket(true), DirectorResult(Action.SPEAK_NOW, "对象", "私有正文不可持久化", memoryUpdate = "事实角度").json())
+        store.checkpoint(j, false, 1.0, 0); assertTrue(store.recovery()!!.topics.isEmpty())
+        voice.finish(); store.checkpoint(j, false, 1.0, 0)
+        val recovered = store.recovery()!!
+        val next = Journey({ 1_000_000 }, TestVoice()); next.restore(recovered.started, recovered.destination, "", recovered.topics, 0)
+        store.checkpoint(next, false, 1.0, 0)
+        assertEquals(listOf("事实角度"), store.recovery()!!.topics)
+        assertTrue(next.recentTopics.isEmpty()); assertTrue(next.narrationMemory.isEmpty()); assertNull(next.replay)
+        val raw = File(context.filesDir, "trips/current.json").readText()
+        listOf("私有正文", "COMPLETED", "landmarkId", "narrationMemory").forEach { assertFalse(it in raw) }
+    }
     @Test fun abnormalReopenRestoresOnlyLightweightState() {
         val context = RuntimeEnvironment.getApplication(); var time = 1000000L
         val journey = Journey({ time }, TestVoice()); journey.start(); journey.requestInput("去绵阳")

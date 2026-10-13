@@ -33,7 +33,7 @@ try {
         $taskTests = [int](($taskSuites | Measure-Object tests -Sum).Sum)
         $taskFailures = [int](($taskSuites | Measure-Object failures -Sum).Sum) + [int](($taskSuites | Measure-Object errors -Sum).Sum)
         $taskSkipped = [int](($taskSuites | Measure-Object skipped -Sum).Sum)
-        $taskMinimum = if ($taskVariant -eq 'Debug') { 365 } else { 352 }
+        $taskMinimum = if ($taskVariant -eq 'Debug') { 395 } else { 382 }
         if ($taskTests -lt $taskMinimum -or $taskFailures -gt 0 -or $taskSkipped -gt 0) { throw "$taskVariant reports do not establish the complete $taskMinimum+ passing suite." }
         $taskCounts[$taskVariant] = [ordered]@{ tests=$taskTests; failures=$taskFailures; skipped=$taskSkipped }
     }
@@ -49,7 +49,7 @@ try {
     & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath 'artifacts\kitt-v0-release.apk' -ExpectedApplicationId 'com.kitt.reader'
     Copy-Item -LiteralPath artifacts\kitt-v0-debug.apk -Destination "artifacts\kitt-v$taskVersion-debug.apk" -Force
     Copy-Item -LiteralPath artifacts\kitt-v0-release.apk -Destination "artifacts\kitt-v$taskVersion-release.apk" -Force
-    foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt', 'area-stability.txt', 'research-cache.txt')) {
+    foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt', 'area-stability.txt', 'research-cache.txt', 'narration-memory.txt')) {
         Copy-Item -LiteralPath (Join-Path app\build\acceptance $taskReport) -Destination (Join-Path artifacts $taskReport) -Force
     }
     $taskHash = (Get-FileHash -LiteralPath artifacts\kitt-v0-debug.apk -Algorithm SHA256).Hash
@@ -67,6 +67,7 @@ try {
         liveProvider='Credential-backed Overview/Topic/Director/TTS results are recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md; this script does not run live-provider acceptance.'
         chineseASR='System recogniser still fails ERROR_CLIENT before ready; the bundled offline Vosk Chinese model is the working path on this device.'
         localResearch='Overview -> Topic + persistent sourced evidence regression PASS. Synthetic district/town/Topic: first journey fetches 1/1/1; reconstructed manager/store with unavailable research fetches 0/0/0, Director judges again. NOT real Provider/device process-restart acceptance; see docs/ACCEPTANCE_RESEARCH_CACHE.md.'
+        narrationMemory='PASS: session-only object/fact coverage and queued/start/completed/failure/cancel/interruption callbacks; automatic repeated coverage suppressed, new facts/objects/chapters/landmarks eligible; more/replay/ordinary question/image and legacy recovery. Synthetic labels and fake Director cannot prove real semantic quality or human hearing.'
         silenceHotfix='PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.'
         xinduBenchmark='NOT RUN BY THIS SCRIPT: fresh production-provider phone discovery is recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md.'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8

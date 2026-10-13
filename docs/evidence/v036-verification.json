@@ -1,0 +1,185 @@
+{
+  "version": "0.3.6",
+  "product": "沿途",
+  "build": "PASS (Debug/Release)",
+  "variants": {
+    "Debug": {
+      "tests": 395,
+      "failures": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 382,
+      "failures": 0,
+      "skipped": 0
+    }
+  },
+  "lint": "PASS (Debug/Release)",
+  "signature": "PASS; Debug and Release use canonical KITT signing certificate",
+  "simulation": "PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director",
+  "route": "29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x",
+  "apk": "kitt-v0.3.6-debug.apk",
+  "sha256": "7A536B523C9832A2A53B60D1BDC57AC632FF088275DD7BCCD52F015794F451AF",
+  "releaseApk": "kitt-v0.3.6-release.apk",
+  "releaseSha256": "5BF3DF44CCEF5F59413AA4EE616AC7BF751158579A464B2F4934AA7C89AA161F",
+  "deviceAcceptance": "Code13 in-place install Success, installed version and unchanged firstInstallTime observed. Normal-UI preservation check did not pass; exact difference unestablished. User paused phone acceptance. No code13 production instrumentation or real semantic/hearing verdict.",
+  "areaStability": "PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.",
+  "runtimeStatus": "PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.",
+  "locationFallback": "PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.",
+  "liveProvider": "V0.3.6 natural automatic narration NOT RUN: user paused phone acceptance; earlier code12 ASK_USER/TTS success is not narration/semantic proof.",
+  "chineseASR": "UNCHANGED implementation; prior Vosk acceptance inherited, no new human ASR acceptance in V0.3.6.",
+  "localResearch": "Overview -> Topic + persistent sourced evidence regression PASS. Synthetic district/town/Topic: first journey fetches 1/1/1; reconstructed manager/store with unavailable research fetches 0/0/0, Director judges again. NOT real Provider/device process-restart acceptance; see docs/ACCEPTANCE_RESEARCH_CACHE.md.",
+  "narrationMemory": "PASS: session-only object/fact coverage and queued/start/completed/failure/cancel/interruption callbacks; automatic repeated coverage suppressed, new facts/objects/chapters/landmarks eligible; more/replay/ordinary question/image and legacy recovery. Synthetic labels and fake Director cannot prove real semantic quality or human hearing.",
+  "silenceHotfix": "PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.",
+  "xinduBenchmark": "NOT RUN BY THIS SCRIPT: fresh production-provider phone discovery is recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md.",
+  "verificationRun": {
+    "date": "2026-10-13T11:46:46.2784755+08:00",
+    "baseline": "1e17de1",
+    "gates": {
+      "testDebugUnitTest": "EXECUTED PASS",
+      "testReleaseUnitTest": "EXECUTED PASS",
+      "assembleDebug": "EXECUTED PASS",
+      "assembleRelease": "EXECUTED PASS",
+      "lintDebug": "EXECUTED PASS",
+      "lintRelease": "EXECUTED PASS"
+    },
+    "gradleSummary": "115 actionable tasks: 33 executed, 82 up-to-date",
+    "runtimeGradleSummary": "75 actionable tasks: 13 executed, 62 up-to-date"
+  },
+  "runtimecheck": {
+    "applicationId": "com.kitt.reader.runtimecheck",
+    "versionName": "0.3.6",
+    "versionCode": 13,
+    "apk": "kitt-v0.3.6-runtimecheck.apk",
+    "sha256": "28795780faeff52b394255cd4c73aa540d64572d4ce72304638f084f48626a81",
+    "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "assembleDebug": "EXECUTED PASS",
+    "assembleDebugAndroidTest": "EXECUTED PASS",
+    "lintDebug": "EXECUTED PASS",
+    "testApkCertificate": "PASS original single signer",
+    "instrumentation": "NOT INSTALLED OR EXECUTED",
+    "phone": "See v036-phone-acceptance.json; user paused after production code13 upgrade"
+  },
+  "signingRegression": "EXECUTED PASS: 2 accepted / 6 rejected; temporary public certificate only, no replacement/private-key export",
+  "simulationReports": [
+    {
+      "name": "full-simulation.txt",
+      "mode": "EXECUTED deterministic/Fake; not real semantic/content/hearing acceptance",
+      "baselineGeneratedAt": "2026-10-13T11:01:11.7141576+08:00",
+      "baselineSha256": "ca3d4bafaecc3a639c9a9951922dd896cc4272fb8d8151cecc5d7e996d21926b",
+      "baselineSummary": [
+        "            KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)",
+        "            Director calls: 57; TTS outputs: 4; bounded Context Card: 1499 chars"
+      ],
+      "finalGeneratedAt": "2026-10-13T11:39:48.1427720+08:00",
+      "finalSha256": "ca3d4bafaecc3a639c9a9951922dd896cc4272fb8d8151cecc5d7e996d21926b",
+      "finalSummary": [
+        "            KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)",
+        "            Director calls: 57; TTS outputs: 4; bounded Context Card: 1499 chars"
+      ]
+    },
+    {
+      "name": "accelerated-simulation.txt",
+      "mode": "EXECUTED deterministic/Fake; not real semantic/content/hearing acceptance",
+      "baselineGeneratedAt": "2026-10-13T11:01:56.6834056+08:00",
+      "baselineSha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
+      "baselineSummary": [
+        "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS",
+        "opportunities=21 dispatched=22 activeDispatched=1 auto=SILENT:0,SPEAK_NOW:20,PREPARE:0,ASK_USER:1,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:1,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "Voice outputs=22; distance=90912m"
+      ],
+      "finalGeneratedAt": "2026-10-13T11:42:22.3387850+08:00",
+      "finalSha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
+      "finalSummary": [
+        "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS",
+        "opportunities=21 dispatched=22 activeDispatched=1 auto=SILENT:0,SPEAK_NOW:20,PREPARE:0,ASK_USER:1,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:1,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "Voice outputs=22; distance=90912m"
+      ]
+    },
+    {
+      "name": "batch-simulation.txt",
+      "mode": "EXECUTED deterministic/Fake; not real semantic/content/hearing acceptance",
+      "baselineGeneratedAt": "2026-10-13T11:00:45.7797646+08:00",
+      "baselineSha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b",
+      "baselineSummary": [
+        "Editorial freedom refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)",
+        "29 points; distance=90912m; speed=100km/h; acceleration=16x; latency=5s; TTS=20s",
+        "chapters=13; cached=13; chapterEntryOpportunities=13; Sanxingdui eligible=true",
+        "subjects=23; families=[HISTORY, HISTORIC_SETTLEMENT, HERITAGE, CULTURAL_SITE, PEOPLE, CULTURAL_GEOGRAPHY, GEOGRAPHY, TRANSPORT, ECONOMY]; opportunities=23 dispatched=23 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:23,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ],
+      "finalGeneratedAt": "2026-10-13T11:39:02.0172245+08:00",
+      "finalSha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b",
+      "finalSummary": [
+        "Editorial freedom refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)",
+        "29 points; distance=90912m; speed=100km/h; acceleration=16x; latency=5s; TTS=20s",
+        "chapters=13; cached=13; chapterEntryOpportunities=13; Sanxingdui eligible=true",
+        "subjects=23; families=[HISTORY, HISTORIC_SETTLEMENT, HERITAGE, CULTURAL_SITE, PEOPLE, CULTURAL_GEOGRAPHY, GEOGRAPHY, TRANSPORT, ECONOMY]; opportunities=23 dispatched=23 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:23,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ]
+    },
+    {
+      "name": "landmark-simulation.txt",
+      "mode": "EXECUTED deterministic/Fake; not real semantic/content/hearing acceptance",
+      "baselineGeneratedAt": "2026-10-13T11:01:21.4446230+08:00",
+      "baselineSha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
+      "baselineSummary": [
+        "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)",
+        "Selected=sanxingdui, mianzhu-newyear-art, longmen-front, jushui-taiping-bridge; opportunities=28 dispatched=28 activeDispatched=0 auto=SILENT:24,SPEAK_NOW:4,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ],
+      "finalGeneratedAt": "2026-10-13T11:40:16.1933686+08:00",
+      "finalSha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
+      "finalSummary": [
+        "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)",
+        "Selected=sanxingdui, mianzhu-newyear-art, longmen-front, jushui-taiping-bridge; opportunities=28 dispatched=28 activeDispatched=0 auto=SILENT:24,SPEAK_NOW:4,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ]
+    },
+    {
+      "name": "dossier-simulation.txt",
+      "mode": "EXECUTED deterministic/Fake; not real semantic/content/hearing acceptance",
+      "baselineGeneratedAt": "2026-10-13T11:01:02.1481699+08:00",
+      "baselineSha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8",
+      "baselineSummary": [
+        "Session Local Dossier route: PASS, deterministic research/director/voice; NOT real search or Xindu discovery acceptance.",
+        "chapters=13; unique research=19; narrations=13; opportunities=33 dispatched=33 activeDispatched=0 auto=SILENT:20,SPEAK_NOW:13,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ],
+      "finalGeneratedAt": "2026-10-13T11:39:23.1716798+08:00",
+      "finalSha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8",
+      "finalSummary": [
+        "Session Local Dossier route: PASS, deterministic research/director/voice; NOT real search or Xindu discovery acceptance.",
+        "chapters=13; unique research=19; narrations=13; opportunities=33 dispatched=33 activeDispatched=0 auto=SILENT:20,SPEAK_NOW:13,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ]
+    },
+    {
+      "name": "driving-area-resolution.txt",
+      "mode": "EXECUTED deterministic/Fake; not real semantic/content/hearing acceptance",
+      "baselineGeneratedAt": "2026-10-13T11:01:03.7614865+08:00",
+      "baselineSha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd",
+      "baselineSummary": [
+        "speed=80.0 reported=80.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=80.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=100.0 reported=100.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms",
+        "speed=100.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms"
+      ],
+      "finalGeneratedAt": "2026-10-13T11:39:24.8875734+08:00",
+      "finalSha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd",
+      "finalSummary": [
+        "speed=80.0 reported=80.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=80.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=100.0 reported=100.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms",
+        "speed=100.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms"
+      ]
+    }
+  ],
+  "narrationCoverage": {
+    "addedTests": 30,
+    "journeyTests": 19,
+    "loopTests": 7,
+    "additionalTests": "1 landmark + 1 persistence + 2 Android TTS",
+    "deliberateRecheckReport": "V0.3.6 semantic coverage route: deliberate three rechecks/chapter, synthetic labels/Director/fake Voice, NOT human semantic acceptance or timing simulation.\nchapters=13; unique new object/fact outputs=26; opportunities=39 dispatched=39 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:26,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:13 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+    "memoryLimit": 32,
+    "completionProof": "TTS final engine callback only; not human hearing",
+    "semanticDecision": "Same Director in existing request; local same-subject coverage labels guard. Reworded invented labels may escape the local guard; human semantics PENDING.",
+    "runtimeProductionSourceComparison": "40 main Kotlin files match runtime build workspace; 0 differences",
+    "phoneAcceptance": "PENDING, user requested pause",
+    "stop": "Only Issue #13; stop after delivery, no V0.4.0/other issue implementation"
+  }
+}

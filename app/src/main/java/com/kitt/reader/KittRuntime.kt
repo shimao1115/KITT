@@ -166,7 +166,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     fun checkpoint() { store.checkpoint(journey, simulation, acceleration, (source as? SimulatedLocationSource)?.travelMs ?: travelCheckpointMs) }
     private fun checkpointIfChanged() {
         // Ticks/GPS do not write a raw track. Only intent, quiet and topic summaries change this key.
-        val key = "${journey.started}|${journey.destination}|${journey.instructions}|${journey.quietUntil}|${journey.recentTopics}"
+        val key = "${journey.started}|${journey.destination}|${journey.instructions}|${journey.quietUntil}|${journey.summaryTopics}"
         if (journey.running && key != lastCheckpoint) { lastCheckpoint = key; checkpoint() }
     }
     fun serviceLost() {

@@ -25,6 +25,10 @@ class HotfixPhoneProbe : Instrumentation() {
             }
             lateinit var runtime: KittRuntime
             runOnMainSync { runtime = (targetContext.applicationContext as KittApp).runtime }
+            if (mode == "narration-memory") {
+                startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                finish(0, narrationMemoryPhoneProbe(runtime)); return
+            }
             if (mode == "location") {
                 startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 finish(0, locationPhoneProbe(runtime)); return

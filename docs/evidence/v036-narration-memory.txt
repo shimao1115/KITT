@@ -1,0 +1,2 @@
+V0.3.6 semantic coverage route: deliberate three rechecks/chapter, synthetic labels/Director/fake Voice, NOT human semantic acceptance or timing simulation.
+chapters=13; unique new object/fact outputs=26; opportunities=39 dispatched=39 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:26,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:13 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0
