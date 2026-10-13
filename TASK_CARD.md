@@ -1,47 +1,32 @@
-# CURRENT TASK CARD — KITT V0.3.6 / Issue #13 讲述语义去重
+# CURRENT TASK CARD — #19 KITT 家庭电脑导入原签名并双机统一验签
 
-> **本卡已执行：2026-10-13，V0.3.6/code13工程交付PASS，STOP等待验收。** 施工提交`0cc7e68`；Debug395/Release382、构建/lint/原签名和六组模拟均通过。用户恢复手机后，正常设置已核对；原UI失败时模型列表尚未加载，code12精确账号文字比较未留存。真实ChatGPT→自动旁白→TTS引擎完成1段（98s观察/新鲜位置），仅测试Probe文案修正，生产APK不变。用户“没听到或当时不在旁边”，真人语义/听感/补充/重播仍PENDING。详见[HANDOFF.md](HANDOFF.md)与[验收记录](docs/ACCEPTANCE_NARRATION_MEMORY.md)。下方为原施工要求；不表示用户已最终验收，不再自动操作手机或进入V0.4.0。
+**用户于 2026-10-13 在家庭 Windows PC 授权本机 Codex 完成签名迁移。当前唯一执行任务 #19：导入办公室原私钥副本 → 验签 → 在家庭电脑构建 V0.3.6/code13 并验签 → 记录结果 → STOP。**
+**本卡不包含本地私钥来源的实际盘符路径；用户会在本机 Codex 会话中另行告知。私钥路径、字节和密码都不得写进公共 GitHub Issue、提交、附件、生成日志或聊天。** 本卡只是向施工 Agent 发任务，尚未表明家庭端任何一步已执行或 PASS。
 
-**用户于 2026-10-13 明确授权开工。本轮唯一施工 Destination：[Issue #13](https://github.com/shimao1115/KITT/issues/13)。任务已下发，不代表 Codex 已启动或 V0.3.6 已实现。**
-**执行模式：** Agent 继承仓库当前 main，独立完成理解→实现→单测→模拟→修复→打包→交接，用户仅在这个小版本末验收。完成即 STOP，不自主进入 V0.4.0。
+## 范围与已知基线
 
-## 0. 继承现状与禁止回退的边界
+- 先读 `AGENTS.md`、`HANDOFF.md`、`docs/SIGNING_UNIFICATION.md`、`docs/ROADMAP.md`、[#19](https://github.com/shimao1115/KITT/issues/19)，检查当前 Git 工作树；在干净状态 `git pull --ff-only origin main`，不要强制重置/覆盖未提交修改。
+- 办公室端原签名及构建已 PASS；家庭端仍 PENDING。原手机 `com.kitt.reader.runtimecheck` 已通过原位升级到 V0.3.6/code13，账号设置目前可见，无需重复安装。
+- 唯一可信证书 SHA-256（小写、无冒号）：`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
+- 家庭目标私有路径：`%USERPROFILE%\.kitt\signing\acceptance.keystore`，**不能覆盖全局** `%USERPROFILE%\.android\debug.keystore`；不能另造密钥、转格式丢失私钥条目、上传 keystore、打印/回传二进制或提取其中的账号资料。
 
-先读 `AGENTS.md`、`HANDOFF.md`、`docs/ROADMAP.md`、`docs/AI_CONTRACT.md`、本任务、#13 及最新 commits；先审计 `Journey.deliver()`、`Journey.speak()`、`DirectorLoop`、Context Card、`ChapterResearch.deepen()`、`VoicePort.speak(text, complete)`，再作最小修改。基线为手机已安装 `com.kitt.reader.runtimecheck` **V0.3.5.2/code12**，已经确认原账号/设置保留；本任务成功交付版本建议 **V0.3.6/code13**，不重写旧版本。
+## 操作要求（本机 Codex 自主执行）
 
-**继承的已证实事实**：#18 区县新都区真实首次 `write=1` → force-stop → 新 Journey `hit=1`、Overview 重复研究 0，已阶段性接受；#18 的镇街/Topic、持续在线讲述、真人语音仍 PENDING；#14 GPS↔NETWORK 和新鲜度、#17 连续镇街、#19 家庭签名仍各自开放。不得把上一版真实 Provider 的 `UnknownHostException` / `STALE` 或天气结果校验失败误判为本次去重行为，更不能借本任务改定位/FUSED/VPN-IP 或研究缓存有效性。
+1. 用户在**本机私密会话**给出来源文件的绝对路径。只读预检此文件是否存在，调用仓库 `scripts/check-kitt-signing.ps1 -KeystorePath <该本地路径>`，验证它**确实是含原 PrivateKeyEntry 的正确密钥**（仅记录是否 PASS 和公开证书指纹）。如果文件不存在、路径不可访问、指纹不一致，STOP 等待用户，**不复制**。
+2. 只有来源 PASS 后，创建私有 KITT 目标目录。若目标已存在，**先比较 SHA256 文件摘要**；不同则绝不覆盖/移动、报告冲突等待用户；相同则保持不变。若不存在则原样复制源文件。为目标目录及文件设置只允许当前 Windows 用户和 SYSTEM 访问的 ACL；不改源文件/原文件权限。
+3. 使用 `scripts/check-kitt-signing.ps1` 再验证目标文件PASS。不要更改仓库的 Gradle signingConfig 或 app ID，除非发现真实阻塞且最小修复得到用户批准；本轮原则上不改任何生产代码。
+4. 家庭电脑确保 JDK17/Android SDK35 可用，运行 `scripts/build-runtime-smoke.ps1 -Offline`（本地依赖缺失时先说明，再考虑普通构建），然后 `scripts/check-kitt-signing.ps1 -ApkPath artifacts\kitt-v0.3.6-runtimecheck.apk -ExpectedApplicationId com.kitt.reader.runtimecheck`。需确认签名正确、applicationId相同、versionName `0.3.6`/versionCode `13`，并记录该家庭产物的**文件 SHA256**；家庭/办公室 APK 文件哈希不要求相同，证书必须一致。
+5. 如可用再执行 `scripts/verify.ps1 -Offline` 与 `scripts/test-kitt-signing.ps1 -RuntimeApkPath artifacts\kitt-v0.3.6-runtimecheck.apk`，核对 Debug/Release 同一证书。写明哪些命令真正执行、哪些因为环境未准备而 PENDING；绝不重复冒称办公室的历史测试数为家里的结果。
+6. **不操作手机、不降级/原位重装当前 code13、不清数据、不读取 ChatGPT 凭据**。只构建和验签，不触发真实 Provider/研究搜索；不施工 #13、#14、#17、#18 或 V0.4.0。
+7. 签名源是可同步目录时要提示用户私钥已可能在同步端留存：仅建议在验证完毕后自行清理同步副本或转移至加密介质；**未经用户另行批准，不自动删除/移动同步源，也不上传额外备份**。保留办公室原始密钥且不得撤销使用权。
 
-## 1. 唯一产品目标
+## 交付门禁
 
-在同一 Journey 中，同一对象/同一事实/同一讲述角度已经实际讲过时，下一轮自动 Director 不应通过换措辞再次讲述；但新事实、新对象、高价值独立地标、跨区新章节仍有机会正常播报。主动要求“再讲一点”只在可核验的新材料上深入；明确说“再说一遍”允许重播。**去重绝不能以全局 SILENT、每章节只能讲一次或惩罚新知识为代价。**
+- 家庭源文件确为原始 PrivateKeyEntry PASS；本机项目私有 keystore PASS，目标与源字节一致。
+- 家庭实际构建 runtimecheck APK、实际 APK 签名/包名/versionName/code13 PASS；若做了完整 Debug/Release 构建及签名回归，附脱敏结果。
+- 办公室 PASS（历史证据）+ 家庭 PASS（本机实测证据）才可把 #19 标为**双机签名统一 PASS**，并在 `HANDOFF.md`、[#19](https://github.com/shimao1115/KITT/issues/19) 记录不含任何私钥及本地私有路径的结果；需要提交的仅是脱敏验收文档，不用为验证强迫产生新代码提交。若家庭构建未验证，只签密钥 PASS、产物 PENDING，#19 继续 OPEN。
+- 完成 STOP；不要擅自启动其他版本施工。
 
-## 2. 已知缺陷与最小实现边界
+## 上一任务状态（禁止重复施工）
 
-- 目前 `Journey.deliver(SPEAK_NOW)` 用 `result.topic !in recentTopics` 判断，却向 `recentTopics` 写入 `memoryUpdate.ifBlank { topic }`：**主题身份和讲述摘要混用**；且在语音播放成功/被打断前就记录为已讲。先以确定性测试固定此回归。
-- 按**本趟旅程**保留有界的近期语义记忆：至少区分对象/主题身份、覆盖的核心事实/角度、实际播放生命周期。复用现有 `topic`、`memory_update`、地区和已研究来源结构，将“哪些事实已经覆盖”以短摘要进入下一次 Context/Director 请求。不要持久保存全文旁白、用户对话、位置轨迹；不要把 #18 的持久证据当已讲记录。
-- **播放状态诚实**：明确 pending/已排队/开始TTS/回调完成/失败/中断 的取舍。仅把有充分成功证据的材料作为“已完成”；如 TTS 接口无法可靠证明用户确实听完，应在交接中写明证据边界，设计被打断/失败不误记完整讲完，也不在每次刷新时自动重放半截。取消、旧epoch回调、PREPARE、主动打断均必须安全。
-- 重复过滤优先用现有结构化对象与已讲摘要、最少必要的 Director 指令约束，不以字符串完全相等当语义去重，不叠加第二次 LLM 语义审查、embedding/向量数据库、额外 Reviewer Agent、昂贵调用或复杂自造规则树。没有真实证据不要过度设计。
-- 主动 `再讲一点` 和 `再说一遍` 走不同路径；其他普通问题不可被自动去重逻辑误杀。没有新证据时可简短说“目前没有可靠的新内容”，不能捏造历史文化事实或强制持续输出。
-- 保留已经存在的主动问话立即接管、静音/提前恢复、PREPARE 再确认、后台 Topic 研究、独立地标优先、stale/cancel、定位可信性、来源约束、模拟、评分、签名和登录行为。
-
-## 3. 实际测试门禁
-
-A. 同一地区同一对象的自动再选与换说法同事实，合理抑制；`topic` 和 `memory_update` 不等的负例必须覆盖。**同一对象但出现全新可信事实可以继续讲**。
-
-B. Overview → Topic 回流、章内重复检查、从章节离开再返回、PREPARE 重新检查、独立地标出现仍触发相应机会；不同地区的同名对象不会错误跨章被压制。不允许把 10 分钟安静模式之类的独立功能当去重实现。
-
-C. TTS 成功/失败/开始后打断/尚未开始播放/迟到回调，分别证明“已讲”记忆与自动补播行为恰当；旧进程/新 Journey 不携带上一趟假定已讲事实，必要的原有恢复摘要兼容且不误判完整播报。
-
-D. 用户说/打字 `再讲一点`（有新来源/没有新来源）与 `再说一遍`、正常主动提问、图像问话接管不被自动去重过滤；待播语音可打断，后续自然恢复。
-
-E. 成都新都→广汉→德阳→绵竹→绵阳安州雎水六组确定性/Fake 模拟，比较前后 SPEAK_NOW/SILENT/STALE、有效的新对象/新事实输出，明确不出现整段失声或随意补播。**模拟无法独立证明真实语义或真人听感通过。**
-
-F. 真模型/真机：先确认至少**一次**可靠的网络 Provider + Director 自动讲述链真实完成，区分网络异常/过时定位/研究失败与去重结果；同路段再次检查、用户请求补充/重播、真人听感由用户停车或乘客状态下验证。无法取得稳定网络或真实TTS完成时明确 PENDING，不得声称真实语义 PASS；不为验收反复付费搜索。
-
-G. 在可用环境运行 `scripts/verify.ps1 -Offline`，Debug/Release 单测、assemble、lint、签名、回归；保留 V0.3.5.2 的区县持久缓存与 code12 安全护栏。实际列出通过数及未执行项，禁止把旧版 Debug365/Release352 直接复制为本版成绩。
-
-## 4. 交付与停止
-
-- 在原签名可用环境产出 **V0.3.6/code13** 可安装 `com.kitt.reader.runtimecheck` APK，核对唯一签名证书 SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**，包名和 versionCode >12；只接受原位覆盖升级，**不能卸载、清数据、导出 ChatGPT 凭据或把标准 `com.kitt.reader` 当原账户包**。若运行环境没有原签名私钥，如实记录不可安装，禁止生成新私钥冒充。
-- 更新 `HANDOFF.md`、`docs/ROADMAP.md`、独立精简验收记录、#13；交付 commit、文件/证书 SHA256、覆盖范围、测试事实、真机待验清单与最短安全安装步骤。仅提供真实可验证的 APK 产物路径，不在仓库提交私钥或账号资料。
-- 只完成 #13。**STOP：不得顺手修 #14/#17 的定位、#18 的尚未完成自然 Topic/镇街验收、#19 家庭签名、在线网络传输/天气资料校验，也不得开始 V0.4.0 离线知识包。** 真遇到会阻塞 V0.3.6 的网络故障时，先通过确定性模拟实现其余全部内容，并把实机限制准确交接。
+V0.3.6/code13 已工程交付 Debug395/Release382、六组模拟通过，真实自动 ChatGPT→TTS 成功完成1段；真人听感/同义去重/补充重播仍待用户体验，#13 保持 OPEN，不再为家庭签名导入更改生产 APK。#18 区县持久缓存已实机阶段 PASS，其余自然现场仍 PENDING。
