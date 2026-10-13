@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "timezone": "Asia/Shanghai",
   "applicationId": "com.kitt.reader.runtimecheck",
-  "device": "vivo V2405A / Android16 (inherited device baseline)",
+  "device": "vivo V2405A / Android16 (connected and observed)",
   "preflight": {
     "installedBaseline": "0.3.5.2 / code12",
     "installedApkCertificate": "PASS: pulled base APK verified with original single signer",
@@ -21,15 +21,26 @@
     "uninstallClearDowngrade": "NONE"
   },
   "accountAndSettingsPreservation": {
-    "result": "PENDING",
-    "observation": "The automatic normal-UI preservation check did not pass; it stopped after installation. Its individual comparison results were not persisted, so the specific difference is not established. User then paused device acceptance; no further inspection was performed.",
+    "result": "OBSERVED_CONFIG_MATCH; exact code12 account text comparison not recoverable",
+    "observation": "Normal UI after reconnect: connected account count1; ChatGPT/GPT-6.1-Sol/low; rate1.0x; system default Chinese voice; notifications allowed; independent Responses disabled. Account text matched the retained POST-UPGRADE UI snapshot in memory. The earlier saved UI still waited for the account model list and had no model/effort controls, sufficient to fail the original check. Original pre/post individual comparison flags were not persisted; no exact code12 account text comparison is claimed. No observed settings loss.",
     "credentialOrRawAccountFileExport": "NONE",
-    "requiredFollowUp": "When the phone is available, inspect saved ChatGPT connection/provider/model/effort and voice/settings in the normal UI; do not uninstall, clear data or reconnect speculatively."
+    "requiredFollowUp": "No speculative reinstall, clear-data or reconnect needed. Human hearing and semantic acceptance remain pending."
   },
   "baselineCode12Observation": "One natural automatic ASK_USER and successful TTS completion were observed before implementation; not an automatic narration or V0.3.6 semantic acceptance.",
-  "v036LiveAutomaticNarration": "NOT RUN: user paused phone acceptance before production narration-memory instrumentation",
-  "v036PhoneInstrumentation": "BUILT AND SIGNED ONLY; NOT INSTALLED OR EXECUTED",
-  "humanSemanticAndHearing": "PENDING",
+  "v036LiveAutomaticNarration": "PASS_ENGINE_CALLBACK_ONLY: corrected probe 98s observation / 98s fresh position; actual ChatGPT/gpt-6.1-sol/low automatic SPEAK_NOW1 and STARTED->COMPLETED1; STALE/FAILURE/SUPPRESSED0. Topic short summary: 杨慎（杨升庵）与升庵祠、桂湖. Not moving-field or semantic acceptance.",
+  "v036PhoneInstrumentation": "Same-signer test APK installed with owner vivo guard authorization. Corrected narration-memory runner completed code0; only test source changed, production APK unchanged.",
+  "humanSemanticAndHearing": "PENDING: user answered 没听到或当时不在旁边. Neither hearing success nor audio failure inferred; more/replay/rechecks not human-verified. No additional model run for hearing confirmation.",
   "pause": "User explicitly requested pausing real-device acceptance because the phone needs to be offline; complete other work first.",
-  "inheritedGates": "Issue #18 district real cache remains stage-accepted; remaining town/Topic/voice, #14/#17 field location and #19 home signing remain independent/PENDING."
+  "inheritedGates": "Issue #18 district real cache remains stage-accepted; remaining town/Topic/voice, #14/#17 field location and #19 home signing remain independent/PENDING.",
+  "resumption": "User said 真机已经连接, resuming device work after the earlier pause.",
+  "probeCorrection": {
+    "invalidRun": "Initial test-only preference 无资料可安静 triggered the quiet command; 180s observed / 170s fresh, no narration. INVALID, not semantic evidence.",
+    "fix": "Test-only text 无资料则SILENT; assert requestInput accepted and !isQuiet. No production source changes.",
+    "build": "12s; 75 tasks:7 executed/68 up-to-date; compileDebugAndroidTestKotlin, assembleDebugAndroidTest, lintDebug EXECUTED PASS; assembleDebug UP-TO-DATE. Production runtimecheck SHA256 unchanged.",
+    "engineSuites": "Earlier actual Debug395/Release382 and six simulations retained; NOT rerun in this phone-only follow-up."
+  },
+  "separateOrdinaryUiRun": "Natural ordinary UI start observed automatic ASK_USER and successful TTS; one STALE before district identity was ready. Separate from the successful narration probe; not a semantic pass.",
+  "successfulProbeSetup": "Probe explicitly cancels the initial automatic request before setting temporary journey preference; diagnostic observed CANCELLED1, followed by the district-ready automatic request and completed narration. 98s is the observation window, excluding Activity startup wait.",
+  "researchEvidenceBoundary": "Successful report terminal research_request_outcome=NEVER_ATTEMPTED is not a network call counter. Live diagnostic snapshot saw background Topic started, but no Topic completion was established. Issue18 remaining Topic acceptance unchanged.",
+  "cleanupAndStop": "Successful probe ended normally; home/start button visible. Temporary UI XML files deleted. App restart cleared transient diagnostics, so later empty-log zero counters are invalid and not used. No complete narration/account/coordinates exported. STOP pending real hearing/semantic acceptance; Issue13 stays OPEN."
 }

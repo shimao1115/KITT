@@ -30,7 +30,7 @@
 
 ## 最终本轮结果
 
-**工程交付 PASS；用户已明确暂停真机验收，停止等待本小版本验收。** [全量证据](evidence/v036-verification.json)、[合成重查](evidence/v036-narration-memory.txt)、[手机阶段性记录](evidence/v036-phone-acceptance.json)。
+**工程交付 PASS；手机暂停后已恢复并完成一次真实自动讲述引擎链，真人语义/听感仍PENDING，到此停止。** [全量证据](evidence/v036-verification.json)、[合成重查](evidence/v036-narration-memory.txt)、[手机阶段性记录](evidence/v036-phone-acceptance.json)、[脱敏Probe原结果](evidence/v036-phone-narration.json)。工程全量测试/模拟未在手机接续阶段重跑。
 
 | Gate | 本轮实际结果 |
 | --- | --- |
@@ -41,8 +41,10 @@
 | 六组模拟 | 下表为本轮实际前后对照；Fake/确定性，不是真语义或手机听感 |
 | 合成重查 | 13章×3检查，SPEAK_NOW26、SUPPRESSED13、SILENT0、STALE/FAILURE0；不以整章静音去重 |
 | 手机安装 | 用户本人允许vivo守护安装；`adb install -r` Success，已核code13/0.3.6，首次安装时间2026-10-09 09:42:45不变；没有卸载、清数据或降级 |
-| 账号/设置保留 | **PENDING：自动常规UI保留检查未通过，具体差异未确定**；随后用户要求暂停手机验收，未继续读取/检查。不能据原位安装成功推定完整保留PASS，也没有证据认定数据丢失 |
-| V0.3.6真实Director→旁白→TTS、真人语义/听感 | **NOT RUN / PENDING，用户暂停**；生产手机Probe已构建验签，未安装/执行；code12 ASK_USER完成不能充当本版旁白证明 |
+| 账号/设置核对 | 恢复后正常UI：连接账号1、ChatGPT/GPT-6.1-Sol/low、1.0×、系统默认中文声音、通知允许、独立Responses关闭，符合既有配置；Probe配置前后相同。账号与暂存**升级后**UI文字一致；精确code12→13文字比较未留存。原失败UI仍“等待账号模型列表”，模型/effort控件未就绪；没有数据丢失证据，不导出凭据 |
+| V0.3.6真实Director→旁白→TTS | **PASS_ENGINE_CALLBACK_ONLY**；有效Probe98s观察/98s新鲜位置，SPEAK_NOW1、STARTED→COMPLETED1，STALE/FAILURE/SUPPRESSED0，ChatGPT/gpt-6.1-sol/low，runner code0。自然地区、无注入坐标/移动，临时旅程偏好不问目的地，非连续行驶验收 |
+| 真人语义/听感、补充/重播 | **PENDING**；用户反馈“没听到或当时不在旁边”，不证明有声或无声故障。没有继续为补听调用模型。当前旅程已结束，上一段重播正文按设计清空 |
+| 手机测试修正与构建 | 初次Probe文案“无资料可安静”误触10分钟安静，180s观察/170s新鲜位置、无旁白，无效，不能当去重。仅改测试文案及断言非安静；12s构建，75任务7执行/68复用；compileDebugAndroidTestKotlin、assembleDebugAndroidTest、lintDebug EXECUTED，assembleDebug UP-TO-DATE，生产APK摘要未变 |
 
 | 模拟 | 前 → 后（本轮均实际执行） |
 | --- | --- |
@@ -61,4 +63,10 @@
 | `H:\CODEX\KITT\artifacts\kitt-v0.3.6-debug.apk` | com.kitt.reader | 7a536b523c9832a2a53b60d1bdc57ac632ff088275dd7bccd52f015794f451af |
 | `H:\CODEX\KITT\artifacts\kitt-v0.3.6-release.apk` | com.kitt.reader | 5bf3df44ccef5f59413aa4ee616ac7bf751158579a464b2f4934aa7c89aa161f |
 
-手机已code13，不需要重复安装。用户恢复手机验收后，**先在正常设置界面核对ChatGPT连接/Provider/模型/effort、语速/声音，再按上方2–5步**；不因未知UI差异擅自重新登录、清数据或修其他issue。没有新增OAuth或密钥待办，不自动恢复真机操作。#13保持OPEN；#14/#17、#18剩余现场、#19家庭端、V0.4.0均不继续施工。
+手机已code13，不需要重复安装。下一次停车/乘客状态按上方2–5步，实际听完后在**同一Journey结束前**试补充/重播。没有新增OAuth或密钥待办，本轮停止。#13保持OPEN；#14/#17、#18剩余现场、#19家庭端、V0.4.0均不继续施工。
+
+## 恢复手机后的证据边界
+
+有效Probe简短主题为“杨慎（杨升庵）与升庵祠、桂湖”，只保存状态和短主题，不保存完整旁白/录音/坐标/账号文字。用户允许同签名测试包安装。测试设置临时偏好前显式取消首个自动请求，诊断见CANCELLED1；随后地区就绪的自动请求完成。98s是正式观察窗口，不含Activity启动等待。普通UI另一次开始自然ASK_USER/TTS完成及地区就绪前STALE单独记录，不混进有效Probe计数。
+
+Probe终端字段`research_request_outcome=NEVER_ATTEMPTED`只是当时可见状态回退；诊断已见`Topic started`，不能由它推断没有后台研究或网络调用，更不证明Topic成功。没有补签#18。Probe已正常结束回出发页，启动清理使短期诊断文件不再存在；不得用缺失日志所得的0计数替代原观察。保留脱敏结果及这个解释，真人听感和真实语义由下一次实际聆听确认。

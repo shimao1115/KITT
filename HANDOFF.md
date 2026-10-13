@@ -1,6 +1,6 @@
 # KITT V0.3.6 / #13 工程交付 — 停止等待验收（2026-10-13）
 
-**工程施工、全量测试、六组模拟与原签名打包完成，代码提交 [`0cc7e68`](https://github.com/shimao1115/KITT/commit/0cc7e68a867742852c46e000fdc506386eab3862)。用户已明确暂停真机验收、手机暂时离线；不再进行手机操作，不自动开启下一版本。#13保持OPEN等待本小版本人工验收。** [精简验收](docs/ACCEPTANCE_NARRATION_MEMORY.md)、[本版实际验证](docs/evidence/v036-verification.json)、[手机阶段性事实](docs/evidence/v036-phone-acceptance.json)。下方旧授权/旧交接只作历史。
+**工程施工、全量测试、六组模拟与原签名打包完成，代码提交 [`0cc7e68`](https://github.com/shimao1115/KITT/commit/0cc7e68a867742852c46e000fdc506386eab3862)。用户恢复手机连接后，本版真实ChatGPT→自动旁白→TTS引擎完成已取得一次证据；正常设置已核对。用户反馈“没听到或当时不在旁边”，真人听感、同义去重、补充/重播仍PENDING。停止手机操作，#13保持OPEN等待本小版本人工验收，不自动开启下一版本。** [精简验收](docs/ACCEPTANCE_NARRATION_MEMORY.md)、[本版实际验证](docs/evidence/v036-verification.json)、[手机阶段性事实](docs/evidence/v036-phone-acceptance.json)。下方旧授权/旧交接只作历史。
 
 ## 当前可运行能力
 
@@ -13,7 +13,7 @@
 ## 本轮实际 build / tests / 回归
 
 - 最终 `scripts/verify.ps1 -Offline`：**Debug395 / Release382，失败、错误、跳过全0**；新增30项两种Variant均实际执行。Debug/Release的tests、assemble、lint均EXECUTED PASS，生产包签名PASS；115任务33执行/82复用。没有复制旧版365/352成绩。编译器既有deprecated警告不影响通过。
-- 最终 `scripts/build-runtime-smoke.ps1 -Offline`：assembleDebug、compileDebugAndroidTestKotlin、lintDebug均EXECUTED PASS，75任务13执行/62复用；assembleDebugAndroidTest本版首轮EXECUTED PASS，最终复核UP-TO-DATE。生产/测试APK唯一原证书，40个生产Kotlin文件与最终施工源码逐一一致。**仅构建测试APK，未安装或执行本版手机instrumentation。**
+- 工程交付时 `scripts/build-runtime-smoke.ps1 -Offline`：assembleDebug、compileDebugAndroidTestKotlin、lintDebug均EXECUTED PASS，75任务13执行/62复用；assembleDebugAndroidTest首轮EXECUTED PASS、工程复核UP-TO-DATE。生产/测试APK唯一原证书，40个生产Kotlin文件与最终施工源码逐一一致。恢复手机后仅修正测试Probe文案及断言，再构建12s：compileDebugAndroidTestKotlin、assembleDebugAndroidTest、lintDebug EXECUTED PASS，assembleDebug UP-TO-DATE，75任务7执行/68复用；测试包安装并实际instrumentation返回code0。生产APK摘要不变，本次接续未重跑上述全量单测/模拟。
 - `scripts/test-kitt-signing.ps1`：2接受+6拒绝实际PASS，未生成/导出/提交私钥。旧实现两条红测确实失败；迁移播放前题材历史/整节点去重旧断言后最终全量通过。
 - 同一粗粒度路线13章刻意3次检查：**26新对象/事实输出、13重复SUPPRESSED、SILENT0、STALE/FAILURE0**。这只是标签/状态确定性证据，不是真模型语义。
 - 成都新都→广汉→德阳→绵竹→绵阳安州雎水六组前后均本轮实际执行：full57调用/4声音；accelerated22/22；batch13章/23主题/23调用；landmark4节点/28调用（SPEAK4/SILENT24）；dossier13讲述/33调用/19唯一研究（SPEAK13/SILENT20）；driving-area-resolution合成700m章节80/100km/h含报速0为12/10查询、最短16s。前后计数保持，正常组无STALE/cancel/failure；Fake/假Voice、29点90912m，非实车/真人内容验收。详表与报告时间/摘要见验证JSON。
@@ -33,20 +33,23 @@
 ## 手机事实 / Provider / 用户最小待办
 
 - 原手机code12/base.apk已核同证书、同包名。用户本人允许vivo“超级守护”安装后，`adb install -r`返回**Success**；已核0.3.6/code13，更新时点11:34:03，首次安装时间2026-10-09 09:42:45不变。没有卸载、清数据、降级或标准包替换。
-- **完整账号/设置保留Gate PENDING：自动正常UI保留检查未通过，具体比较差异未留存、尚未确定。** 随后用户明确要求暂停真机验收，未继续检查；不能仅据安装成功认定完整保留PASS，也没有证据认定数据丢失。不读取/导出凭据或原始账号文件。
-- 此版真实网络Director→自动旁白→TTS完成、同路段语义/补充/重播真人听感均**NOT RUN/PENDING**。施工前code12一次自然ASK_USER与TTS成功仅证明问话链，不是旁白或本版验收。准备好的180秒有界自然手机Probe未安装/执行。
-- 新安装默认仍 **Fake / gpt-4.1-mini / effort空**。原手机升级前既有 **ChatGPT / gpt-6.1-sol / low**，本版不修改Provider、登录或设置默认；升级后的完整保留/在线能力尚未确认。没有新增密钥或OAuth步骤，vivo本次安装授权已由用户完成。
-- 用户恢复手机验收后的最小动作：先看正常设置的连接/Provider/模型/effort、语速/声音；如有不符保留现场，不擅自清数据/重新连接。然后停车/乘客状态普通开始，一段真实自动旁白完成后，检查同段不换词重复、新事实仍开口、“再讲一点”与“再说一遍”、打断/安静/结束/新Journey。不要为刷日志重复付费搜索。**不自动恢复真机操作。**
+- 恢复手机后的正常UI核对：已连接账号1个、ChatGPT/GPT-6.1-Sol/low、语速1.0×、系统默认中文声音、通知允许、独立Responses关闭，均符合既有设置；Probe内配置前后相同。账号文字与暂存的**升级后**UI在内存中比对一致；code12→13精确账号文字比较未留存，不能补造。原UI脚本检查过早：暂存界面仍是“等待账号模型列表”，模型/effort控件不存在，足以令原检查失败；不据此推断数据丢失。未读取/导出凭据或原始账号文件，临时手机UI XML已删除。
+- **真实自动讲述链 PASS_ENGINE_CALLBACK_ONLY**：修正后Probe观察98s、新鲜位置98s，ChatGPT/gpt-6.1-sol/low自然地区自动SPEAK_NOW1，STARTED→COMPLETED1，STALE/FAILURE/SUPPRESSED均0。简短主题为“杨慎（杨升庵）与升庵祠、桂湖”。没有注入坐标/移动，测试临时旅程偏好不问目的地；不是连续行驶或真人语义验收。终端研究字段NEVER_ATTEMPTED不代表无研究：当次诊断见后台Topic started，未证明Topic完成或网络调用数，#18不改PASS。
+- 首轮Probe测试文案“无资料可安静”误触安静命令，180s观察/170s新鲜位置但无讲述，该次无效，不算去重成功。仅测试文案改为“无资料则SILENT”并断言非安静；生产代码及APK未变。另一次普通UI开始自然ASK_USER/TTS完成，并有地区就绪前STALE，单独记录，不混入上述旁白计数。有效Probe正常结束并回出发页；进程重启清除了临时诊断日志，只留脱敏结果，不把空日志计数冒充0。
+- **真人听感/同路段语义/补充/重播PENDING**：用户回答“没听到或当时不在旁边”；既不能证明听见，也不能判定无声故障。没有为补听继续调用模型。新安装默认仍 **Fake / gpt-4.1-mini / effort空**；原手机既有 **ChatGPT / gpt-6.1-sol / low** 已实际运行，本版无新增OAuth/密钥步骤，生产包与测试包vivo安装授权均由用户完成。
+- 下一次最小动作：停车/乘客状态普通开始，实际听完一段后，在**同一Journey、结束之前**试“再说一遍”和“再讲一点”，检查同段不换词重复、新事实仍开口及打断/安静；再结束/新Journey。当前Probe已结束，上一段重播正文按设计清空。不要为刷日志重复付费搜索。**本轮到此停止。**
 - #18真实区县缓存的阶段性接受仍有效，镇街/Topic及真人语音未全验收；#14/#17外场定位、#19家庭签名仍独立PENDING。未做定位、网络/天气校验修复或V0.4.0离线包。
 
 ## 最近milestone commits
 
+- 本次接续 — 仅修正测试Probe安静误触、归档code13真实讲述和设置核对；生产APK保持不变。对应提交见Git历史。
+- `5d48b31` — 原工程交接及用户暂停手机验收的历史记录。
 - `0cc7e68` — V0.3.6/#13覆盖记忆、诚实播放生命周期、补充/本地重播、地标新事实、30项新回归、code13与本版证据。
 - `1e17de1` — 当前任务卡/授权基线，只开V0.3.6，保留V0.3.5.2阶段性结果。
 - `519743f` — code12真机原位升级及真实区县跨进程缓存验证。
 - `f7cbd6b` — V0.3.5.2/#18持久有来源研究、code12。
 
-**STOP：其余工程工作已完成，仅等待用户恢复真机验收并给出本小版本决定。Issue #13保留OPEN，不自动进入下一Destination。**
+**STOP：工程工作及一次真实自动讲述引擎链已完成，等待用户实际聆听与本小版本验收决定。Issue #13保留OPEN，不自动进入下一Destination。**
 
 ---
 

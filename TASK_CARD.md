@@ -1,6 +1,6 @@
 # CURRENT TASK CARD — KITT V0.3.6 / Issue #13 讲述语义去重
 
-> **本卡已执行：2026-10-13，V0.3.6/code13工程交付PASS，STOP等待验收。** 施工提交`0cc7e68`；最终Debug395/Release382、构建/lint/签名和六组模拟均通过，runtimecheck APK已产出并安装Success。完整账号/设置保留的自动UI检查未通过、具体差异待查；用户已明确暂停真机验收，真实旁白/语义/听感PENDING。只保留恢复手机后的最小人工待办，详见[HANDOFF.md](HANDOFF.md)与[验收记录](docs/ACCEPTANCE_NARRATION_MEMORY.md)。下方为原施工要求；本次工程交付不表示用户已最终验收，不自动恢复真机或进入V0.4.0。
+> **本卡已执行：2026-10-13，V0.3.6/code13工程交付PASS，STOP等待验收。** 施工提交`0cc7e68`；Debug395/Release382、构建/lint/原签名和六组模拟均通过。用户恢复手机后，正常设置已核对；原UI失败时模型列表尚未加载，code12精确账号文字比较未留存。真实ChatGPT→自动旁白→TTS引擎完成1段（98s观察/新鲜位置），仅测试Probe文案修正，生产APK不变。用户“没听到或当时不在旁边”，真人语义/听感/补充/重播仍PENDING。详见[HANDOFF.md](HANDOFF.md)与[验收记录](docs/ACCEPTANCE_NARRATION_MEMORY.md)。下方为原施工要求；不表示用户已最终验收，不再自动操作手机或进入V0.4.0。
 
 **用户于 2026-10-13 明确授权开工。本轮唯一施工 Destination：[Issue #13](https://github.com/shimao1115/KITT/issues/13)。任务已下发，不代表 Codex 已启动或 V0.3.6 已实现。**
 **执行模式：** Agent 继承仓库当前 main，独立完成理解→实现→单测→模拟→修复→打包→交接，用户仅在这个小版本末验收。完成即 STOP，不自主进入 V0.4.0。

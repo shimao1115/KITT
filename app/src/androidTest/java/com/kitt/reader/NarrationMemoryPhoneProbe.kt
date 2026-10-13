@@ -24,7 +24,8 @@ internal fun Instrumentation.narrationMemoryPhoneProbe(runtime: KittRuntime): Bu
             runtime.start()
             // A test-only session preference, cleared on end. No destination or saved setting is invented.
             runtime.loop.cancel()
-            runtime.journey.requestInput("本次偏好：不需要询问目的地，只讲已有可靠来源支持的未讲内容；无资料可安静。")
+            check(runtime.journey.requestInput("本次偏好：不需要询问目的地，只讲已有可靠来源支持的未讲内容；无资料则SILENT。"))
+            check(!runtime.journey.isQuiet)
         }
         runBlocking {
             while (seconds < 180 && !completed) {
