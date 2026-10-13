@@ -1,6 +1,17 @@
-# KITT 签名统一：办公室 PASS / 家庭 PENDING（2026-10-13）
+# KITT 当前施工交接 — V0.3.5.2 恢复授权（2026-10-13）
 
-**当前唯一工作项 [#19](https://github.com/shimao1115/KITT/issues/19)，办公室端已完成；家庭端密钥传输、构建验签与双机原位升级均未执行，PENDING，不能声称双机统一成功。** 本次交付后停止，等待家庭端实际验证；不开展 V0.3.5.2/#18、#13 或离线包。工程提交 [`8753240`](https://github.com/shimao1115/KITT/commit/8753240ed184a8ee15c1d7420691b11184e1a30f)；脱敏证据 [signing-office-verification.json](docs/evidence/signing-office-verification.json)。
+**用户最新指令：先推进跨旅程研究缓存 #18；另一台电脑的签名复制与验证有空再做。** 之前“#19 全部验签之后才启动 #18”的限制已解除。唯一代码施工入口是 [TASK_CARD.md](TASK_CARD.md) / [Issue #18](https://github.com/shimao1115/KITT/issues/18)；当前**只是施工授权/任务入口切换，V0.3.5.2 尚未实现或完成工程验收**。之前的 HANDOFF 结果仍是可继承的基线，不应作为本版本的新测试结论。
+
+- 签名：办公室原密钥/项目专用密钥、runtimecheck / Debug / Release 构建与签名正负例报告 PASS，见 [#19](https://github.com/shimao1115/KITT/issues/19)；家庭端仍 PENDING、#19 保持开放，但不再阻塞 #18 的代码实现和可用办公室环境下的签名打包。绝不能把办公室通过写成两台电脑通过。
+- 手机：仍以现有 `com.kitt.reader.runtimecheck` 0.3.5.1/code11、原证书及 ChatGPT 账号数据为保护对象。升级包必须匹配包名和签名，versionCode 合法递增；不卸载/清数据、不导出凭据。
+- 当前 V0.3.5.2 唯一产品目标：有来源的 Overview/Topic 成功研究后持久保存；结束/重启后本地复用，命中时 0 次重复同地区研究；Director 本次旅程仍自主决定选题。先研究来源缓存，不扩离线包。
+- #17 的持续镇街显示与 #14 的定位新鲜度另案跟踪；#13 重复讲述和离线包尚未授权本轮施工。施工完成必须留简短实测结果、commit、APK 状况，停止等待用户总验收。
+
+---
+
+# KITT 上一阶段交接存档：签名统一办公室 PASS / 家庭 PENDING（2026-10-13）
+
+**当前唯一工作项 [#19](https://github.com/shimao1115/KITT/issues/19)，办公室端已完成；家庭端密钥传输、构建验签与双机原位升级均未执行，PENDING，不能声称双机统一成功。** 原签名小版本已停止，等待家庭端实际验证；用户随后明确授权 #18 独立施工，请以上方最新交接为准。工程提交 [`8753240`](https://github.com/shimao1115/KITT/commit/8753240ed184a8ee15c1d7420691b11184e1a30f)；脱敏证据 [signing-office-verification.json](docs/evidence/signing-office-verification.json)。
 
 ## 办公室真实结果
 
