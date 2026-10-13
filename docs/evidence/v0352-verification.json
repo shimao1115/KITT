@@ -1,0 +1,186 @@
+{
+  "version": "0.3.5.2",
+  "product": "沿途",
+  "build": "PASS (Debug/Release)",
+  "variants": {
+    "Debug": {
+      "tests": 365,
+      "failures": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 352,
+      "failures": 0,
+      "skipped": 0
+    }
+  },
+  "lint": "PASS (Debug/Release)",
+  "signature": "PASS; Debug and Release use canonical KITT signing certificate",
+  "simulation": "PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director",
+  "route": "29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x",
+  "apk": "kitt-v0.3.5.2-debug.apk",
+  "sha256": "6E48FEC824F372A122F29FAA6BBDFAD92CDD35F6B2E4F33E1244401A9DEC87AD",
+  "releaseApk": "kitt-v0.3.5.2-release.apk",
+  "releaseSha256": "4ADB512BC09B9D542A16C49673D8D9D628AC0C94D33687E3F4F425CFD31400C2",
+  "deviceAcceptance": "PENDING: no installation, device process restart, credential/account access, live Provider content, OEM file-system/power-loss or real ASR/TTS acceptance in this version.",
+  "areaStability": "PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.",
+  "runtimeStatus": "PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.",
+  "locationFallback": "PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.",
+  "liveProvider": "NOT RUN for V0.3.5.2; older phone evidence is historical only. No credential export or repeated paid searches.",
+  "chineseASR": "Existing implementation unchanged; automatic interruption/listening regression PASS. No real human ASR/TTS run in V0.3.5.2.",
+  "localResearch": "Overview -> Topic + persistent sourced evidence regression PASS. Synthetic district/town/Topic: first journey fetches 1/1/1; reconstructed manager/store with unavailable research fetches 0/0/0, Director judges again. NOT real Provider/device process-restart acceptance; see docs/ACCEPTANCE_RESEARCH_CACHE.md.",
+  "silenceHotfix": "PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.",
+  "xinduBenchmark": "NOT RUN for V0.3.5.2; synthetic cache lifecycle only. Real Xindu/Street source-content validation pending.",
+  "engineeringCommit": "f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3",
+  "verifiedAt": "2026-10-13T10:06:32.5938087+08:00",
+  "versionCode": 12,
+  "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+  "testExecution": {
+    "Debug": {
+      "tests": 365,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "task": "EXECUTED in final verification",
+      "newCacheTests": 16
+    },
+    "Release": {
+      "tests": 352,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "task": "EXECUTED in final verification",
+      "newCacheTests": 16
+    }
+  },
+  "buildExecution": {
+    "final": [
+      "BUILD SUCCESSFUL in 10m 6s",
+      "115 actionable tasks: 33 executed, 82 up-to-date"
+    ],
+    "runtimecheck": [
+      "BUILD SUCCESSFUL in 48s",
+      "75 actionable tasks: 25 executed, 50 up-to-date"
+    ],
+    "mainTaskTrace": [
+      "> Task :app:assembleDebug",
+      "> Task :app:assembleRelease",
+      "> Task :app:testDebugUnitTest",
+      "> Task :app:testReleaseUnitTest",
+      "> Task :app:lintDebug",
+      "> Task :app:lintRelease"
+    ],
+    "note": "Unit tests actually rerun for this final source, not reused V0.3.5.1 results. Unchanged resource/dependency/build tasks UP-TO-DATE as trace counts show."
+  },
+  "runtimecheck": {
+    "applicationId": "com.kitt.reader.runtimecheck",
+    "versionName": "0.3.5.2",
+    "versionCode": 12,
+    "apk": "kitt-v0.3.5.2-runtimecheck.apk",
+    "sha256": "4e9526b932801ca000c00ee552e086d74820023ccf48580b31d328da92fa7b88",
+    "signature": "PASS, same original acceptance certificate",
+    "assembleDebug": "EXECUTED PASS",
+    "assembleDebugAndroidTest": "EXECUTED PASS",
+    "lintDebug": "EXECUTED PASS",
+    "testApkSignature": "PASS com.kitt.reader.runtimecheck.test",
+    "phoneUpgrade": "PENDING; no adb/device/credential operations"
+  },
+  "signingRegression": "EXECUTED PASS: 2 accepted / 6 rejected; only temporary public certificate fixture, no private key export/generation",
+  "cacheAcceptance": {
+    "firstSyntheticFetches": {
+      "districtOverview": 1,
+      "townOverview": 1,
+      "topic": 1
+    },
+    "reconstructedStoreFetches": {
+      "districtOverview": 0,
+      "townOverview": 0,
+      "topic": 0
+    },
+    "writes": 3,
+    "hits": 3,
+    "directorJudgesAgain": true,
+    "actualDeviceProcessRestart": "PENDING",
+    "liveChatGptContent": "NOT RUN",
+    "tokenSavingsPercent": "NOT MEASURED",
+    "cacheLimits": "40000 UTF-8 bytes/entry, 128 entries, 2MiB; version 1, app private filesDir"
+  },
+  "simulationReports": [
+    {
+      "name": "full-simulation.txt",
+      "generatedAt": "2026-10-13T09:59:54.8712676+08:00",
+      "sha256": "ca3d4bafaecc3a639c9a9951922dd896cc4272fb8d8151cecc5d7e996d21926b",
+      "summary": [
+        "            KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)",
+        "            Fixture: 新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）",
+        "            Speed: 80 km/h; distance: 90912 m; simulated duration: 68 min",
+        "            Director calls: 57; TTS outputs: 4; bounded Context Card: 1499 chars",
+        "            START → GPS → ASK_USER"
+      ],
+      "mode": "EXECUTED deterministic/Fake simulation or synthetic driving-resolution regression, not live Provider/device"
+    },
+    {
+      "name": "accelerated-simulation.txt",
+      "generatedAt": "2026-10-13T10:02:36.2899784+08:00",
+      "sha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
+      "summary": [
+        "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS",
+        "opportunities=21 dispatched=22 activeDispatched=1 auto=SILENT:0,SPEAK_NOW:20,PREPARE:0,ASK_USER:1,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:1,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "Voice outputs=22; distance=90912m"
+      ],
+      "mode": "EXECUTED deterministic/Fake simulation or synthetic driving-resolution regression, not live Provider/device"
+    },
+    {
+      "name": "batch-simulation.txt",
+      "generatedAt": "2026-10-13T09:59:14.5939565+08:00",
+      "sha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b",
+      "summary": [
+        "Editorial freedom refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)",
+        "新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）",
+        "29 points; distance=90912m; speed=100km/h; acceleration=16x; latency=5s; TTS=20s",
+        "chapters=13; cached=13; chapterEntryOpportunities=13; Sanxingdui eligible=true",
+        "subjects=23; families=[HISTORY, HISTORIC_SETTLEMENT, HERITAGE, CULTURAL_SITE, PEOPLE, CULTURAL_GEOGRAPHY, GEOGRAPHY, TRANSPORT, ECONOMY]; opportunities=23 dispatched=23 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:23,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ],
+      "mode": "EXECUTED deterministic/Fake simulation or synthetic driving-resolution regression, not live Provider/device"
+    },
+    {
+      "name": "landmark-simulation.txt",
+      "generatedAt": "2026-10-13T10:00:25.7668032+08:00",
+      "sha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
+      "summary": [
+        "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)",
+        "100km/h; 16x; latency=5s; TTS=20s; chapters=13",
+        "Selected=sanxingdui, mianzhu-newyear-art, longmen-front, jushui-taiping-bridge; opportunities=28 dispatched=28 activeDispatched=0 auto=SILENT:24,SPEAK_NOW:4,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "Catalog is four coarse regional references, not a nationwide POI service. Real phone/content quality: DEFERRED TO COMBINED PHONE ACCEPTANCE."
+      ],
+      "mode": "EXECUTED deterministic/Fake simulation or synthetic driving-resolution regression, not live Provider/device"
+    },
+    {
+      "name": "dossier-simulation.txt",
+      "generatedAt": "2026-10-13T09:59:33.1629944+08:00",
+      "sha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8",
+      "summary": [
+        "Session Local Dossier route: PASS, deterministic research/director/voice; NOT real search or Xindu discovery acceptance.",
+        "29 points; 90912m; 100km/h; 16x; chapter research latency=5s, director=4s, TTS=15s",
+        "chapters=13; unique research=19; narrations=13; opportunities=33 dispatched=33 activeDispatched=0 auto=SILENT:20,SPEAK_NOW:13,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "area chapter=新都区 · 新都街道 cache=1",
+        "research started stage=overview identity=四川省 / 成都市 / 新都区 elapsed_ms=0 opportunity_retained=false"
+      ],
+      "mode": "EXECUTED deterministic/Fake simulation or synthetic driving-resolution regression, not live Provider/device"
+    },
+    {
+      "name": "driving-area-resolution.txt",
+      "generatedAt": "2026-10-13T09:59:34.1862799+08:00",
+      "sha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd",
+      "summary": [
+        "Production GeocodeThrottle with synthetic 700m chapters, fixes every 2s; not actual platform geocoding.",
+        "speed=80.0 reported=80.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=80.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=100.0 reported=100.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms",
+        "speed=100.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms"
+      ],
+      "mode": "EXECUTED deterministic/Fake simulation or synthetic driving-resolution regression, not live Provider/device"
+    }
+  ],
+  "crossPcSigning": "Issue #19 OPEN: office PASS, home PENDING, nonblocking; this build verifies only office environment."
+}

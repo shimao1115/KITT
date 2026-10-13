@@ -1,130 +1,73 @@
-# KITT 当前施工交接 — V0.3.5.2 恢复授权（2026-10-13）
+# 沿途 V0.3.5.2 — 地区研究证据缓存交接
 
-**用户最新指令：先推进跨旅程研究缓存 #18；另一台电脑的签名复制与验证有空再做。** 之前“#19 全部验签之后才启动 #18”的限制已解除。唯一代码施工入口是 [TASK_CARD.md](TASK_CARD.md) / [Issue #18](https://github.com/shimao1115/KITT/issues/18)；当前**只是施工授权/任务入口切换，V0.3.5.2 尚未实现或完成工程验收**。之前的 HANDOFF 结果仍是可继承的基线，不应作为本版本的新测试结论。
+**2026-10-13（Asia/Shanghai），0.3.5.2 / code12，#18 工程交付 PASS；手机原位升级、杀进程重启与真实内容验收 PENDING。到此停止，等待一次小版本人工验收。** 工程提交 [`f7cbd6b`](https://github.com/shimao1115/KITT/commit/f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3)，[精简验收](docs/ACCEPTANCE_RESEARCH_CACHE.md)、[本版验证摘要](docs/evidence/v0352-verification.json)、[零重复研究对照](docs/evidence/v0352-research-cache.txt)。#18 保留 OPEN 等待人工验收，未启动 #13、离线包、定位重构或下一轮 UI。
 
-- 签名：办公室原密钥/项目专用密钥、runtimecheck / Debug / Release 构建与签名正负例报告 PASS，见 [#19](https://github.com/shimao1115/KITT/issues/19)；家庭端仍 PENDING、#19 保持开放，但不再阻塞 #18 的代码实现和可用办公室环境下的签名打包。绝不能把办公室通过写成两台电脑通过。
-- 手机：仍以现有 `com.kitt.reader.runtimecheck` 0.3.5.1/code11、原证书及 ChatGPT 账号数据为保护对象。升级包必须匹配包名和签名，versionCode 合法递增；不卸载/清数据、不导出凭据。
-- 当前 V0.3.5.2 唯一产品目标：有来源的 Overview/Topic 成功研究后持久保存；结束/重启后本地复用，命中时 0 次重复同地区研究；Director 本次旅程仍自主决定选题。先研究来源缓存，不扩离线包。
-- #17 的持续镇街显示与 #14 的定位新鲜度另案跟踪；#13 重复讲述和离线包尚未授权本轮施工。施工完成必须留简短实测结果、commit、APK 状况，停止等待用户总验收。
+## 当前可运行能力
 
----
+有来源并经既有 completed-hosted-search/provenance 契约核验的 Overview/Topic 保存至私有 filesDir/research-evidence-v1；完整 AreaIdentity.key 区分区县/镇街，Topic 按地区与格式规范后的主题取。版本化 JSON、内容摘要校验、同目录原子替换；单项40000 UTF-8 bytes、128项、2MiB。坏/旧/空/假/无依据或错误地区资料不写入，存储失败不阻止成功研究用于本次讲述。模拟/Fake 不读写生产证据。
 
-# KITT 上一阶段交接存档：签名统一办公室 PASS / 家庭 PENDING（2026-10-13）
+结束或重新开始只清运行态；下趟从磁盘载入证据、重新产生 Director 机会，不恢复 examined、pending、已播去重或固定旁白。历史证据明确“此前有来源的研究（本次未联网复查）”与原 searched_at；稳定事实不按 start/TTL 强制重查。明确查最新/重新研究以及开放、票价、天气、路况、临时展览和时事仍走实时研究，失败简短报告，动态答案不进入稳定缓存。未增加离线 Director：远程 AI 全断网时自动模式安静降级。
 
-**当前唯一工作项 [#19](https://github.com/shimao1115/KITT/issues/19)，办公室端已完成；家庭端密钥传输、构建验签与双机原位升级均未执行，PENDING，不能声称双机统一成功。** 原签名小版本已停止，等待家庭端实际验证；用户随后明确授权 #18 独立施工，请以上方最新交接为准。工程提交 [`8753240`](https://github.com/shimao1115/KITT/commit/8753240ed184a8ee15c1d7420691b11184e1a30f)；脱敏证据 [signing-office-verification.json](docs/evidence/signing-office-verification.json)。
+既有 GPS+NETWORK、行政区连续性和新鲜度、模拟路线、语音/打字/看图接管、安静/提前恢复、ASK_USER、PREPARE、评分保持。没有修改 Fix 老化、定位来源、FUSED、VPN/IP 边界或语义去重。没有原网页、请求、对话、录音、轨迹或凭据落入证据缓存。
 
-## 办公室真实结果
+## 本版实际 Build / tests / 签名
 
-- **原密钥 PASS**：JDK17 `keytool` 确认 `%USERPROFILE%\.android\debug.keystore` 的 `androiddebugkey` 是 PrivateKeyEntry，SHA256 为唯一标准 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`，与已安装手机证书的已有记录一致。
-- **专用密钥 PASS**：原样复制至 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，内部文件哈希比对相同，不输出私钥文件摘要；原全局文件保留、未覆盖或生成密钥。专用文件与目录 ACL 仅当前用户和 SYSTEM。迁移源已准备在此路径，文件未进入仓库、聊天或 GitHub。
-- **预检/构建 PASS**：实际运行 `scripts/check-kitt-signing.ps1`、`scripts/build-runtime-smoke.ps1 -Offline`（assembleDebug、assembleDebugAndroidTest、lintDebug）和 `scripts/verify.ps1 -Offline`（标准 Debug/Release assemble、lint、验签）。三个生产验收 APK 的单一 signer 均为上述证书，包名/版本已由 aapt 核对；runtimecheck 测试 APK 也同证书。
-- **测试 PASS**：签名回归实际执行 2 个正例 + 6 个拒绝案例：缺密钥、缺 APK、包名约束但无 APK、错误包名、未签名 APK、指纹相同但只有公开证书无私钥。测试仅临时导出公开证书并建立证书容器，已清理，不生成私钥。Debug349/Release336 测试报告失败/错误/跳过为0；两种单测任务本轮是 **UP-TO-DATE，复用有效结果，未重新执行全部单测**。
-- **修复范围**：现有 `java.io.File` 在 Gradle Kotlin DSL 中编译失败，改用显式 import；Gradle 独立校验原私钥条目和证书。PowerShell 固定 keytool 输出语言、拒绝非私钥/多个 signer，检查包名并报告版本；runtimecheck 先验签再复制交付文件。构建提示不再把标准包误作手机升级包。不改业务、版本号、包名或 Provider。
-- **手机数据未操作**：本轮无 adb、安装、降级、卸载、清数据、账户或设置读取/修改；没有通过验签要求卸载现有 App，也未重新验活 ChatGPT。仍为 0.3.5.1/code11，此次仅构建验证；未来正式升版时才以同包名/同证书 `adb install -r` 原位升级。既有手机 ChatGPT/gpt-6.1-sol/low 配置是下方历史证据，当前未访问；新安装默认 Fake 的行为保持。
+- 最终 `scripts/verify.ps1 -Offline` 实际执行：**Debug365 / Release352**，失败/错误/跳过均0；新增16项缓存测试在两种 Variant 均执行。单独相关 Debug29项（缓存16 + 主动研究13）也实际通过。
+- 最终 Debug/Release 的 tests、assemble、lint 均 EXECUTED PASS，标准包验签 PASS。Gradle最终115任务：33 executed / 82 up-to-date；未变资源/依赖任务复用，本版单测任务没有复用0.3.5.1结果。首轮全量也通过；对齐旧系统提示/设置说明后以上最终源再次完整运行。
+- `scripts/build-runtime-smoke.ps1 -Offline` 实际执行 assembleDebug、assembleDebugAndroidTest、lintDebug并验签：75任务，25 executed / 50 up-to-date。runtimecheck生产与测试APK证书检查 PASS；**仅构建测试APK，没有执行手机 instrumentation**。
+- `scripts/test-kitt-signing.ps1` 实际执行2正例 + 6拒绝例 PASS（缺密钥/缺APK/仅包名约束/错包名/未签名/只有匹配公钥无私钥）。仅临时公开证书样本，没有导出/提交原私钥。
+- 缓存合成对照：首次区县 Overview=1、镇街 Overview=1、Topic=1，write=3；clear/end后新管理器+新磁盘存储对象、研究 Provider拒绝网络：同三类 fetch=0/0/0，hit=3，新旅程 Director实际再次判断。**这是磁盘重建测试，不是手机杀进程或真实 Tokens 采样。**
 
-| 办公室 APK（均0.3.5.1/code11） | applicationId | 文件 SHA256 |
+## 成都新都 → 绵阳安州雎水：六组本版回归
+
+全部由最终完整单测重新执行，确定性/Fake Provider与fake Voice，非实车/真模型；路线29点、90912m，为粗粒度测试折线。当前报告头部、时间与摘要在验证JSON，原始报告在本地 artifacts。
+
+| 报告 | 本版结果 |
+| --- | --- |
+| full-simulation | 80km/h、68模拟分钟；57 Director调用、4 TTS；接管/安静/结束 PASS |
+| accelerated-simulation | 100km/h、16×；22调用、22声音输出；零 stale/cancel/failure |
+| batch-simulation | 13章节，23选题/23调用；零 stale/cancel/failure（不沿用历史14段数字） |
+| landmark-simulation | 13章节，4独立地标，28调用；零 stale/cancel/failure |
+| dossier-simulation | 13章节、19唯一研究、13讲述、33调用；零 stale/cancel/failure |
+| driving-area-resolution | 700m合成章节；80/100km/h与报速0条件12/10查询，最短16s；非真实Geocoder路线 |
+
+#17 的600秒新鲜合成定位/120秒刷新失败等回归及 #14 的 GPS/NETWORK、粗/旧位置、用户打断、ASK_USER、安静和过时护栏均包含在本版全量通过结果中；真机外场仍各自未全验收。
+
+## 办公室同签名交付 APK
+
+三个生产APK均 **versionName=0.3.5.2、versionCode=12、单一 signer**，证书 SHA256：
+`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
+
+| APK | applicationId | APK SHA256 |
 | --- | --- | --- |
-| [runtimecheck](artifacts/kitt-v0.3.5.1-runtimecheck.apk) | `com.kitt.reader.runtimecheck` | `2302cd463836a14e7636ef281278c1175f4e7a7412baeb23707d2e71a33ded75` |
-| [标准 Debug](artifacts/kitt-v0.3.5.1-debug.apk) | `com.kitt.reader` | `183ba0fbca2fc5740d8c1a2698d56ee98b076bfb744653f48338c87a2a241d6e` |
-| [标准 Release 验收](artifacts/kitt-v0.3.5.1-release.apk) | `com.kitt.reader` | `7fa9507d22e35065329a3ffc772c05fe4779f45a811db53f7ab31ac7ea354a09` |
+| [手机 runtimecheck](artifacts/kitt-v0.3.5.2-runtimecheck.apk) | com.kitt.reader.runtimecheck | 4e9526b932801ca000c00ee552e086d74820023ccf48580b31d328da92fa7b88 |
+| [标准 Debug](artifacts/kitt-v0.3.5.2-debug.apk) | com.kitt.reader | 6e48fec824f372a122f29faa6bbdfad92cdd35f6b2e4f33e1244401a9dec87ad |
+| [标准 Release验收](artifacts/kitt-v0.3.5.2-release.apk) | com.kitt.reader | 4adb512bc09b9d542a16c49673d8d9d628ac0c94d33687e3f4f425cfd31400c2 |
 
-runtimecheck 文件哈希与历史0.3.5.1交付相同；Release 重新签名后的文件哈希不同，证书相同。标准包不属于手机 runtimecheck 数据空间。APK/原始日志均在本地忽略的 `artifacts/`，不提交二进制或密钥。
+标准包不属于原手机账号空间；交付APK和原始构建日志在本地忽略的 artifacts，未提交二进制或密钥。办公室通过不等于家庭端通过。
 
-## 家庭端剩余最小动作 / 停止规则
+## 最短原位升级与人工验收
 
-1. 本人将办公室 `%USERPROFILE%\.kitt\signing\acceptance.keystore` 通过本人控制的加密 U 盘等安全介质携带到家庭电脑；不要上传/发送该文件。办公室原件保留。
-2. 家庭仓库拉最新 main，先用 `scripts/check-kitt-signing.ps1 -KeystorePath <介质源文件>` 核对，再复制到家庭 `%USERPROFILE%\.kitt\signing\acceptance.keystore` 并限权。已有不同目标时保留双方，不强制覆盖。**家庭端 PENDING**。
-3. 执行预检、`scripts/build-runtime-smoke.ps1`、runtimecheck 的 `-ApkPath ... -ExpectedApplicationId com.kitt.reader.runtimecheck`、`scripts/verify.ps1` 及签名回归。完整可复制命令见 [SIGNING_UNIFICATION.md](docs/SIGNING_UNIFICATION.md)。收集家庭 PASS/FAIL 才更新 #19；现保持 open。
+本轮**没有 adb、连接手机、安装、卸载、清数据、账号/设置/凭据读取或真实 Provider请求**。手机仍以已有0.3.5.1/code11历史记录为基线，本版实际升级 PENDING。
 
-两机均维持 code11，此轮不安装到手机。没有新增 OAuth/API key 步骤，唯一人工交接是安全传输密钥及家庭端执行验证。家庭端依赖、环境和构建尚未实测；本轮无跨机升级数据保留新证据。#18 仍暂缓，停止等待家庭端验证。
+1. 在办公室核对 runtimecheck 文件摘要和上述证书、包名，确认手机已有版本仍低于code12，再于仓库根目录运行：
+   `adb install -r artifacts\kitt-v0.3.5.2-runtimecheck.apk`
+   保留原App，不卸载、不清数据，不使用标准包替代，也不降级。
+2. 用现有账号普通“开始沿途”，在新鲜完整新都区/镇街身份下首次成功研究概况与一个专题后结束；观察 write，再杀进程重启、同地开始：区县/镇街/已有专题 hit，重复研究调用=0；Director仍做本趟判断。已研究对象再次讲述不等于缓存失败，#13本轮未做。
+3. 问查最新/今天开放/票价/天气等，确认实时研究或明确失败；安静/提前恢复、说话/打字打断、ASR/TTS与结束正常。不要为证明命中反复触发真实昂贵搜索。详见精简验收文档的5步检查。
 
-## 成都→绵阳 / 保留基线 / 最近提交
+## Provider / 用户最小待办 / 已知限制
 
-本轮没有路线或业务变更；`verify.ps1` 复核/复制既有成都新都→绵阳安州雎水29点、90912m等确定性/Fake模拟报告，来自 UP-TO-DATE 单测结果，不当作新真机/实车验收。当前可运行的 V0.3.5.1 能力、Provider、模拟和已知实机限制保持下方历史交接。#17 工程通过、真机部分待验收（600秒中305秒新鲜、期间名称消失0），定位间断仍属 #14。
-
-- `8753240` — #19办公室原签名构建、Gradle编译修复/独立验签、包名保护、签名正负例回归。
-- `13ba91d` — 本次继承的最新 main；前置签名门禁与暂缓缓存任务说明。
-- `129191f` / `65748a0` / `3d120ce` / `befd5d8` — 原项目签名配置与预检（此前未实测，本次已修复并验证）。
-- `e87c6be` / `74161cf` — V0.3.5.1账号保留/自然位置证据及地区稳定工程基线。
-
----
-
-# KITT V0.3.5.2 原授权状态存档（现被 #19 签名前置门禁暂缓）
-
-**用户决定：V0.3.5.1 地区名称修复按“工程通过、真机部分待验收”阶段性收口，允许推进下一小版本 V0.3.5.2 / [Issue #18](https://github.com/shimao1115/KITT/issues/18)。** 这只是任务授权与派发，**0.3.5.2 尚无工程交付、测试结果或可安装 APK**。原先计划以 [TASK_CARD.md](TASK_CARD.md) 作为 #18 施工入口；但用户随后要求先完成 #19 双机签名统一，当前请以本文最顶部 #19 说明及最新任务卡为准。完成 #19 后才允许施工 Agent 更新本 HANDOFF 为 0.3.5.2 正式交接并停止等待验收。
-
-- **保留的 V0.3.5.1 基线：** 0.3.5.1/code11 已原位升级、ChatGPT 账号配置与设置保留。Debug349/Release336、构建/lint/签名/模拟是上一版本的工程报告，不能作为下一版测试结果。
-- **真机未签 PASS：** 600秒自然采样仅305秒新鲜定位；这些新鲜条件下名称消失0，但仍未完成连续镇街及实车跨区域/来源切换验收。#17 保持 open 跟踪剩余验收；定位新鲜度/连续性归 #14。不得通过延长过期定位有效性伪装解决。
-- **本次目标：** 有来源且已验证的地区概况和专题，跨 Journey 和 App 重启本地命中并复用，命中时0次重复 Overview/Topic 搜索；保留 Director 的新旅程判断及当前性问题实时搜索。
-- **禁止混做：** 本轮不修 #14、#17、不实施 #13 语义去重、不启动离线包/本地大模型。完成 #18 后必须停止并留下复验方法、实际测试数据、提交和安装包情况。
-- **历史交接说明：** 以下 V0.3.5.1 的“停止、不进入 #18”仅是其当时的里程碑 stop rule，现已被用户对 #18 的新授权取代；其实际测量与安全限制依旧有效。
-
----
-
-# 沿途 V0.3.5.1 — 地区名称稳定性修复交接
-
-截至 **2026-10-12（Asia/Shanghai）**，**0.3.5.1 / code11**，Issue #17工程交付完成；设备上线后已原位升级并确认保存的账号/设置保留。**室内十分钟自然采样仅305/600秒满足新鲜位置条件，不能签完整静止稳定PASS；新鲜位置下名称消失为0，镇街连续显示尚未取得证据。到此停止，不进入#18、#13或离线包。**
-
-工程commit：[`74161cf`](https://github.com/shimao1115/KITT/commit/74161cf3f4b263cbddaefd96c9fa45b5305c2e0a)。独立说明：[地区稳定性验收](docs/ACCEPTANCE_AREA_STABILITY.md)；上一版本：[V0.3.5交接存档](docs/HANDOFF_V035_FUSED_LOCATION.md)。
-
-## 设备上线后的实际结果
-
-- vivo V2405A / Android16，用户确认室内原地可保持前台。`adb install -r` 成功：0.3.5/code10 → 0.3.5.1/code11；手机拉回base.apk的SHA256与交付runtimecheck包完全一致。没有卸载原App、清数据或导出凭据。
-- 安装前、安装后、探针结束的settings.xml摘要均为 `8250181a64bc67deae3f02e95789057bc80fdb23552eb56162ece5fac15c7056`。保存的ChatGPT记录可解密，connected=true、credentialUnavailable=false；仍为ChatGPT / gpt-6.1-sol / low，语速1、独立研究关闭。本轮不调用账号网络服务，不声称登录有效期已验活。当前无未结束旅程恢复记录，未伪造或清除旧旅程。
-- 600次每秒观察，实际613309ms；600/600前台、屏幕交互且解锁。生产RealLocationSource、生产DrivingScreen组件与临时Journey/AreaCards，未启动真实旅程/Director/研究、未注入坐标或切换网络/VPN。92次发布，首次成功1507ms；新鲜有效NETWORK仅305秒，精度30–45m、年龄最大29654ms、距首次锚点最大17.54m。
-- 新鲜位置下名称消失 **0**；所有状态合计235次名称缺失，均非新鲜位置，不可把它们包装成全程稳定。40次界面抽查24次匹配地区标签、0次“地区名称未解析”；16次未匹配，没有逐次记录等待文案。3次章节进入不能称“只有一次”：失去现场/重新解析后再次进入是允许的失效路径，未收集逐次转移因果日志。截图只确认区县“新都区”，没有完整镇街稳定证据。
-- 判定 **POSITION_GAPS_REQUIRE_REVIEW**，而非全程PASS。最新回调来源计数不等于持续有效位置；过期LAST_KNOWN可留在最后回调，fresh计数另校验等待状态/年龄/精度。设备未暴露KITTArea日志，报告geo事件0表示不可观测，不能当作0次查询/失效；真实120秒复查次数未建立。
-
-[脱敏真机报告](docs/evidence/v0351-area-stability-phone.json)。探针首次活动复用等待被终止，未作为验收；修正后的十分钟窗口才计入以上数据。最后仅补充日志不可观测说明，完成测试APK构建/lint，未重新真机运行该文字补充；采样逻辑未变。测试APK已卸载、KEEP_SCREEN_ON已清理、无测试JourneyService，普通应用入口已恢复；App仍0.3.5.1，账号设置摘要不变。
-
-## 原因、修复与当前能力
-
-修复前新增确定性测试在第31秒失败，证明30秒geocode锚点寿命与静止120秒复查产生名称空窗；空结果覆盖成功值也是确定代码路径。没有用真机事件日志证明每一次闪烁都由此导致。
-
-地区缓存仅含本次运行的一个成功锚点：当前持续新鲜、可信、同来源、距成功锚点≤450m时保留名称，空/异常/超时不覆盖；可靠不同区域或仅区县结果直接替换。复查按原时间/距离节流，间隔使用单调时钟。位置过时/缺失/观测中断、来源变化、越距撤销缓存；回原地或回切不能复活已失效名称，晚结果受失效版本和当前位置校验。粗定位撤销镇街，LAST_KNOWN只带不确定区县背景，不查询、不保留镇街。缓存不持久化，应用/旅程重启不能携带旧名称。
-
-GPS活跃15秒、NETWORK活跃30秒、LAST_KNOWN原测量最多60秒，物理定位选择、跳跃/乱序、行政越界护栏保持。生产只注册LocationManager GPS+NETWORK，FUSED不接入。经纬度不受IP/VPN/DNS/搜索影响。新增日志仅事件/失效原因，无坐标、地区名、轨迹或认证信息。
-
-Vosk/本地TTS、主动说话立即打断、打字/看图、安静/提前恢复、研究Overview→Topic、Director、模拟路线、运行状态与结束评分保持；没有扩展知识缓存、语义去重、地图栈或新UI配置。
-
-## Build / tests / 成都→绵阳
-
-实际执行 `scripts/verify.ps1 -Offline`：**Debug349 / Release336 tests，失败、错误、跳过均0；两种assemble、lint、Debug/Release验收签名全部PASS**。新增20项执行覆盖生命周期、刷新失败、连续性与负例；旧驾驶解析测试修改为验证当前位置新鲜度，450m与过时负例保留。runtimecheck独立工作区的assembleDebug、assembleDebugAndroidTest、lintDebug也PASS；首次离线交付只构建测试APK，接续仅执行area-stability模式，未重跑其它手机模式。
-
-- GPS/NETWORK各600秒新鲜同地缓存测试，AreaCards只进入一次；生产RealLocationSource链的合成NETWORK ±30m测试连续600秒，**302次发布 / 6次查询 / 首次成功后0次null或镇街消失 / 1次章节进入**，跨过空、异常、8秒超时及恢复。
-- 从未成功300秒保持未解析，仅3次查询；可靠不同区县即时替换。100km/h越450m、旧位置过时、观测缺口、GPS↔NETWORK切换、粗定位/粗权限、LAST_KNOWN、停止/重启及晚结果均覆盖。Geocoder缺失在API26/34不崩溃。
-- 六组模拟PASS：成都新都→绵阳安州雎水 **29点 / 90912m**；80km/h主链57次Director/4次TTS、Context Card1489字符；100km/h/16×研究 **13章节 / 19次研究 / 13段旁白**，零stale/cancel/failure。快进、素材架、独立地标与驾驶解析回归通过；GPS↔NETWORK另由确定性设备回调覆盖。这是Fake/确定性Provider、fake Voice与生产Context/Journey/Director，不能替代真实路线、搜索、自然GPS或听感。
-
-入Git的脱敏证据：[验证摘要](docs/evidence/v0351-verification.json)、[十分钟发布报告](docs/evidence/v0351-area-stability.txt)、[SHA256](docs/evidence/v0351-SHA256.txt)。本地全量日志：`artifacts/area-stability-delivery-gates.log`、`area-stability-runtime-build.log`、`area-stability-red.log`与六份模拟报告。私钥、二进制和原始账户数据不入Git。
-
-## APK / 安全升级 / Provider
-
-[V0.3.5.1预发布与校验文件](https://github.com/shimao1115/KITT/releases/tag/v0.3.5.1)。已有手机账号使用 **runtimecheck** 包；标准Debug/Release是另一应用数据空间。不要卸载旧App或清数据。
-
-| APK | bytes | SHA256 |
-| --- | ---: | --- |
-| [runtimecheck原位升级包](artifacts/kitt-v0.3.5.1-runtimecheck.apk) | 74279072 | `2302CD463836A14E7636EF281278C1175F4E7A7412BAEB23707D2E71A33DED75` |
-| [标准Debug](artifacts/kitt-v0.3.5.1-debug.apk) | 74279048 | `183BA0FBCA2FC5740D8C1A2698D56EE98B076BFB744653F48338C87A2A241D6E` |
-| [Release验收包](artifacts/kitt-v0.3.5.1-release.apk) | 70642112 | `5EFC4913185CEE39F652552BC5027A3F2ABB5B22E581EDFBBF61193EB0AF3B89` |
-
-aapt已核对runtimecheck包名 **`com.kitt.reader.runtimecheck`**、code11、version0.3.5.1、标签“沿途0.3.5.1验收”。三包apksigner验证成功，证书SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**，与手机升级前APK和本机密钥匹配。**设备上线后已执行adb install -r并成功，已核对账号记录可解密和设置保留；无需再卸载/重装。**
-
-当前真机保存配置为 **ChatGPT / gpt-6.1-sol / low**、语速1、独立研究关闭；只在设备内读取连接布尔状态，不导出账户记录/凭据，未验活网络登录或调用真实AI。新安装仍默认Fake（配置字段gpt-4.1-mini/default，不调用该模型）。没有新增授权/API key步骤；若手机原账号后续过期，重新授权须本人完成。
-
-## 最短人工验收与限制
-
-1. 手机已升级，直接打开“沿途0.3.5.1验收”；账号/设置已保留，无需再安装。使用普通“开始沿途”进入真实Journey/前台服务。
-2. 室内静止、保持前台与新鲜NETWORK/GPS ±30m，首次解析成功后连续5–10分钟看地区名称，跨30秒和120秒复查不消失、不出现章节假切换。无首次成功时“未解析”仍是正确降级。
-3. 停车或乘客操作，验证临时断网/服务失败保留可信同地名称；真正移动、失去新鲜定位、切换来源时不能保留旧街道冒充新现场，可靠新解析应更新地区。切换/失效后可能暂时未解析，复查仍受原节流约束。
-4. 主动说话/打字打断、安静/提前恢复、100km/h/16×模拟与结束冒烟。普通真实Journey/前台服务完整运行、持续新鲜位置≥5分钟且曾成功取得镇街、室外/真实边界、GPS/NETWORK恢复、真实失败注入、真人内容/ASR/TTS与长期锁屏仍待验收。#14/#15独立开放。本次设备自然位置间断不能通过延长旧标签信任或换FUSED在#17中绕过。
-
-450m是沿用的保守距离护栏，并非行政边界数据库。Android26–32同步Geocoder可能不能被协程立即终止，期间只保留一个pending，GPS持续，晚结果仍校验；8秒超时自动证据来自可取消注入查询，vivo Android16走平台异步接口。无已知新增生产崩溃；自动测试不能替代真实设备总验收。
+- 新安装默认仍为 Fake / gpt-4.1-mini / effort空；未改设置默认或 Provider架构。原手机已保存 ChatGPT / gpt-6.1-sol / low 是0.3.5.1历史证据，本轮未读取或验活；同包名同签名递增升级应保留数据，**本版保留结果尚未实测**。
+- #18无需新增密钥/登录步骤。剩余最小动作是上述原位升级与小版本人工验收。真实新都内容/来源质量、手机杀进程重启、OEM文件系统断电行为、真人ASR/TTS及Tokens节省比例均未测；已有来源URL核验不等于独立语义事实审计。
+- #17 真机连续镇街仍待验；既有600秒自然现场仅305秒新鲜、名称缺失与定位间断结论不重写。#14室外GPS↔NETWORK独立待验，不用延长旧Fix掩盖。
+- **#19保持 OPEN/PENDING：办公室签名已 PASS，家庭端本人安全携带密钥、复制和验签未做，非本轮阻塞。** 最小家庭动作见 [SIGNING_UNIFICATION](docs/SIGNING_UNIFICATION.md)；不要发送或上传私钥。
 
 ## 最近 milestone commits
 
-- 本次 `test: record V0.3.5.1 safe phone upgrade and natural location gaps` — 自然位置/生产屏幕临时采样探针、同签名升级与账号设置保留、305秒有效现场及剩余验收边界；生产APK/hash不变。
-- `74161cf` — V0.3.5.1 / #17地区缓存连续性、失败保留、失效/晚结果防护、20项新增执行与打包门禁。
-- 随后的 `docs: hand off V0.3.5.1 area stability for offline-phone acceptance` — 当前交接、脱敏证据、安装/待验收与Stop rule。
-- `83c2275` — V0.3.5.1当前唯一任务卡。
-- `1329bb1` / `7644286` — V0.3.5 FUSED负结果实验与账号保留交接。
-- `d841c2e` / `9fbc88e` — V0.3.4运行状态与交接。
+- `f7cbd6b` — V0.3.5.2/#18有来源地区研究持久化、16项新测试、历史证据/实时语义与code12。
+- `8faf246` — 最新恢复#18授权，家庭签名后续不再阻塞。
+- `8753240` — #19办公室原密钥构建/验签与签名正负例。
+- `74161cf` — V0.3.5.1行政地区稳定工程基线，实机部分仍待验。
+
+旧交接原文可查 [施工前HANDOFF存档](https://github.com/shimao1115/KITT/blob/8faf246/HANDOFF.md)。当前只等待V0.3.5.2人工验收，不继续下一Destination。

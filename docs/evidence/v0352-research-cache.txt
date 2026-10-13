@@ -1,0 +1,4 @@
+Synthetic evidence, no real Provider/device network.
+First journey: district Overview=1 town Overview=1 Topic=1 writes=3
+New ChapterResearch + new disk store, unavailable Provider: district Overview=0 town Overview=0 Topic=0 hits=3
+Opportunity READY_UNCHECKED; original searched_at=1000; historical label=true; no journey state persisted.

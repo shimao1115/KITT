@@ -1,5 +1,7 @@
 # CURRENT TASK CARD — KITT V0.3.5.2 / Issue #18
 
+**执行状态（2026-10-13）：#18 工程已交付，V0.3.5.2/code12，commit `f7cbd6b`；最终 Debug365/Release352、构建/lint/签名与六组模拟/驾驶解析回归 PASS，同签名 runtimecheck APK已产出。手机升级/杀进程/真模型内容验收 PENDING。当前停止等待一次人工验收，不再施工下一 Destination；#19家庭端仍 OPEN/PENDING。** 本版实测与最短升级见 [HANDOFF.md](HANDOFF.md) 和 [验收](docs/ACCEPTANCE_RESEARCH_CACHE.md)。下方保留本次施工授权与边界，不能把其中施工目标当作尚未开始的新任务。
+
 **用户最新授权（2026-10-13）：立即恢复 V0.3.5.2 的施工；#19 办公室签名 PASS，另一台电脑的密钥复制/验签 PENDING，但不再阻塞业务代码与办公室端构建。**
 **当前唯一代码施工 Destination：** [Issue #18 — 持久化有来源的地区研究证据](https://github.com/shimao1115/KITT/issues/18)。
 **开发方式：** AI-native 自主完成理解 → 实现 → 测试 → 修复 → 交付，用户只做小版本验收。先继承 `AGENTS.md`、`HANDOFF.md`、`docs/ROADMAP.md`、#18 和最新 commits。不要重做已通过的 Golden Path。

@@ -1,10 +1,10 @@
 # KITT V0 Roadmap — Destination Chain
 
-> **2026-10-13 最新用户指令：恢复 V0.3.5.2 / #18 的代码施工，#19 家庭端签名 PENDING 作为非阻塞后续。** 先前 #19 的办公室签名 PASS 已验证；用户明确不再等待另一台电脑迁移完成才做研究持久化。本轮当前唯一代码任务 [TASK_CARD.md](../TASK_CARD.md) / [Issue #18](https://github.com/shimao1115/KITT/issues/18)。只需在实际已配置签名的环境中制作合规 APK；没有密钥的机器不得冒充验收包。#19 保留开放，未来再做另一台电脑验签；不阻止 Overview/Topic 缓存功能的实现、测试、提交和办公室端打包。**这只是下发施工任务，不代表 #18 已完成或已实际启动 Codex。**
+> **2026-10-13：V0.3.5.2 / code12 / #18 工程交付 PASS，停止等待小版本人工验收。** [`f7cbd6b`](https://github.com/shimao1115/KITT/commit/f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3) 保存已核验来源的稳定 Overview/Topic；结束/重建后合成对照命中0重复研究，新旅程 Director 再判断，实时请求仍新查。最终实际 Debug365/Release352、assemble/lint/原签名及六组模拟/驾驶解析回归 PASS，办公室 runtimecheck 0.3.5.2/code12 已验签产出；手机升级、杀进程重启及真实内容/Tokens采样 PENDING。见 [验收](ACCEPTANCE_RESEARCH_CACHE.md)、[本版证据](evidence/v0352-verification.json) 和根 HANDOFF。#18 保留 OPEN 等人工验收；不开展 #13、离线包、定位重构或下一轮 UI。
 
 > **2026-10-13：#19签名前置门禁办公室 PASS，家庭 PENDING。** 已实地确认办公室原密钥、原样复制到 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，修复 Gradle 编译并验证 runtimecheck、标准 Debug/Release 的构建/lint及唯一指定证书；签名正负例回归通过。**家庭安全传输、两机实际验证与跨机原位升级尚未完成，不可声称双机统一成功；但该后续已经被用户明确解除为 #18 的代码施工阻塞。** 详见根 HANDOFF、[签名文档](SIGNING_UNIFICATION.md) 和 [TASK_CARD.md](../TASK_CARD.md)。签名里程碑交付时版本仍0.3.5.1/code11、未安装手机；此前 #18 暂停指令已由上方最新授权替换。
 
-> **下一已授权但暂缓的 Destination：V0.3.5.2 / Issue #18 跨旅程研究证据缓存（2026-10-12）**。用户已授权，但按照后续签名统一决定，**用户已解除等待双机验签条件，现已恢复 #18 业务施工**。从 0.3.5.1/code11 继承，复用已有 Overview/Topic/来源事实结构，成功搜索后持久保存，下次 Journey/App 重启命中时不重复研究。#18 现已恢复为根任务卡唯一施工目标，按小版本验收停止，#13和离线包仍待下一轮。
+> **#18 授权已执行：** 从0.3.5.1/code11继承，复用既有地区/来源模型和 Overview→Topic→Director 流程，以私有、原子、受限JSON保存成功研究；没有改变定位或复用旅程运行态。#19办公室 PASS/家庭 PENDING仍为非阻塞后续，不能声称双机已统一；#13和离线包仍待后续独立授权。
 
 > **上一里程碑 V0.3.5.1 / Issue #17 阶段性收口：工程通过、真机部分待验收。** Debug349/Release336、构建/lint/签名与六组模拟据交接报告 PASS；同签名原位升级、账号记录/设置保留已验证。自然600秒中仅305秒定位新鲜、新鲜位置下名称消失0，连续镇街仍未确认，因此 **不签完整真机 PASS**；#17 保留待实地补验，定位不新鲜另见 #14。详见 [地区稳定性验收](ACCEPTANCE_AREA_STABILITY.md) 与根 HANDOFF。此处仅阶段性接受已完成的修复，不授权改定位源或延长过时位置信任。
 
