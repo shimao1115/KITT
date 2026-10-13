@@ -1,3 +1,7 @@
+import java.io.File
+import java.security.KeyStore
+import java.security.MessageDigest
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -21,8 +25,18 @@ android {
     // must fail closed. Do not substitute a newly generated ~/.android/debug.keystore.
     signingConfigs {
         getByName("debug") {
-            val canonical = java.io.File(System.getProperty("user.home"), ".kitt/signing/acceptance.keystore")
+            val canonical = File(System.getProperty("user.home"), ".kitt/signing/acceptance.keystore")
             if (canonical.isFile) {
+                val keyStore = KeyStore.getInstance(canonical, "android".toCharArray())
+                check(keyStore.entryInstanceOf("androiddebugkey", KeyStore.PrivateKeyEntry::class.java)) {
+                    "KITT signing key must contain the original private key."
+                }
+                val certificate = keyStore.getCertificate("androiddebugkey")
+                val fingerprint = MessageDigest.getInstance("SHA-256")
+                    .digest(certificate.encoded).joinToString("") { "%02x".format(it) }
+                check(fingerprint == "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba") {
+                    "KITT signing certificate mismatch. Restore the original acceptance key; do not generate a replacement."
+                }
                 storeFile = canonical
                 storePassword = "android"
                 keyAlias = "androiddebugkey"

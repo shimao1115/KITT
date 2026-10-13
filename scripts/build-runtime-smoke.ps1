@@ -33,8 +33,9 @@ try {
     & .\gradlew.bat @taskArguments
     if ($LASTEXITCODE -ne 0) { throw 'Independent smoke build failed.' }
     $taskApk = Join-Path $taskRoot "artifacts\kitt-v$taskVersion-runtimecheck.apk"
-    Copy-Item -LiteralPath (Join-Path $taskCopy 'app\build\outputs\apk\debug\app-debug.apk') -Destination $taskApk -Force
-    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath $taskApk
-    Write-Output "Independent package: $taskApk; new installs default Fake. Same-signature adb install -r preserves the existing runtimecheck account/settings."
+    $taskBuiltApk = Join-Path $taskCopy 'app\build\outputs\apk\debug\app-debug.apk'
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath $taskBuiltApk -ExpectedApplicationId 'com.kitt.reader.runtimecheck'
+    Copy-Item -LiteralPath $taskBuiltApk -Destination $taskApk -Force
+    Write-Output "Verified runtimecheck package: $taskApk. No phone installation performed; check versionCode before a future adb install -r upgrade."
     Get-FileHash -LiteralPath $taskApk -Algorithm SHA256
 } finally { Pop-Location }

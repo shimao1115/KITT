@@ -41,12 +41,12 @@ try {
     Copy-Item -LiteralPath app\build\outputs\apk\debug\app-debug.apk -Destination artifacts\kitt-v0-debug.apk -Force
     # Debug is signed by the canonical project signingConfig inside Gradle.
     # Never re-sign a random local-debug APK and present it as a phone-upgrade candidate.
-    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath 'artifacts\kitt-v0-debug.apk'
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath 'artifacts\kitt-v0-debug.apk' -ExpectedApplicationId 'com.kitt.reader'
     & $taskSigner sign --ks $taskKeystore --ks-key-alias androiddebugkey --ks-pass pass:android --key-pass pass:android --v4-signing-enabled false --out artifacts\kitt-v0-release.apk app\build\outputs\apk\release\app-release-unsigned.apk
     if ($LASTEXITCODE -ne 0) { throw 'Acceptance Release APK signing failed.' }
     & $taskSigner verify --verbose artifacts\kitt-v0-release.apk
     if ($LASTEXITCODE -ne 0) { throw 'Acceptance Release APK signature verification failed.' }
-    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath 'artifacts\kitt-v0-release.apk'
+    & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1') -ApkPath 'artifacts\kitt-v0-release.apk' -ExpectedApplicationId 'com.kitt.reader'
     Copy-Item -LiteralPath artifacts\kitt-v0-debug.apk -Destination "artifacts\kitt-v$taskVersion-debug.apk" -Force
     Copy-Item -LiteralPath artifacts\kitt-v0-release.apk -Destination "artifacts\kitt-v$taskVersion-release.apk" -Force
     foreach ($taskReport in @('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt', 'area-stability.txt')) {
@@ -60,7 +60,7 @@ try {
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk="kitt-v$taskVersion-debug.apk"; sha256=$taskHash; releaseApk="kitt-v$taskVersion-release.apk"; releaseSha256=$taskReleaseHash
-        deviceAcceptance='V0.3.5.1 phone OFFLINE: upgrade/account preservation and vivo stationary 5-10min are NOT RUN. Prior V0.3.5 evidence does not prove this version. See docs/ACCEPTANCE_AREA_STABILITY.md; Issues #14/#15 remain separate.'
+        deviceAcceptance='NOT RUN BY THIS SCRIPT: no phone installation, downgrade, data clear or credential access. Historical V0.3.5.1 phone results are recorded in HANDOFF.md; Issues #14/#15 remain separate.'
         areaStability='PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.'
         runtimeStatus='PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.'
         locationFallback='PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.'
@@ -70,5 +70,5 @@ try {
         silenceHotfix='PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.'
         xinduBenchmark='NOT RUN BY THIS SCRIPT: fresh production-provider phone discovery is recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md.'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8
-    Write-Output "PASS: Debug $($taskCounts.Debug.tests) + Release $($taskCounts.Release.tests) tests; install artifacts\kitt-v0-debug.apk"
+    Write-Output "PASS: Debug $($taskCounts.Debug.tests) + Release $($taskCounts.Release.tests) tests; standard com.kitt.reader artifacts verified. The installed phone app requires the separate runtimecheck package."
 } finally { Pop-Location }

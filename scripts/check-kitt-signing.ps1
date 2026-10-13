@@ -1,6 +1,7 @@
 param(
     [string]$KeystorePath = (Join-Path $env:USERPROFILE '.kitt\signing\acceptance.keystore'),
-    [string]$ApkPath = ''
+    [string]$ApkPath = '',
+    [string]$ExpectedApplicationId = ''
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -17,8 +18,11 @@ $keytool = if ($env:JAVA_HOME -and (Test-Path (Join-Path $env:JAVA_HOME 'bin\key
 }
 # Existing KITT acceptance signing uses the standard Android Debug key, alias and password.
 # The path is private to the user's machine; never commit its bytes to GitHub.
-$details = (& $keytool -list -v -keystore $KeystorePath -storepass android -alias androiddebugkey 2>&1) -join "`n"
+$details = (& $keytool '-J-Duser.language=en' '-J-Duser.country=US' -list -v -keystore $KeystorePath -storepass android -alias androiddebugkey 2>&1) -join "`n"
 if ($LASTEXITCODE -ne 0) { throw 'Cannot read the original KITT signing key; check path and key metadata.' }
+if ($details -notmatch '(?im)Entry type:\s*PrivateKeyEntry\b') {
+    throw 'KITT signing keystore must contain the original private key, not just a public certificate.'
+}
 $match = [regex]::Match($details, '(?im)\bSHA256:\s*([A-F0-9:]{64,})\b')
 if (-not $match.Success) { throw 'Cannot read SHA256 certificate fingerprint from keytool.' }
 $actual = $match.Groups[1].Value.Replace(':', '').ToLowerInvariant()
@@ -35,11 +39,24 @@ if ($ApkPath) {
     if (-not (Test-Path -LiteralPath $signer)) { throw 'Android SDK build-tools 35.0.0 apksigner missing.' }
     $apkDetails = (& $signer verify --print-certs $ApkPath 2>&1) -join "`n"
     if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
-    $apkMatch = [regex]::Match($apkDetails, '(?im)Signer #1 certificate SHA-256 digest:\s*([A-F0-9:]{64,})\b')
-    if (-not $apkMatch.Success) { throw 'Cannot read APK signer certificate SHA256.' }
+    $apkMatches = [regex]::Matches($apkDetails, '(?im)Signer #\d+ certificate SHA-256 digest:\s*([A-F0-9:]{64,})\b')
+    if ($apkMatches.Count -ne 1) { throw 'APK must have exactly one signer: the original KITT certificate.' }
+    $apkMatch = $apkMatches[0]
     $apkCert = $apkMatch.Groups[1].Value.Replace(':', '').ToLowerInvariant()
     if ($apkCert -ne $expected) {
         throw "APK signature mismatch: expected $expected but found $apkCert. DO NOT install over existing runtimecheck."
     }
     Write-Output "PASS: APK certificate SHA256=$apkCert"
+    $aapt = Join-Path $sdk 'build-tools\35.0.0\aapt.exe'
+    $badging = (& $aapt dump badging $ApkPath 2>&1) -join "`n"
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot read APK package metadata.' }
+    $package = [regex]::Match($badging, "(?m)^package: name='([^']+)' versionCode='(\d*)' versionName='([^']*)'")
+    if (-not $package.Success) { throw 'Cannot parse APK package metadata.' }
+    $applicationId = $package.Groups[1].Value
+    if ($ExpectedApplicationId -and $applicationId -ne $ExpectedApplicationId) {
+        throw "APK applicationId mismatch: expected $ExpectedApplicationId but found $applicationId."
+    }
+    Write-Output "PASS: APK applicationId=$applicationId versionCode=$($package.Groups[2].Value) versionName=$($package.Groups[3].Value)"
+} elseif ($ExpectedApplicationId) {
+    throw 'ExpectedApplicationId requires ApkPath.'
 }
