@@ -1,7 +1,7 @@
 # CURRENT TASK CARD — Signing preflight / Issue #19
 
-**状态：2026-10-12 用户决定先统一办公室/家用电脑的 KITT 签名，再启动已授权但尚未开工的 V0.3.5.2（#18）。当前唯一执行目标是 [Issue #19](https://github.com/shimao1115/KITT/issues/19)。**
-**本卡已提交的是构建代码与签名文档配置，不代表电脑上的私钥已迁移或双机验证 PASS。**
+**状态：2026-10-13 办公室原密钥/专用路径/runtimecheck与标准Debug/Release构建验签 PASS；家庭安全传输与实际验证 PENDING。当前唯一目标仍为 [Issue #19](https://github.com/shimao1115/KITT/issues/19)，保持 open。**
+**办公室工程已交付，停止等待家庭端；本轮不启动 V0.3.5.2（#18）、#13或离线包，不为验签改版本或安装手机。** 真实结果、工程提交和最小家庭操作见 [HANDOFF.md](HANDOFF.md) 与 [签名文档](docs/SIGNING_UNIFICATION.md)。双机统一尚未签 PASS。
 
 ## 先继承事实
 

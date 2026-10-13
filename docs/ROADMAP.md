@@ -1,6 +1,6 @@
 # KITT V0 Roadmap — Destination Chain
 
-> **2026-10-12 用户新增前置门禁：#19 双电脑签名统一优先于 V0.3.5.2 / #18。** 现已在仓库配置 KITT 项目专用私钥路径 `%USERPROFILE%\.kitt\signing\acceptance.keystore`、证书指纹验证脚本和打包验收护栏；**实际办公室↔家用 PC 原私钥复制及两机运行验证尚未完成，不可声称已统一签名。** 详见 [签名文档](SIGNING_UNIFICATION.md) 和根 [TASK_CARD.md](../TASK_CARD.md)。旧手机验收包 `com.kitt.reader.runtimecheck` / code11 / 证书指纹仍是唯一标准，不卸载、不清数据。#18 原任务已授权但暂停代码施工，直到 #19 验证完成。
+> **2026-10-13：#19签名前置门禁办公室 PASS，家庭 PENDING。** 已实地确认办公室原密钥、原样复制到 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，修复 Gradle 编译并验证 runtimecheck、标准 Debug/Release 的构建/lint及唯一指定证书；签名正负例回归通过。**家庭安全传输、两机实际验证与跨机原位升级尚未完成，不可声称双机统一成功。交付后停止等待家庭端。** 详见根 HANDOFF、[签名文档](SIGNING_UNIFICATION.md) 和 [TASK_CARD.md](../TASK_CARD.md)。版本仍0.3.5.1/code11，本轮不安装手机、不改数据，#18暂停施工。
 
 > **下一已授权但暂缓的 Destination：V0.3.5.2 / Issue #18 跨旅程研究证据缓存（2026-10-12）**。用户已授权，但按照后续签名统一决定，**需先完成上面的 #19 双机验签门禁，当前不得开始 #18 业务施工**。从 0.3.5.1/code11 继承，复用已有 Overview/Topic/来源事实结构，成功搜索后持久保存，下次 Journey/App 重启命中时不重复研究。#19 验收后恢复 #18 为根任务卡唯一施工目标，再按小版本验收停止，#13和离线包仍待下一轮。
 

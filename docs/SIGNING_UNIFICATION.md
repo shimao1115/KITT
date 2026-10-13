@@ -1,6 +1,6 @@
 # KITT 办公室 / 家庭电脑统一签名（V0.3.5.2 前置门禁）
 
-**进度说明：本文件说明配置和验收，不能代替把原私钥从办公室安全复制到家庭电脑。** 新开发任务 [#19](https://github.com/shimao1115/KITT/issues/19)。完成这个前置门禁后，再恢复 [#18 跨旅程研究缓存](https://github.com/shimao1115/KITT/issues/18)。
+**2026-10-13：办公室已确认原密钥并原样复制到专用路径；实际构建与证书结果见 [HANDOFF.md](../HANDOFF.md)。家庭端 PENDING。** [#19](https://github.com/shimao1115/KITT/issues/19) 保持 open，交付办公室结果后停止，等待本人安全传输及家庭端验证；不启动 [#18](https://github.com/shimao1115/KITT/issues/18)。
 
 ## 哪把证书是标准
 
@@ -43,10 +43,49 @@ $source = Join-Path $env:USERPROFILE '.android\debug.keystore'
 ```powershell
 $target = Join-Path $env:USERPROFILE '.kitt\signing\acceptance.keystore'
 New-Item -ItemType Directory -Force (Split-Path $target) | Out-Null
-Copy-Item -LiteralPath $source -Destination $target -Force
+if (Test-Path -LiteralPath $target) {
+    if ((Get-FileHash $source).Hash -ne (Get-FileHash $target).Hash) {
+        throw '目标已有不同文件，保留两者，不覆盖；先检查原密钥。'
+    }
+} else { Copy-Item -LiteralPath $source -Destination $target }
 ```
 
-之后把 `acceptance.keystore` 通过个人安全介质复制到家庭电脑的**相同相对路径**（各机 USERPROFILE 不同属于正常情况）。家庭电脑不应覆盖它自己的 `~/.android/debug.keystore`。
+办公室已经准备好的迁移源就是 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，与原全局密钥字节相同；专用目录/文件已限制为当前用户和 SYSTEM 访问。保留原文件。本人把此完整文件复制到加密 U 盘等安全介质；不要通过 GitHub、聊天或构建日志传输。家庭电脑不应覆盖它自己的 `~/.android/debug.keystore`。
+
+### 家庭电脑最短步骤（PENDING，尚未执行）
+
+1. 在家庭仓库 `git pull --ff-only origin main`，确保 JDK17、Android SDK35 和依赖可用。
+2. 接入本人控制的安全介质，在仓库根 PowerShell 执行以下命令。`X:\acceptance.keystore` 是示例，改为实际介质路径。先验源文件，再复制；存在不同目标文件时保留双方并停止。
+
+```powershell
+$source = 'X:\acceptance.keystore'
+.\scripts\check-kitt-signing.ps1 -KeystorePath $source
+if (-not $?) { throw '源密钥验证失败，不复制。' }
+$target = Join-Path $env:USERPROFILE '.kitt\signing\acceptance.keystore'
+New-Item -ItemType Directory -Force (Split-Path $target) | Out-Null
+if (Test-Path -LiteralPath $target) {
+    if ((Get-FileHash $source).Hash -ne (Get-FileHash $target).Hash) { throw '目标不同，保留原文件，不覆盖。' }
+} else { Copy-Item -LiteralPath $source -Destination $target }
+$identity = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+icacls.exe (Split-Path $target) /inheritance:r /grant:r "${identity}:(OI)(CI)F" '*S-1-5-18:(OI)(CI)F'
+if ($LASTEXITCODE -ne 0) { throw '目录限权失败。' }
+icacls.exe $target /inheritance:r /grant:r "${identity}:F" '*S-1-5-18:F'
+if ($LASTEXITCODE -ne 0) { throw '文件限权失败。' }
+.\scripts\check-kitt-signing.ps1
+```
+
+3. 构建并验签（依赖齐全可在构建命令后加 `-Offline`）：
+
+```powershell
+.\scripts\build-runtime-smoke.ps1
+.\scripts\check-kitt-signing.ps1 -ApkPath artifacts\kitt-v0.3.5.1-runtimecheck.apk -ExpectedApplicationId com.kitt.reader.runtimecheck
+.\scripts\verify.ps1
+.\scripts\test-kitt-signing.ps1 -RuntimeApkPath artifacts\kitt-v0.3.5.1-runtimecheck.apk
+```
+
+第一项内部已校验证书和包名；`verify.ps1` 另验证标准 Debug/Release 同证书，最后运行签名负例回归。只分享 PASS/FAIL、公开指纹和包名/版本结果，私钥文件及密码不要分享。
+
+4. 此次仍是 **0.3.5.1/code11**，仅构建验签，**不安装到手机**。家庭端结果实际取得后再更新 #19；后续正式升版才做原位升级，不为验签修改版本号。
 
 ### 两台电脑均校验
 
@@ -59,10 +98,10 @@ Copy-Item -LiteralPath $source -Destination $target -Force
 脚本只会在证书 SHA256 等于上方标准时返回 PASS。构建包后可用：
 
 ```powershell
-.\scripts\check-kitt-signing.ps1 -ApkPath 'artifacts\kitt-v0.3.5.2-runtimecheck.apk'
+.\scripts\check-kitt-signing.ps1 -ApkPath 'artifacts\kitt-v0.3.5.1-runtimecheck.apk' -ExpectedApplicationId 'com.kitt.reader.runtimecheck'
 ```
 
-这里的 APK 名称是**将来** 0.3.5.2 施工产物示例；文件不存在时不会假称检查成功。运行工程测试前也应先验证本人电脑的 keystore。
+脚本同时校验私钥条目、单一 APK signer 与包名，并显示版本元数据。文件不存在、签名无效或包名不符会失败。Gradle 在专用文件存在时也独立校验证书及私钥条目，不能将错误密钥静默当验收签名。缺少专用文件时普通本地单测仍可运行，但两个验收构建脚本会提前失败。
 
 ## 覆盖升级的三个必要条件
 

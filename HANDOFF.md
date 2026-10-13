@@ -1,13 +1,40 @@
-# KITT 施工前置门禁：办公室与家用电脑签名统一（2026-10-12）
+# KITT 签名统一：办公室 PASS / 家庭 PENDING（2026-10-13）
 
-用户要求在 V0.3.5.2 跨旅程研究缓存开始前先统一签名。**当前唯一工作项 [#19](https://github.com/shimao1115/KITT/issues/19)**；原 [#18](https://github.com/shimao1115/KITT/issues/18) 的产品授权仍有效，但施工须等待双机签名门禁。当前已落库项目专用签名配置与预检，**尚未实际获取私钥、运行办公室和家庭电脑的签名预检、执行跨电脑原位升级，不宣称签名统一已完成或本次脚本通过构建**。
+**当前唯一工作项 [#19](https://github.com/shimao1115/KITT/issues/19)，办公室端已完成；家庭端密钥传输、构建验签与双机原位升级均未执行，PENDING，不能声称双机统一成功。** 本次交付后停止，等待家庭端实际验证；不开展 V0.3.5.2/#18、#13 或离线包。工程提交 [`8753240`](https://github.com/shimao1115/KITT/commit/8753240ed184a8ee15c1d7420691b11184e1a30f)；脱敏证据 [signing-office-verification.json](docs/evidence/signing-office-verification.json)。
 
-- **唯一标准**：手机保留账户/设置的 `com.kitt.reader.runtimecheck` V0.3.5.1/code11，已验证证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
-- **私有密钥位置**：两机各自 `%USERPROFILE%\.kitt\signing\acceptance.keystore`；必须使用现有办公室私钥的**相同字节**安全复制，不要覆盖其他项目的全局 `~/.android/debug.keystore`，不得入 GitHub、Issue 或聊天。
-- **构建工具**：`app/build.gradle.kts` Debug 签名（存在项目私钥时使用）；`scripts/check-kitt-signing.ps1` 用指纹验私钥/APK；`scripts/verify.ps1` 和 `scripts/build-runtime-smoke.ps1` 先执行预检，不符合证书不能产出合规验收 APK。
-- **下一个必须实际验证的动作**：办公室确认原密钥证书与手机相同，再安全复制到家庭电脑；两机分别执行 `scripts/check-kitt-signing.ps1` 并对 runtimecheck APK 做 `-ApkPath` 证书复核。完整操作 [docs/SIGNING_UNIFICATION.md](docs/SIGNING_UNIFICATION.md)。没有私钥不能在本聊天远程完成最后一步。
-- **注意**：同签名只解决签名冲突；覆盖升级还要求相同 `applicationId`（手机为 runtimecheck）和合法递增 `versionCode`。0.3.5.2 尚未开工，也尚未生成新 APK。
-- **旧版事实保持**：V0.3.5.1 地区稳定修复工程通过、实机部分待验收（600秒中305秒定位新鲜，期间名称消失0），定位不新鲜仍在 #14，旧 #17 未正式签实机完整 PASS。
+## 办公室真实结果
+
+- **原密钥 PASS**：JDK17 `keytool` 确认 `%USERPROFILE%\.android\debug.keystore` 的 `androiddebugkey` 是 PrivateKeyEntry，SHA256 为唯一标准 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`，与已安装手机证书的已有记录一致。
+- **专用密钥 PASS**：原样复制至 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，内部文件哈希比对相同，不输出私钥文件摘要；原全局文件保留、未覆盖或生成密钥。专用文件与目录 ACL 仅当前用户和 SYSTEM。迁移源已准备在此路径，文件未进入仓库、聊天或 GitHub。
+- **预检/构建 PASS**：实际运行 `scripts/check-kitt-signing.ps1`、`scripts/build-runtime-smoke.ps1 -Offline`（assembleDebug、assembleDebugAndroidTest、lintDebug）和 `scripts/verify.ps1 -Offline`（标准 Debug/Release assemble、lint、验签）。三个生产验收 APK 的单一 signer 均为上述证书，包名/版本已由 aapt 核对；runtimecheck 测试 APK 也同证书。
+- **测试 PASS**：签名回归实际执行 2 个正例 + 6 个拒绝案例：缺密钥、缺 APK、包名约束但无 APK、错误包名、未签名 APK、指纹相同但只有公开证书无私钥。测试仅临时导出公开证书并建立证书容器，已清理，不生成私钥。Debug349/Release336 测试报告失败/错误/跳过为0；两种单测任务本轮是 **UP-TO-DATE，复用有效结果，未重新执行全部单测**。
+- **修复范围**：现有 `java.io.File` 在 Gradle Kotlin DSL 中编译失败，改用显式 import；Gradle 独立校验原私钥条目和证书。PowerShell 固定 keytool 输出语言、拒绝非私钥/多个 signer，检查包名并报告版本；runtimecheck 先验签再复制交付文件。构建提示不再把标准包误作手机升级包。不改业务、版本号、包名或 Provider。
+- **手机数据未操作**：本轮无 adb、安装、降级、卸载、清数据、账户或设置读取/修改；没有通过验签要求卸载现有 App，也未重新验活 ChatGPT。仍为 0.3.5.1/code11，此次仅构建验证；未来正式升版时才以同包名/同证书 `adb install -r` 原位升级。既有手机 ChatGPT/gpt-6.1-sol/low 配置是下方历史证据，当前未访问；新安装默认 Fake 的行为保持。
+
+| 办公室 APK（均0.3.5.1/code11） | applicationId | 文件 SHA256 |
+| --- | --- | --- |
+| [runtimecheck](artifacts/kitt-v0.3.5.1-runtimecheck.apk) | `com.kitt.reader.runtimecheck` | `2302cd463836a14e7636ef281278c1175f4e7a7412baeb23707d2e71a33ded75` |
+| [标准 Debug](artifacts/kitt-v0.3.5.1-debug.apk) | `com.kitt.reader` | `183ba0fbca2fc5740d8c1a2698d56ee98b076bfb744653f48338c87a2a241d6e` |
+| [标准 Release 验收](artifacts/kitt-v0.3.5.1-release.apk) | `com.kitt.reader` | `7fa9507d22e35065329a3ffc772c05fe4779f45a811db53f7ab31ac7ea354a09` |
+
+runtimecheck 文件哈希与历史0.3.5.1交付相同；Release 重新签名后的文件哈希不同，证书相同。标准包不属于手机 runtimecheck 数据空间。APK/原始日志均在本地忽略的 `artifacts/`，不提交二进制或密钥。
+
+## 家庭端剩余最小动作 / 停止规则
+
+1. 本人将办公室 `%USERPROFILE%\.kitt\signing\acceptance.keystore` 通过本人控制的加密 U 盘等安全介质携带到家庭电脑；不要上传/发送该文件。办公室原件保留。
+2. 家庭仓库拉最新 main，先用 `scripts/check-kitt-signing.ps1 -KeystorePath <介质源文件>` 核对，再复制到家庭 `%USERPROFILE%\.kitt\signing\acceptance.keystore` 并限权。已有不同目标时保留双方，不强制覆盖。**家庭端 PENDING**。
+3. 执行预检、`scripts/build-runtime-smoke.ps1`、runtimecheck 的 `-ApkPath ... -ExpectedApplicationId com.kitt.reader.runtimecheck`、`scripts/verify.ps1` 及签名回归。完整可复制命令见 [SIGNING_UNIFICATION.md](docs/SIGNING_UNIFICATION.md)。收集家庭 PASS/FAIL 才更新 #19；现保持 open。
+
+两机均维持 code11，此轮不安装到手机。没有新增 OAuth/API key 步骤，唯一人工交接是安全传输密钥及家庭端执行验证。家庭端依赖、环境和构建尚未实测；本轮无跨机升级数据保留新证据。#18 仍暂缓，停止等待家庭端验证。
+
+## 成都→绵阳 / 保留基线 / 最近提交
+
+本轮没有路线或业务变更；`verify.ps1` 复核/复制既有成都新都→绵阳安州雎水29点、90912m等确定性/Fake模拟报告，来自 UP-TO-DATE 单测结果，不当作新真机/实车验收。当前可运行的 V0.3.5.1 能力、Provider、模拟和已知实机限制保持下方历史交接。#17 工程通过、真机部分待验收（600秒中305秒新鲜、期间名称消失0），定位间断仍属 #14。
+
+- `8753240` — #19办公室原签名构建、Gradle编译修复/独立验签、包名保护、签名正负例回归。
+- `13ba91d` — 本次继承的最新 main；前置签名门禁与暂缓缓存任务说明。
+- `129191f` / `65748a0` / `3d120ce` / `befd5d8` — 原项目签名配置与预检（此前未实测，本次已修复并验证）。
+- `e87c6be` / `74161cf` — V0.3.5.1账号保留/自然位置证据及地区稳定工程基线。
 
 ---
 

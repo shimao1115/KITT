@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-13",
+  "timezone": "Asia/Shanghai",
+  "issue": 19,
+  "machineRole": "office Windows 11",
+  "baseline": "13ba91d",
+  "engineeringCommit": "8753240ed184a8ee15c1d7420691b11184e1a30f",
+  "office": "PASS",
+  "home": "PENDING",
+  "crossMachineUpgrade": "NOT RUN",
+  "keystore": {
+    "original": "%USERPROFILE%/.android/debug.keystore",
+    "canonical": "%USERPROFILE%/.kitt/signing/acceptance.keystore",
+    "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "originalPrivateKeyEntry": "PASS",
+    "identicalFileCopy": true,
+    "originalPreserved": true,
+    "newPrivateKeyGenerated": false,
+    "canonicalAcl": "current user + SYSTEM only"
+  },
+  "runtimeBuild": "PASS: assembleDebug, assembleDebugAndroidTest, lintDebug --offline",
+  "standardBuild": "PASS: scripts/verify.ps1 -Offline, Debug/Release assemble and lint",
+  "tests": {
+    "Debug": {
+      "tests": 349,
+      "failures": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 336,
+      "failures": 0,
+      "skipped": 0
+    }
+  },
+  "unitTestExecution": "Both test tasks UP-TO-DATE: valid unchanged-code results reused, not freshly executed in this signing run.",
+  "signingRegression": "PASS: 2 accepted cases + 6 rejected cases (missing key/APK, package constraint without APK, wrong package, unsigned APK, matching public certificate without private key). Public-only temporary fixtures removed; no private key generated.",
+  "simulation": "Existing Chengdu-Mianyang Fake/deterministic reports reused through UP-TO-DATE unit-test tasks; no new live route acceptance.",
+  "phoneOperations": "NONE: no adb, installation, downgrade, uninstall, data clear, credential/settings read or modification.",
+  "apks": [
+    {
+      "path": "artifacts/kitt-v0.3.5.1-runtimecheck.apk",
+      "applicationId": "com.kitt.reader.runtimecheck",
+      "versionCode": 11,
+      "versionName": "0.3.5.1",
+      "signature": "PASS",
+      "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "sha256": "2302cd463836a14e7636ef281278c1175f4e7a7412baeb23707d2e71a33ded75",
+      "bytes": 74279072
+    },
+    {
+      "path": "artifacts/kitt-v0.3.5.1-debug.apk",
+      "applicationId": "com.kitt.reader",
+      "versionCode": 11,
+      "versionName": "0.3.5.1",
+      "signature": "PASS",
+      "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "sha256": "183ba0fbca2fc5740d8c1a2698d56ee98b076bfb744653f48338c87a2a241d6e",
+      "bytes": 74279048
+    },
+    {
+      "path": "artifacts/kitt-v0.3.5.1-release.apk",
+      "applicationId": "com.kitt.reader",
+      "versionCode": 11,
+      "versionName": "0.3.5.1",
+      "signature": "PASS",
+      "certificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "sha256": "7fa9507d22e35065329a3ffc772c05fe4779f45a811db53f7ab31ac7ea354a09",
+      "bytes": 70642112
+    }
+  ],
+  "logs": [
+    "artifacts/signing-office-runtime-build.log",
+    "artifacts/signing-office-verification.log",
+    "artifacts/signing-office-regression.log"
+  ]
+}
