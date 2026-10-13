@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-13 用户正式阶段性接受 V0.3.5.2 / #18（不是整机总验收）。** 工程和 code12 同签名真机原位升级 PASS，账号设置保留 PASS；真实新都区区县 Overview 首次 write=1 → 应用 force-stop 后新进程 hit=1、重复研究=0，Director 机会重建 PASS；天气实时路径/失败如实说明 PASS，在线答案质量 PENDING。镇街/Topic、持续在线讲述、真人语音及播放中打断仍 PENDING。#18 保持 OPEN 追踪未完成自然验收，**立即停止，不重做已通过缓存，也不自动开 #13、离线包**。详细见 [验收矩阵](ACCEPTANCE_RESEARCH_CACHE.md#2026-10-13-真实手机验收) 与 [Issue 决定](https://github.com/shimao1115/KITT/issues/18#issuecomment-6137058814)。其下有关“尚未升级/待决定”的条目仅作历史，不再是当前状态。
+
 > **2026-10-13 最新阶段：#18 V0.3.5.2 工程交付完成后，用户已下发真机验收任务卡。** 当前唯一工作是按 [TASK_CARD.md](../TASK_CARD.md) 在办公室进行已签名 code12/runtimecheck 的只升级不卸载，以及真实区县 Overview → 结束 → App 进程重启 → 缓存命中、0重复研究调用的最小证据验收。镇街/Topic 在真实地名与来源不稳定时可以分别保持 PENDING；不把合成0/0/0当自然现场结论。此时仍是**真机验收待执行**，并非已升级/已PASS；不启动 #13 或离线包。#19 家庭签名仍 OPEN/PENDING。
 
 > **2026-10-13：V0.3.5.2 / code12 / #18 工程交付 PASS，停止等待小版本人工验收。** [`f7cbd6b`](https://github.com/shimao1115/KITT/commit/f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3) 保存已核验来源的稳定 Overview/Topic；结束/重建后合成对照命中0重复研究，新旅程 Director 再判断，实时请求仍新查。最终实际 Debug365/Release352、assemble/lint/原签名及六组模拟/驾驶解析回归 PASS，办公室 runtimecheck 0.3.5.2/code12 已验签产出；手机升级、杀进程重启及真实内容/Tokens采样 PENDING。见 [验收](ACCEPTANCE_RESEARCH_CACHE.md)、[本版证据](evidence/v0352-verification.json) 和根 HANDOFF。#18 保留 OPEN 等人工验收；不开展 #13、离线包、定位重构或下一轮 UI。
