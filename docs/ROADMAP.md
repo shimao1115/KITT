@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-13 最新安排：#19 家庭电脑原签名导入/构建验签已获用户授权，当前唯一工作为本机 [TASK_CARD.md](../TASK_CARD.md)。** 办公室签名 PASS，家庭端实际验证尚未运行/PENDING；本地原私钥源路径只在家用电脑的私密 Codex 会话提供，不入Git。只复制到独立项目密钥路径、校验证书及 code13 APK，**不安装手机或改生产代码**。#13 V0.3.6 工程已交付但真人听感等 PENDING，不因本轮任务改为PASS；#18等其他事项照旧，任务完结即停止。详细见 [签名迁移步骤](SIGNING_UNIFICATION.md) 和 [Issue #19](https://github.com/shimao1115/KITT/issues/19)。
+
 > **2026-10-13 V0.3.6 / #13 工程交付PASS，STOP等待小版本验收。** [`0cc7e68`](https://github.com/shimao1115/KITT/commit/0cc7e68a867742852c46e000fdc506386eab3862)完成同趟对象/事实覆盖与诚实语音生命周期、补充/本地重播及地标新事实。Debug395/Release382、assemble/lint/原签名及六组模拟PASS，code13/runtimecheck原位升级Success。用户暂停后恢复手机：正常设置符合既有配置，原UI失败时仍等待模型列表；code12精确账号文字比较未留存。**真实ChatGPT→自动旁白→TTS完成1段，98s观察/新鲜位置；用户没听到或不在旁边，真人语义/听感/补充/重播PENDING。** 仅修正Probe测试文案误触安静并编译/lint，生产APK不变。见[精简验收](ACCEPTANCE_NARRATION_MEMORY.md)、[手机证据](evidence/v036-phone-acceptance.json)、根HANDOFF。#13保持OPEN；手机已结束旅程，本轮停止，不继续其他Issue/V0.4.0。其下授权/旧状态只作历史。
 
 > **2026-10-13 用户最新授权 V0.3.6 / [Issue #13](https://github.com/shimao1115/KITT/issues/13) 正式施工，当前唯一 Destination 为“同趟已讲事实/角度语义去重，不能造成整段静音”。** 根 [TASK_CARD.md](../TASK_CARD.md) 是施工入口；在已确认的 V0.3.5.2/code12 上完成最小修复、回归、签名 APK 与交接后即停止。**任务下发不代表 Codex 已实际运行或版本已交付。** #18 区县真实缓存阶段性 PASS，镇街/Topic 和在线讲述/真人语音仍待验；#14/#17 定位及 #19 家庭签名独立追踪。先验证已有真机网络/Director 能否实际完成一段讲述，不能把网络FAILURE/STALE误判成去重；缺真机条件则自动测试后保留PENDING。禁止顺手做离线包或定位/实时响应 Hotfix。
