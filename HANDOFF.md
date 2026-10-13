@@ -1,3 +1,14 @@
+# KITT 当前独立任务：家庭电脑原签名导入与验签 / #19（2026-10-13）
+
+用户已将办公室原私钥副本安全带至家中，并授权在**家庭电脑本地**由 Codex 执行 [TASK_CARD.md](TASK_CARD.md) 的 #19 导入/验签流程。**任务卡已经下发，本仓库没有访问家庭 F 盘或执行本地 Codex，家庭实际迁移和构建目前仍 PENDING。** 具体源文件路径只通过本机私密 Codex 会话提供，不写公共仓库、Issue或日志。
+
+- 办公室端签名 PASS（历史）；家庭端按原证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba` 校验 PrivateKeyEntry，原样复制至各家用电脑的 `%USERPROFILE%\.kitt\signing\acceptance.keystore`，限制文件访问；如目标已有不同文件先停止，不覆盖。
+- 家用机签名与 `0.3.6/code13` runtimecheck 构建和 APK 验签后，才可判 #19 两端 PASS。本轮**不向手机安装相同 code13**，不清数据/导出账号；不可碰 #13/离线包等其他功能。
+- 同步目录中原密钥的隐私风险需要提醒用户，但**未经用户明确授权不得删除、移动或上传源文件**。本轮工作后立即停止。
+- V0.3.6 工程已完成、真人语义/听感仍 PENDING，#13 保持开放；此前记录不因家庭签名迁移改写。
+
+---
+
 # KITT V0.3.6 / #13 工程交付 — 停止等待验收（2026-10-13）
 
 **工程施工、全量测试、六组模拟与原签名打包完成，代码提交 [`0cc7e68`](https://github.com/shimao1115/KITT/commit/0cc7e68a867742852c46e000fdc506386eab3862)。用户恢复手机连接后，本版真实ChatGPT→自动旁白→TTS引擎完成已取得一次证据；正常设置已核对。用户反馈“没听到或当时不在旁边”，真人听感、同义去重、补充/重播仍PENDING。停止手机操作，#13保持OPEN等待本小版本人工验收，不自动开启下一版本。** [精简验收](docs/ACCEPTANCE_NARRATION_MEMORY.md)、[本版实际验证](docs/evidence/v036-verification.json)、[手机阶段性事实](docs/evidence/v036-phone-acceptance.json)。下方旧授权/旧交接只作历史。
