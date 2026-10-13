@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-13 #19 双电脑签名正式验收完成并关闭（当前无自动施工任务）。** 办公室、家庭两个独立 Windows 环境均使用同一原签名；家庭 PrivateKeyEntry/ACL/复制一致性、runtimecheck 0.3.6/code13、Debug395/Release382、lint、六组模拟及签名回归均实际 PASS。家中同签名 APK 已生成但**未安装手机，也不需要对已是 code13 的手机重装**。脱敏证据 [signing-home-verification.json](evidence/signing-home-verification.json)、[HANDOFF](../HANDOFF.md)、[#19 CLOSED](https://github.com/shimao1115/KITT/issues/19)。先前路线图的“家庭端 PENDING”只表示当时历史状态，已由当前结果取代；根任务卡现为 [等待新授权](../TASK_CARD.md)。#13 真人听感语义、#18 镇街/Topic、#14/#17 外场仍未变成 PASS。不自动启动 V0.4.0。
+
 > **2026-10-13 最新安排：#19 家庭电脑原签名导入/构建验签已获用户授权，当前唯一工作为本机 [TASK_CARD.md](../TASK_CARD.md)。** 办公室签名 PASS，家庭端实际验证尚未运行/PENDING；本地原私钥源路径只在家用电脑的私密 Codex 会话提供，不入Git。只复制到独立项目密钥路径、校验证书及 code13 APK，**不安装手机或改生产代码**。#13 V0.3.6 工程已交付但真人听感等 PENDING，不因本轮任务改为PASS；#18等其他事项照旧，任务完结即停止。详细见 [签名迁移步骤](SIGNING_UNIFICATION.md) 和 [Issue #19](https://github.com/shimao1115/KITT/issues/19)。
 
 > **2026-10-13 V0.3.6 / #13 工程交付PASS，STOP等待小版本验收。** [`0cc7e68`](https://github.com/shimao1115/KITT/commit/0cc7e68a867742852c46e000fdc506386eab3862)完成同趟对象/事实覆盖与诚实语音生命周期、补充/本地重播及地标新事实。Debug395/Release382、assemble/lint/原签名及六组模拟PASS，code13/runtimecheck原位升级Success。用户暂停后恢复手机：正常设置符合既有配置，原UI失败时仍等待模型列表；code12精确账号文字比较未留存。**真实ChatGPT→自动旁白→TTS完成1段，98s观察/新鲜位置；用户没听到或不在旁边，真人语义/听感/补充/重播PENDING。** 仅修正Probe测试文案误触安静并编译/lint，生产APK不变。见[精简验收](ACCEPTANCE_NARRATION_MEMORY.md)、[手机证据](evidence/v036-phone-acceptance.json)、根HANDOFF。#13保持OPEN；手机已结束旅程，本轮停止，不继续其他Issue/V0.4.0。其下授权/旧状态只作历史。
