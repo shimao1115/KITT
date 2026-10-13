@@ -1,3 +1,13 @@
+# 当前验收任务：V0.3.5.2 / #18 真实手机原位升级与缓存复用（2026-10-13）
+
+用户已授权将本次工程交付转为手机验收任务，施工端按根目录 [TASK_CARD.md](TASK_CARD.md) 执行。**任务卡已下发，但本条目不是验收结果；目前真实手机升级、账号保留、本地资料跨进程复用均 PENDING。**
+
+- 预期办公室已构建的 `artifacts/kitt-v0.3.5.2-runtimecheck.apk`，`com.kitt.reader.runtimecheck` / versionCode12 / 文件 SHA256 `4e9526b932801ca000c00ee552e086d74820023ccf48580b31d328da92fa7b88` / 签名证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`；文件只在办公室本地，不在 GitHub。先证书/包名/版本/文件哈希核对，才能同签名 `adb install -r`，不卸载或清数据。
+- **真实缓存最小验收**：区县首次成功研究写盘 → 结束/终止进程 → 同区县新 Journey 命中、0次相同 Overview 重复网络研究、Director仍有新机会。镇街和专题依自然可靠定位、真实来源研究情况分别打 PASS/PENDING，不要假冒 0/0/0 全部自然实测。
+- 只做验收和脱敏交接，不改定位/研究业务、不开 #13/离线包。真实结果随后写入当前 HANDOFF、[docs/ACCEPTANCE_RESEARCH_CACHE.md](docs/ACCEPTANCE_RESEARCH_CACHE.md) 和 #18。#19 家庭端依旧 PENDING。
+
+---
+
 # 沿途 V0.3.5.2 — 地区研究证据缓存交接
 
 **2026-10-13（Asia/Shanghai），0.3.5.2 / code12，#18 工程交付 PASS；手机原位升级、杀进程重启与真实内容验收 PENDING。到此停止，等待一次小版本人工验收。** 工程提交 [`f7cbd6b`](https://github.com/shimao1115/KITT/commit/f7cbd6bd21bfc33994a3d35fb2c23b4ddac5bbd3)，[精简验收](docs/ACCEPTANCE_RESEARCH_CACHE.md)、[本版验证摘要](docs/evidence/v0352-verification.json)、[零重复研究对照](docs/evidence/v0352-research-cache.txt)。#18 保留 OPEN 等待人工验收，未启动 #13、离线包、定位重构或下一轮 UI。
