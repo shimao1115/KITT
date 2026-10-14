@@ -59,15 +59,6 @@ class TripStore(context: Context) {
             true
         }.getOrElse { lastError = "旅程纪要暂时无法保存。"; false }
     }
-    fun feedback(started: Long, ratings: List<Int>, comment: String): Boolean = runCatching {
-        require(ratings.size in 1..5 && ratings.all { it in 1..5 })
-        val file = File(directory, "trip-$started.json")
-        val obj = Json.parseToJsonElement(file.readText()).jsonObject
-        write(file, buildJsonObject {
-            obj.forEach { (key, value) -> put(key, value) }
-            put("ratings", JsonArray(ratings.map(::JsonPrimitive))); put("feedback", comment.take(800))
-        }); true
-    }.getOrElse { lastError = "评分暂时无法保存。"; false }
     fun latest(): TripSummary? = runCatching {
         val file = directory.listFiles { file -> file.name.startsWith("trip-") && file.extension == "json" }
             ?.maxByOrNull(File::lastModified) ?: return null

@@ -60,7 +60,7 @@ try {
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk="kitt-v$taskVersion-debug.apk"; sha256=$taskHash; releaseApk="kitt-v$taskVersion-release.apk"; releaseSha256=$taskReleaseHash
-        deviceAcceptance='NOT RUN BY THIS SCRIPT: no phone installation, downgrade, data clear or credential access. V0.4.1 real GPS/network/voice acceptance remains PENDING; historical device results in HANDOFF.md are separate.'
+        deviceAcceptance="NOT RUN BY THIS SCRIPT: no phone installation, downgrade, data clear or credential access. V$taskVersion real-device acceptance remains PENDING; historical device results and V0.4.1 outstanding field gates in HANDOFF.md are separate."
         areaStability='PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.'
         runtimeStatus='PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.'
         locationFallback='PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.'

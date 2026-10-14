@@ -42,17 +42,30 @@ class PersistenceTest {
         time += 900000; restored.tick(); assertEquals(JourneyState.READING, restored.state)
         assertTrue(store.finish(restored.end())); assertNull(store.recovery())
     }
-    @Test fun summaryRatingRetentionAndCorruptRecovery() {
+    @Test fun legacyRatingsAndFeedbackRemainReadableUnchangedAndCorruptRecoveryIsSafe() {
         val context = RuntimeEnvironment.getApplication(); val store = TripStore(context)
         val summary = TripSummary(100, 200, "绵阳", listOf("道路"), 1)
-        assertTrue(store.finish(summary)); assertEquals(summary, TripStore(context).latest())
-        assertTrue(store.feedback(100, listOf(1, 2, 3, 4, 5), "时机不错"))
-        val raw = File(context.filesDir, "trips/trip-100.json").readText()
-        assertTrue(raw, raw.contains("时机不错")); assertTrue(raw, raw.contains("ratings"))
-        assertFalse(store.feedback(100, listOf(0), "bad"))
+        val legacy = File(context.filesDir, "trips/trip-100.json")
+        legacy.writeText("""{"version":1,"started":100,"ended":200,"destination":"绵阳","topics":["道路"],"skipped":1,"ratings":[1,2,3,4,5],"feedback":"时机不错"}""")
+        val saved = legacy.readBytes()
+        repeat(2) { assertEquals(summary, TripStore(context).latest()); assertArrayEquals(saved, legacy.readBytes()) }
+        val next = TripSummary(300, 400, "未询问", emptyList(), 0)
+        assertTrue(store.finish(next))
+        File(context.filesDir, "trips/trip-300.json").setLastModified(System.currentTimeMillis() + 1000)
+        assertEquals(next, TripStore(context).latest()); assertArrayEquals(saved, legacy.readBytes())
         File(context.filesDir, "trips/current.json").writeText("broken")
         assertNull(store.recovery()); assertNotNull(store.lastError)
         store.clearRecovery(); assertFalse(File(context.filesDir, "trips/current.json").exists())
+    }
+    @Test fun finishSavesSummaryAndClearsCheckpointWithoutRatingInput() {
+        val context = RuntimeEnvironment.getApplication(); val store = TripStore(context)
+        val journey = Journey({ 1000000 }, TestVoice()); journey.start()
+        store.checkpoint(journey, false, 1.0, 0); assertNotNull(store.recovery())
+        val summary = journey.end()
+        assertTrue(store.finish(summary)); assertNull(store.recovery())
+        assertEquals(summary, TripStore(context).latest())
+        val raw = File(context.filesDir, "trips/trip-${summary.started}.json").readText()
+        assertFalse("ratings" in raw); assertFalse("feedback" in raw)
     }
     @Test fun resumedRuntimeKeepsTravelOffsetBeforeItsFirstPeriodicCheckpoint() {
         val app = RuntimeEnvironment.getApplication(); val store = TripStore(app)

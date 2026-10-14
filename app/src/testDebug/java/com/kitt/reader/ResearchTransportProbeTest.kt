@@ -1,6 +1,8 @@
 package com.kitt.reader
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.serialization.json.*
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -131,19 +133,28 @@ class ResearchTransportProbeTest {
         assertFalse(result.report.containsKey("error_code"))
         assertFalse("private socket details" in result.report.toString())
     }
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test fun totalDeadlineReleasesCallerEvenWhenNativeCallbackIsStillBlocked() = runBlocking {
-        val release = CountDownLatch(1)
+        val entered = CountDownLatch(1); val release = CountDownLatch(1)
+        val scheduler = TestCoroutineScheduler()
         lateinit var nativeCall: Call
         val blocked = ResearchTransportProbe.defaultClient().newBuilder().addInterceptor { chain ->
-            nativeCall = chain.call(); release.await(3, TimeUnit.SECONDS)
+            nativeCall = chain.call(); entered.countDown(); release.await(10, TimeUnit.SECONDS)
             throw java.io.IOException("late cancelled call")
         }.build()
+        val result = async(StandardTestDispatcher(scheduler)) {
+            ResearchTransportProbe(blocked, timeoutMs = 150).run("https://example.test/", "saved-token", payload, area, 1).report
+        }
         try {
-            val report = withTimeout(1000) { ResearchTransportProbe(blocked, timeoutMs = 150)
-                .run("https://example.test/", "saved-token", payload, area, 1).report }
+            // Keep the same 150ms deadline, but advance it only once the real native callback is blocked.
+            // A wall-clock timer could cancel a queued call before its interceptor initialized nativeCall.
+            scheduler.runCurrent()
+            assertTrue(entered.await(5, TimeUnit.SECONDS))
+            scheduler.advanceTimeBy(150); scheduler.runCurrent()
+            val report = withTimeout(1000) { result.await() }
             assertEquals("TimeoutCancellationException", report["transport_outcome"]!!.jsonPrimitive.content)
             assertEquals("TRANSPORT_UNRESOLVED", report["classification"]!!.jsonPrimitive.content)
             withTimeout(1000) { while (!nativeCall.isCanceled()) delay(5) }
-        } finally { release.countDown() }
+        } finally { release.countDown(); result.cancel(); scheduler.runCurrent() }
     }
 }

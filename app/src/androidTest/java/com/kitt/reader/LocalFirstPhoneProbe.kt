@@ -39,7 +39,7 @@ internal fun Instrumentation.localFirstPhoneProbe(runtime: KittRuntime, args: Bu
             val target = targetContext.packageManager.getPackageInfo(targetContext.packageName, 0)
             report.put("version", target.versionName).put("version_code", target.longVersionCode)
                 .put("provider", before.kind.name).put("model", before.model).put("effort", before.effort)
-            check(target.longVersionCode == 15L)
+            check(target.longVersionCode == BuildConfig.VERSION_CODE.toLong())
             check(!runtime.journey.running && runtime.recovery == null)
             runtime.network.refresh()
             check(runtime.network.snapshot.physicalInternet == expectedOnline) { "Wrong physical Internet state" }
