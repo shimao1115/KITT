@@ -35,10 +35,14 @@ class JourneyTest {
         val ticket = journey.ticket(false); time += 46000
         journey.deliver(ticket, DirectorResult(Action.SPEAK_NOW, "old", "旧文").json()); assertTrue(voice.speech.isEmpty())
     }
-    @Test fun askListensOnceAndDoesNotNag() {
-        start(); val ask = DirectorResult(Action.ASK_USER, question = "今天准备去哪儿？")
+    @Test fun destinationIsOptionalButOtherClarificationsRemainAvailable() {
+        start()
+        send(DirectorResult(Action.ASK_USER, question = "今天准备去哪儿？"))
+        assertTrue(voice.speech.isEmpty())
+        assertEquals("未询问", journey.destination)
+        val ask = DirectorResult(Action.ASK_USER, question = "你更喜欢什么题材？")
         send(ask); voice.finish(); assertEquals(1, voice.listeners); voice.answer?.invoke(null)
-        assertEquals("未提供", journey.destination); time += 700000; journey.location(Fix(30.68, 104.07, time))
+        time += 700000; journey.location(Fix(30.68, 104.07, time))
         send(ask); assertEquals(1, voice.speech.size); assertEquals(1, voice.listeners)
     }
     @Test fun prepareReplacesExpiresAndIsNeverSpoken() {
