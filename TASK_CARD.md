@@ -1,12 +1,12 @@
 # CURRENT TASK CARD — KITT V0.4.1 / Issue #24 本地原生讲述热修
 
-**2026-10-14执行状态：V0.4.1/code15工程验收完成，STOP等待用户确认。** Debug441/Release428失败、错误、跳过均0；Debug/Release及runtimecheck构建/lint、六组Fake模拟、原签名2接受+6拒绝PASS，同签名APK已生成。联网/断网/云不可达0自动云调用由JVM/Robolectric证明，真机GPS/实际计数/耳听及安装仍PENDING。未安装/卸载/清数据、未合并PR，不启动后续版本。详见 [HANDOFF](HANDOFF.md)、[验收](docs/ACCEPTANCE_LOCAL_FIRST.md)、[证据](docs/evidence/v041-verification.json)。以下保留已执行授权，不要重新启动本次任务。
+**2026-10-14最新执行状态：code14→15原签名真机原位升级成功，本轮验收结束，STOP等待用户决定。** 联网真实NETWORK→新都本地讲述、0自动云调用、不问目的地及首次真人耳听PASS；120秒联网109秒可信NETWORK/自动0云、主动问题单次FAILED已短句结束；断网120秒没有新鲜物理位置，完整地方链PENDING但正确未知/安静/0云；独立断网中文试听、实际播报按钮打断、默认10分钟静音/提前退出、结束/账号设置保留分别PASS。手机最终出发页，服务停止，原Wi-Fi关/流量开已恢复。不卸载/清数据、不合并PR/关闭Issue或开始下一版本；**已是code15，不要重复安装**。详见 [HANDOFF](HANDOFF.md)、[真机证据](docs/evidence/v041-phone-acceptance.json)。工程Debug441/Release428等结果仍是安装前实际执行证据。
 
 ## 2026-10-14 下午：用户已明确批准真机原位升级与验收（当前生效）
 
 用户刚刚明确答复**“允许”**：授权办公室 Codex **将原手机已安装的 `com.kitt.reader.runtimecheck` V0.4.0/code14 原位更新为 V0.4.1/code15，并完成 [docs/ACCEPTANCE_LOCAL_FIRST.md](docs/ACCEPTANCE_LOCAL_FIRST.md) 的真机验收**。此许可替代本卡上方“STOP 等待手机安装确认”的**安装与验收**部分；**不解除**不卸载、不清数据、不泄露凭据、不合并 Draft PR #25、不关闭 Issue #24、不开始 #23 或 V0.5.0 的其他 STOP 约束。
 
-**现在可以继续执行，无需再次询问是否允许同签名原位升级**。但安全技术门禁是硬条件：
+**以下授权已执行完成，保留作审计，不要据此重启安装或验收。** 本轮后续需等用户新指令。执行时的安全技术门禁如下：
 
 1. 在办公室 Windows 仓库最新 `fix/offline-native-no-destination-question` 上确认工作树清洁、原 APK 路径确实存在：`artifacts/kitt-v0.4.1-runtimecheck.apk`（本机 `H:\CODEX\KITT\artifacts\kitt-v0.4.1-runtimecheck.apk`）。重新核查 SHA256 **`8beac9f79e4adcf8a31f95b742562ea393d996c337be3e1ee87cc8c2e58ce43f`**、长度 **74,369,318 字节**、包名 **`com.kitt.reader.runtimecheck`**、版本 **0.4.1/code15**、唯一原证书 SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**。用 `scripts/check-kitt-signing.ps1 -ApkPath artifacts\kitt-v0.4.1-runtimecheck.apk -ExpectedApplicationId com.kitt.reader.runtimecheck` 等现有检查；**不能使用 `com.kitt.reader` 标准包代替**。
 2. 取得手机的**实际当前状态**：ADB 仅在设备授权、安全连接后查询；核对真实安装包名、现有 versionCode **应小于15（预期14）**、签名兼容、设备可通信；不凭 0.4.0 历史记录猜当前版本。若已是15或更高、设备/证书不匹配、APK 路径/哈希不符，**停止安装并报告**，不要覆盖、降级、重签或重建密钥。

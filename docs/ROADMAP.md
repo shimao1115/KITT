@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **同日真机阶段最新结果**：用户授权后code14→15原位升级PASS，联网真实NETWORK→新都本地讲述/0自动云/真人听清PASS，独立断网中文TTS/按钮打断/默认静音及提前退出PASS；断网120秒无新鲜位置，完整断网地方链及部分同Journey追问/恢复PENDING。已恢复手机网络、结束旅程与服务，STOP等待用户决定，Issue24 OPEN/PR25 Draft，不合并或进入下一版。见 [手机证据](evidence/v041-phone-acceptance.json) 与根HANDOFF；下方安装前状态作历史。
+
 > **2026-10-14 V0.4.1/code15 / #24工程交付，STOP等待确认。** Debug441/Release428、构建/lint、六组Fake模拟和原签名PASS，runtimecheck APK已生成；联网本地自动讲述、0自动云调用、不主动问目的地由工程验证。真机安装/GPS/实际计数/耳听PENDING，Draft PR #25未合并，未操作手机，不进入后续版本。见根 [HANDOFF](../HANDOFF.md)、[验收](ACCEPTANCE_LOCAL_FIRST.md)；下方较早任务与排序作历史。
 
 > **2026-10-14 用户批准的下一阶段路线图（当前最高优先的未来开发顺序）**：[本地知识优先开发路线图](ROADMAP_OFFLINE_FIRST_NEXT.md)。优先 V0.4.1 删除评分、V0.5.0 高质量新都事实+讲述、V0.5.1 探索地点、V0.5.2 六类偏好，再推进 GitHub 一键更新及本地证据优先 AI。**用户决定暂缓专项修 ChatGPT 登录/账号无回应和翻墙网络波动**；唯一必须坚持的是云请求失败不阻碍已有可靠本地讲述/阅读。旧 V0.4.0/#20 PENDING 状态不变，当前尚未启动任何新版本、未改 TASK_CARD/API/APK。以下旧里程碑按当时事实理解。
