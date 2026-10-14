@@ -1,6 +1,6 @@
 # KITT V0 Roadmap — Destination Chain
 
-> **2026-10-14 最新定位/正式设计入口**：用户已经实际无网络听到 V0.4.0/code14 杨升庵地方介绍，证实真人有本地发声，但初次内容仅是身份和官职，**深度未验收通过**；本次无完整 GPS 精度/云请求/追问测试日志，不能宣布全部闭环 PASS。未来内容由 [事实包 + 完整文字讲述包 V2.0](KITT_KNOWLEDGE_STANDARD.md)、[跨 AI 知识工厂 V2.0](KITT_KNOWLEDGE_FACTORY.md) 和 [重写的长期离线包蓝图 V2.0](FUTURE_OFFLINE_KNOWLEDGE_PACKS.md) 统一约束。旧 V0.4.0 施工与历史代码/验收独立保留，当前不进入下一版本；以下旧阶段文字按记录时间理解。
+> **2026-10-14 最新定位/正式设计入口**：用户已经实际无网络听到 V0.4.0/code14 杨升庵地方介绍，证实真人有本地发声，但初次内容仅是身份和官职，**深度未验收通过**；本次无完整 GPS 精度/云请求/追问测试日志，不能宣布全部闭环 PASS。未来内容由 [事实包 + 完整文字讲述包 V2.1](KITT_KNOWLEDGE_STANDARD.md)、[跨 AI 知识工厂 V2.1](KITT_KNOWLEDGE_FACTORY.md) 和 [重写的长期离线包蓝图 V2.1](FUTURE_OFFLINE_KNOWLEDGE_PACKS.md) 统一约束。旧 V0.4.0 施工与历史代码/验收独立保留，当前不进入下一版本；以下旧阶段文字按记录时间理解。**正式知识生产仅办公室与家庭电脑，不再启用 NAS；GitHub 统一保存/协作和 Releases 分发；默认离线优先、用户可选即时优先（在线生成默认跳过本地内容，失败回退说明），模式尚未实现。**
 
 > **2026-10-14 V0.4.0/#20 工程交付完成，STOP等待验收。** [`a43de31`](https://github.com/shimao1115/KITT/commit/a43de31)交付新都6对象/22事实、许可明确的历史Polygon、本地确定性旁白与断网中文TTS。Debug423/Release410、assemble/lint、原签名回归和六组Fake模拟PASS；code14/runtimecheck已同签名原位升级，手机APK摘要一致。用户确认断网独立中文试听“听到了，中文清楚”；真实GPS两轮无新鲜fix，普通LOCATION前台服务约两分钟也未知，故**完整真实GPS→区县→资料→地方讲述仍PENDING**，零Director/Research调用不等于讲述通过。2017开源边界非官方测绘，2026边界调整复核、镇街及冷启动/内存实测独立PENDING。见[HANDOFF](../HANDOFF.md)、[工程证据](evidence/v040-verification.json)、[手机证据](evidence/v040-phone-acceptance.json)、[最短验收](ACCEPTANCE_OFFLINE_XINDU.md)。#20保持OPEN，#13/#14/#17/#18未验项不变。已同步最新知识标准V1.0，其明确不扩本轮；以下授权前/历史状态不再是当前施工任务。不进入下一版本。
 
