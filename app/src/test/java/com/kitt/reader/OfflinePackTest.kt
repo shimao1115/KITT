@@ -154,6 +154,39 @@ class OfflinePackTest {
         journey.resume(); loop.check(); assertEquals(count, voice.speech.size)
         journey.end(); loop.reset(); assertEquals(0, calls)
     }
+    @Test fun onlinePhonePrefersLocalAutomaticNarrationAndKnownLocalQuestion() = runTest {
+        var cloudCalls = 0
+        val p = pack()
+        val loop = DirectorLoop(journey, ContextPipeline(), this, { time },
+            { cloudCalls++; error("automatic cloud Director must not be used") },
+            researchProvider = { cloudCalls++; error("automatic cloud research must not be used") },
+            online = { true }, offlinePack = { p }, preferOffline = { true })
+        journey.start()
+        loop.location(fix())
+        runCurrent()
+        assertEquals(0, cloudCalls)
+        assertTrue("Expected locally authored facts to be spoken without a cloud wait", journey.speaking)
+        assertTrue(voice.speech.last().contains("新都"))
+        voice.finish()
+        loop.user("这里有什么")
+        runCurrent()
+        assertEquals(0, cloudCalls)
+        assertTrue(voice.speech.size >= 2)
+        loop.reset(); journey.end()
+    }
+    @Test fun onlinePhoneWithoutLocalCoverageDoesNotMakeAutomaticCloudRequest() = runTest {
+        var cloudCalls = 0
+        val p = pack()
+        val loop = DirectorLoop(journey, ContextPipeline(), this, { time },
+            { cloudCalls++; error("automatic cloud Director must not be used") },
+            online = { true }, offlinePack = { p }, preferOffline = { true })
+        journey.start()
+        loop.location(fix().copy(latitude = 30.65))
+        runCurrent()
+        assertEquals(0, cloudCalls)
+        assertTrue(voice.speech.isEmpty())
+        loop.reset(); journey.end()
+    }
     @Test fun disconnectCancelsInFlightCloudAndReconnectRestoresExistingOnlinePath() = runTest {
         var online = true; var cancelled = 0; var calls = 0
         val p = pack(); journey.start()
