@@ -26,15 +26,28 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     private val diagnostic: (String) -> Unit = {},
     private val researchProvider: () -> LocalResearchProvider = { UnavailableResearch() },
     evidenceStore: ResearchEvidenceStore? = null, persistentAllowed: () -> Boolean = { true },
-    researchChanged: () -> Unit = {}) {
+    researchChanged: () -> Unit = {},
+    private val online: () -> Boolean = { true },
+    private val offlinePack: () -> OfflinePack? = { null }) {
     private var request: Job? = null
     private var requestActive = false
     val pending get() = request?.isActive == true
     val counters = DirectorCounters()
     private var lastDelay = ""
-    val research = ChapterResearch(scope, now, researchProvider, diagnostic, evidenceStore, persistentAllowed) { researchChanged(); check() }
-    init { context.researchCard = research::card }
+    private var wasOnline = online()
+    val research = ChapterResearch(scope, now, researchProvider, diagnostic, evidenceStore, persistentAllowed, offlinePack) { researchChanged(); check() }
+    init { context.researchCard = { offlinePack()?.card(context.areas.active?.area).orEmpty() + if (online()) research.card() else "" } }
+    private fun connectivity() {
+        val connected = online()
+        if (wasOnline == connected) return
+        if (pending) { cancel(); journey.invalidateProvider() }
+        research.clear()
+        wasOnline = connected
+        if (connected) research.enter(context.areas.active?.area)
+        diagnostic("connectivity online=$connected pending_cancelled=true")
+    }
     fun location(fix: Fix) {
+        connectivity()
         journey.location(fix)
         if (journey.fix == fix) {
             val previous = context.areas.active?.area?.key
@@ -43,12 +56,13 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
             if (entered) {
                 diagnostic("area chapter=${context.areas.active?.area?.label ?: "unresolved"} cache=${context.areas.size}")
                 journey.clearChapterEntry()
-                research.enter(context.areas.active?.area)
+                if (online()) research.enter(context.areas.active?.area) else journey.noteChapterEntry()
             }
         }
         check()
     }
     fun check() {
+        connectivity()
         journey.tick()
         if (journey.fix?.precise(now()) != true) context.proximity.expire()
         if (!journey.running) { research.clear(); return }
@@ -61,10 +75,12 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         }
         lastDelay = ""
         counters.opportunity()
+        if (!online()) { localDispatch(null); return }
         dispatch(null)
     }
     fun speak() { research.cancelTopic(); cancel(); journey.beginListening(::user) }
     fun user(text: String, image: ImageInput? = null) {
+        connectivity()
         research.cancelTopic()
         cancel()
         if (journey.requestInput(text)) {
@@ -75,8 +91,17 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
                     narrationArea = journey.replayArea, subject = journey.replaySubject,
                     narrationLandmarkId = journey.replayLandmarkId)
                 counters.terminal(true, outcome)
-            } else dispatch(text, image)
+            } else if (!online()) localDispatch(text, image != null) else dispatch(text, image)
         }
+    }
+    private fun localDispatch(utterance: String?, image: Boolean = false) {
+        val pack = offlinePack()
+        val response = OfflineNarrator(pack).response(journey, now(), utterance, image)
+        val ticket = journey.ticket(utterance != null)
+        val outcome = journey.deliver(ticket, response.json(), narrationArea = pack?.area,
+            subject = response.topic) { user(it) }
+        counters.terminal(ticket.active, outcome)
+        diagnostic("offline_narrator active=${ticket.active} outcome=$outcome cloud_calls=0")
     }
     private fun dispatch(utterance: String?, image: ImageInput? = null) {
         requestActive = utterance != null

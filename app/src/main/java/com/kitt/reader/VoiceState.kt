@@ -79,6 +79,9 @@ fun selectedChineseVoice(saved: String, voices: List<TtsVoiceOption>, systemDefa
         ?: chinese.firstOrNull { it.installed }
 }
 
+fun offlineChineseVoice(saved: String, voices: List<TtsVoiceOption>, systemDefault: String?): TtsVoiceOption? =
+    selectedChineseVoice(saved, voices.filter { it.locale.language == "zh" && it.installed && !it.networkRequired }, systemDefault)
+
 enum class VoiceVisual { IDLE, LISTENING, SPEAKING }
 fun voiceVisual(state: JourneyState) = when (state) {
     JourneyState.LISTENING -> VoiceVisual.LISTENING

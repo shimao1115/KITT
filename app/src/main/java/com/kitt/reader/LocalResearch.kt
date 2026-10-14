@@ -236,6 +236,7 @@ class ChatGptLocalResearch(private val account: ChatGptAccount, private val conf
 class ChapterResearch(private val scope: CoroutineScope, private val now: () -> Long,
     private val provider: () -> LocalResearchProvider, private val diagnostic: (String) -> Unit = {},
     private val evidenceStore: ResearchEvidenceStore? = null, private val persistentAllowed: () -> Boolean = { true },
+    private val curatedPack: () -> OfflinePack? = { null },
     private val changed: () -> Unit = {}) {
     private data class Entry(var status: ResearchStatus = ResearchStatus.UNSEEN, var dossier: LocalDossier? = null,
         var overview: OverviewDossier? = null,
@@ -284,6 +285,17 @@ class ChapterResearch(private val scope: CoroutineScope, private val now: () -> 
     }
     private fun start(area: AreaIdentity) {
         if (area.key in cache) return
+        val pack = curatedPack()
+        val bundled = if (area.chapter.isBlank()) pack?.overview(area) else null
+        if (bundled != null) {
+            cache[area.key] = Entry(ResearchStatus.READY_UNCHECKED, bundled.evidence(), bundled)
+            bundled.objects.forEach { obj -> pack?.topic(area, obj.title)?.let {
+                val key = topicKey(area, obj.title)
+                topics[key] = it; attemptedTopics += key
+            } }
+            diagnostic("offline_pack overview ready objects=${bundled.objects.size} network_calls=0")
+            return
+        }
         val entry = Entry(ResearchStatus.RESEARCHING); cache[area.key] = entry
         val token = generation
         val startedAt = now()

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "version": "xindu-2026.10.14-1",
+  "minimum_code": 14,
+  "geometry_year": "2017",
+  "boundary_margin_meters": 1000,
+  "geometry_source": "https://www.geoboundaries.org/api/current/gbOpen/CHN/ADM3/",
+  "geometry_release": "9469f09 / CHN-ADM3-62558664 / 62558664B25738263309049",
+  "geometry_license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors; Lee Beryman; geoBoundaries",
+  "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "geometry_limit": "2017 community boundary, not official surveyed or verified current; no township geometry",
+  "updated_at": "2026-10-14",
+  "facts_sha256": "289d29772d0ed375edace0e5bcfa9b70e1fb02336573b71f6dae326e9768d0cd",
+  "facts_bytes": 7921,
+  "geometry_sha256": "c0fb7041af727b80bbaf3f7d1deebaf873a47072dfff9a236d48a95cac84b7ce",
+  "geometry_bytes": 42357,
+  "object_count": 6,
+  "fact_count": 22
+}

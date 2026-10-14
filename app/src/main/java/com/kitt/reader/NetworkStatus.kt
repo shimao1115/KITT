@@ -12,12 +12,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 data class NetworkStatus(val connected: Boolean? = null, val transport: String = "传输未知",
-    val validated: Boolean? = null, val vpn: Boolean? = null) {
+    val validated: Boolean? = null, val vpn: Boolean? = null, val physicalInternet: Boolean? = null) {
+    // A VPN can retain VALIDATED after radios go away. IMS-only cellular is not Internet.
+    val cloudAvailable get() = connected == true && validated == true && physicalInternet == true
     private val vpnLabel get() = when (vpn) { true -> "VPN已检测"; false -> "未检测到VPN"; null -> "VPN未知" }
     val label get() = when (connected) {
         null -> "网络未知 · $vpnLabel"
         false -> "网络未连接 · $vpnLabel"
-        true -> "$transport · ${when (validated) { true -> "系统联网已验证"; false -> "联网未验证"; null -> "网络未知" }} · $vpnLabel"
+        true -> if (physicalInternet == false) "${if (vpn == true) "VPN通道保留" else transport} · 无物理互联网 · $vpnLabel"
+            else "$transport · ${when (validated) { true -> "系统联网已验证"; false -> "联网未验证"; null -> "网络未知" }} · $vpnLabel"
     }
 }
 
@@ -27,23 +30,31 @@ internal fun networkStatus(caps: NetworkCapabilities): NetworkStatus {
     return NetworkStatus(true, transports.joinToString("/").ifBlank { "传输未知" },
         caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED),
         if (caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) true else
-            if (caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)) false else null)
+            if (caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)) false else null,
+        physicalInternet(caps))
 }
 
+internal fun physicalInternet(caps: NetworkCapabilities) = caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+    caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN) && !caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+
 /** Passive default + visible VPN callbacks, owned by UI or Journey. A bypassed default is not VPN-off. */
-class AndroidNetworkStatus(context: Context) {
+class AndroidNetworkStatus(context: Context, private val changed: () -> Unit = {}) {
     private val manager = context.getSystemService(ConnectivityManager::class.java)
     private val handler = Handler(Looper.getMainLooper())
     var snapshot by mutableStateOf(NetworkStatus()); private set
     private var callback: ConnectivityManager.NetworkCallback? = null
     private var vpnCallback: ConnectivityManager.NetworkCallback? = null
+    private var physicalCallback: ConnectivityManager.NetworkCallback? = null
+    private val physicalNetworks = mutableSetOf<Network>()
     private val visibleVpns = mutableSetOf<Network>()
     private var vpnKnown = false
     private var defaultStatus = NetworkStatus()
     private var current: Network? = null
     private fun publish() {
-        snapshot = defaultStatus.copy(vpn = if (defaultStatus.vpn == true || visibleVpns.isNotEmpty()) true else
+        snapshot = defaultStatus.copy(physicalInternet = defaultStatus.physicalInternet == true || physicalNetworks.isNotEmpty(),
+            vpn = if (defaultStatus.vpn == true || visibleVpns.isNotEmpty()) true else
             if (vpnKnown) false else null)
+        changed()
     }
     fun start() {
         if (callback == null) {
@@ -82,6 +93,22 @@ class AndroidNetworkStatus(context: Context) {
                 .addTransportType(NetworkCapabilities.TRANSPORT_VPN).build(), observer, handler) }
             catch (_: RuntimeException) { vpnCallback = null; vpnKnown = false }
         }
+        if (physicalCallback == null) {
+            val observer = object : ConnectivityManager.NetworkCallback() {
+                override fun onCapabilitiesChanged(network: Network, caps: NetworkCapabilities) {
+                    if (physicalCallback !== this) return
+                    if (physicalInternet(caps)) physicalNetworks += network else physicalNetworks -= network
+                    publish()
+                }
+                override fun onLost(network: Network) {
+                    if (physicalCallback === this) { physicalNetworks -= network; publish() }
+                }
+            }
+            physicalCallback = observer
+            try { manager.registerNetworkCallback(NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build(), observer, handler) }
+            catch (_: RuntimeException) { physicalCallback = null }
+        }
         refresh()
     }
     fun refresh() {
@@ -91,14 +118,20 @@ class AndroidNetworkStatus(context: Context) {
                 ?: NetworkStatus(connected = true) } ?: NetworkStatus(connected = false)
             visibleVpns.clear()
             val caps = manager.allNetworks.map { it to manager.getNetworkCapabilities(it) }
+            physicalNetworks.clear()
+            caps.filter { it.second?.let(::physicalInternet) == true }.forEach { physicalNetworks += it.first }
             caps.filter { it.second?.hasTransport(NetworkCapabilities.TRANSPORT_VPN) == true }.forEach { visibleVpns += it.first }
             vpnKnown = vpnCallback != null && caps.all { it.second != null }
             publish()
-        } catch (_: RuntimeException) { defaultStatus = NetworkStatus(); vpnKnown = false; visibleVpns.clear(); publish() }
+        } catch (_: RuntimeException) { defaultStatus = NetworkStatus(); vpnKnown = false; visibleVpns.clear(); physicalNetworks.clear(); publish() }
     }
     fun stop() {
         callback?.let { runCatching { manager.unregisterNetworkCallback(it) } }
         vpnCallback?.let { runCatching { manager.unregisterNetworkCallback(it) } }
+        physicalCallback?.let { runCatching { manager.unregisterNetworkCallback(it) } }
+        physicalCallback = null; physicalNetworks.clear()
         callback = null; vpnCallback = null; current = null; visibleVpns.clear(); vpnKnown = false
+        snapshot = snapshot.copy(physicalInternet = null)
+        changed()
     }
 }

@@ -33,7 +33,7 @@ try {
         $taskTests = [int](($taskSuites | Measure-Object tests -Sum).Sum)
         $taskFailures = [int](($taskSuites | Measure-Object failures -Sum).Sum) + [int](($taskSuites | Measure-Object errors -Sum).Sum)
         $taskSkipped = [int](($taskSuites | Measure-Object skipped -Sum).Sum)
-        $taskMinimum = if ($taskVariant -eq 'Debug') { 395 } else { 382 }
+        $taskMinimum = if ($taskVariant -eq 'Debug') { 423 } else { 410 }
         if ($taskTests -lt $taskMinimum -or $taskFailures -gt 0 -or $taskSkipped -gt 0) { throw "$taskVariant reports do not establish the complete $taskMinimum+ passing suite." }
         $taskCounts[$taskVariant] = [ordered]@{ tests=$taskTests; failures=$taskFailures; skipped=$taskSkipped }
     }
@@ -68,6 +68,7 @@ try {
         chineseASR='System recogniser still fails ERROR_CLIENT before ready; the bundled offline Vosk Chinese model is the working path on this device.'
         localResearch='Overview -> Topic + persistent sourced evidence regression PASS. Synthetic district/town/Topic: first journey fetches 1/1/1; reconstructed manager/store with unavailable research fetches 0/0/0, Director judges again. NOT real Provider/device process-restart acceptance; see docs/ACCEPTANCE_RESEARCH_CACHE.md.'
         narrationMemory='PASS: session-only object/fact coverage and queued/start/completed/failure/cancel/interruption callbacks; automatic repeated coverage suppressed, new facts/objects/chapters/landmarks eligible; more/replay/ordinary question/image and legacy recovery. Synthetic labels and fake Director cannot prove real semantic quality or human hearing.'
+        offlinePack='PASS: actual licensed historical Xindu polygon, 22 sourced stable facts, integrity/schema failures, physical-source and accuracy/freshness/boundary guards, zero cloud calls in offline loop, quiet/interruption/replay, disconnect cancellation/reconnect and online curated evidence. Real no-network GPS/TTS/human hearing recorded separately; no official current-boundary or street-level claim.'
         silenceHotfix='PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.'
         xinduBenchmark='NOT RUN BY THIS SCRIPT: fresh production-provider phone discovery is recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md.'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8

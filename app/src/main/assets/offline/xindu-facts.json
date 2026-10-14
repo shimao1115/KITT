@@ -1,0 +1,50 @@
+{
+  "area": {"province":"四川省","city":"成都市","district":"新都区"},
+  "scope":"仅区县背景；不声称对象就在眼前；无实时状态、精确对象坐标或镇街边界",
+  "editorial_license":"KITT 自行撰写的事实摘要 CC BY 4.0；原网页版权归各权利人，不转载原文、图片或全文",
+  "retrieved_at":"2026-10-14",
+  "sources":[
+    {"id":"yang","title":"状元故里：走进四川新都杨升庵纪念地桂湖","publisher":"中央纪委监察部网站","published_at":"页面显示12-22，年份未标明","url":"https://m.ccdi.gov.cn/content/cb/21/7409.html","kind":"OFFICIAL","review_note":"末段卒年1599与首段1559矛盾；排除卒年和相关争议信息"},
+    {"id":"donghu","title":"东湖清风徐徐来","publisher":"名山区纪委监委","published_at":"2017-12-18","url":"https://www.msjw.gov.cn/news/LZJY/20171221/1712211012474332593D118EG77B600.html","kind":"OFFICIAL","review_note":"不采用唯一、最早、完整等排他性纪录；开凿者注明历史文献归属"},
+    {"id":"scu","title":"建筑系师生赴新都宝光寺调研","publisher":"四川大学建筑与环境学院","published_at":"2024-09-25","url":"https://acem.scu.edu.cn/info/1004/12879.htm","kind":"INSTITUTIONAL","review_note":"只描述2024年研究记录，不推断当前危险程度或修复进度"},
+    {"id":"sc2008","title":"第二批四川省非物质文化遗产名录","publisher":"四川省人民政府公报","published_at":"2009-08-02（网页归档）","url":"https://www.sc.gov.cn/sczb/lmfl/szfwj/200908/t20090802_792679.shtml","kind":"OFFICIAL","review_note":"仅据省级名录，不升级为国家级认定"},
+    {"id":"palm","title":"大渡口非遗丨棕编一叶载匠心","publisher":"大渡口区文化和旅游发展委员会","published_at":"2021-08-27","url":"https://www.ddk.gov.cn/bm/qwhlyw/zwxx_56852/dt_56853/202108/t20210827_9631543.html","kind":"OFFICIAL","review_note":"基础棕编材料是通用工艺说明；不把大渡口本地传承史移植给新繁"},
+    {"id":"gazette2019","title":"第八批全国重点文物保护单位名单：龙藏寺8-0427-3-230","publisher":"国务院公报2019年第30号","published_at":"2019","url":"https://www.gov.cn/gbgl/75e17ff291dd418f8f758d508087cd8b/files/6250670fc770465787b85d705d4b12f9.pdf","kind":"OFFICIAL","review_note":"只用名单中的时代、地域与认定，不推测开放或内部可参观"}
+  ],
+  "objects":[
+    {"title":"杨慎（杨升庵）","family":"PEOPLE","facts":[
+      {"id":"yang-name","summary":"杨慎是新都人，字用修，号升庵，生活在明代。升庵这个名字，说的就是他。","coverage":"杨慎字用修号升庵新都人","source_ids":["yang"]},
+      {"id":"yang-exam","summary":"他在正德六年，也就是一五一一年，考中状元，后来做过翰林院修撰。","coverage":"杨慎1511状元翰林修撰","source_ids":["yang"]},
+      {"id":"yang-exile","summary":"嘉靖三年的大礼议改变了他的人生，此后他被流放云南永昌卫，远离故乡。","coverage":"杨慎1524大礼议流放永昌","source_ids":["yang"]},
+      {"id":"yang-writing","summary":"他也写诗、词和散曲，著述涉及史学、地理与民俗等领域，后人把他的作品辑成《升庵集》。","coverage":"杨慎多领域著述升庵集","source_ids":["yang"]}
+    ]},
+    {"title":"桂湖与升庵祠","family":"CULTURAL_SITE","facts":[
+      {"id":"guihu-memory","summary":"桂湖在新都，是纪念杨升庵的一处故里园林。人物与园林，在这里有明确的联系。","coverage":"桂湖为杨升庵故里纪念园林","source_ids":["yang"]},
+      {"id":"guihu-name","summary":"中央纪委网站的纪念地介绍把桂湖得名，与杨升庵沿湖种桂树联系在一起。","coverage":"桂湖名与杨升庵植桂关联","source_ids":["yang"]},
+      {"id":"guihu-layout","summary":"桂湖经历明清及近现代的修建，介绍资料认为其建筑和布局主要保留了清代道光年间的格局。","coverage":"桂湖多代修建道光格局","source_ids":["yang"]},
+      {"id":"guihu-buildings","summary":"园中不只有湖水，还有升庵祠、升庵书屋与黄峨馆。升庵祠是其中的主体建筑。","coverage":"桂湖升庵祠书屋黄峨馆","source_ids":["yang"]}
+    ]},
+    {"title":"新繁东湖","family":"HISTORIC_SETTLEMENT","facts":[
+      {"id":"donghu-record","summary":"新繁东湖是一处有唐代渊源的园林。《北梦琐言》把开凿东湖，记在李德裕任新繁县令的时期。","coverage":"东湖北梦琐言李德裕开凿","source_ids":["donghu"]},
+      {"id":"donghu-weigong","summary":"李德裕后来被封为卫国公，人们也因此把这处湖园叫作卫公东湖。","coverage":"东湖别称卫公东湖","source_ids":["donghu"]},
+      {"id":"donghu-hall","summary":"园内的三贤堂纪念李德裕、王益和梅挚。三个名字，连着不同年代的人与这座园林的关系。","coverage":"三贤堂李德裕王益梅挚","source_ids":["donghu"]},
+      {"id":"donghu-southsong","summary":"地方纪检网站的介绍记载，三贤堂由新繁知县沈居中在南宋建炎年间修建。","coverage":"三贤堂沈居中南宋建炎","source_ids":["donghu"]}
+    ]},
+    {"title":"宝光寺与舍利塔","family":"HERITAGE","facts":[
+      {"id":"baoguang-buildings","summary":"宝光寺在新都。四川大学的实地调研记录，列出了山门殿、罗汉堂、达摩殿、药师殿和舍利塔等建筑。","coverage":"宝光寺山门罗汉达摩药师舍利塔","source_ids":["scu"]},
+      {"id":"baoguang-study","summary":"二零二四年，四川大学建筑系师生到这里调查空间格局，也测量了舍利塔的倾斜情况。","coverage":"宝光寺2024川大测量舍利塔","source_ids":["scu"]},
+      {"id":"baoguang-upper","summary":"这次考察特别关注塔身七层以上的倾斜和错位，研究对象包括塔的立面与主体结构。","coverage":"舍利塔七层以上倾斜错位研究","source_ids":["scu"]},
+      {"id":"baoguang-engineering","summary":"考察后的讨论涉及历史建筑纠倾的技术方案。这是当年的研究记录，不能据此判断今天的修复进度。","coverage":"舍利塔历史建筑纠倾技术讨论","source_ids":["scu"]}
+    ]},
+    {"title":"新繁棕编","family":"CULTURAL_GEOGRAPHY","facts":[
+      {"id":"palm-list","summary":"新繁棕编被列在第二批四川省非物质文化遗产名录里，申报单位是成都市新都区文化馆。","coverage":"新繁棕编第二批四川省非遗","source_ids":["sc2008"]},
+      {"id":"palm-category","summary":"这份省级名录把新繁棕编归在传统美术类。这里说的是省级名录，不能把级别说成国家级。","coverage":"新繁棕编省级名录传统美术","source_ids":["sc2008"]},
+      {"id":"palm-material","summary":"棕编这类工艺，以棕叶和棕叶芯等材料编成器物。原料来自植物，造型则靠手上的编结。","coverage":"棕编棕叶叶芯材料编结","source_ids":["palm"]},
+      {"id":"palm-use","summary":"地方文旅部门对棕编的介绍，同时提到它的实用性与观赏性。一片叶子，既可以变成用具，也可以成为手工艺品。","coverage":"棕编实用与观赏双重用途","source_ids":["palm"]}
+    ]},
+    {"title":"龙藏寺","family":"HERITAGE","facts":[
+      {"id":"longcang-list","summary":"新都还有龙藏寺，它被列入二零一九年公布的第八批全国重点文物保护单位名单。","coverage":"龙藏寺2019第八批国保","source_ids":["gazette2019"]},
+      {"id":"longcang-period","summary":"国务院名单将龙藏寺的时代标为明清，所在地写作四川省成都市新都区。这是文物资料里的地域关联，不代表此刻就在寺旁。","coverage":"龙藏寺明清新都区古建筑","source_ids":["gazette2019"]}
+    ]}
+  ]
+}

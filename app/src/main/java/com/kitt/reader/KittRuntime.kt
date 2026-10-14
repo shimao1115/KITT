@@ -10,7 +10,8 @@ import kotlinx.coroutines.*
 class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     val revision = mutableIntStateOf(0)
-    val voice: VoicePort = injectedVoice ?: AndroidVoice(context)
+    val voice: VoicePort = injectedVoice ?: AndroidVoice(context).apply { offlineRequired = { !cloudAvailable() } }
+    val offlinePack = OfflinePack.load(context)
     val store = TripStore(context)
     val settings = SettingsStore(context)
     private val diagnostics = DebugDiagnostics(context)
@@ -30,9 +31,16 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     var config = settings.read()
         set(value) { field = value; requests.select(value, false); requests.select(settings.readResearch() ?: value, true) }
     val requests = RuntimeRequests(android.os.SystemClock::elapsedRealtime) { journey.epoch }
-    val network = AndroidNetworkStatus(context)
+    val network: AndroidNetworkStatus = AndroidNetworkStatus(context) {
+        if (journey.running) loop.check()
+        if (!cloudAvailable() && routeReference.busy) routeReference.clear()
+    }
+    private fun cloudAvailable(): Boolean = simulation || network.snapshot.cloudAvailable
     var foregroundVisible by androidx.compose.runtime.mutableStateOf(true); private set
     fun provider(): DirectorProvider {
+        if (!cloudAvailable()) return object : DirectorProvider {
+            override suspend fun direct(request: DirectorRequest): String = throw ResearchUnavailable("当前离线，云端能力不可用。")
+        }
         requests.select(config, false)
         val selected = when (config.kind) {
         ProviderKind.CHATGPT -> ChatGptProvider(chatGpt, config)
@@ -45,6 +53,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     private var selectedResearch: LocalResearchProvider = UnavailableResearch()
     fun resetResearchProvider() { researchConfig = null }
     fun researchProvider(): LocalResearchProvider {
+        if (!cloudAvailable()) return UnavailableResearch("当前离线，未发送研究请求。")
         val configured = settings.readResearch() ?: config
         if (researchConfig != configured) {
             researchConfig = configured
@@ -70,7 +79,8 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             diagnostic = { diagnostics.log("KITTResearch", it) }),
         persistentAllowed = { !simulation && config.kind != ProviderKind.FAKE &&
             (settings.readResearch() ?: config).kind != ProviderKind.FAKE },
-        researchChanged = { revision.intValue++ })
+        researchChanged = { revision.intValue++ }, online = ::cloudAvailable,
+        offlinePack = { offlinePack.takeUnless { simulation } })
     val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
     var acceleration = settings.acceleration
@@ -100,10 +110,16 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             pipeline.areas.active?.area?.key, (source as? RealLocationSource)?.areaLookupSince,
             requests.ai, requests.research, (voice as? AndroidVoice)?.speechQueuedSince, (source as? RealLocationSource)?.waitingSince,
             locationPermissionUnavailable = sourceNotice.contains("权限"))
-        val services = (if (config.kind == ProviderKind.FAKE) "AI 离线演示 · 未验证" else "AI ${observationLabel(requests.ai, elapsed)}") +
+        val services = if (!cloudAvailable()) "离线讲述 · 云端请求已停用" else (if (config.kind == ProviderKind.FAKE) "AI 离线演示 · 未验证" else "AI ${observationLabel(requests.ai, elapsed)}") +
             " / 研究 ${observationLabel(requests.research, elapsed)}"
+        val offlineHint = if (cloudAvailable()) "" else when {
+            offlinePack == null -> "离线资料不可用，请更新应用。"
+            (voice as? AndroidVoice)?.offlineReady == false -> "未就绪的离线中文语音；请安装语音包或选择本地 TTS 引擎。"
+            offlinePack.resolve(journey.fix, wall) == null -> "离线地区不确定 / 当地无可靠资料；等待新鲜精确定位。"
+            else -> "新都区离线资料已就绪 · 仅区县背景，镇街未知"
+        }
         return DrivingRuntimeSnapshot(positionLabel(journey.currentFix, wall, elapsed), network.snapshot.label, services,
-            primary, hint.ifBlank { sourceNotice.takeIf { journey.running }.orEmpty() })
+            primary, offlineHint.ifBlank { hint.ifBlank { sourceNotice.takeIf { journey.running }.orEmpty() } })
     }
     fun start(simulated: Boolean = false) {
         visualTalk.clear()
@@ -126,6 +142,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
                 sourceNotice = "模拟已到终点"; revision.intValue++
             }
         } else RealLocationSource(context) { sourceNotice = it; revision.intValue++ }
+            .offlineLookup({ offlinePack?.resolve(it, System.currentTimeMillis()) }, ::cloudAvailable)
         (source as? SimulatedLocationSource)?.let { simulatedSource ->
             journey.simulationCadence({ simulatedSource.simulatedTravelMs }, { simulatedSource.traveledMeters })
         }

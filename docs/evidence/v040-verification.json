@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Shanghai",
+  "issue": 20,
+  "version": "0.4.0",
+  "version_code": 14,
+  "baseline": "f439f99",
+  "status": "ENGINEERING_PASS; physical device and human gates recorded separately",
+  "tests": {
+    "Debug": {
+      "tests": 423,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 410,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "added_tests_per_variant": 28,
+  "build": "Debug/Release assemble + lint PASS",
+  "signing_certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+  "signing_regression": "2 accepted and 6 rejected cases PASS",
+  "artifacts": {
+    "runtimecheck": {
+      "path": "H:\\CODEX\\KITT\\artifacts\\kitt-v0.4.0-runtimecheck.apk",
+      "bytes": 74868969,
+      "sha256": "c041f917827dca99c06b5d4dbe5dc9093ab4dfecd12f941267140b94e6c2e76f",
+      "application_id": "com.kitt.reader.runtimecheck"
+    },
+    "debug": {
+      "path": "H:\\CODEX\\KITT\\artifacts\\kitt-v0.4.0-debug.apk",
+      "bytes": 74869042,
+      "sha256": "cf5629a7b24c0dec9f93144e5310cc797b73d3ec3b9b7f545dd7edfe0adc15d4",
+      "application_id": "com.kitt.reader"
+    },
+    "release": {
+      "path": "H:\\CODEX\\KITT\\artifacts\\kitt-v0.4.0-release.apk",
+      "bytes": 70712058,
+      "sha256": "7a9ea3b0f0c117d442b0c2d12df3a2cb1ecb46e6730d339f790b7188dd1cb2de",
+      "application_id": "com.kitt.reader"
+    }
+  },
+  "runtime_source_comparison": {
+    "matched_files": 45,
+    "mismatches": 0
+  },
+  "curated_pack": {
+    "schema_version": 1,
+    "version": "xindu-2026.10.14-1",
+    "minimum_code": 14,
+    "geometry_year": "2017",
+    "boundary_margin_meters": 1000,
+    "geometry_source": "https://www.geoboundaries.org/api/current/gbOpen/CHN/ADM3/",
+    "geometry_release": "9469f09 / CHN-ADM3-62558664 / 62558664B25738263309049",
+    "geometry_license": "ODbL-1.0",
+    "attribution": "© OpenStreetMap contributors; Lee Beryman; geoBoundaries",
+    "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "geometry_limit": "2017 community boundary, not official surveyed or verified current; no township geometry",
+    "updated_at": "2026-10-14",
+    "facts_sha256": "289d29772d0ed375edace0e5bcfa9b70e1fb02336573b71f6dae326e9768d0cd",
+    "facts_bytes": 7921,
+    "geometry_sha256": "c0fb7041af727b80bbaf3f7d1deebaf873a47072dfff9a236d48a95cac84b7ce",
+    "geometry_bytes": 42357,
+    "object_count": 6,
+    "fact_count": 22
+  },
+  "total_pack_bytes": 102734,
+  "simulations": {
+    "full-simulation": {
+      "sha256": "ca3d4bafaecc3a639c9a9951922dd896cc4272fb8d8151cecc5d7e996d21926b",
+      "modified_at": "2026-10-14T01:37:05.669303+00:00",
+      "summary": [
+        "            KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)",
+        "            Fixture: 新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）",
+        "            Speed: 80 km/h; distance: 90912 m; simulated duration: 68 min",
+        "            Director calls: 57; TTS outputs: 4; bounded Context Card: 1499 chars",
+        "            START → GPS → ASK_USER"
+      ]
+    },
+    "accelerated-simulation": {
+      "sha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
+      "modified_at": "2026-10-14T01:39:58.820656+00:00",
+      "summary": [
+        "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS",
+        "opportunities=21 dispatched=22 activeDispatched=1 auto=SILENT:0,SPEAK_NOW:20,PREPARE:0,ASK_USER:1,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:1,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "Voice outputs=22; distance=90912m"
+      ]
+    },
+    "batch-simulation": {
+      "sha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b",
+      "modified_at": "2026-10-14T01:36:17.895111+00:00",
+      "summary": [
+        "Editorial freedom refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)",
+        "新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）",
+        "29 points; distance=90912m; speed=100km/h; acceleration=16x; latency=5s; TTS=20s",
+        "chapters=13; cached=13; chapterEntryOpportunities=13; Sanxingdui eligible=true",
+        "subjects=23; families=[HISTORY, HISTORIC_SETTLEMENT, HERITAGE, CULTURAL_SITE, PEOPLE, CULTURAL_GEOGRAPHY, GEOGRAPHY, TRANSPORT, ECONOMY]; opportunities=23 dispatched=23 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:23,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ]
+    },
+    "landmark-simulation": {
+      "sha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
+      "modified_at": "2026-10-14T01:37:35.375907+00:00",
+      "summary": [
+        "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)",
+        "100km/h; 16x; latency=5s; TTS=20s; chapters=13",
+        "Selected=sanxingdui, mianzhu-newyear-art, longmen-front, jushui-taiping-bridge; opportunities=28 dispatched=28 activeDispatched=0 auto=SILENT:24,SPEAK_NOW:4,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "Catalog is four coarse regional references, not a nationwide POI service. Real phone/content quality: DEFERRED TO COMBINED PHONE ACCEPTANCE."
+      ]
+    },
+    "dossier-simulation": {
+      "sha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8",
+      "modified_at": "2026-10-14T01:36:42.972325+00:00",
+      "summary": [
+        "Session Local Dossier route: PASS, deterministic research/director/voice; NOT real search or Xindu discovery acceptance.",
+        "29 points; 90912m; 100km/h; 16x; chapter research latency=5s, director=4s, TTS=15s",
+        "chapters=13; unique research=19; narrations=13; opportunities=33 dispatched=33 activeDispatched=0 auto=SILENT:20,SPEAK_NOW:13,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0",
+        "area chapter=新都区 · 新都街道 cache=1",
+        "research started stage=overview identity=四川省 / 成都市 / 新都区 elapsed_ms=0 opportunity_retained=false"
+      ]
+    },
+    "driving-area-resolution": {
+      "sha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd",
+      "modified_at": "2026-10-14T01:36:44.082802+00:00",
+      "summary": [
+        "Production GeocodeThrottle with synthetic 700m chapters, fixes every 2s; not actual platform geocoding.",
+        "speed=80.0 reported=80.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=80.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms",
+        "speed=100.0 reported=100.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms",
+        "speed=100.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms"
+      ]
+    },
+    "research-cache": {
+      "sha256": "94cc397a08fe66d4d7c2731f18a09dc683f3cc05c42aa555b336c81ac27c56ea",
+      "modified_at": "2026-10-14T01:39:06.405080+00:00",
+      "summary": [
+        "Synthetic evidence, no real Provider/device network.",
+        "First journey: district Overview=1 town Overview=1 Topic=1 writes=3",
+        "New ChapterResearch + new disk store, unavailable Provider: district Overview=0 town Overview=0 Topic=0 hits=3",
+        "Opportunity READY_UNCHECKED; original searched_at=1000; historical label=true; no journey state persisted."
+      ]
+    },
+    "narration-memory": {
+      "sha256": "c9405351314a1ed91096a61def731c430ebfd4660690fd71029eac153ae21f7c",
+      "modified_at": "2026-10-14T01:38:00.126557+00:00",
+      "summary": [
+        "V0.3.6 semantic coverage route: deliberate three rechecks/chapter, synthetic labels/Director/fake Voice, NOT human semantic acceptance or timing simulation.",
+        "chapters=13; unique new object/fact outputs=26; opportunities=39 dispatched=39 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:26,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:13 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0"
+      ]
+    },
+    "area-stability": {
+      "sha256": "c30a23588c11b67f371ddd15cb0890815a29aa1e88416b1e18623bf0222531d9",
+      "modified_at": "2026-10-14T01:38:41.047584+00:00",
+      "summary": [
+        "PASS: production RealLocationSource + resolver + AreaCards; Robolectric API34, synthetic NETWORK 30m.",
+        "600s, 302 publications, 6 geocodes (success/empty/error/8s timeout/success/success), 0 null or street drops after first success, 1 chapter transition.",
+        "Not vivo/OEM service, actual network, real driving or UI screenshot evidence."
+      ]
+    }
+  },
+  "simulation_limits": "Deterministic/Fake providers, synthetic GPS and fake voice, not real field or human hearing",
+  "phone": "See v040-phone-acceptance.json",
+  "limits": [
+    "2017 community polygon, not official current boundary; no township geometry",
+    "Conservative 1000m boundary margin is not a measured error guarantee",
+    "Metadata and engine callback alone do not prove human hearing",
+    "No local LLM/free offline Q&A; no dynamic state in stable pack"
+  ],
+  "validation_logs": {
+    "v040-verify-delivery.log": "4d81bd5ffde08368bfc9ff7706c225a5580b8cc7ccd9a2993e51827da4994593",
+    "v040-runtime-final.log": "bbf86e4e7bcf303bb5a7f4200003e4bcebacb9ea29f7cdca09688c0ba0cf6ab6",
+    "v040-signing-final.log": "3bc267f096559378dadc6b1d8e3151ef0dc01b12b7506acbc2f6adef09ea0c51"
+  }
+}

@@ -24,6 +24,8 @@ data class RuntimeWork(val id: Long, val task: RuntimeTask, val since: Long, val
 
 /** Ephemeral read-only projection of calls already made. No payloads, event history or new requests. */
 class RuntimeRequests(private val clock: () -> Long, private val epoch: () -> Long) {
+    var directorCalls = 0; private set
+    var researchCalls = 0; private set
     var work by mutableStateOf<List<RuntimeWork>>(emptyList()); private set
     var ai by mutableStateOf<RequestObservation?>(null); private set
     var research by mutableStateOf<RequestObservation?>(null); private set
@@ -54,6 +56,7 @@ class RuntimeRequests(private val clock: () -> Long, private val epoch: () -> Lo
         valid: (T) -> Boolean = { true }, call: suspend () -> T): T {
         select(config, searching)
         val (item, token) = begin(task, active, areaKey, currentCoroutineContext()[RuntimeRequestOwner]?.epoch ?: epoch(), currentCoroutineContext()[Job])
+        if (realService) { if (searching) researchCalls++ else directorCalls++ }
         var outcome: RequestOutcome? = null
         try {
             val value = call()

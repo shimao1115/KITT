@@ -210,5 +210,9 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
         }, Modifier.fillMaxWidth().height(64.dp)) { Text("保存") }
         if (message.isNotBlank()) Text(message)
         TextButton(onReturn, Modifier.fillMaxWidth().height(56.dp)) { Text("返回") }
+        Text("新都离线资料 ${runtime.offlinePack?.version ?: "不可用"} · 仅区县；开源历史边界非官方测绘，临界范围不识别。")
+        Text("边界 © OpenStreetMap contributors / Lee Beryman / geoBoundaries，2017，ODbL 1.0。")
+        TextButton({ runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.openstreetmap.org/copyright"))) }
+            .onFailure { message = "请用浏览器查看 openstreetmap.org/copyright；完整许可也随应用内置。" } }) { Text("边界数据来源与许可") }
     }
 }

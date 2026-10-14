@@ -71,4 +71,25 @@ class NetworkStatusTest {
         vpn.onLost(vpnNetwork); assertEquals(false, observer.snapshot.vpn)
         observer.stop(); vpn.onAvailable(vpnNetwork); assertEquals(false, observer.snapshot.vpn)
     }
+    @Test fun validatedGhostVpnAndImsWithoutInternetCannotEnableCloud() {
+        val ghost = networkStatus(caps(NetworkCapabilities.TRANSPORT_VPN, vpn = true))
+        assertEquals(true, ghost.validated); assertFalse(ghost.cloudAvailable)
+        assertTrue(ghost.label.contains("无物理互联网"))
+        val ims = caps(NetworkCapabilities.TRANSPORT_CELLULAR).apply { shadowOf(this).removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) }
+        assertFalse(physicalInternet(ims)); assertFalse(networkStatus(ims).cloudAvailable)
+    }
+    @Test fun physicalInternetLossAndReturnUnderValidatedVpnSwitchCloudWithoutPing() {
+        val observer = AndroidNetworkStatus(RuntimeEnvironment.getApplication()); observer.start()
+        fun callback(name: String) = AndroidNetworkStatus::class.java.getDeclaredField(name).apply { isAccessible = true }
+            .get(observer) as ConnectivityManager.NetworkCallback
+        val default = callback("callback"); val physical = callback("physicalCallback")
+        val vpn = ShadowNetwork.newInstance(201); val cell = ShadowNetwork.newInstance(202)
+        default.onAvailable(vpn); default.onCapabilitiesChanged(vpn, caps(NetworkCapabilities.TRANSPORT_VPN, vpn = true))
+        assertFalse(observer.snapshot.cloudAvailable)
+        physical.onCapabilitiesChanged(cell, caps(NetworkCapabilities.TRANSPORT_CELLULAR)); assertTrue(observer.snapshot.cloudAvailable)
+        physical.onLost(cell); assertEquals(true, observer.snapshot.validated); assertFalse(observer.snapshot.cloudAvailable)
+        physical.onCapabilitiesChanged(cell, caps(NetworkCapabilities.TRANSPORT_WIFI)); assertTrue(observer.snapshot.cloudAvailable)
+        observer.stop(); physical.onCapabilitiesChanged(cell, caps(NetworkCapabilities.TRANSPORT_WIFI))
+        assertFalse(observer.snapshot.cloudAvailable)
+    }
 }

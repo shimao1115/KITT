@@ -15,6 +15,11 @@ import kotlinx.coroutines.*
 
 /** GPS and Android's cellular/Wi-Fi assisted provider share one physical-fix selector. No GeoIP. */
 class RealLocationSource(context: Context, private val unavailable: (String) -> Unit) : LocationSource {
+    private var offlineArea: ((Fix) -> AreaIdentity?)? = null
+    private var online: () -> Boolean = { true }
+    internal fun offlineLookup(resolve: (Fix) -> AreaIdentity?, connected: () -> Boolean) = apply {
+        offlineArea = resolve; online = connected
+    }
     private var areaLookup: (suspend (Fix) -> AreaIdentity?)? = null
     internal constructor(context: Context, unavailable: (String) -> Unit,
         areaLookup: suspend (Fix) -> AreaIdentity?) : this(context, unavailable) { this.areaLookup = areaLookup }
@@ -59,9 +64,12 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
             }
             waitingSince = null
             // A bridge keeps only county background, never the previous street identity.
-            val cached = lookup.cached(selected)
-            val area = if (selected.source == FixSource.LAST_KNOWN) locationArea(latest?.administrative, selected)
-                else locationArea(cached, selected)
+            val connected = online()
+            if (!connected) lookup.stop()
+            val local = offlineArea?.invoke(selected)
+            val cached = if (connected) lookup.cached(selected) else null
+            val area = if (!connected) local else if (selected.source == FixSource.LAST_KNOWN) locationArea(latest?.administrative, selected)
+                else locationArea(cached ?: local, selected)
             val enriched = selected.copy(administrative = if (fine) area else area?.copy(chapter = ""))
             if (enriched != latest) {
                 latest = enriched
@@ -69,7 +77,7 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
                 onFix(enriched)
             }
             // Last-known is continuity only; never starts a new geocode from a stale coordinate.
-            if (selected.source != FixSource.LAST_KNOWN) lookup.resolve(selected) { publish() }
+            if (connected && selected.source != FixSource.LAST_KNOWN) lookup.resolve(selected) { publish() }
         }
         val callback = object : LocationListener {
             override fun onLocationChanged(location: Location) {

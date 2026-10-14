@@ -29,6 +29,7 @@ class AndroidVoice(
     private val context: Context,
     private val engineFactory: (Context, Handler) -> List<SpeechEngine> = ::defaultSpeechEngines,
 ) : VoicePort {
+    internal var offlineRequired: () -> Boolean = { false }
     private val handler = Handler(Looper.getMainLooper())
     private var tts: TextToSpeech? = null
     private var ready: Boolean? = null
@@ -56,6 +57,7 @@ class AndroidVoice(
     var speechRate = 1.0f
     var voiceName = ""
     val canSpeak get() = ready == true
+    val offlineReady get() = ready == true && offlineChineseVoice(voiceName, voices, defaultVoice) != null
     init {
         tts = TextToSpeech(context.applicationContext) { status -> handler.post {
             ready = status == TextToSpeech.SUCCESS
@@ -104,13 +106,23 @@ class AndroidVoice(
     private fun speechEngines(): List<SpeechEngine> = engines ?: engineFactory(context, handler).also { engines = it }
     private fun applyVoice(name: String, rate: Float): Boolean {
         val engine = tts ?: return false
-        val chosen = selectedChineseVoice(name, voices, defaultVoice)
+        val chosen = if (offlineRequired()) offlineChineseVoice(name, voices, defaultVoice)
+            else selectedChineseVoice(name, voices, defaultVoice)
+        if (offlineRequired() && chosen == null) {
+            voiceMessage = "未安装离线中文声音，请联网安装语音包，或选择本地中文 TTS 引擎。"
+            return false
+        }
         val platformVoice = engine.voices?.find { it.name == chosen?.name }
         var status = if (platformVoice != null) engine.setVoice(platformVoice) else engine.setLanguage(Locale.SIMPLIFIED_CHINESE)
-        if (status < 0) status = engine.setLanguage(Locale.SIMPLIFIED_CHINESE)
+        if (status < 0) {
+            if (offlineRequired()) return false
+            status = engine.setLanguage(Locale.SIMPLIFIED_CHINESE)
+        }
         val rateStatus = engine.setSpeechRate(rate.coerceIn(0.5f, 1.5f))
         Log.i("KITTVoice", "tts configured voice=${engine.voice?.name} fallback=${name.isNotBlank() && name != chosen?.name} rate=${rate.coerceIn(0.5f, 1.5f)} status=$status")
-        return status >= 0 && rateStatus == TextToSpeech.SUCCESS
+        val local = (engine.voice ?: platformVoice)?.let { it.locale.language == "zh" && !it.isNetworkConnectionRequired &&
+            TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED !in it.features.orEmpty() } == true
+        return status >= 0 && rateStatus == TextToSpeech.SUCCESS && (!offlineRequired() || local)
     }
     override fun speak(text: String, complete: (Boolean) -> Unit) = speakWith(text, voiceName, speechRate, complete)
     override fun speakTracked(text: String, started: () -> Unit, complete: (Boolean) -> Unit) =
@@ -176,7 +188,7 @@ class AndroidVoice(
         if (granted) startRecognition(result) else finishBeforeStart(result, ListeningOutcome.PERMISSION_DENIED)
     }
     private fun startRecognition(result: (ListeningResult) -> Unit) {
-        val candidates = speechEngines().filterNot { it.id in unusableEngines }
+        val candidates = speechEngines().filterNot { it.id in unusableEngines || (offlineRequired() && it.id != "vosk-cn") }
         if (candidates.isEmpty()) { finishBeforeStart(result, ListeningOutcome.UNAVAILABLE); return }
         activeListen = result
         runAttempt(candidates, 0, result)
