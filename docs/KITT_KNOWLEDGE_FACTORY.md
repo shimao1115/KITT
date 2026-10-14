@@ -170,4 +170,4 @@ KITT-PACKS/                         # PLANNED, not yet created
 - KITT 所有现行约束来源：**内容/编辑** → `docs/KITT_KNOWLEDGE_STANDARD.md`；**知识工厂/协作/发布** → 本文件；**Android 施工** → 当轮`TASK_CARD.md` + 对应 Issue +真实已验收代码/证据。
 - 下一次新 AI 接班只需读两份正式标准 + 当轮 GitHub Issue/PR 和可验证的文件，不依赖某家模型的聊天记录、记忆能力或特定工具。
 
-**状态：知识生产流程与 GitHub 协作/存储/发布协议 V1.0 已确定；`KITT-PACKS` 仓库、模板、CI、发布器和 App 下载功能为待授权后实施的工作。**
+**状态：知识生产流程与 GitHub 协作/存储/发布协议 V1.1 已确定；`KITT-PACKS` 仓库、模板、CI、发布器和 App 下载功能为待授权后实施的工作。**
