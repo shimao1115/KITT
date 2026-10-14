@@ -2,6 +2,19 @@
 
 **2026-10-14执行状态：V0.4.1/code15工程验收完成，STOP等待用户确认。** Debug441/Release428失败、错误、跳过均0；Debug/Release及runtimecheck构建/lint、六组Fake模拟、原签名2接受+6拒绝PASS，同签名APK已生成。联网/断网/云不可达0自动云调用由JVM/Robolectric证明，真机GPS/实际计数/耳听及安装仍PENDING。未安装/卸载/清数据、未合并PR，不启动后续版本。详见 [HANDOFF](HANDOFF.md)、[验收](docs/ACCEPTANCE_LOCAL_FIRST.md)、[证据](docs/evidence/v041-verification.json)。以下保留已执行授权，不要重新启动本次任务。
 
+## 2026-10-14 下午：用户已明确批准真机原位升级与验收（当前生效）
+
+用户刚刚明确答复**“允许”**：授权办公室 Codex **将原手机已安装的 `com.kitt.reader.runtimecheck` V0.4.0/code14 原位更新为 V0.4.1/code15，并完成 [docs/ACCEPTANCE_LOCAL_FIRST.md](docs/ACCEPTANCE_LOCAL_FIRST.md) 的真机验收**。此许可替代本卡上方“STOP 等待手机安装确认”的**安装与验收**部分；**不解除**不卸载、不清数据、不泄露凭据、不合并 Draft PR #25、不关闭 Issue #24、不开始 #23 或 V0.5.0 的其他 STOP 约束。
+
+**现在可以继续执行，无需再次询问是否允许同签名原位升级**。但安全技术门禁是硬条件：
+
+1. 在办公室 Windows 仓库最新 `fix/offline-native-no-destination-question` 上确认工作树清洁、原 APK 路径确实存在：`artifacts/kitt-v0.4.1-runtimecheck.apk`（本机 `H:\CODEX\KITT\artifacts\kitt-v0.4.1-runtimecheck.apk`）。重新核查 SHA256 **`8beac9f79e4adcf8a31f95b742562ea393d996c337be3e1ee87cc8c2e58ce43f`**、长度 **74,369,318 字节**、包名 **`com.kitt.reader.runtimecheck`**、版本 **0.4.1/code15**、唯一原证书 SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**。用 `scripts/check-kitt-signing.ps1 -ApkPath artifacts\kitt-v0.4.1-runtimecheck.apk -ExpectedApplicationId com.kitt.reader.runtimecheck` 等现有检查；**不能使用 `com.kitt.reader` 标准包代替**。
+2. 取得手机的**实际当前状态**：ADB 仅在设备授权、安全连接后查询；核对真实安装包名、现有 versionCode **应小于15（预期14）**、签名兼容、设备可通信；不凭 0.4.0 历史记录猜当前版本。若已是15或更高、设备/证书不匹配、APK 路径/哈希不符，**停止安装并报告**，不要覆盖、降级、重签或重建密钥。
+3. 只有以上均满足才执行**单次** `adb install -r artifacts\kitt-v0.4.1-runtimecheck.apk`；若 vivo 弹出安装或 USB 授权，等用户在手机上亲自批准；失败时**不进行** `adb uninstall`、`pm clear`、降级、解锁/提取账号或任何绕过安装保护的操作。安装后独立回读实际包名/code15、必要时验证装机 APK SHA256、首次安装时间/用户设置不变，记录脱敏结果。
+4. 真机验收严格分开：正常真实 GPS/NETWORK 新鲜且新都可信几何内时，**有移动网络/ChatGPT 不可达**和**双无线断网**分别确认无需先联网即可本地中文讲述、开始不问目的地、自动云 Director/Research **调用增量0**；另验本地有限问法/重播、skip、打断、安静、后台/恢复、在线主动问题失败后的本地恢复、账户及 TTS 设置保留。不要为验收破坏账户/代理配置或授权状态；不存原始 GPS 轨迹、凭据、聊天正文。
+5. 若办公室得不到真实新鲜 GPS：不猜坐标、不注入模拟位置、不降低 15 秒/50 米与范围几何边界门槛。可验证安装、语音引擎、设置和 UI，但**真实位置→自动离线讲述及有网零云调用真人听感仍记 PENDING**，等待安全的室外/行车后验。
+6. 用新**手机实测**更新 HANDOFF、Issue #24、PR #25 与脱敏证据（不能用旧 Robolectric 的 0 云计数顶替），完整列明 PASS、PENDING、BLOCKED，并推送提交。**完成验收后立即 STOP**；PR 仍 Draft，未经新授权不合并、不进入后续版本。
+
 > **本任务替代本分支中的旧 V0.4.0 #20 任务卡；主干的 V0.4.0 历史工程交接仍保持原样。** 当前唯一可施工目标：[Issue #24](https://github.com/shimao1115/KITT/issues/24) 和 [Draft PR #25](https://github.com/shimao1115/KITT/pull/25)。请先读本卡、AGENTS.md、HANDOFF.md、docs/ROADMAP_OFFLINE_FIRST_NEXT.md、docs/KITT_KNOWLEDGE_STANDARD.md。旧 #20 的工程已交付，真实物理 GPS 等待验收部分仍 PENDING，不重新做或改写其结论。
 
 ## 本轮目标与严格范围
