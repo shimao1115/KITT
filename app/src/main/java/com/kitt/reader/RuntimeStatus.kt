@@ -161,7 +161,7 @@ internal fun runtimeActivity(journey: Journey, works: List<RuntimeWork>, voice: 
         areaPendingSince != null -> "正在识别所在地区 · 已等待 ${ageLabel(elapsed - areaPendingSince)}"
         journey.prepared != null -> "已有准备线索，等待新现场确认"
         journey.checkDelayReason() == "cooldown" -> "刚刚讲过或已接管，暂时等待新内容"
-        offlineFirst -> "本地讲述运行中 · 等待值得讲的新内容"
+        offlineFirst -> "本地选题待命 · 等待适合内容"
         listOfNotNull(ai, research).maxByOrNull { it.at }?.outcome in
             setOf(RequestOutcome.FAILED, RequestOutcome.TIMEOUT, RequestOutcome.INVALID_RESPONSE) -> "上次请求失败，等待下次触发"
         research?.outcome == RequestOutcome.UNAVAILABLE -> "本地研究不可用，等待新内容"
