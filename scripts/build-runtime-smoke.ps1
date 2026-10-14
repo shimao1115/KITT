@@ -1,4 +1,4 @@
-param([switch]$Offline)
+﻿param([switch]$Offline)
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $taskRoot = Split-Path -Parent $PSScriptRoot
@@ -20,13 +20,13 @@ try {
         Copy-Item -LiteralPath $taskSource -Destination $taskTarget -Force
     }
     $taskBuildFile = Join-Path $taskCopy 'app\build.gradle.kts'
-    $taskGradle = Get-Content -LiteralPath $taskBuildFile -Raw
+    $taskGradle = Get-Content -LiteralPath $taskBuildFile -Raw -Encoding utf8
     $taskVersion = [regex]::Match($taskGradle, 'versionName = "([^"]+)"').Groups[1].Value
     if (-not $taskVersion) { throw 'Cannot read smoke version.' }
     $taskGradle.Replace('applicationId = "com.kitt.reader"', 'applicationId = "com.kitt.reader.runtimecheck"') |
         Set-Content -LiteralPath $taskBuildFile -Encoding utf8
     $taskManifest = Join-Path $taskCopy 'app\src\main\AndroidManifest.xml'
-    (Get-Content -LiteralPath $taskManifest -Raw).Replace('android:label="沿途"', "android:label=`"沿途 $taskVersion 验收`"") |
+    (Get-Content -LiteralPath $taskManifest -Raw -Encoding utf8).Replace('android:label="沿途"', "android:label=`"沿途 $taskVersion 验收`"") |
         Set-Content -LiteralPath $taskManifest -Encoding utf8
     $taskArguments = @('-p', $taskCopy, 'assembleDebug', 'assembleDebugAndroidTest', 'lintDebug', '--console=plain')
     if ($Offline) { $taskArguments += '--offline' }

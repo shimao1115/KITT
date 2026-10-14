@@ -25,6 +25,10 @@ class HotfixPhoneProbe : Instrumentation() {
             }
             lateinit var runtime: KittRuntime
             runOnMainSync { runtime = (targetContext.applicationContext as KittApp).runtime }
+            if (mode == "local-first") {
+                startActivitySync(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                finish(0, localFirstPhoneProbe(runtime, probeArguments)); return
+            }
             if (mode == "offline-pack") {
                 runOnMainSync { targetContext.startActivity(Intent(targetContext, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
                 runBlocking { delay(1000) }

@@ -12,7 +12,7 @@ class VoiceTest {
     @Test fun duplicateRecognitionAndOldCompletionCannotRestartDialogue() {
         var time = 1000000L; val voice = TestVoice(); val journey = Journey({ time }, voice); journey.start()
         journey.location(Fix(30.6, 104.0, time)); var answers = 0
-        journey.deliver(journey.ticket(false), DirectorResult(Action.ASK_USER, question = "去哪？").json()) { answers++ }
+        journey.deliver(journey.ticket(false), DirectorResult(Action.ASK_USER, question = "你更想听什么题材？").json()) { answers++ }
         voice.finish(); val old = voice.answer!!; old("绵阳"); old("绵阳")
         assertEquals(1, answers); assertFalse(journey.listening)
         journey.end(); voice.finish(); old("去绵阳"); assertEquals(JourneyState.IDLE, journey.state)

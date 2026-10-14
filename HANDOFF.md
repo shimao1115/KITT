@@ -1,4 +1,68 @@
-# KITT V0.4.0 / #20 工程交付 — STOP 等待验收（2026-10-14）
+# KITT V0.4.1 / #24 原位升级与真机验收 — 部分PASS，STOP（2026-10-14）
+
+**用户已授权并完成原手机14→15原位升级；本轮真机检查结束，等待用户验收决定。** Issue #24保持OPEN、PR #25保持Draft，不合并、不做下一版本。以下结果优先于下方“安装前工程交付”历史，不能把部分PASS扩大为完整断网黄金路径。
+
+| 项目 | 本轮真实结果 |
+| --- | --- |
+| 原签名安全升级 | **PASS**：单次 `adb install -r` 成功，实际包名com.kitt.reader.runtimecheck、0.4.1/code15；装机APK回读及最后手机sha256sum均为 `8beac9f79e4adcf8a31f95b742562ea393d996c337be3e1ee87cc8c2e58ce43f`（74,369,318字节）。唯一证书仍3139a293…502ba；未卸载/清数据/降级/重签。首次安装时间2026-10-09 09:42:45、数据目录及CE/DE inode不变；更新时间2026-10-14 15:42:49。 |
+| 账号/设置 | **PASS可见与已测字段**：升级前后及测试后同一可见账号、ChatGPT启用、语速1.0、默认中文声音/2个本地声音、独立研究未选中。两组Probe内配置不变，读到ChatGPT/gpt-6.1-sol/low。**code14模型列表不可用，精确model/effort升级前后逐项对照PENDING**；未读原始凭据或保存设置/重新连接。 |
+| 联网普通自动讲述 | **PASS实际NETWORK来源+真人耳听**：普通开始取得±37m/1秒的真实NETWORK、新都可信几何；先杨慎、再桂湖，诊断2次本地自动SPEAK_NOW/2次完成，云Director dispatch、研究启动、主动研究判断、自动ASK_USER均0。用户明确确认首次杨慎地方讲述“听到了，中文清楚”。不是卫星GPS证据。 |
+| 联网有界计数观察 | **PASS_ENGINE_ONLY**：保存的ChatGPT配置、蜂窝联网已验证/VPN可见，120秒中109秒新鲜可信NETWORK，自动完成1、自动Director/Research增量0/0、目的地未询问。固定“再讲一点”真实本地完成1次且0云；随后位置失去可信，重播/这里有什么未签PASS。 |
+| 主动云问题 | 实际单次固定通用问题：Director请求1、Research0、FAILED，短句失败处理完成、等待结束。**同Journey失败后有可信位置的再次本地回答PENDING**：该步位置已失去可信；未修改账号/代理制造失败，未继续刷云请求，也不诊断其根因。 |
+| 双无线断网 | 安全退化**PASS**：Wi-Fi/流量均0，App识别physicalInternet=false，即使VPN仍VALIDATED。120秒新鲜GPS/NETWORK与可信区县均0，仅LAST_KNOWN；无自动讲述、自动云增量0/0、未问目的地。**真实断网定位→地方讲述PENDING**，不是“断网成功讲了新都”。 |
+| 独立离线中文TTS | **PASS真人耳听**：双无线0时，设置固定试听使用本地zh/1.0，16:07:50 STARTED→16:07:56 success=true，UI“试听结束”，用户确认中文清楚。首个操作误开下拉列表、没有发音，已排除并按用户要求重试；**试听不替代断网地方链**。 |
+| 实机控制 | 实际播放中点“说点什么”：正在播→不再播/正在听，取消后返回，**PASS按钮打断真实TTS**。10分钟默认值/9:58倒计时、提前退出、跳过计数1、结束/回到出发页PASS；Home期间LOCATION前台服务保持、结束后停止。**满10分钟自动到期、播放中skip专门语义、真人ASR/同义重播、异常进程恢复和连续行驶仍PENDING**。 |
+
+手机最终停在正常出发页，无运行旅程、前台定位服务、录音或TTS；已恢复原Wi-Fi关/移动数据开，VPN配置未动。升级后观察窗口新增KITT AndroidRuntime FATAL=0，不代表无限期无崩溃保证。完整脱敏实测在 [手机证据](docs/evidence/v041-phone-acceptance.json)；无坐标/轨迹、邮箱、账号值、token、聊天或录音导出到Git。
+
+本轮仅新增androidTest有界实机Probe，`assembleDebugAndroidTest/lintDebug`最终57任务、7执行/50复用PASS；现有同签名测试组件原位更新由用户亲自批准vivo超级守护，未绕过保护。**生产main/资产/版本和验收APK未改变、未重建替换**。沿用上轮实际Debug441/Release428及六组模拟工程结果，不冒称本轮重跑全量。
+
+最短后续：在安全室外取得新鲜精确物理位置后，补双无线关闭的地方讲述/0自动云计数、同Journey“再说一遍/这里有什么”及主动云失败后本地恢复；不要重装当前code15、放宽位置门槛或用模拟补PASS。原有历史边界复核/镇街/内容深度和其他Issue未验项不变。**本轮STOP，不重新授权安装，不合并PR或开始#23/V0.5.0。**
+
+---
+
+# 历史：KITT V0.4.1 / #24 安装前工程交付（2026-10-14）
+
+**0.4.1/code15工程PASS，原签名runtimecheck APK已生成；本版手机安装及真机验收PENDING。** 仅完成 [#24](https://github.com/shimao1115/KITT/issues/24) / [Draft PR #25](https://github.com/shimao1115/KITT/pull/25) 的工程范围，不合并、不关闭Issue、不进入#23或V0.5.0。本轮没有adb、手机连接/安装/卸载/清数据、凭据读取或真实ChatGPT请求。旧手机最后有证据版本为0.4.0/code14，本轮未重新读取。
+
+## 当前行为与修复
+
+普通真实物理旅程固定本地：可信新鲜GPS/NETWORK → 已安装新都许可几何/事实 → OfflineNarrator → 已安装离线中文TTS。联网也不等ChatGPT，不启动自动Director/Research；不可信/未覆盖/缺包安静。有限这里/补充/重播直接本地；用户主动开放问题、图片或动态查证才按需在线，失败/超时/取消后仍能在下一合法机会本地开口。出发不问目的地，保留主动目的地/可选路线参考和必要澄清。修正其他澄清被误写为目的地，离线TTS要求与识别后端条件分开，联网仍保留系统→Vosk回退；本地健康提示不受旧云失败覆盖。
+
+## 实际工程验收
+
+- 完整 `scripts/verify.ps1 -Offline`：**Debug441 / Release428，共869，failure/error/skipped均0**；每种Variant相比0.4.0新增18项。Debug/Release assemble、lint PASS；lint各2条既有Warning（ExifInterface、ChromeOsAbiSupport），无Error/Fatal。JDK17.0.19、SDK35、build-tools35.0.0，使用本机离线依赖。
+- 原签名回归 **2接受+6拒绝PASS**，另验签runtimecheck AndroidTest；runtimecheck assembleDebug/assembleDebugAndroidTest/lintDebug PASS。41个生产Kotlin和4个离线包文件与runtime副本哈希对照0差异。AndroidTest只构建，未执行手机instrumentation。
+- 首轮Release428中4项新增恢复测试失败：1.9km/46秒未到既有3km/180秒讲述门槛；测试保留门槛前安静断言、验证下次合法机会，**未放宽生产冷却/定位阈值**。脚本/验收包及签名负例暴露Windows PowerShell5的UTF8/ANSI、native stderr兼容问题，均修复并重跑相应脚本；失败日志保留。追加标准打包复核时生产源码未变，复用上述已实际执行869项结果，不把UP-TO-DATE算成另一次测试。
+- 成都新都→广汉→德阳→绵竹→绵阳安州雎水六组最终重跑PASS：full80km/h、29点/90,912米/68分钟、56 Director/2声音（取消目的地问答）；accelerated22调用/22声音；batch13章/23主题/23调用；landmark4节点/28调用；dossier13讲述/33调用/19研究；合成700米地区解析80/100km/h下12/10查询、最短16秒。**这些是专用Fake/确定性模拟，允许模拟Director调用，不是真实旅程云计数。**
+- 本地优先专项11项+Runtime集成2项在两Variant均PASS：联网/断网/云不可达自动路径Provider选取和云调用0、本地speech同步提交、缺口安静；主动问答/研究失败/超时/取消/迟到隔离、网络恢复不打断本地；Robolectric物理源接线、联网几何优先/离开旧地区、本地中文声音选择和ASR回退。**合成位置、TestVoice/Shadow TTS不能证明真机GPS、实际流量或真人耳听。**
+
+完整suite/case清单和产物摘要见 [脱敏证据](docs/evidence/v041-verification.json)，最短人工步骤见 [本版验收](docs/ACCEPTANCE_LOCAL_FIRST.md)。日志/APK在本机忽略的artifacts，不上传密钥、私人录音/轨迹/聊天或二进制。
+
+## 原签名APK
+
+三个生产APK均0.4.1/code15、唯一证书SHA256：`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。手机账号数据空间只对应runtimecheck，不能用标准包替换。
+
+| APK | applicationId / 字节 | APK SHA256 |
+| --- | --- | --- |
+| [runtimecheck](artifacts/kitt-v0.4.1-runtimecheck.apk) | com.kitt.reader.runtimecheck / 74,369,318 | 8beac9f79e4adcf8a31f95b742562ea393d996c337be3e1ee87cc8c2e58ce43f |
+| [Debug](artifacts/kitt-v0.4.1-debug.apk) | com.kitt.reader / 74,369,302 | b20ecadf899cb39ae5d802e668270af94cc46eab76d78fad65abf48cd9e01773 |
+| [Release验收](artifacts/kitt-v0.4.1-release.apk) | com.kitt.reader / 70,728,442 | 42ef772ab3c86043a54532ed3cf42154c6dac553478a77404eb904f36546fab9 |
+
+## 配置、待真机项目与最近提交
+
+等待用户本轮确认才可原位升级，再停车/乘客状态取得新鲜精确物理GPS，分别验联网且ChatGPT不可达/断网直接本地出声，自动Director/Research**开始前后新增计数0**；出发不问目的地，有限问法/重播/skip、说话/打字打断、10分钟安静/提前恢复、后台/恢复/结束、主动在线失败后回本地及账号/设置保留。以上本版真机均PENDING；无新鲜GPS继续未知，独立试听不算全链。无新增OAuth/API密钥/原签名准备待办。
+
+新安装默认仍Fake / gpt-4.1-mini / effort空，真实自动本地主链与这些设置无关。原手机历史ChatGPT / gpt-6.1-sol / low、速度1.0、系统默认中文声音未改，未宣称本轮重新核对或验活。仅新都6对象/22事实、首次两条拼接，未扩内容深度/成品故事；2017历史许可边界的2026权威复核、镇街及#20/#13/#14/#17/#18旧现场未验项不改PASS。
+
+- `e2d8f22` — code15、澄清状态/语音隔离修正、18项新增回归及验收规范。
+- `d4d909a` — 同步main最新规划文档（没有合并PR）。
+- `ed3a978` — 本轮授权任务卡。
+- 此次Windows脚本兼容、证据及交接提交见当前HEAD。**STOP等待确认，不操作手机或合并PR。**
+
+---
+
+# 历史：KITT V0.4.0 / #20 工程交付 — STOP 等待验收（2026-10-14）
 
 > **2026-10-14 最新用户现场补充（覆盖下文早先“未听到地方讲述”的时间性结论）**：用户报告**无网络状态下已实际听到杨升庵的地方讲述**，真人耳听不再是只有设置中的固定中文试听；新状态 `PASS_USER_REPORTED_OFFLINE_PLACE_NARRATION`。但讲述**过于浅显**，只有身份与官职，缺少流放故事、文学贡献及《临江仙》；用户体验的**内容深度未验收通过**。当前JSON里杨慎对象仅4条事实，`OfflineNarrator` 首次固定 `take(2)`，对应“身份+状元官职”，后两条需“再讲一点”；《临江仙》未收入知识包。用户本轮未提供GPS精度/新鲜度日志、云请求计数、追问/打断/静音测试，因此不能扩大为所有细项完全 PASS。详情见 [#20 用户实测反馈](https://github.com/shimao1115/KITT/issues/20#issuecomment-6159486194)。**#20 仍OPEN；停止施工，不启动下一版本或修改 APK。**
 

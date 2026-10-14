@@ -59,14 +59,15 @@ class OfflineLocationTest {
             assertNull(fixes.last().administrative)
         } finally { source.stop() }
     }
-    @Test fun lossOfNetworkDoesNotReuseOnlineStreetOrLaunchAnotherLookup() {
+    @Test fun installedCountyWinsOverOnlineGeocoderAndSurvivesNetworkLoss() {
         setup(); var connected = true; var calls = 0; val fixes = mutableListOf<Fix>(); val pack = OfflinePack.load(app)!!
         val source = RealLocationSource(app, {}, { calls++; pack.area.copy(chapter = "旧街道") })
             .offlineLookup({ pack.resolve(it, System.currentTimeMillis()) }, { connected })
         try {
             source.start(fixes::add); deliver()
             shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(1))
-            assertTrue(calls > 0)
+            assertEquals(pack.area, fixes.last().administrative)
+            assertEquals(0, calls)
             connected = false; val previous = calls
             ShadowSystemClock.advanceBy(Duration.ofSeconds(2)); deliver()
             assertEquals(pack.area, fixes.last().administrative); assertEquals(previous, calls)
@@ -80,6 +81,19 @@ class OfflineLocationTest {
             shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(20))
             assertTrue(fixes.last().source == FixSource.LAST_KNOWN || fixes.last().ageMs(System.currentTimeMillis()) > 15000)
             assertNull(fixes.last().administrative)
+        } finally { source.stop() }
+    }
+    @Test fun leavingInstalledCountyOnlineDoesNotRetainItsLabelOrOldStreet() {
+        setup(); val pack = OfflinePack.load(app)!!; val fixes = mutableListOf<Fix>(); var calls = 0
+        val source = RealLocationSource(app, {}, { calls++; null })
+            .offlineLookup({ pack.resolve(it, System.currentTimeMillis()) }, { true })
+        try {
+            source.start(fixes::add); deliver(); assertEquals(pack.area, fixes.last().administrative)
+            ShadowSystemClock.advanceBy(Duration.ofMinutes(6)); deliver(lat = 30.65)
+            assertNull(fixes.last().administrative)
+            assertNull(pack.resolve(fixes.last(), System.currentTimeMillis()))
+            shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(1))
+            assertTrue(calls > 0); assertNull(fixes.last().administrative)
         } finally { source.stop() }
     }
 }

@@ -28,7 +28,8 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     evidenceStore: ResearchEvidenceStore? = null, persistentAllowed: () -> Boolean = { true },
     researchChanged: () -> Unit = {},
     private val online: () -> Boolean = { true },
-    private val offlinePack: () -> OfflinePack? = { null }) {
+    private val offlinePack: () -> OfflinePack? = { null },
+    private val preferOffline: () -> Boolean = { false }) {
     private var request: Job? = null
     private var requestActive = false
     val pending get() = request?.isActive == true
@@ -43,7 +44,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         if (pending) { cancel(); journey.invalidateProvider() }
         research.clear()
         wasOnline = connected
-        if (connected) research.enter(context.areas.active?.area)
+        if (connected && !preferOffline()) research.enter(context.areas.active?.area)
         diagnostic("connectivity online=$connected pending_cancelled=true")
     }
     fun location(fix: Fix) {
@@ -56,7 +57,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
             if (entered) {
                 diagnostic("area chapter=${context.areas.active?.area?.label ?: "unresolved"} cache=${context.areas.size}")
                 journey.clearChapterEntry()
-                if (online()) research.enter(context.areas.active?.area) else journey.noteChapterEntry()
+                if (online() && !preferOffline()) research.enter(context.areas.active?.area) else journey.noteChapterEntry()
             }
         }
         check()
@@ -75,7 +76,7 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         }
         lastDelay = ""
         counters.opportunity()
-        if (!online()) { localDispatch(null); return }
+        if (preferOffline() || !online()) { localDispatch(null); return }
         dispatch(null)
     }
     fun speak() { research.cancelTopic(); cancel(); journey.beginListening(::user) }
@@ -91,9 +92,14 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
                     narrationArea = journey.replayArea, subject = journey.replaySubject,
                     narrationLandmarkId = journey.replayLandmarkId)
                 counters.terminal(true, outcome)
-            } else if (!online()) localDispatch(text, image != null) else dispatch(text, image)
+            } else if (!online() || (preferOffline() && image == null && supportsLocalQuestion(text) &&
+                    offlinePack()?.resolve(journey.fix, now()) != null)) localDispatch(text, image != null)
+            else dispatch(text, image)
         }
     }
+    /** Keep common local questions out of the network path even when Android has Internet. */
+    private fun supportsLocalQuestion(text: String): Boolean = followUp(text) != null ||
+        text.trim().trimEnd('？', '?', '。') in setOf("这里有什么", "这里有什么好讲的", "讲讲这里")
     private fun localDispatch(utterance: String?, image: Boolean = false) {
         val pack = offlinePack()
         val response = OfflineNarrator(pack).response(journey, now(), utterance, image)

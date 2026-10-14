@@ -15,11 +15,12 @@ class FullSimulationTest {
         val source = SimulatedLocationSource(fixture, backgroundScope, { time })
         val events = mutableListOf<String>()
         loop.location(source.sample(0, time)); runCurrent()
-        assertEquals(JourneyState.SPEAKING, journey.state); events.add("START → GPS → ASK_USER")
-        voice.finish(); assertEquals(JourneyState.LISTENING, journey.state)
-        voice.answer!!("去绵阳"); runCurrent(); voice.finish(); assertEquals("去绵阳", journey.destination)
-        events.add("one-shot destination reply → same Director → TTS")
-        var narration = false; var quietChecked = false; var interruption = false
+        assertEquals(JourneyState.SPEAKING, journey.state); events.add("START → GPS → SPEAK_NOW (no destination question)")
+        assertEquals("未询问", journey.destination)
+        val stops = voice.stops; loop.speak(); assertEquals(stops + 1, voice.stops)
+        voice.answer!!("再讲一点"); runCurrent(); voice.finish()
+        events.add("user interruption → local intent → one deeper response")
+        var narration = true; var quietChecked = false; var interruption = true
         val finishMs = (source.totalMeters / (80.0 / 3.6) * 1000).toLong() + 1000
         for (travelMs in 1000..finishMs step 1000) {
             time = 1000000L + travelMs
@@ -38,7 +39,7 @@ class FullSimulationTest {
         }
         assertTrue(narration && interruption && quietChecked)
         assertEquals(31.501, journey.fix!!.latitude, 0.00001); assertEquals("雎水镇", journey.fix!!.administrative!!.chapter); assertTrue(calls < 90)
-        assertTrue(voice.speech.size <= 4) // ASK, acknowledgement, one narration, one deeper answer.
+        assertTrue(voice.speech.size <= 3) // Start narration, user-requested supplement; no destination questionnaire.
         val summary = journey.end(); assertEquals(JourneyState.IDLE, journey.state); assertTrue(summary.topics.isNotEmpty())
         events.add("Mianyang → END → lightweight summary")
         val report = """

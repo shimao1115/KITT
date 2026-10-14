@@ -7,7 +7,7 @@ import org.junit.Test
 class ProviderTest {
     @Test fun fakeHonorsContract() = runTest {
         val fake = FakeProvider()
-        assertEquals(Action.ASK_USER, DirectorContract.parse(fake.direct(DirectorRequest(contextCard = "目的地：未询问"))).action)
+        assertEquals(Action.SPEAK_NOW, DirectorContract.parse(fake.direct(DirectorRequest(contextCard = "目的地：未询问"))).action)
         assertEquals(Action.SPEAK_NOW, DirectorContract.parse(fake.direct(DirectorRequest(contextCard = "目的地：绵阳"))).action)
         assertEquals(Action.SILENT, DirectorContract.parse(fake.direct(DirectorRequest(contextCard = "最近讲过：平地上的道路"))).action)
         assertEquals(Action.SPEAK_NOW, DirectorContract.parse(fake.direct(DirectorRequest(contextCard = "", userUtterance = "再讲一点"))).action)

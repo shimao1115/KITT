@@ -133,7 +133,7 @@ internal fun positionLabel(fix: Fix?, wall: Long, elapsed: Long): String {
 internal fun runtimeActivity(journey: Journey, works: List<RuntimeWork>, voice: VoiceDetail,
     elapsed: Long, wall: Long, areaKey: String?, areaPendingSince: Long?,
     ai: RequestObservation?, research: RequestObservation?, speechSince: Long? = null, locationSince: Long? = null,
-    locationPermissionUnavailable: Boolean = false): Pair<String, String> {
+    locationPermissionUnavailable: Boolean = false, offlineFirst: Boolean = false): Pair<String, String> {
     val relevant = works.filter { it.job?.isActive != false }.filter { if (it.active || it.task in setOf(RuntimeTask.DECIDING, RuntimeTask.SEARCH_DECISION))
         it.epoch == journey.epoch else areaKey != null && (it.areaKey == areaKey || it.areaKey == journey.currentFix?.administrative?.copy(chapter = "")?.key) }
     fun label(work: RuntimeWork) = "${work.task.label} · 已等待 ${ageLabel(elapsed - work.since)}"
@@ -161,6 +161,7 @@ internal fun runtimeActivity(journey: Journey, works: List<RuntimeWork>, voice: 
         areaPendingSince != null -> "正在识别所在地区 · 已等待 ${ageLabel(elapsed - areaPendingSince)}"
         journey.prepared != null -> "已有准备线索，等待新现场确认"
         journey.checkDelayReason() == "cooldown" -> "刚刚讲过或已接管，暂时等待新内容"
+        offlineFirst -> "本地选题待命 · 等待适合内容"
         listOfNotNull(ai, research).maxByOrNull { it.at }?.outcome in
             setOf(RequestOutcome.FAILED, RequestOutcome.TIMEOUT, RequestOutcome.INVALID_RESPONSE) -> "上次请求失败，等待下次触发"
         research?.outcome == RequestOutcome.UNAVAILABLE -> "本地研究不可用，等待新内容"
