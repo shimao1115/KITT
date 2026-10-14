@@ -37,8 +37,15 @@ if ($ApkPath) {
     if (-not $sdk) { throw 'Set ANDROID_HOME or ANDROID_SDK_ROOT to validate APK signatures.' }
     $signer = Join-Path $sdk 'build-tools\35.0.0\apksigner.bat'
     if (-not (Test-Path -LiteralPath $signer)) { throw 'Android SDK build-tools 35.0.0 apksigner missing.' }
-    $apkDetails = (& $signer verify --print-certs $ApkPath 2>&1) -join "`n"
-    if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
+    # Windows PowerShell 5 turns native stderr into ErrorRecords. Capture an expected
+    # rejection before restoring Stop, then fail closed on the native exit code.
+    $taskErrorPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        $apkDetails = (& $signer verify --print-certs $ApkPath 2>&1) -join "`n"
+        $taskSignerExit = $LASTEXITCODE
+    } finally { $ErrorActionPreference = $taskErrorPreference }
+    if ($taskSignerExit -ne 0) { throw 'APK signature verification failed.' }
     $apkMatches = [regex]::Matches($apkDetails, '(?im)Signer #\d+ certificate SHA-256 digest:\s*([A-F0-9:]{64,})\b')
     if ($apkMatches.Count -ne 1) { throw 'APK must have exactly one signer: the original KITT certificate.' }
     $apkMatch = $apkMatches[0]

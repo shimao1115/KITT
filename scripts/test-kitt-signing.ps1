@@ -33,10 +33,20 @@ $taskKeytool = Join-Path $env:JAVA_HOME 'bin\keytool.exe'
 $taskPublicCertificate = Join-Path ([IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString() + '.cer')
 $taskCertificateStore = Join-Path ([IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString() + '.jks')
 try {
-    & $taskKeytool -exportcert -keystore (Join-Path $env:USERPROFILE '.kitt\signing\acceptance.keystore') -storepass android -alias androiddebugkey -file $taskPublicCertificate 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw 'Cannot export public certificate fixture.' }
-    & $taskKeytool -importcert -noprompt -storetype JKS -keystore $taskCertificateStore -storepass android -alias androiddebugkey -file $taskPublicCertificate 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw 'Cannot create public certificate fixture.' }
+    # keytool also writes successful fixture messages to stderr in Windows PowerShell 5.
+    $taskErrorPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        & $taskKeytool -exportcert -keystore (Join-Path $env:USERPROFILE '.kitt\signing\acceptance.keystore') -storepass android -alias androiddebugkey -file $taskPublicCertificate 2>&1 | Out-Null
+        $taskExportExit = $LASTEXITCODE
+    } finally { $ErrorActionPreference = $taskErrorPreference }
+    if ($taskExportExit -ne 0) { throw 'Cannot export public certificate fixture.' }
+    try {
+        $ErrorActionPreference = 'Continue'
+        & $taskKeytool -importcert -noprompt -storetype JKS -keystore $taskCertificateStore -storepass android -alias androiddebugkey -file $taskPublicCertificate 2>&1 | Out-Null
+        $taskImportExit = $LASTEXITCODE
+    } finally { $ErrorActionPreference = $taskErrorPreference }
+    if ($taskImportExit -ne 0) { throw 'Cannot create public certificate fixture.' }
     Assert-Rejected 'matching certificate without private key' @{ KeystorePath = $taskCertificateStore } 'original private key'
 } finally {
     foreach ($taskFixture in @($taskPublicCertificate, $taskCertificateStore)) {

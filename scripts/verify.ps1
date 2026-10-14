@@ -19,7 +19,7 @@ try {
     $taskSdk = $env:ANDROID_HOME
     if (-not $taskSdk) { $taskSdk = $env:ANDROID_SDK_ROOT }
     $taskSigner = Join-Path $taskSdk 'build-tools\35.0.0\apksigner.bat'
-    $taskGradle = Get-Content -LiteralPath app\build.gradle.kts -Raw
+    $taskGradle = Get-Content -LiteralPath app\build.gradle.kts -Raw -Encoding utf8
     $taskVersion = [regex]::Match($taskGradle, 'versionName = "([^"]+)"').Groups[1].Value
     if (-not $taskVersion) { throw 'Cannot read APK version.' }
     & $taskSigner verify --verbose app\build\outputs\apk\debug\app-debug.apk

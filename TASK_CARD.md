@@ -1,6 +1,6 @@
 # CURRENT TASK CARD — KITT V0.4.1 / Issue #24 本地原生讲述热修
 
-**授权时间：2026-10-14 下午；用户已到办公室并明确要求“开始吧”。当前状态：独立分支存在候选代码、Draft PR #25，尚未在办公室电脑完成构建和真机验收。**
+**2026-10-14执行状态：V0.4.1/code15工程验收完成，STOP等待用户确认。** Debug441/Release428失败、错误、跳过均0；Debug/Release及runtimecheck构建/lint、六组Fake模拟、原签名2接受+6拒绝PASS，同签名APK已生成。联网/断网/云不可达0自动云调用由JVM/Robolectric证明，真机GPS/实际计数/耳听及安装仍PENDING。未安装/卸载/清数据、未合并PR，不启动后续版本。详见 [HANDOFF](HANDOFF.md)、[验收](docs/ACCEPTANCE_LOCAL_FIRST.md)、[证据](docs/evidence/v041-verification.json)。以下保留已执行授权，不要重新启动本次任务。
 
 > **本任务替代本分支中的旧 V0.4.0 #20 任务卡；主干的 V0.4.0 历史工程交接仍保持原样。** 当前唯一可施工目标：[Issue #24](https://github.com/shimao1115/KITT/issues/24) 和 [Draft PR #25](https://github.com/shimao1115/KITT/pull/25)。请先读本卡、AGENTS.md、HANDOFF.md、docs/ROADMAP_OFFLINE_FIRST_NEXT.md、docs/KITT_KNOWLEDGE_STANDARD.md。旧 #20 的工程已交付，真实物理 GPS 等待验收部分仍 PENDING，不重新做或改写其结论。
 
