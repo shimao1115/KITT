@@ -64,4 +64,19 @@ class OfflineVoiceTest {
             assertEquals(listOf("vosk-cn"), started)
         } finally { voice.close() }
     }
+    @Test fun localSpeechRequirementPreservesOnlineSystemRecognitionOrder() {
+        shadowOf(app).grantPermissions(Manifest.permission.RECORD_AUDIO)
+        val started = mutableListOf<String>()
+        fun engine(name: String) = object : SpeechEngine {
+            override val id = name
+            override fun start(sink: RecognitionSink) { started += name; sink.onReady() }
+            override fun cancel() {}
+        }
+        val voice = AndroidVoice(app) { _, _ -> listOf(engine("system"), engine("vosk-cn")) }
+        voice.offlineRequired = { true }; voice.offlineListeningRequired = { false }
+        try {
+            voice.listen {}; shadowOf(Looper.getMainLooper()).idle()
+            assertEquals(listOf("system"), started)
+        } finally { voice.close() }
+    }
 }

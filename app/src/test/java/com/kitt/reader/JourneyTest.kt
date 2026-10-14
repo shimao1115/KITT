@@ -42,8 +42,19 @@ class JourneyTest {
         assertEquals("未询问", journey.destination)
         val ask = DirectorResult(Action.ASK_USER, question = "你更喜欢什么题材？")
         send(ask); voice.finish(); assertEquals(1, voice.listeners); voice.answer?.invoke(null)
+        assertEquals("未询问", journey.destination)
         time += 700000; journey.location(Fix(30.68, 104.07, time))
         send(ask); assertEquals(1, voice.speech.size); assertEquals(1, voice.listeners)
+    }
+    @Test fun clarificationAnswerDoesNotBecomeDestinationAndVolunteeredDestinationStillWorks() {
+        start()
+        journey.deliver(journey.ticket(true), DirectorResult(Action.ASK_USER, question = "你想听哪个角度？").json()) {
+            journey.requestInput(it)
+        }
+        voice.finish(); voice.answer!!("历史")
+        assertEquals("未询问", journey.destination)
+        journey.requestInput("去绵阳")
+        assertEquals("去绵阳", journey.destination)
     }
     @Test fun prepareReplacesExpiresAndIsNeverSpoken() {
         start(); send(DirectorResult(Action.PREPARE, "a", prepareHint = "目标 A"))

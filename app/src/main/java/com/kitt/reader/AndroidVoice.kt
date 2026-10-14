@@ -30,6 +30,8 @@ class AndroidVoice(
     private val engineFactory: (Context, Handler) -> List<SpeechEngine> = ::defaultSpeechEngines,
 ) : VoicePort {
     internal var offlineRequired: () -> Boolean = { false }
+    // Local narration must not change the established online recognition fallback order.
+    internal var offlineListeningRequired: () -> Boolean = { offlineRequired() }
     private val handler = Handler(Looper.getMainLooper())
     private var tts: TextToSpeech? = null
     private var ready: Boolean? = null
@@ -188,7 +190,7 @@ class AndroidVoice(
         if (granted) startRecognition(result) else finishBeforeStart(result, ListeningOutcome.PERMISSION_DENIED)
     }
     private fun startRecognition(result: (ListeningResult) -> Unit) {
-        val candidates = speechEngines().filterNot { it.id in unusableEngines || (offlineRequired() && it.id != "vosk-cn") }
+        val candidates = speechEngines().filterNot { it.id in unusableEngines || (offlineListeningRequired() && it.id != "vosk-cn") }
         if (candidates.isEmpty()) { finishBeforeStart(result, ListeningOutcome.UNAVAILABLE); return }
         activeListen = result
         runAttempt(candidates, 0, result)

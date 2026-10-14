@@ -83,4 +83,17 @@ class OfflineLocationTest {
             assertNull(fixes.last().administrative)
         } finally { source.stop() }
     }
+    @Test fun leavingInstalledCountyOnlineDoesNotRetainItsLabelOrOldStreet() {
+        setup(); val pack = OfflinePack.load(app)!!; val fixes = mutableListOf<Fix>(); var calls = 0
+        val source = RealLocationSource(app, {}, { calls++; null })
+            .offlineLookup({ pack.resolve(it, System.currentTimeMillis()) }, { true })
+        try {
+            source.start(fixes::add); deliver(); assertEquals(pack.area, fixes.last().administrative)
+            ShadowSystemClock.advanceBy(Duration.ofMinutes(6)); deliver(lat = 30.65)
+            assertNull(fixes.last().administrative)
+            assertNull(pack.resolve(fixes.last(), System.currentTimeMillis()))
+            shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(1))
+            assertTrue(calls > 0); assertNull(fixes.last().administrative)
+        } finally { source.stop() }
+    }
 }

@@ -10,7 +10,10 @@ import kotlinx.coroutines.*
 class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     val revision = mutableIntStateOf(0)
-    val voice: VoicePort = injectedVoice ?: AndroidVoice(context).apply { offlineRequired = { !simulation || !cloudAvailable() } }
+    val voice: VoicePort = injectedVoice ?: AndroidVoice(context).apply {
+        offlineRequired = { !simulation || !cloudAvailable() }
+        offlineListeningRequired = { !cloudAvailable() }
+    }
     val offlinePack = OfflinePack.load(context)
     val store = TripStore(context)
     val settings = SettingsStore(context)

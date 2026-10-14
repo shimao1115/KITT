@@ -1,4 +1,4 @@
-param([switch]$Offline, [string]$SigningKeystore = '')
+﻿param([switch]$Offline, [string]$SigningKeystore = '')
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $taskRoot = Split-Path -Parent $PSScriptRoot
@@ -33,7 +33,7 @@ try {
         $taskTests = [int](($taskSuites | Measure-Object tests -Sum).Sum)
         $taskFailures = [int](($taskSuites | Measure-Object failures -Sum).Sum) + [int](($taskSuites | Measure-Object errors -Sum).Sum)
         $taskSkipped = [int](($taskSuites | Measure-Object skipped -Sum).Sum)
-        $taskMinimum = if ($taskVariant -eq 'Debug') { 423 } else { 410 }
+        $taskMinimum = if ($taskVariant -eq 'Debug') { 441 } else { 428 }
         if ($taskTests -lt $taskMinimum -or $taskFailures -gt 0 -or $taskSkipped -gt 0) { throw "$taskVariant reports do not establish the complete $taskMinimum+ passing suite." }
         $taskCounts[$taskVariant] = [ordered]@{ tests=$taskTests; failures=$taskFailures; skipped=$taskSkipped }
     }
@@ -60,7 +60,7 @@ try {
         simulation='PASS with deterministic/Fake Provider and fake Voice; production Context/Journey/Director'
         route='29 coarse points: Chengdu Xindu to Mianyang Anzhou Jushui; 100km/h / 16x'
         apk="kitt-v$taskVersion-debug.apk"; sha256=$taskHash; releaseApk="kitt-v$taskVersion-release.apk"; releaseSha256=$taskReleaseHash
-        deviceAcceptance='NOT RUN BY THIS SCRIPT: no phone installation, downgrade, data clear or credential access. Historical V0.3.5.1 phone results are recorded in HANDOFF.md; Issues #14/#15 remain separate.'
+        deviceAcceptance='NOT RUN BY THIS SCRIPT: no phone installation, downgrade, data clear or credential access. V0.4.1 real GPS/network/voice acceptance remains PENDING; historical device results in HANDOFF.md are separate.'
         areaStability='PASS: 600s fresh-position publication, 120s empty/error/8s timeout refresh, reliable replacement, 450m/100kmh movement, stale/gaps/provider switch/coarse/LAST_KNOWN/restart/late result and unavailable Geocoder regression. Synthetic measurements, not real-device service evidence.'
         runtimeStatus='PASS: truthful request lifecycle/elapsed/priority, location and network/VPN signals, unverified/Fake isolation, cancellation/timeout/configuration/re-entry, queued TTS, phone portrait/landscape + tablet layout. No active ping, diagnostic panel or timeline.'
         locationFallback='PASS: selector + Robolectric GPS/network listener regression, monotonic age, bridge/unknown, jump filtering, coarse landmark/stale guards, coordinate-only enrichment. Wi-Fi/cellular/VPN field behavior requires vivo acceptance.'
@@ -69,6 +69,7 @@ try {
         localResearch='Overview -> Topic + persistent sourced evidence regression PASS. Synthetic district/town/Topic: first journey fetches 1/1/1; reconstructed manager/store with unavailable research fetches 0/0/0, Director judges again. NOT real Provider/device process-restart acceptance; see docs/ACCEPTANCE_RESEARCH_CACHE.md.'
         narrationMemory='PASS: session-only object/fact coverage and queued/start/completed/failure/cancel/interruption callbacks; automatic repeated coverage suppressed, new facts/objects/chapters/landmarks eligible; more/replay/ordinary question/image and legacy recovery. Synthetic labels and fake Director cannot prove real semantic quality or human hearing.'
         offlinePack='PASS: actual licensed historical Xindu polygon, 22 sourced stable facts, integrity/schema failures, physical-source and accuracy/freshness/boundary guards, zero cloud calls in offline loop, quiet/interruption/replay, disconnect cancellation/reconnect and online curated evidence. Real no-network GPS/TTS/human hearing recorded separately; no official current-boundary or street-level claim.'
+        localFirst='PASS: physical runtime uses local automatic narration even online/unreachable cloud; supported local questions bypass cloud; uncovered/stale/coarse/bridge/missing pack never auto-fallback to cloud. Explicit open questions/search failures/timeouts/cancellation return to eligible local narration, no stale replay. Online installed geography and offline Chinese TTS preferred; recognition fallback order preserved. Synthetic JVM/Robolectric evidence only, NOT real-device GPS/network traffic or hearing.'
         silenceHotfix='PASS: pending research does not globally gate Director/simulation; failed/ready opportunities retained; user priority/stale protections; transient ChatGPT backoff does not slide.'
         xinduBenchmark='NOT RUN BY THIS SCRIPT: fresh production-provider phone discovery is recorded separately in docs/ACCEPTANCE_STAGED_RESEARCH.md.'
     } | ConvertTo-Json | Set-Content -LiteralPath artifacts\verification.json -Encoding utf8

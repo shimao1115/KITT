@@ -1,4 +1,4 @@
-param([switch]$Offline)
+﻿param([switch]$Offline)
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $taskRoot = Split-Path -Parent $PSScriptRoot
