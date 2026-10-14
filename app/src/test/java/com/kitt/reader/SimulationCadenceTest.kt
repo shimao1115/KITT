@@ -82,7 +82,7 @@ class SimulationCadenceTest {
         val clock = { 1000000L + testScheduler.currentTime }; val voice = TestVoice()
         val journey = Journey(clock, voice); journey.start()
         val loop = DirectorLoop(journey, ContextPipeline(), backgroundScope, clock, { DirectorProvider {
-            delay(15000); DirectorResult(Action.ASK_USER, question = "今天准备去哪儿？").json()
+            delay(15000); DirectorResult(Action.ASK_USER, question = "你想先听山河还是工程？").json()
         } })
         val source = SimulatedLocationSource(fixture(), backgroundScope, clock, 100.0, 16.0,
             paused = { loop.pending || journey.speaking || journey.listening })
@@ -153,7 +153,7 @@ class SimulationCadenceTest {
         val loop = DirectorLoop(journey, ContextPipeline(), backgroundScope, clock, { DirectorProvider { input ->
             delay(5000)
             if (input.userUtterance != null) DirectorResult(Action.SPEAK_NOW, "目的地确认", "好，路上有值得讲的再说。").json()
-            else if (auto++ == 0) DirectorResult(Action.ASK_USER, question = "今天准备去哪儿？").json()
+            else if (auto++ == 0) DirectorResult(Action.ASK_USER, question = "你想先听山河还是工程？").json()
             else DirectorResult(Action.SPEAK_NOW, "现场主题$auto", "只讲清当前场景的一个问题。").json()
         } })
         val source = SimulatedLocationSource(fixture(), backgroundScope, clock, 100.0, 16.0,
@@ -166,9 +166,9 @@ class SimulationCadenceTest {
                 if (speechStarted == 0L) speechStarted = clock()
                 if (clock() - speechStarted >= 20000) { voice.finish(); speechStarted = 0 }
             }
-            if (journey.listening) { voice.answer!!("去绵阳"); runCurrent() }
+            if (journey.listening) { voice.answer!!("多讲工程"); runCurrent() }
         }
-        assertTrue(source.completed); assertEquals("去绵阳", journey.destination)
+        assertTrue(source.completed); assertEquals("未询问", journey.destination)
         assertTrue(loop.counters.opportunities in 13..27)
         assertTrue((loop.counters.automatic[DeliveryOutcome.SPEAK_NOW] ?: 0) >= 8)
         assertNull(loop.counters.automatic[DeliveryOutcome.STALE]); assertEquals(1, loop.counters.activeDispatched)
@@ -181,13 +181,13 @@ class SimulationCadenceTest {
         var wall = 1000000L; var travel = 0L; var meters = 0.0
         val voice = TestVoice(); val journey = Journey({ wall }, voice); val pipeline = ContextPipeline()
         journey.start(); journey.simulationCadence({ travel }, { meters }); journey.location(Fix(30.67, 104.06, wall))
-        assertTrue(pipeline.card(journey, wall).contains("尚未询问"))
+        assertTrue(pipeline.card(journey, wall).contains("未提供（可选，不要主动询问）"))
         journey.requestInput("去绵阳")
         journey.deliver(journey.ticket(true), DirectorResult(Action.SPEAK_NOW, "确认", "好的").json()); voice.finish()
         wall += 1000; travel += 600000; meters += 16666.0
         val card = pipeline.card(journey, wall)
         assertTrue(card.contains("距上次讲话：1 秒")); assertTrue(card.contains("距上次讲话的模拟行驶：600 秒"))
-        assertFalse(card.contains("尚未询问")); assertTrue(card.length < 2000)
+        assertTrue(card.contains("目的地：去绵阳")); assertTrue(card.length < 2000)
         journey.end(); journey.start(); journey.location(Fix(30.67, 104.06, wall)); journey.ticket(false)
         wall += 1000; journey.location(Fix(30.77, 104.06, wall))
         assertFalse(journey.shouldCheck()); assertFalse(pipeline.card(journey, wall).contains("开发模拟节奏"))
