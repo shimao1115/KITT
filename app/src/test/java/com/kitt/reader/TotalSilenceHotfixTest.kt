@@ -17,7 +17,7 @@ class TotalSilenceHotfixTest {
         val loop = DirectorLoop(journey, ContextPipeline(), backgroundScope, clock, { DirectorProvider {
             calls++; assertTrue("RESEARCHING" in it.contextCard)
             assertFalse("【Local Dossier】" in it.contextCard)
-            DirectorResult(Action.ASK_USER, question = "今天准备去哪儿？").json()
+            DirectorResult(Action.ASK_USER, question = "你更想听自然还是工程？").json()
         } }, diagnostic = { logs += it }, researchProvider = { LocalResearchProvider { a, at ->
             delay(80000); testDossier(a, at)
         } })
