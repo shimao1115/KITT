@@ -1,3 +1,39 @@
+# CURRENT TASK CARD — KITT V0.4.2 / Issue #23 结束旅程页面精简
+
+**2026-10-14 用户明确授权：“好的，继续”，确认在已阶段性接受并合并 V0.4.1 后开始下一小版本 V0.4.2。** 当前唯一施工目标是 [#23 删除五项评分](https://github.com/shimao1115/KITT/issues/23)。本卡存在于**独立开发分支 `feat/v042-simplify-end-summary`**，从已合并 [PR #25](https://github.com/shimao1115/KITT/pull/25) 的最新 `main` 建立；**目前尚未修改 App 生产代码、尚无新 APK、没有测试 PASS**。
+
+> **STOP 边界**：本轮只做 UI/旧评分接口的必要清理，完成工程构建与签名产物后 STOP 请求用户确认。**本句“继续”仅授权开发、测试及准备验收 APK，不视为已经授权对手机执行 `adb install -r`**。用户当前手机上是已验收的 `com.kitt.reader.runtimecheck` V0.4.1/code15；不可卸载、清数据、换签名、擅自替换标准包、合并 PR、关闭 Issue 或进入 V0.5.0。V0.4.1 [Issue #24](https://github.com/shimao1115/KITT/issues/24) 真实断网和恢复外场 PENDING **继续 OPEN**，不得改写。
+
+## 开发起点与最小需求
+
+先读本卡、`AGENTS.md`、`HANDOFF.md`、[路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md) 和 [Issue #23](https://github.com/shimao1115/KITT/issues/23)；以分支当前实际代码为准。最小黄金路径：**点击“结束旅程” → `KittRuntime.end()` 自动将轻量 `TripSummary` 写入 `TripStore.finish()` → 展示简洁 `EndScreen` → 点击“回到出发页”**。现有完整链路无需任何评分按钮即可保存。不得因此修改写入时序、旅程恢复与持久化语义。
+
+1. 在 `app/src/main/java/com/kitt/reader/EndScreen.kt` 删除五项 1—5 分问卷及其默认全 3 分状态、`想说的话（可选）` 输入框、`保存评分` 按钮、保存成功/失败提示及专用状态与交互。**不要把五项替换成六类满意度评分**。
+2. 保留 **“这一程，读过的山河”**、时长、跳过次数、已经讲过的主题、无主题时的安静文案及 **“回到出发页”**。已有目的地**若由用户明确提供则可显示**；`未询问`、`未提供`、`等待回答` 这类技术状态不应作为旅程目的地展示；不从 GPS 推断或伪造目的地。界面在手机竖屏、小横屏/平板上不需额外复杂滚动。
+3. 让 `EndScreen` 无需依赖评分 `TripStore` 实例（若删除 `store` 参数则同步更改 `MainActivity.kt` 和 Compose 测试），不影响 `KittRuntime.end()` 的 `store.finish()` 自动保存。**本次不增加保存纪要按钮或数据库迁移**。
+4. 可以在全仓确认调用只剩旧测试后清理 `TripStore.feedback()` 死接口，**但严禁擦除、迁移或改写用户本机已有 `trip-*.json`**；历史文件可能有 `ratings`/`feedback` 可选字段，`TripStore.latest()`、恢复/读取必须继续忽略额外键并正确返回 `TripSummary`。优先小改，必要的遗留接口保留不影响最终 UX。
+5. **不动主核心功能**：离线优先自动讲述、联网零自动 Director/Research 调用、目的地不主动追问、GPS 可信门槛、Android 中文离线 TTS、ASR、主动在线回答、静音/打断/后台服务/已播记忆，及六类偏好/双层知识包/离线更新/探索地点均不属于本版。
+
+## 必须做的最小回归
+
+- `DrivingUiTest.kt` 中 `EndUiTest.endScreenSavesRatingAndReturns` 是**旧评分设计的正向断言**；替换为**简洁结束页显示 + 评分元素确实不存在 + 返回生效**，并验证已有 `TripSummary` 内容仍完整且保存自动完成。验证显式目的地与 `未询问` 时的不同展示、无已讲主题的安静文案。
+- `PersistenceTest.kt` 中 `summaryRatingRetentionAndCorruptRecovery` 正在直接调用旧 `store.feedback()`。**绝不能删掉这条历史兼容性验证**：改为手工构造/读取**带遗留 `ratings`/`feedback` JSON**，确认旧记录依然可被读取且不会因新版 EndScreen 自动改写/抹去；单独验证现在不依赖评分也会 `store.finish(summary)` 并保存纪要。仍验证损坏 `current.json` 恢复安全。
+- 其余导航、竖横屏、Journey-end、旧设置、自动播报本地优先、安全签名和原 V0.4.1 869 项测试都应全套回归。不能删除失败测试、改生产定位/冷却阈值换 PASS；如果新增测试，报告新旧真实计数。
+- `app/build.gradle.kts` 计划递增为 **V0.4.2/versionCode16**，先核对当前实际 `main`/手机 code15；如版本已更高，先报告并合法递增，不可覆盖更高版本或复用旧 code。
+- 办公室 JDK17 / Android SDK35：运行 `powershell -ExecutionPolicy Bypass -File scripts/verify.ps1 -Offline`（Debug＋Release 单测、assemble、lint、签名）与 `powershell -ExecutionPolicy Bypass -File scripts/build-runtime-smoke.ps1 -Offline`、`scripts/test-kitt-signing.ps1` 等现成原签名核验脚本。完成既有六组模拟回归。不能把 UP-TO-DATE 的旧单测充当当轮新执行测试。
+- **唯一能覆盖现有手机账号数据空间的候选是**同原证书 `com.kitt.reader.runtimecheck` code16 验收 APK，非普通 `com.kitt.reader` 标准包。原证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`；校验候选 APK 的包名、versionCode、唯一证书、SHA256、字节数并存脱敏结果。不能生成替换密钥、导出或提交私钥/账号凭据。
+- 如果工程绿灯：构建 Android instrumentation APK（若现有工具链适用），补一页最短真人验收：原位升级后“结束旅程”不出现评分、正常返回、自动纪要/旧记录/账号设置仍在；V0.4.1 联网本地讲述零云调用不退步。**这里只需工程候选，先不要 ADB 安装手机**。
+
+## Git / 汇报 / STOP
+
+Codex 可以基于此分支自主施工、运行测试、修复回归、提交推送，并在有代码更改后开启 **Draft PR → main**，更新 [Issue #23](https://github.com/shimao1115/KITT/issues/23)、`HANDOFF.md`、相关简要验收记录以及路线图，不改写 V0.4.1 外场 PENDING。若本地已有未提交文件，先保存/解释而不是强行覆盖；同步远端 `main` 时注意当前分支已包含合并后的 code15 基线。
+
+报告精确 **版本/commit、Debug/Release 新实际测试计数与 skipped/errors、六组模拟、build/lint、原签名检查、APK 包名/大小/SHA256、待真人项目**。然后 STOP。**需要用户后续明确批准才对手机执行安装，之后真实验收通过再讨论合并**。
+
+---
+
+## 已归档的上轮施工上下文（勿重复执行）
+
 # ARCHIVED TASK CARD — V0.4.1/code15 阶段性交付已合并（2026-10-14）
 
 **状态：STOP / 已阶段性接受。** 用户确认“剩余外场测试以后补做”；[PR #25](https://github.com/shimao1115/KITT/pull/25) 已合并进 `main`，merge [`65ec2726`](https://github.com/shimao1115/KITT/commit/65ec2726e0fe173ff431db8ecfebade7c645d179)。工程 441 Debug＋428 Release = 869，零失败；真机 code15 原位升级、联网新都可信 NETWORK 自动本地朗读零云调用、不主动问目的地及中文耳听通过。**Issue #24 继续 OPEN 以追踪真实断网新鲜定位下地方讲述、重播/本地问答及云失败后的恢复等外场 PENDING。** 不以本轮测试/合并取代外场验收。
