@@ -1,3 +1,9 @@
+# ARCHIVED TASK CARD — V0.4.1/code15 阶段性交付已合并（2026-10-14）
+
+**状态：STOP / 已阶段性接受。** 用户确认“剩余外场测试以后补做”；[PR #25](https://github.com/shimao1115/KITT/pull/25) 已合并进 `main`，merge [`65ec2726`](https://github.com/shimao1115/KITT/commit/65ec2726e0fe173ff431db8ecfebade7c645d179)。工程 441 Debug＋428 Release = 869，零失败；真机 code15 原位升级、联网新都可信 NETWORK 自动本地朗读零云调用、不主动问目的地及中文耳听通过。**Issue #24 继续 OPEN 以追踪真实断网新鲜定位下地方讲述、重播/本地问答及云失败后的恢复等外场 PENDING。** 不以本轮测试/合并取代外场验收。
+
+**当前手机已安装 `com.kitt.reader.runtimecheck` code15，不能重装/卸载/清数据。** 下文原先“等待批准/禁止合并”是本轮施工前及验收中的历史约束，合并行为已按用户后续明确授权执行。新版本必须重新授权、另立单一任务；此卡不再是活跃施工指令。下一个候选才是 [#23 去五项评分](https://github.com/shimao1115/KITT/issues/23)，**尚未启动**。
+
 # CURRENT TASK CARD — KITT V0.4.1 / Issue #24 本地原生讲述热修
 
 **2026-10-14最新执行状态：code14→15原签名真机原位升级成功，本轮验收结束，STOP等待用户决定。** 联网真实NETWORK→新都本地讲述、0自动云调用、不问目的地及首次真人耳听PASS；120秒联网109秒可信NETWORK/自动0云、主动问题单次FAILED已短句结束；断网120秒没有新鲜物理位置，完整地方链PENDING但正确未知/安静/0云；独立断网中文试听、实际播报按钮打断、默认10分钟静音/提前退出、结束/账号设置保留分别PASS。手机最终出发页，服务停止，原Wi-Fi关/流量开已恢复。不卸载/清数据、不合并PR/关闭Issue或开始下一版本；**已是code15，不要重复安装**。详见 [HANDOFF](HANDOFF.md)、[真机证据](docs/evidence/v041-phone-acceptance.json)。工程Debug441/Release428等结果仍是安装前实际执行证据。
