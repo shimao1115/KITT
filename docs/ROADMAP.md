@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-14 最新定位/正式设计入口**：用户已经实际无网络听到 V0.4.0/code14 杨升庵地方介绍，证实真人有本地发声，但初次内容仅是身份和官职，**深度未验收通过**；本次无完整 GPS 精度/云请求/追问测试日志，不能宣布全部闭环 PASS。未来内容由 [事实包 + 完整文字讲述包 V2.0](KITT_KNOWLEDGE_STANDARD.md)、[跨 AI 知识工厂 V2.0](KITT_KNOWLEDGE_FACTORY.md) 和 [重写的长期离线包蓝图 V2.0](FUTURE_OFFLINE_KNOWLEDGE_PACKS.md) 统一约束。旧 V0.4.0 施工与历史代码/验收独立保留，当前不进入下一版本；以下旧阶段文字按记录时间理解。
+
 > **2026-10-14 V0.4.0/#20 工程交付完成，STOP等待验收。** [`a43de31`](https://github.com/shimao1115/KITT/commit/a43de31)交付新都6对象/22事实、许可明确的历史Polygon、本地确定性旁白与断网中文TTS。Debug423/Release410、assemble/lint、原签名回归和六组Fake模拟PASS；code14/runtimecheck已同签名原位升级，手机APK摘要一致。用户确认断网独立中文试听“听到了，中文清楚”；真实GPS两轮无新鲜fix，普通LOCATION前台服务约两分钟也未知，故**完整真实GPS→区县→资料→地方讲述仍PENDING**，零Director/Research调用不等于讲述通过。2017开源边界非官方测绘，2026边界调整复核、镇街及冷启动/内存实测独立PENDING。见[HANDOFF](../HANDOFF.md)、[工程证据](evidence/v040-verification.json)、[手机证据](evidence/v040-phone-acceptance.json)、[最短验收](ACCEPTANCE_OFFLINE_XINDU.md)。#20保持OPEN，#13/#14/#17/#18未验项不变。已同步最新知识标准V1.0，其明确不扩本轮；以下授权前/历史状态不再是当前施工任务。不进入下一版本。
 
 > **2026-10-14 新授权：V0.4.0 / [Issue #20](https://github.com/shimao1115/KITT/issues/20)“新都区离线知识包第一片”当前唯一施工 Destination。** 根 [TASK_CARD.md](../TASK_CARD.md) 是唯一当前任务；目前只有任务下发，尚未实现代码/打包。验收必须闭合真实**新鲜物理 GPS → 可信本地行政区反查（不依赖 Geocoder）→ 有来源预制地方知识 → 无云端 Director 的确定性播报 → 真机无网中文TTS**；20–50条稳定事实为来源目标，不能靠假资料凑数。优先新都区，先试成都范围的单片，成都全域、NAS、包商店、全国离线后续再决定。用户认为0.3.6“没有多大问题”并明确授权继续，但 #13 真人同义/补充/重播没有完整人工逐项PASS；#18镇街/Topic、#14/#17外场与系统Geocoder不稳仍是独立事实，#19双电脑签名CLOSED/PASS。预计版本V0.4.0/code14，同原证书/包名原位升级。**当前未启动Codex或宣称工程PASS**；只做#20，交付后STOP。
