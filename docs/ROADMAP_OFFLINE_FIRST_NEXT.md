@@ -1,5 +1,7 @@
 # KITT 下一阶段开发路线图 — 本地知识优先（2026-10-14 用户同意）
 
+> **2026-10-14 最新执行顺序（以本段为准）**：V0.4.1/code15 [PR #25](https://github.com/shimao1115/KITT/pull/25) 已合并 `main`，实机阶段性通过，#24 外场 PENDING 不受影响。用户已授权**开始 V0.4.2/code16 单功能施工**：移除结束旅程五项评分/评语/保存按钮，保留自动纪要与历史记录兼容性。唯一当前分支 `feat/v042-simplify-end-summary`，唯一任务卡 [TASK_CARD](../TASK_CARD.md)，[Issue #23](https://github.com/shimao1115/KITT/issues/23) IN PROGRESS。允许 Codex 本地开发/全量测试/同签名候选构建，**手机升级与 PR 合并仍须再次确认**；尚无新版 APK/代码通过证据。完成此版后才考虑 V0.5.0 成品故事，别先开发六类偏好与知识下载器。本文下方旧“尚未授权”或“PR25仍Draft”段均为历史过程。
+
 > **2026-10-14 当前最新状态**：V0.4.1/code15 工程 869 项零失败及联网实机新都区自动本地讲述/零云端调用/真人耳听已阶段性验收；用户同意“剩余外场测试以后补做”。[PR #25](https://github.com/shimao1115/KITT/pull/25) 已合并 `main`，合并提交 `65ec2726`。**Issue #24 OPEN**：断网有新鲜位置下完整本地讲述、重播、同旅程云失败后恢复等继续 PENDING；未将“断网无定位安全静默”冒充地方讲述成功。手机已经 code15，无需重装。本轮 STOP；下一潜在单一任务为 [#23 结束页删评分](https://github.com/shimao1115/KITT/issues/23)，需另行授权后开始。下文旧“PR仍Draft/未合并/等待用户决定”仅是当时状态。
 >
 > **同日真机最新状态**：原签名code15原位升级、联网真实NETWORK本地讲述/0自动云/真人耳听、独立断网TTS和按钮打断/静音等分项PASS；断网无新鲜位置，地方链和部分追问/恢复PENDING。手机已结束并恢复网络，STOP等用户决定，PR25仍Draft/Issue24仍OPEN，不合并、不进入#23或V0.5.0。见根 [HANDOFF](../HANDOFF.md)、[手机证据](evidence/v041-phone-acceptance.json)。下方工程“未装机”仅为安装前历史。
