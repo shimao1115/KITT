@@ -10,7 +10,7 @@ import kotlinx.coroutines.*
 class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     val revision = mutableIntStateOf(0)
-    val voice: VoicePort = injectedVoice ?: AndroidVoice(context).apply { offlineRequired = { !cloudAvailable() } }
+    val voice: VoicePort = injectedVoice ?: AndroidVoice(context).apply { offlineRequired = { !simulation || !cloudAvailable() } }
     val offlinePack = OfflinePack.load(context)
     val store = TripStore(context)
     val settings = SettingsStore(context)
@@ -80,7 +80,8 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         persistentAllowed = { !simulation && config.kind != ProviderKind.FAKE &&
             (settings.readResearch() ?: config).kind != ProviderKind.FAKE },
         researchChanged = { revision.intValue++ }, online = ::cloudAvailable,
-        offlinePack = { offlinePack.takeUnless { simulation } })
+        offlinePack = { offlinePack.takeUnless { simulation } },
+        preferOffline = { !simulation })
     val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
     var acceleration = settings.acceleration
@@ -109,10 +110,10 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             (voice as? AndroidVoice)?.detail ?: VoiceDetail(), elapsed, wall,
             pipeline.areas.active?.area?.key, (source as? RealLocationSource)?.areaLookupSince,
             requests.ai, requests.research, (voice as? AndroidVoice)?.speechQueuedSince, (source as? RealLocationSource)?.waitingSince,
-            locationPermissionUnavailable = sourceNotice.contains("权限"))
-        val services = if (!cloudAvailable()) "离线讲述 · 云端请求已停用" else (if (config.kind == ProviderKind.FAKE) "AI 离线演示 · 未验证" else "AI ${observationLabel(requests.ai, elapsed)}") +
+            locationPermissionUnavailable = sourceNotice.contains("权限"), offlineFirst = !simulation)
+        val services = if (!simulation) "本地讲述 · 在线问答按需" else if (!cloudAvailable()) "离线讲述 · 云端请求已停用" else (if (config.kind == ProviderKind.FAKE) "AI 离线演示 · 未验证" else "AI ${observationLabel(requests.ai, elapsed)}") +
             " / 研究 ${observationLabel(requests.research, elapsed)}"
-        val offlineHint = if (cloudAvailable()) "" else when {
+        val offlineHint = if (simulation && cloudAvailable()) "" else when {
             offlinePack == null -> "离线资料不可用，请更新应用。"
             (voice as? AndroidVoice)?.offlineReady == false -> "未就绪的离线中文语音；请安装语音包或选择本地 TTS 引擎。"
             offlinePack.resolve(journey.fix, wall) == null -> "离线地区不确定 / 当地无可靠资料；等待新鲜精确定位。"
