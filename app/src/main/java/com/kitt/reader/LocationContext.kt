@@ -51,7 +51,7 @@ class ContextPipeline(landmarks: List<Landmark> = emptyList()) {
         val distance = recent.zipWithNext().sumOf { (a, b) -> a.distanceTo(b) }
         val climb = if (first?.altitude != null && fix?.altitude != null) fix.altitude - first.altitude else null
         return buildString {
-            appendLine("【旅程意图】\n目的地：${journey.destination}\n本次临时偏好：${journey.instructions.ifBlank { "无" }}")
+            appendLine("【旅程意图】\n目的地：${journey.destination.takeUnless { it == "未询问" }.orEmpty().ifBlank { "未提供（可选，不要主动询问）" }}\n本次临时偏好：${journey.instructions.ifBlank { "无" }}")
             if (routeHint.isNotBlank()) appendLine("【路线参考】${routeHint.take(240)}。截图仅为意图提示，当前 GPS 优先，不能据此推断已经到达或更改目的地。")
             appendLine("【当前位置】")
             if (fix == null || fix.ageMs(time) !in 0..60_000) appendLine("暂无可靠位置，不断言现场；旧章节仅为此前背景，不能据此声称当前到达。") else {
@@ -73,7 +73,6 @@ class ContextPipeline(landmarks: List<Landmark> = emptyList()) {
             journey.simulatedTravelMs?.let { travel ->
                 appendLine("【开发模拟节奏】累计模拟行驶 ${travel / 1000} 秒 / ${journey.simulatedMeters?.toInt()} m；距上次讲话的模拟行驶：${journey.simulatedSinceSpeechMs?.let { "${it / 1000} 秒" } ?: "无"}。")
                 appendLine("只压缩交互之间的行驶；Director思考、讲话、用户回答窗口时暂停移动，后台研究不暂停行驶；语音和安静计时仍是真实时间。按模拟行驶变化判断新现场价值，无新价值仍应 SILENT。")
-                if (journey.destination == "未询问") appendLine("首次定位后的旅程意图尚未询问，可以先问一次目的地；‘未询问’不表示用户已拒绝回答。")
             }
             journey.prepared?.let { appendLine("【待重新确认】${it.topic}：${it.hint}。必须用当前现场重新判断；不补播。") }
         }
