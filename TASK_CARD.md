@@ -1,17 +1,34 @@
-# CURRENT TASK CARD — 无待执行施工任务
+# CURRENT TASK CARD — KITT V0.4.0 / Issue #20 新都区离线知识包 MVP
 
-**状态（2026-10-13）：#19 家庭电脑/办公室双机签名统一已完成，双端 PASS，Issue #19 已关闭。** 原本 #19 的签名迁移任务**不得再重复执行**，不得重新复制密钥、重签 APK 或再次安装当前手机 code13。
+**当前唯一已授权施工 Destination：[#20 新都区真实离线识区→本地资料→中文讲述](https://github.com/shimao1115/KITT/issues/20)。用户于 2026-10-14 明确授权开始下一版本。** 此为任务派发，并非 Codex 已运行/版本已构建。执行完成 V0.4.0/code14 后**立即 STOP**，不得扩第二地区或下一版本。
 
-## 已完成的最新里程碑
+## 接班契约
 
-- [#19 双机签名统一](https://github.com/shimao1115/KITT/issues/19) **CLOSED / PASS**。办公室原始签名及家庭原样私钥经 PrivateKeyEntry、文件一致性、ACL、证书、runtimecheck 包名/0.3.6/code13 和 Debug/Release 构建验签。家庭本机 Debug395/Release382、lint、六组确定性模拟、2正例+6拒绝签名回归均实际 PASS。详见 [HANDOFF.md](HANDOFF.md)、[家庭脱敏验证](docs/evidence/signing-home-verification.json) 和 [5b736d2](https://github.com/shimao1115/KITT/commit/5b736d2743d2eb29b068cafbfbef186480063d10)。
-- 同一证书 SHA256：`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。私钥仅在授权本地路径保存；任何新 APK 仍必须使用相同 `com.kitt.reader.runtimecheck` 包名、证书和递增 versionCode 才能保留现有账号数据覆盖升级。**当前手机已 code13，#19 无手机安装要求。**
-- 同步位置的源私钥副本目前未由 Agent 删除。建议用户**自行**确保已有受保护的私钥备份，再处理同步端副本与回收站/版本历史，避免明文私钥长期暴露；未经再次授权不得自动删除或上传密钥。
+1. 先读 `AGENTS.md`、`HANDOFF.md`、`docs/ROADMAP.md`、`docs/FUTURE_OFFLINE_KNOWLEDGE_PACKS.md`、[#20 完整规格和 Gate](https://github.com/shimao1115/KITT/issues/20)、现有 `AreaIdentity/AndroidAreaResolver/RealLocationSource/ChapterResearch/ResearchEvidenceStore/Journey/VoicePort`，继承 main 上 V0.3.6/code13 的真实交接；按 AI-native “先裸跑最短黄金路径，必要时加最小中间层”，不要重新设计所有已通过系统。
+2. 上一版用户反馈“0.3.6 没有多大问题”，已接受当前可用性并授权前进，**不代表**细分真人同义去重/补充/重播全 PASS；#13 仍 OPEN 保留自然反馈。#18 区县缓存真机 `write=1/hit=1/重复研究0` 阶段 PASS、镇街与 Topic PENDING；#14/#17 自然定位/连续镇街各自待验；#19 办公室+家庭原签名统一 PASS/CLOSED。严禁为本版放宽位置可信性、改 FUSED/VPN/GeoIP，或抹掉未验边界。
+3. 用户现在办公室/家庭任一 Windows 环境都能用**同一原签名**构建。原手机 `com.kitt.reader.runtimecheck` code13、账号/设置保留。V0.4.0 应用 `versionCode=14`、同包名、证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。严禁卸载、清数据、重新生成签名或提取账号密钥。
 
-## 尚未签收但不属于当前施工
+## 唯一产品黄金路径
 
-- [#13 V0.3.6 讲述语义去重](https://github.com/shimao1115/KITT/issues/13)：工程 PASS，真实自动 ChatGPT→TTS 引擎完成一次；真人听感、同义去重、主动补充/重播仍待用户实际验收。**不得伪称真人PASS**。
-- [#18 研究证据缓存](https://github.com/shimao1115/KITT/issues/18)：真实区县缓存阶段性 PASS，镇街/Topic 真机待验。
-- #14/#17 外场定位与地名连续性验收独立待办；V0.4.0 离线知识包尚未获下一轮施工授权。
+**用户将手机外网关掉，手机仍获取新鲜的真实物理 GPS → 不依赖在线 Android Geocoder 的可信离线区县识别 → 读取本地新都区包中的有来源知识 → 不调用云端 AI/研究接口，由确定性讲述逻辑选新对象/事实 → 系统已安装的离线中文 TTS 真正出声。**
 
-**STOP Rule：没有新的用户授权就不启动任何施工、修改业务代码、做手机操作或进入 V0.4.0。** 新版任务经用户授权后才替换本卡。已完成 #19 的历史任务与逐步操作可在其 GitHub Issue、[签名迁移文档](docs/SIGNING_UNIFICATION.md) 和 Git 历史中查阅。
+- 不是“只断网加载缓存文字”；没有离线区域识别和真实可听中文播报，不能签完全离线 PASS。
+- 没有网络时天气/开放/票价/路况等问题要明确无法确认最新状态，不能拿旧包充当实时消息。
+- 以现有 Overview/Topic/Source 和 `AreaIdentity.key` 语义为最小版本化包格式，内置**20–50条真实来源、经过核验的稳定事实**，优先杨慎、桂湖、宝光寺、新繁东湖等可追溯对象，含来源、检索/出版时间、地区适用范围及不确定性；缺资料宁可少，不编故事、行政边界和伪引用。预制的是**知识/精炼事实**，不是固定整趟录音/导航解说。
+- 只有来源和使用许可有依据的几何/范围才能让手机断网把真实坐标识别为新都区。街道/乡镇只在可信几何可得时细分；模糊/边界/失新鲜/精度差时诚实“地区不确定”，不靠最近 POI、VPN、IP、旧章或伪造圆形边界。缺可靠几何则标 Gate PENDING，不能冒充完成。
+- 离线讲述先做短小自然段落与有界去重、静音/中断/TTS 生命周期，允许有限问法的“这里有什么/再讲一点/再说一遍”或清晰说明当前不支持自由问答。**不要在手机部署本地 LLM**，不增加第二个 AI Judge，不做复杂模板引擎。没有离线中文语音则提醒安装/选择引擎，不伪称TTS可用。
+- 在线时可优先把预制稳定事实作为既有 Director 素材，再走原在线 API 的缺口/时效研究；保持 #18 已实测的跨旅程缓存和 #13 讲述完成记忆，不互相污染。包应可审校、可更新，不必先设计包商城/NAS服务器。
+
+## 必须通过的 Gate（完整判定见 Issue #20）
+
+- **真实可信地理**：新区内、外、边界、粗/旧位置、无网络、GPS↔NETWORK 切换；不靠在线 Geocoder 返回才能得区县；假地理数据仅支持单测，不能冒充真实行政边界。
+- **实际素材**：20–50条经来源核验、合法可分发、覆盖数个类型的结构化稳定事实；抽样复查来源及事实、范围和缺口，无伪造内容、版权越界、动态信息假新鲜；本地读取高效，坏包/版本不兼容安全失败。
+- **本地中文讲话**：严格无外网，云端 Director/Research 实际调用次数=0，本地地区/概况/专题读取→有价值对象选择→本地中文TTS播放可听（引擎仅完成回调≠真人听感）。没有人/手机在场时完整真机 Gate PENDING，不用 Fake 冒充。
+- **回归**：新增包/位置/本地旁白/断网/网络恢复/并发与数据损坏测试；完整 Debug/Release单测、assemble、lint、原签名校验与成都→绵阳六组 Fake 模拟全部实际执行；继承现有定位新鲜/静音/打断、#18证据缓存、#13去重、账号/设置。
+- **交付**：`V0.4.0/code14` 原证书 `com.kitt.reader.runtimecheck` APK、SHA256、包版本/体积、测试计数、脱敏样例/来源明细和最短真机断网操作，更新 `HANDOFF.md`、`docs/ROADMAP.md`、独立验收文档和 #20，push main；真实手机原位升级仅在用户授权/签名包安全时进行，不卸载不清除数据，未安装须标 PENDING。
+
+## 禁止本轮扩张
+
+**不做**：成都/四川/全国全量数据、NAS自动流水线、地图 SDK、高德POI、Android FUSED 重试、自动爬虫/全文OCR、语音克隆、大模型离线量化、复杂 RAG/向量库/知识图谱、跨省下载商店、重新设计 UI、车机移植或额外 Hotfix。旧版本历史文档可查 Github/原 commits；本卡保持当前唯一施工指令。
+
+**工程 + 可得的真机离线黄金路径完成就停止等待一次人工验收。缺可信地理数据、真实离线语音或来源时，可交付已完成部分，但必须把整套离线能力保持 PENDING，不能补造通过。**
