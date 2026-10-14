@@ -65,11 +65,14 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
             waitingSince = null
             // A bridge keeps only county background, never the previous street identity.
             val connected = online()
-            if (!connected) lookup.stop()
+            // Trusted installed geography is preferred regardless of network connectivity.
+            // Never start a cloud Geocoder for a location already resolved by the curated pack.
             val local = offlineArea?.invoke(selected)
-            val cached = if (connected) lookup.cached(selected) else null
-            val area = if (!connected) local else if (selected.source == FixSource.LAST_KNOWN) locationArea(latest?.administrative, selected)
-                else locationArea(cached ?: local, selected)
+            if (!connected || local != null) lookup.stop()
+            val cached = if (connected && local == null) lookup.cached(selected) else null
+            val area = if (local != null) local else if (!connected) null
+                else if (selected.source == FixSource.LAST_KNOWN) locationArea(latest?.administrative, selected)
+                else locationArea(cached, selected)
             val enriched = selected.copy(administrative = if (fine) area else area?.copy(chapter = ""))
             if (enriched != latest) {
                 latest = enriched
@@ -77,7 +80,7 @@ class RealLocationSource(context: Context, private val unavailable: (String) -> 
                 onFix(enriched)
             }
             // Last-known is continuity only; never starts a new geocode from a stale coordinate.
-            if (connected && selected.source != FixSource.LAST_KNOWN) lookup.resolve(selected) { publish() }
+            if (connected && local == null && selected.source != FixSource.LAST_KNOWN) lookup.resolve(selected) { publish() }
         }
         val callback = object : LocationListener {
             override fun onLocationChanged(location: Location) {
