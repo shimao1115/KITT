@@ -1,6 +1,8 @@
 # KITT
 
-> **2026-10-14 当前事实与未来产品方向**：V0.4.0/code14 已交付新都离线事实/确定性讲述试点，用户已在无网络时听到杨升庵介绍，但反馈故事太浅；**真正的双层事实包+讲述包尚未实装**。最终产品定位是**无需配置云端 API 就可通过本地中文 TTS 听完整沿途故事**，接入大模型后再获得灵活问答、搜证和图片理解。正式设计：[内容标准 V2.0](docs/KITT_KNOWLEDGE_STANDARD.md)、[跨 AI 知识工厂 V2.0](docs/KITT_KNOWLEDGE_FACTORY.md)、[离线包与分发蓝图 V2.0](docs/FUTURE_OFFLINE_KNOWLEDGE_PACKS.md)；当前研发与真机验收以 [#20](https://github.com/shimao1115/KITT/issues/20) 和 [HANDOFF](HANDOFF.md) 为准，**不自动开启下一版本**。下文早期 V0.3.5.1 状态为历史里程碑。
+> **2026-10-14 当前事实与未来产品方向**：V0.4.0/code14 已交付新都离线事实/确定性讲述试点，用户已在无网络时听到杨升庵介绍，但反馈故事太浅；**真正的双层事实包+讲述包尚未实装**。最终产品定位是**无需配置云端 API 就可通过本地中文 TTS 听完整沿途故事**，接入大模型后再获得灵活问答、搜证和图片理解。正式设计：[内容标准 V2.1](docs/KITT_KNOWLEDGE_STANDARD.md)、[跨 AI 知识工厂 V2.1](docs/KITT_KNOWLEDGE_FACTORY.md)、[离线包与分发蓝图 V2.1](docs/FUTURE_OFFLINE_KNOWLEDGE_PACKS.md)；当前研发与真机验收以 [#20](https://github.com/shimao1115/KITT/issues/20) 和 [HANDOFF](HANDOFF.md) 为准，**不自动开启下一版本**。下文早期 V0.3.5.1 状态为历史里程碑。
+
+> **最终生产/分发路线**：办公室电脑和家庭电脑负责 AI 调研、事实与讲述包整理及打包；**GitHub Git 保存可公开的文字源，GitHub Releases 分发压缩文字知识包**。NAS 全面退出。讲述模式默认**离线优先**，按临时需求单次请教 AI；用户可选**即时优先**，一般讲述绕过离线知识内容交给在线模型，失败则明确回退本地故事。该模式 UI 尚未在 code14 中实现。
 
 > 产品名：**沿途**
 > Slogan：**读懂沿途的世界**
