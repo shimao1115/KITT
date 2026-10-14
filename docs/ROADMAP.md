@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-14 新授权：V0.4.0 / [Issue #20](https://github.com/shimao1115/KITT/issues/20)“新都区离线知识包第一片”当前唯一施工 Destination。** 根 [TASK_CARD.md](../TASK_CARD.md) 是唯一当前任务；目前只有任务下发，尚未实现代码/打包。验收必须闭合真实**新鲜物理 GPS → 可信本地行政区反查（不依赖 Geocoder）→ 有来源预制地方知识 → 无云端 Director 的确定性播报 → 真机无网中文TTS**；20–50条稳定事实为来源目标，不能靠假资料凑数。优先新都区，先试成都范围的单片，成都全域、NAS、包商店、全国离线后续再决定。用户认为0.3.6“没有多大问题”并明确授权继续，但 #13 真人同义/补充/重播没有完整人工逐项PASS；#18镇街/Topic、#14/#17外场与系统Geocoder不稳仍是独立事实，#19双电脑签名CLOSED/PASS。预计版本V0.4.0/code14，同原证书/包名原位升级。**当前未启动Codex或宣称工程PASS**；只做#20，交付后STOP。
+
 > **2026-10-13 #19 双电脑签名正式验收完成并关闭（当前无自动施工任务）。** 办公室、家庭两个独立 Windows 环境均使用同一原签名；家庭 PrivateKeyEntry/ACL/复制一致性、runtimecheck 0.3.6/code13、Debug395/Release382、lint、六组模拟及签名回归均实际 PASS。家中同签名 APK 已生成但**未安装手机，也不需要对已是 code13 的手机重装**。脱敏证据 [signing-home-verification.json](evidence/signing-home-verification.json)、[HANDOFF](../HANDOFF.md)、[#19 CLOSED](https://github.com/shimao1115/KITT/issues/19)。先前路线图的“家庭端 PENDING”只表示当时历史状态，已由当前结果取代；根任务卡现为 [等待新授权](../TASK_CARD.md)。#13 真人听感语义、#18 镇街/Topic、#14/#17 外场仍未变成 PASS。不自动启动 V0.4.0。
 
 > **2026-10-13 最新安排：#19 家庭电脑原签名导入/构建验签已获用户授权，当前唯一工作为本机 [TASK_CARD.md](../TASK_CARD.md)。** 办公室签名 PASS，家庭端实际验证尚未运行/PENDING；本地原私钥源路径只在家用电脑的私密 Codex 会话提供，不入Git。只复制到独立项目密钥路径、校验证书及 code13 APK，**不安装手机或改生产代码**。#13 V0.3.6 工程已交付但真人听感等 PENDING，不因本轮任务改为PASS；#18等其他事项照旧，任务完结即停止。详细见 [签名迁移步骤](SIGNING_UNIFICATION.md) 和 [Issue #19](https://github.com/shimao1115/KITT/issues/19)。
