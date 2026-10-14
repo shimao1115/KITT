@@ -1,5 +1,7 @@
 # Priority Future Task — Offline Regional Knowledge Packs
 
+> **规范优先级（2026-10-14 定稿）：** 本文件保留早期技术远景与备选设计，**不是正式内容标准，也不是当前 V0.4.0 可无限施工的任务卡**。KITT 的最终产品定位、普通游客讲述要求、六大内容类别、L0—L6 来源、A—D 证据和跨模型生产规范，均以 [KITT 离线知识内容与生产标准 V1.0](KITT_KNOWLEDGE_STANDARD.md) 为**唯一有效标准**。本文件旧的生产阶段、地域规模和可选系统设计若与该标准、用户新决定或 [#20 施工门禁](https://github.com/shimao1115/KITT/issues/20) 冲突，一律作为历史草稿失效。正在施工的 V0.4.0 仍只做新都区真实离线闭环；下载平台、地图、NAS、全国包不因本备注获得施工授权。
+
 > **2026-10-14 首次落地实施的现行范围：** 用户已授权 [Issue #20](https://github.com/shimao1115/KITT/issues/20) / [TASK_CARD.md](../TASK_CARD.md) 作为 **V0.4.0 新都区离线知识包**。本文件包括的**成都全域、NAS流水线、下载/更新平台等为后续长期蓝图**；首版只做“成都完整试点的一个新都区切片”，以可靠的离线行政区域反查、来源事实、手机断网本地讲述/TTS 打通真实黄金路径。不得把长期愿景全部当成 #20 的施工需求，范围冲突以 #20 和当前任务卡优先。
 
 Status: **PRIORITY BACKLOG — do not implement during the current field-use window**
