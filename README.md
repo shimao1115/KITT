@@ -1,5 +1,7 @@
 # KITT
 
+> **最新代码检查与候选修订（2026-10-14）**：现有 code14 在有网时自动讲述仍可能等 ChatGPT，Fake/旧提示词仍可能主动问目的地。为落实“离线是主路径、目的地是自愿信息”，先做 [Hotfix #24](https://github.com/shimao1115/KITT/issues/24)，候选代码已放 [Draft PR #25](https://github.com/shimao1115/KITT/pull/25)；**尚未运行 Android 回归、未合并、未生成新 APK，不代表手机已经修复**。此项优先于 #23 删除结束页评分，再继续双层故事包与探索地点。详情见 [下阶段路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)。
+
 > **下阶段研发排序已确认（2026-10-14）**：[本地知识优先路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)。先简化旅程结束页，再完善新都成品故事、探索地点/本地 TTS、六类偏好，随后做 GitHub 一键更新与在线 AI 增强。当前用户决定**暂不专项排查 ChatGPT 账号无回应、模型连接或 VPN 不稳定**；云端不可靠不能妨碍离线知识的阅读与播报。此为规划，未改 V0.4.0 APK。
 
 > **2026-10-14 当前事实与未来产品方向**：V0.4.0/code14 已交付新都离线事实/确定性讲述试点，用户已在无网络时听到杨升庵介绍，但反馈故事太浅；**真正的双层事实包+讲述包尚未实装**。最终产品定位是**无需配置云端 API 就可通过本地中文 TTS 听完整沿途故事**，接入大模型后再获得灵活问答、搜证和图片理解。正式设计：[内容标准 V2.4](docs/KITT_KNOWLEDGE_STANDARD.md)、[跨 AI 知识工厂 V2.4](docs/KITT_KNOWLEDGE_FACTORY.md)、[离线包与分发蓝图 V2.4](docs/FUTURE_OFFLINE_KNOWLEDGE_PACKS.md)、[离线内容管理 V1.0](docs/KITT_OFFLINE_PACK_MANAGEMENT.md)；当前研发与真机验收以 [#20](https://github.com/shimao1115/KITT/issues/20) 和 [HANDOFF](HANDOFF.md) 为准，**不自动开启下一版本**。下文早期 V0.3.5.1 状态为历史里程碑。
