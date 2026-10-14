@@ -1,5 +1,7 @@
 # AGENTS.md — KITT Autonomous Build Contract
 
+> **2026-10-14 后续知识包接班规范（不扩当前施工）**：凡涉及离线事实包、成品文字讲述包、多模型资料生产、GitHub 存储、下载和发行，应先读 [正式内容标准 V2.0](docs/KITT_KNOWLEDGE_STANDARD.md)、[知识工厂 V2.0](docs/KITT_KNOWLEDGE_FACTORY.md) 与 [长期离线蓝图 V2.0](docs/FUTURE_OFFLINE_KNOWLEDGE_PACKS.md)。用户已确定 **Fact Pack + Narrative Pack 两层纯文字知识、手机本地 TTS、基础功能不需要 API**；旧 V0 单层事实/在线 Director/不准预制旁白的说明只作为历史实现证据，不得用来否定未来按主题制作审核过的完整文字故事。只有已授权任务卡才能改代码或发布包；V0.4.0/code14 已工程交付，不能因此自行施工 V0.5.0 或调整 #20 历史验收。
+
 本文件是 KITT 仓库中对开发 Agent 的最高优先级工程说明。任何实现必须同时满足本文件与 `docs/PRODUCT_SPEC.md`、`docs/AI_CONTRACT.md`、`docs/ROADMAP.md`。
 
 ## 1. 任务
