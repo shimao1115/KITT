@@ -305,6 +305,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
             }
             Action.ASK_USER -> {
                 val normalized = result.question.replace(Regex("[\\s？?。！!]"), "")
+                // Never solicit a destination during automatic narration. A user may volunteer one.
+                if (!ticket.active && listOf("去哪", "目的地", "准备去", "去什么地方").any { it in normalized })
+                    return DeliveryOutcome.SUPPRESSED
                 if (foreground && (ticket.active || !isQuiet) && normalized !in asked && now() - lastQuestion >= 600000) {
                     asked.add(normalized); lastQuestion = now()
                     if (destination == "未询问") { destinationQuestion = true; destination = "等待回答" }
