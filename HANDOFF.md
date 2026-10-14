@@ -1,4 +1,47 @@
-# KITT V0.4.0 当前施工交接 — 新都区离线知识包 MVP（2026-10-14）
+# KITT V0.4.0 / #20 工程交付 — STOP 等待验收（2026-10-14）
+
+**V0.4.0/code14 工程、全量测试、原签名 APK 和真机原位升级已完成。断网中文试听已由用户确认“听到了，中文清楚”；完整真实 GPS→新都识区→本地地方讲述仍 PENDING，两轮观察及普通前台服务均未取得新鲜物理位置。** 不把独立试听或 Fake 模拟算作完整黄金路径。Issue #20 保持 OPEN；本轮 STOP，不进入第二地区、下一版本或其他 Issue。
+
+## 当前可运行能力与边界
+
+新都单片包 `xindu-2026.10.14-1` 有6个对象、22条可追溯稳定事实，共102,734字节，包含独立来源、版本/哈希及ODbL许可。可信新鲜GPS/NETWORK→本地Polygon→确定性选择两条未尝试事实→既有Journey/TTS；支持有限“这里有什么/再讲一点/再说一遍”，复用静音、中断、完成/失败记忆，不假装离线自由问答。在线包只供原研究/Director作历史审校材料，不污染#18研究缓存或已播记忆。断网取消云端Director/Research，只用已安装本地中文声音及既有Vosk。真机发现VPN在双无线断开后仍保留VALIDATED，已以物理INTERNET能力辨别离线，IMS专网不计互联网。
+
+几何为geoBoundaries/OSM许可明确的2017历史开源Polygon，1017顶点原样提取；精度≤50米、年龄≤15秒、GPS/NETWORK、误差圆+1000米退让带全在内部才识区，不猜街道、不借在线Geocoder完成离线主链。**它不是官方测绘，1000米不是已证明误差上限；2026边界调整权威复核与镇街仍PENDING。** 来源审校及取舍见[来源明细](docs/OFFLINE_XINDU_SOURCES.md)，工程/真机门禁见[独立验收](docs/ACCEPTANCE_OFFLINE_XINDU.md)。后续知识生产以最新[内容标准V1.0](docs/KITT_KNOWLEDGE_STANDARD.md)为准；该并行文档明确不扩本轮范围。
+
+## 实际 build / tests / 模拟
+
+- 最终 `scripts/verify.ps1 -Offline`：**Debug423 / Release410，failure/error/skipped均0**；新增28项每种Variant均执行，Debug/Release assemble、lint PASS。原签名回归2接受+6拒绝PASS。runtimecheck生产及AndroidTest构建/lint/验签PASS，45个生产Kotlin与包文件对照无差异。[完整工程证据](docs/evidence/v040-verification.json)。首次测试曾发现setVoice成功/getVoice为空的兼容问题，已修复后重跑，未隐藏失败轮。
+- 成都新都→广汉→德阳→绵竹→绵阳安州雎水六组本机实际重跑PASS：full80km/h、29点/90,912米/68分钟、57调用/4声音；accelerated22调用/22声音；batch13章/23主题/23调用；landmark4节点/28调用；dossier13讲述/33调用/19研究；driving-area-resolution合成700米章节12/10查询、最短16秒。均为Fake Provider/Voice，不是真实路线、云模型内容或真人听感。
+- 编译仅有既有deprecated警告。产物与日志留本机忽略的artifacts，未提交密钥、录音、轨迹、账号凭据或原网页全文。仅文档接续时同步最新main两项知识标准提交，生产源码/资产未变，无需重新生成APK。
+
+## 原签名产物与手机事实
+
+三个APK均0.4.0/code14、唯一原证书SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。**已有手机只使用runtimecheck数据空间。**
+
+| 产物 | applicationId / 字节 | APK SHA256 |
+| --- | --- | --- |
+| [runtimecheck](artifacts/kitt-v0.4.0-runtimecheck.apk) | com.kitt.reader.runtimecheck / 74,868,969 | c041f917827dca99c06b5d4dbe5dc9093ab4dfecd12f941267140b94e6c2e76f |
+| [Debug](artifacts/kitt-v0.4.0-debug.apk) | com.kitt.reader / 74,869,042 | cf5629a7b24c0dec9f93144e5310cc797b73d3ec3b9b7f545dd7edfe0adc15d4 |
+| [Release验收](artifacts/kitt-v0.4.0-release.apk) | com.kitt.reader / 70,712,058 | 7a9ea3b0f0c117d442b0c2d12df3a2cb1ecb46e6730d339f790b7188dd1cb2de |
+
+用户明确授权覆盖及断网试听。vivo首次拦截后，用户解锁批准，`adb install -r`成功；最终code14再次原位替换成功，手机公开base.apk摘要与本表runtimecheck完全一致。首次安装时间仍2026-10-09 09:42:45，最终更新2026-10-14 09:31:57；未卸载/清数据/导出凭据。两次有效离线Probe各120次观察：新鲜GPS=0、可信区县=0、讲述=0、实际Director/Research调用=0，设置比较不变。普通开始按钮亦确认LOCATION前台服务、系统定位开启和精确定位授权，约两分钟仍未知。已结束旅程、前台服务停止，恢复原Wi-Fi关/移动数据开。[脱敏手机证据](docs/evidence/v040-phone-acceptance.json)。
+
+本地包额外读取/解析实测30.427及27.622毫秒；是初始化后的warm测量，**不是冷启动/内存实测**。系统声明2个本地中文声音；最终断网设置试听显示“试听结束”，用户亲耳确认中文清楚，因此独立离线TTS PASS。没有地方讲述完成/真人内容证据，完整黄金路径仍PENDING。没有注入坐标或延长位置可信期。
+
+## 配置、剩余验收与最近提交
+
+新安装默认保持Fake / gpt-4.1-mini / reasoning effort空。原手机历史配置为ChatGPT / gpt-6.1-sol / low；本轮UI确认ChatGPT计划启用、速度1.0、系统默认中文声音，但在线模型列表暂不可用，未伪称重新核对模型或精确code13账号字符串。未保存设置/重新连接账号，无新增OAuth、API密钥或签名准备待办。
+
+下一次人工总验收只需：**停车/静止于新都区可信内部并取得新鲜精确物理GPS，关闭Wi-Fi/流量，普通“开始沿途”，听一段有来源地方讲述，再试补充/重播/打断/静音。** 手机已经最终code14，无需重装。若没有新鲜定位继续保留未知，按[最短验收](docs/ACCEPTANCE_OFFLINE_XINDU.md)记录云调用零与真人结果；边界权威复核另列PENDING。#13细分真人语义、#18镇街/Topic、#14/#17外场历史未验项保持独立，不在本轮继续施工。
+
+- `a43de31` — V0.4.0/#20生产代码、22条来源事实、许可几何、28项新增回归、工程证据及签名打包（原c4185e1同步main后重放，源码相同）。
+- `e11efbf` / `fa95f1f` — 同步接收主线知识标准定稿与历史蓝图标注，仅文档，无本版扩容。
+- `f439f99` — 本轮开始时最新main的单片范围契约。
+- 最终交接提交见Git当前HEAD：本节、手机脱敏证据、TASK_CARD/ROADMAP与#20验收更新。**STOP，等待一次V0.4.0人工验收。**
+
+---
+
+# 历史：KITT V0.4.0 授权入口（已执行）
 
 **用户明确授权开始下一个小版本：V0.4.0 / [Issue #20](https://github.com/shimao1115/KITT/issues/20)。当前唯一施工入口 [TASK_CARD.md](TASK_CARD.md)。** 当前**只有授权、完整 Issue 和任务卡；没有启动本地 Codex、运行代码或生成 code14 APK**。下方此前 HANDOFF 中的“STOP 等待授权”在这里已被用户此次决定解除，历史实测事实仍然有效。
 

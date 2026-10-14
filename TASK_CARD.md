@@ -1,5 +1,7 @@
 # CURRENT TASK CARD — KITT V0.4.0 / Issue #20 新都区离线知识包 MVP
 
+**2026-10-14 执行状态：工程交付完成，STOP等待V0.4.0验收。** Debug423/Release410、assemble/lint、原签名与六组Fake模拟PASS；0.4.0/code14/runtimecheck已原位升级。断网中文试听经用户确认清楚；两轮真实位置观察及普通定位前台服务均无新鲜GPS，完整“真实GPS→识区→本地地方讲述”PENDING，#20保持OPEN。历史开源边界不是官方现行测绘，2026调整复核/镇街也PENDING。当前不再施工第二地区、下一版本或其他Issue；详细结果及最小人工动作见 [HANDOFF.md](HANDOFF.md) 和[独立验收](docs/ACCEPTANCE_OFFLINE_XINDU.md)。以下为已执行授权契约，不能再按“任务尚未运行”重启。
+
 **当前唯一已授权施工 Destination：[#20 新都区真实离线识区→本地资料→中文讲述](https://github.com/shimao1115/KITT/issues/20)。用户于 2026-10-14 明确授权开始下一版本。** 此为任务派发，并非 Codex 已运行/版本已构建。执行完成 V0.4.0/code14 后**立即 STOP**，不得扩第二地区或下一版本。
 
 ## 接班契约

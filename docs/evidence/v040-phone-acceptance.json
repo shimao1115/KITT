@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-14",
+  "issue": 20,
+  "device": "vivo V2405A / Android 16 (serial omitted)",
+  "version": "0.4.0",
+  "version_code": 14,
+  "application_id": "com.kitt.reader.runtimecheck",
+  "overall_offline_golden_path": "PENDING: no fresh physical location received",
+  "upgrade": {
+    "user_authorized_in_place_upgrade": true,
+    "initial_vivo_rejection": "INSTALL_FAILED_ABORTED: User rejected permissions",
+    "retry_after_user_unlocked_and_approved": "Success",
+    "final_apk_install": "Success",
+    "installed_base_apk_sha256": "c041f917827dca99c06b5d4dbe5dc9093ab4dfecd12f941267140b94e6c2e76f",
+    "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "first_install_time_before_and_after": "2026-10-09 09:42:45",
+    "final_update_time": "2026-10-14 09:31:57",
+    "uninstall_clear_data_or_credential_export": false
+  },
+  "network": {
+    "during_observation_and_tts_preview": { "wifi_on": 0, "mobile_data": 0 },
+    "restored_original_state": { "wifi_on": 0, "mobile_data": 1 },
+    "physical_internet": false,
+    "default_vpn_validated": true,
+    "cellular_ims_only": true,
+    "finding": "VPN remained VALIDATED without physical INTERNET; final runtime observes INTERNET+NOT_VPN networks and enters offline mode. IMS-only does not count as Internet.",
+    "scope": "System radio/capability observation and actual app dispatch counters; not a packet capture or proof that every other app made zero packets."
+  },
+  "offline_pack_observations": [
+    { "observation_samples": 120, "warm_read_parse_us": 30427, "fresh_gps_samples": 0, "trusted_county_samples": 0, "completed_narrations": 0, "director_calls": 0, "research_calls": 0, "settings_unchanged_during_probe": true },
+    { "observation_samples": 120, "warm_read_parse_us": 27622, "fresh_gps_samples": 0, "trusted_county_samples": 0, "completed_narrations": 0, "director_calls": 0, "research_calls": 0, "settings_unchanged_during_probe": true }
+  ],
+  "measurement_limits": "Probe seconds field means observation iterations, not exact elapsed wall seconds. Reads occurred after runtime initialization; not cold-start or memory benchmarks. User moved device and used other apps during attempts; foreground was restored. No coordinates or mock fixes retained/injected.",
+  "ordinary_ui_path": {
+    "started_from_normal_start_button": true,
+    "journey_service": "isForeground=true, foregroundId=7, LOCATION",
+    "system_location_mode": 3,
+    "precise_location_permission": "foreground/allowed",
+    "observed_ui": ["定位未知 · 等待可靠位置", "VPN通道保留 · 无物理互联网 · VPN已检测", "离线讲述 · 云端请求已停用", "正在获取位置 · 已等待 2 分钟", "离线地区不确定 / 当地无可靠资料；等待新鲜精确定位。"],
+    "director_dispatch_log_count": 0,
+    "research_start_log_count": 0,
+    "offline_narration_log_count": 0,
+    "journey_ended_and_foreground_service_gone": true
+  },
+  "standalone_offline_chinese_tts": {
+    "installed_local_zh_voice_metadata_count": 2,
+    "method": "Settings fixed-text preview while Wi-Fi/data were disabled; no draft settings saved",
+    "text": "你好，我是沿途。读懂沿途的世界，陪你听懂正在经过的地方。",
+    "completion_ui": "试听结束",
+    "explicit_human_response": "听到了，中文清楚",
+    "result": "PASS: standalone local Chinese voice is audible offline",
+    "limit": "Does not prove physical GPS, local district resolution, sourced place narration, interruption/repeat hearing, or the complete golden path. No raw engine log retained for this preview."
+  },
+  "settings": {
+    "probe_comparison": "unchanged in both valid probes",
+    "ui": "ChatGPT plan enabled; voice speed 1.0; system default Chinese voice; online account model catalogue temporarily unavailable",
+    "limit": "No exact code13-to-code14 account-string comparison was collected; no credential values were read/exported, no reconnect or save action was used."
+  },
+  "preliminary_probe": "Earlier test harness incorrectly required default connected=false and threw on the main thread when the VPN stayed connected. That run is invalid, excluded from acceptance; the final harness checks physical Internet and reports precondition failure safely.",
+  "pending": ["Fresh true location -> Xindu polygon -> local sourced narration -> human hearing", "Current authoritative boundary / 2026 administrative adjustment review", "Township geometry", "Cold-start and memory measurements", "Natural offline more/repeat/interruption listening"],
+  "stop": "V0.4.0 engineering delivered; Issue #20 remains open for acceptance. No second district or next version."
+}
