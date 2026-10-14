@@ -1,599 +1,76 @@
-# Priority Future Task — Offline Regional Knowledge Packs
+# KITT 后续离线知识包与分发蓝图 — 双层文字包版 V2.0
 
-> **规范优先级（2026-10-14 定稿）：** 本文件保留早期技术远景与备选设计，**不是正式内容标准，也不是当前 V0.4.0 可无限施工的任务卡**。KITT 的最终产品定位、普通游客讲述要求、六大内容类别、L0—L6 来源、A—D 证据和跨模型生产规范，均以 [KITT 离线知识内容与生产标准 V1.0](KITT_KNOWLEDGE_STANDARD.md) 为**唯一有效标准**。本文件旧的生产阶段、地域规模和可选系统设计若与该标准、用户新决定或 [#20 施工门禁](https://github.com/shimao1115/KITT/issues/20) 冲突，一律作为历史草稿失效。正在施工的 V0.4.0 仍只做新都区真实离线闭环；下载平台、地图、NAS、全国包不因本备注获得施工授权。
+> **2026-10-14 整体替换旧单层事实包、NAS 默认构建中心、Overview/Topic 作为包层级等不一致方案。** 规范性入口：[内容与双层包标准 V2.0](KITT_KNOWLEDGE_STANDARD.md)、[知识工厂及跨 AI/发布协议 V2.0](KITT_KNOWLEDGE_FACTORY.md)。这是后续规划，不是 V0.4.0/code14 的补做要求。
+>
+> **现状与事实**：V0.4.0/#20 已有新都来源事实、真实地区识别及无网络讲述尝试，用户已实际听到杨升庵简介，但对故事深度不满意；现版仍是“两条事实拼接”的最小试点。新的独立 Narrative Pack/下载器、公众发行仓库和地图功能**没有交付**。详见 [Issue #20](https://github.com/shimao1115/KITT/issues/20) 与 [交接](../HANDOFF.md)。当前用户仅授权统一**文档**，不修改任务卡、APK 或历史验收记录。
 
-> **2026-10-14 首次落地实施的现行范围：** 用户已授权 [Issue #20](https://github.com/shimao1115/KITT/issues/20) / [TASK_CARD.md](../TASK_CARD.md) 作为 **V0.4.0 新都区离线知识包**。本文件包括的**成都全域、NAS流水线、下载/更新平台等为后续长期蓝图**；首版只做“成都完整试点的一个新都区切片”，以可靠的离线行政区域反查、来源事实、手机断网本地讲述/TTS 打通真实黄金路径。不得把长期愿景全部当成 #20 的施工需求，范围冲突以 #20 和当前任务卡优先。
+## 1. 产品价值与边界
 
-Status: **PRIORITY BACKLOG — do not implement during the current field-use window**
+**KITT 是 AI 旅行助手，不是研究助手或历史专用讲解员。** 自然山河、地理生态、桥隧与交通工程、民族人文、地方产业物产、历史人物、旅行知识都可作为旅途主题。面对路过的普通游客，先介绍背景，讲一个有意思的故事，想听深入再展开。证据深但讲述浅显；没可靠、有趣、适用的内容时安静。
 
-Priority note:
-This should be treated as one of the **highest-value next product investments** because it directly improves:
-- startup/content latency;
-- network resilience;
-- research cost;
-- content cleanliness and depth;
-- repeatability of narration quality.
+**无 API 基础体验**：不配置云端大模型和本地 LLM，也能以可信位置和已下载的成品文字讲述获得自然、完整的离线介绍；手机使用自己安装的中文 TTS 朗读。联网且用户接入模型时，再由 AI 使用本地事实包支持自由问答、图片理解和资料拓展；联网只是可增强、不是讲述基本前提。
 
-## Product idea
+**不制备离线音频知识包**。GitHub 只保存经过合法处理的文字/结构化知识；讲述质量来自精心编辑文字，音色与 TTS 引擎独立升级，不上传大批 MP3/WAV，也不在知识包中捆绑模型和版权受限的配音。
 
-Build an “offline knowledge map” for 沿途, analogous to offline map packages.
+## 2. 两个正交维度：地域与内容
 
-NAS / home infrastructure acts as the slow knowledge-production side.
-The phone consumes compact, structured, pre-cleaned regional knowledge packs.
+| 地域层次（用于分发） | 事实包 Fact Pack | 讲述包 Narrative Pack |
+| --- | --- | --- |
+| **全国基础** | 行政/地名与可靠空间索引、公共稳定事实、跨区共享对象；地理数据必须有可再分发许可 | 可选的全国跨区域主题讲述，不要求全国只有一篇总导游词 |
+| **省级通识（可选）** | 跨市州山川、自然生态、地域文化、工程和生活背景 | 省域和跨地区关系的成品故事 |
+| **市州/城市详细** | 区县→镇乡街道→人物、建筑、桥梁、河流、物产等对象，可靠原子 Claim 与来源 | 按对象/沿途单元组织的主故事、延伸篇及关联篇 |
 
-Core principle:
+- **城市包只强制依赖必要的全国基础资料**，不强制整个省包；如果某个故事必须引用省包中特定 Claim，先解决该最小依赖或该篇暂不可用，不留悬空引用。
+- “区县作大背景、乡镇街道为沿途讲述组织单元”仍成立，**真实性建立在可核查行政/空间数据之上**。乡镇没有真实几何不能假装准确识镇；“这个人属于此地”不等于“车窗里看见此人遗迹”。
+- **Overview/Topic 保留**：作为地区索引和对象专题视图，不再代表独立的物理存储包，也不意味着只能把两个事实片段直接拼成介绍。
+- **两个内容包逻辑独立、版本可独立更新**，用户端可用一个“下载某城市完整内容”入口自动安装匹配的两层与基础依赖。不强迫游客理解 Fact/Narrative 技术名词。
 
-> NAS 慢慢生产，手机快速读取；稳定知识本地优先，时效信息实时联网。
+## 3. 事实包和讲述包的分工
 
-## Why this matters
+**Fact Pack：简练但充实。** 一条 Claim = 一个可验证说法；记录真实出处、版本/页码或网页位置、时间与空间适用性、证据等级、关系/冲突、许可和更新情况。人物不应仅有姓名与官职；杨慎的代表性作品、重大人生转折、文学影响及新都关系都属于合理查证目标。没有来源则不编造。
 
-Current live research proves useful but can be slow:
-- Overview can take tens of seconds;
-- Topic deep dives can take around a minute or more;
-- mobile DNS / socket / SSE transport may fail intermittently.
+**Narrative Pack：精心准备的成品中文故事。** 一段主故事应在用户完全不追问时也有背景、亮点和结束；后续有更多经过核实的内容时准备延伸及关联篇。单篇是预写文字，不代表整条旅程固定播放顺序；本地 Director 按地点、已播、用户偏好及驾驶场景决定选择/重播/安静，而不每次生成新的作文。讲述稿须记录 `narrative_id`、引用的 `claim_id + 有效修订/指纹`、关联区域、估计时长和审校情况。
 
-For stable local knowledge, this work does not need to happen while driving.
+**事实更正影响准确范围**：一处 Claim 被撤销或修订时，仅需追踪真正依赖它的故事重新核验；无关主题的新事实不能让整个城市讲述包过期。打包/校验时检测故事需要的真实 Fact 数据，不仅粗糙比较整包版本号。
 
-Precomputing it off-device can turn:
-- 40–90 second live research
-into:
-- local database lookup in milliseconds,
-while preserving source provenance.
+**档案与时效分开**：旧地方志可有效记录历史，却不能证明今天道路开放；稳定文物/工程背景可以离线，临时票价/营业、路况、天气、当日活动须实时查询或直说无法确认。经许可的原始文档仅留受控研究端，不在公开 Git 镜像书籍、文章、影像。
 
-## Architecture
+## 4. 生产端：模型可换，证据不可省
 
-### 1. Knowledge production side — NAS
+用 GitHub Issue 规定地域/对象和交付范围，多个 AI 可以扮演 Scout/Extractor/Verifier/Story Writer/Story Reviewer/Builder。程序根据证据与审核状态生成 Fact，讲述只能引用已审稿 Claim；独立 Reviewer 重新核查原始资料，不把第二个模型复述同一来源当“第二条证据”。人的最终验收集中在争议/授权、完整主故事与真人试听。
 
-NAS runs a slow background pipeline:
+**GitHub 为唯一协作交接中心**，不是说必须靠 NAS；电脑、NAS、服务端流水线都可作为可替换的施工场所，流水线慢慢制作，手机随时只读已安装包。原始证据登记、标准化事实和成品文字放计划中的 `KITT-PACKS` Git，发行成品经 QA 后放 GitHub Releases；大文献/缓存与录音不可上传。完整流程/目录/签名参见 [工厂协议 V2.0](KITT_KNOWLEDGE_FACTORY.md)。
 
-> discover → fetch/read → extract → deduplicate → reconcile → verify → structure → QA → publish pack
+## 5. 手机离线/联网选题
 
-Low-cost models should do most routine work:
-- entity discovery;
-- fact extraction;
-- category tagging;
-- duplicate merging;
-- source classification;
-- simple conflict detection;
-- overview/topic organization.
+| 网络 | 是否有已配置、可用的大模型 | 行为 |
+| --- | --- | --- |
+| 无网 | 无 AI | GPS → 可用地区 → 查兼容讲述包 → Director 选已审稿主故事 → 本地中文 TTS；预制延伸/重播/静音可用 |
+| 有网 | 无 AI | 仍直接讲本地好故事；网络只用于包获取/升级及其它真实独立在线能力 |
+| 无网 | 有 AI 配置 | 本地故事正常播报，停止云端研究/推理请求；不拿过期事实冒充实时 |
+| 有网 | AI 可用 | 默认可以直接使用成品故事，也可在需要时调用事实包帮助 AI 追问、图片理解、联网补缺/时效查询 |
 
-More capable models are reserved for:
-- ambiguous historical claims;
-- conflicting sources;
-- cultural heritage designation verification;
-- difficult provenance reconciliation;
-- quality sampling and final review.
+**语音能力独立**：手机需实际安装可离线运行的中文 TTS 才可朗读；它可以升级为以后更好听的本地音色/语音模型。没有安装时如实提示，不要静默失败。离线词稿不等于离线自由问答；不知道的开放问题应承认限制。
 
-Time can be exchanged for cost. Batch jobs may take minutes per place; realtime speed is not required.
+**降级不是假验收**：如果当地还没有成品讲述包，可在安全/合规的前提下提供简短**已审校事实**或安静，但不能把旧 code14 的两条拼接当作“高质量完整版故事”PASS。用户没有输入 API 不能影响已装好地区故事的播放。
 
-### 2. Data hierarchy
+## 6. 下载与更新（长期愿景）
 
-Suggested hierarchy:
+- 借鉴离线地图的体验，提供地区列表、大小、内容质量/版本、下载、删除、更新和可选前往地/路线包预取。**不把 KITT 变成导航应用**。
+- 发行源：计划创建独立 `shimao1115/KITT-PACKS` 仓库；Git 保存可审查文字知识和脚本，**Releases 保存压缩的文字/结构化数据包以及哈希/兼容清单，不含音频**。当前没有实际建立，不应引用不存在的下载链接。
+- 每类包具有 `pack_id/kind/region_scope/content_version/schema_version/dependencies/rights/source_commit` 和数字摘要；确认签名来源、Schema、引用 Claim 修订后先下载到暂存，原子切换，失败保留原有可用版本。
+- **下载完整地区时自动获取匹配的事实/讲述及必要基础索引**；两层内部可分别更新，无需游客逐项配置。未来可考虑差量更新，但不能一开始让 RAG、向量库、FTS、复杂多 Agent 调度成为前置条件。
+- **大小与存储**：只有 UTF-8 文本/结构化知识和合法必要地理索引，预期比配音/地图瓦片小；实际须按真实区域数据测量，不能承诺固定大小。无需为“下载包”安排语音音频仓库。
+- SHA256 检查完整性，不证明发行者身份；正式公开自动更新前建立可信的发布验证，独立于手机 APK 签名私钥。地图与知识包分别授权及管理。
 
-> Province
-> → Prefecture / city
-> → District / county
-> → Township / street
-> → Overview
-> → Topic Dossiers
-> → Sources / provenance
+## 7. 推进顺序与真实 Gate
 
-Use stable administrative identifiers where available, not display names alone.
+**已发生**：V0.4.0/code14 新都 6 对象/22 条、真实离线杨升庵事实播报成功，用户明确指出故事深度不够；这不是两层成品故事机制已经完成。
 
-### 3. Overview package
+**下一阶段建议的唯一最小产品实验（未来需授权）**：取新都事实，补齐杨慎流放、学术与文学成就、《临江仙》相关真实出处，完成一篇约 1–2 分钟的**主故事示例**及合理的延伸篇（时间是编辑建议，不是所有主题的强制配额）；另一 AI 逐句回查，真人试听；手机在真实无网、无 API、有新鲜定位时整篇播放且能再讲/重播/静音。还要能在线使用 Fact 作为 AI 背景、离线无法任意问答时诚实提示。
 
-Each administrative area may contain:
-- short orientation;
-- 4–10 important concrete objects;
-- salience;
-- topic family;
-- why_it_matters;
-- source references;
-- update metadata.
+**知识工厂独立复现**：另一个 AI/电脑只读 Git Issue 和已合并的事实/讲述源文件即可复现包，不依赖前一个人的聊天。Claim 更正只影响关联 Narrative。实测包容量、加载时长、听感与事实准确性、依赖/失效策略，再考虑扩其他成都区县、四川、全国。
 
-Overview is an index for “what is worth knowing here”, not a prewritten tour script.
+**地图是后续独立候选**：MapLibre/地图瓦片与事实/讲述包不是一个内容层。地图许可、境内测绘合规、坐标与地图数据取得可行性要分别调查；不以地图引擎“开源”直接推出地图内容可分发。
 
-### 4. Topic packages
-
-Each high-value object/topic contains:
-- normalized title / aliases;
-- entity/place relationship;
-- structured facts;
-- source references;
-- confidence;
-- official designations only when verified;
-- relevant dates;
-- update timestamp;
-- optional uncertainty/conflict notes.
-
-Examples:
-- 杨慎 / 杨升庵
-- 桂湖
-- 宝光寺
-- 新繁东湖
-- a local craft;
-- a historic road;
-- a dam/bridge/railway;
-- a geographic feature.
-
-Store evidence and clean facts, not fixed narration.
-
-Director remains free to decide what to say and how to say it.
-
-## Stable vs realtime information
-
-### Suitable for offline packs
-
-Stable or slow-changing knowledge:
-- local history;
-- historical people;
-- archaeology;
-- museums and cultural institutions background;
-- temples;
-- historic settlements;
-- cultural relics and official heritage designations;
-- intangible cultural heritage;
-- geography and landforms;
-- rivers/lakes background;
-- place-name origins;
-- crafts;
-- food/specialties background;
-- agriculture / industry history;
-- infrastructure history;
-- local customs and cultural context.
-
-### Keep realtime
-
-Do not rely on cached knowledge packs for fast-changing state:
-- today’s opening hours;
-- live ticket availability;
-- current road closures;
-- live traffic;
-- weather;
-- current events;
-- recent news;
-- temporary exhibitions;
-- one-off activities;
-- emergency conditions.
-
-These still use online search when needed.
-
-## Runtime lookup strategy
-
-When the phone resolves current administrative area:
-
-1. check local pack first;
-2. load local Overview immediately;
-3. load available Topic Dossiers on demand;
-4. only use live hosted search if:
-   - local pack is missing;
-   - local evidence is too thin;
-   - user asks for current information;
-   - user explicitly asks to search;
-   - a high-value object needs deeper fresh research.
-
-This should reuse the current Overview → Topic semantics rather than replace them.
-
-Desired future runtime:
-
-> GPS / area
-> → local Overview (milliseconds)
-> → Director can speak
-> → local Topic on demand
-> → web search only for gaps/freshness
-
-## Phone package format
-
-Start simple.
-
-Prefer:
-- SQLite;
-- compact JSON blobs;
-- FTS where helpful;
-- straightforward keyed lookup by area + topic.
-
-Do **not** start with:
-- vector DB;
-- embeddings;
-- RAG framework;
-- knowledge graph;
-- multi-agent runtime.
-
-Add those only if simple structured lookup proves insufficient.
-
-
-## Runtime distribution principle — NAS is not a trip-time dependency
-
-The preferred product shape is **download-to-phone**, analogous to offline map packages.
-
-NAS is the builder / publisher / update source, not the runtime database that the phone must query on every trip.
-
-Desired flow:
-
-> NAS builds / refreshes province or route packs
-> → phone downloads the selected pack before travel
-> → phone reads local SQLite / FTS data directly during the trip
-> → live network is used only for missing or time-sensitive information.
-
-This avoids:
-- NAS round-trip latency;
-- home-network/VPN dependency while driving;
-- failures when NAS is asleep or unreachable;
-- extra mobile-data traffic for stable knowledge;
-- repeated hosted-search cost for content already curated.
-
-The phone should be able to use a downloaded pack with no NAS connection at all.
-
-### Package UX
-
-Long-term UX should resemble offline maps:
-
-> 离线地方资料
-> - 四川省 · 已下载 · 版本 2026.10
-> - 湖北省 · 未下载
-> - 阿坝州路线包 · 有更新
-
-User can:
-- download a full province;
-- download only a route / selected prefectures/counties;
-- update an existing pack;
-- delete a pack to reclaim storage.
-
-### Package manifest
-
-Each pack should have a small manifest with:
-- package id;
-- region / administrative scope;
-- version;
-- schema version;
-- created_at / updated_at;
-- byte size;
-- record counts;
-- checksum;
-- minimum app version;
-- optional delta/update metadata.
-
-Phone verifies checksum before activating the new pack and keeps the previous known-good version until replacement succeeds.
-
-### Storage expectation
-
-Because the core material is structured text + source metadata, not map tiles, imagery, audio, or full mirrored webpages, package size should usually be modest relative to offline maps.
-
-Do not optimize prematurely. Measure a real Sichuan pilot first. If needed:
-- use SQLite page compression / compact schemas;
-- deduplicate URLs, aliases, source titles and repeated strings;
-- compress package transport;
-- keep only concise evidence snippets rather than raw pages.
-
-
-## Pack distribution
-
-Long-term UX may resemble offline maps:
-
-> 离线地方资料
-> - 四川省 已下载
-> - 湖北省 已下载
-> - 云南省 下载
-
-Support:
-- versioned province packs;
-- incremental updates;
-- partial/route packs;
-- pre-trip download;
-- local storage cleanup.
-
-Avoid forcing full re-download for small changes.
-
-## Update model
-
-Knowledge production should be incremental.
-
-Each source/object can retain:
-- source URL;
-- title;
-- retrieved_at;
-- source class;
-- content fingerprint / version hint;
-- verification timestamp;
-- confidence;
-- dependent facts/topics.
-
-Update rules may include:
-- unchanged source → skip;
-- changed source → re-extract/reconcile;
-- new official list → re-check affected designations;
-- new entity discovery → add;
-- conflicting evidence → queue for review;
-- stale low-confidence fact → refresh or drop.
-
-Historical/stable topics can refresh infrequently.
-Administrative / institutional content may refresh more often.
-Realtime data does not belong in the pack.
-
-## Storage and copyright discipline
-
-Do not build a giant mirrored web archive.
-
-Prefer storing:
-- structured facts;
-- source metadata;
-- provenance URLs;
-- timestamps;
-- concise evidence snippets where appropriate;
-- normalized entity relationships.
-
-Avoid retaining full raw pages unless genuinely needed for internal processing and legally appropriate.
-
-## First implementation scope
-
-Do **not** begin with all of China.
-
-Recommended first experiment:
-- a real frequently traveled corridor, such as Chengdu → Wenchuan → Lixian → Maerkang → Jinchuan/Xiaojin;
-or
-- a small Sichuan pilot covering selected districts/counties and townships.
-
-Goal:
-- validate hit rate;
-- validate pack size;
-- compare latency vs live hosted search;
-- compare narration quality;
-- learn what granularity is actually worth storing;
-- confirm update workflow.
-
-Only after this pilot works should the NAS expand gradually across Sichuan.
-
-## Product acceptance
-
-A successful pilot should demonstrate:
-- local Overview lookup in near-instant time;
-- materially fewer live searches during a trip;
-- consistent sourced content;
-- better content depth/cleanliness than rushed live search;
-- phone can keep narrating stable local knowledge during poor network periods;
-- current information still routes to live search;
-- no loss of provenance;
-- no prewritten fixed-tour behavior;
-- straightforward pack update workflow.
-
-## Priority
-
-This is not merely a storage optimization.
-
-It is intended to improve the core experience:
-- **faster**
-- **cheaper**
-- **more reliable**
-- **cleaner**
-- **more detailed**
-
-Treat this as a higher priority than cosmetic polish and most optional future features once the current field-use version has been observed in real travel.
-
-
-## Design priority — schema first, crawler second
-
-The hardest and highest-leverage part of this project is **not crawling**. Crawling can be replaced, retried, parallelized, or delegated to low-cost models.
-
-The durable core is the **knowledge-pack contract**: what a place/topic record looks like, which fields are required, how provenance is represented, how uncertainty/conflicts are stored, how updates work, and how the runtime AI can consume the data with very little prompt/context overhead.
-
-Before building a large crawler, design and validate the pack schema against real examples.
-
-### Schema design goals
-
-The schema should be:
-
-- **AI-friendly**: easy for the Director to read and reason over without a large adapter prompt;
-- **human-auditable**: facts and source provenance are inspectable;
-- **compact**: optimized for local phone storage and fast lookup;
-- **stable**: supports future models without rewriting the database each time;
-- **updateable**: individual facts/topics/sources can be refreshed without rebuilding a whole province;
-- **uncertainty-aware**: conflicting or weak evidence is represented explicitly rather than flattened into false certainty;
-- **location-aware**: facts distinguish administrative association from precise physical proximity;
-- **time-aware**: stable historical facts are separated from time-sensitive state;
-- **narration-neutral**: store evidence/material, not prewritten scripts.
-
-### Fields to prototype first
-
-Do not freeze these names yet; validate them on real records first.
-
-Candidate core entities:
-
-**Area**
-- area_id / administrative_code
-- parent_area_id
-- level
-- canonical_name
-- aliases
-- centroid / optional coarse geometry
-- overview_id
-- pack_version
-
-**Overview**
-- area_id
-- orientation
-- highlights[]
-- source_refs[]
-- updated_at
-- confidence / coverage notes
-
-**Topic**
-- topic_id
-- area_id(s)
-- canonical_name
-- aliases
-- topic_family
-- salience
-- why_it_matters
-- spatial_scope / location relation
-- facts[]
-- source_refs[]
-- uncertainty_notes
-- updated_at
-
-**Fact**
-- fact_id
-- statement / neutral summary
-- source_refs[]
-- confidence
-- date_scope / temporal validity
-- official_designation (if verified)
-- geographic_scope
-- conflict_group / supersedes (optional)
-- verified_at
-
-**Source**
-- source_id
-- url
-- title
-- publisher / organization
-- source_class
-- retrieved_at
-- published_at (if known)
-- fingerprint / version hint
-- authority flags
-
-The phone runtime should be able to fetch an Area Overview plus a small number of relevant Topic records in one fast local query.
-
-### First design exercise
-
-When this work begins, do **not** start with a province-wide crawl.
-
-First hand-design or AI-generate 20–50 representative records from diverse Sichuan examples:
-- historical person;
-- temple;
-- garden;
-- archaeological site;
-- intangible heritage craft;
-- food/specialty;
-- mountain/river;
-- railway/bridge/dam;
-- industrial/agricultural topic;
-- ordinary township with sparse sources;
-- official heritage designation;
-- disputed/uncertain historical claim.
-
-Then test:
-1. Can the same schema represent all of them cleanly?
-2. Can Director answer “what is this / why interesting / tell me more” from it?
-3. Can the same data support Overview and Topic without duplication?
-4. Can one fact be updated without rewriting unrelated records?
-5. Can the runtime distinguish “in this district” from “near the car”?
-6. Can provenance be traced without shipping raw webpages?
-7. Is the prompt/context payload small enough for low latency?
-
-Only after this contract is stable should the NAS crawler/production pipeline scale up.
-
-
-## Storage classes — archival sources vs refreshable public knowledge
-
-Keep long-lived documentary sources separate from refreshable public-data knowledge.
-
-### A. Archival / documentary layer
-
-Examples:
-- county gazetteers;
-- local chronicles;
-- historical monographs;
-- digitized archival publications;
-- older museum / institutional publications whose content is primarily historical.
-
-Characteristics:
-- source edition is stable;
-- the document itself may remain valid for decades;
-- re-fetching it on every update cycle has little value;
-- preserve edition metadata, source URL/library identity, file checksum and acquisition date;
-- retain page/section mapping so AI answers can trace back to the original source.
-
-Update policy:
-- immutable-by-version;
-- only re-import when a new edition, corrected scan/OCR, or better source appears;
-- never treat “old publication date” as stale if the fact is historical.
-
-### B. Refreshable public-knowledge layer
-
-Examples:
-- current government public information;
-- cultural-heritage lists;
-- administrative boundaries/names;
-- museum/institution profiles;
-- tourism and public-service information;
-- public infrastructure summaries;
-- official statistics and other periodically revised data.
-
-Characteristics:
-- may change every few years, or sooner depending on field;
-- should carry `retrieved_at`, `published_at`, source fingerprint/version and refresh policy;
-- facts can be superseded without replacing the underlying archival sources.
-
-Update policy:
-- incremental refresh by source/object;
-- different fields can have different refresh intervals;
-- avoid reprocessing unchanged sources.
-
-### C. Realtime layer stays outside the pack
-
-Examples:
-- today's opening status;
-- temporary road closure;
-- current ticket inventory;
-- weather;
-- live traffic;
-- breaking news;
-- temporary activities.
-
-These should not be normalized into the long-lived offline pack except as historical snapshots when there is a specific product reason.
-
-### Why the split matters
-
-The system should distinguish:
-- **source age** from **fact staleness**;
-- **stable historical evidence** from **refreshable current public facts**;
-- **archival edition identity** from **current-state versioning**.
-
-A 1990 county gazetteer may still be the authoritative source for a Qing-dynasty place-name history, while a 2024 museum opening-hours page may already be stale.
-
-The pack schema should therefore carry a source/fact stability class rather than using one global “last updated” rule.
-
-
-## Rollout order — Chengdu first, Sichuan second
-
-The first real knowledge-pack pilot should be **Chengdu**, not all of Sichuan.
-
-### Phase 1 — Chengdu pilot
-
-Build a complete enough Chengdu package to validate:
-- schema design;
-- district/county/township hierarchy;
-- Overview / Topic / Fact / Source contracts;
-- gazetteer/document ingestion;
-- refreshable public-data ingestion;
-- local SQLite/FTS lookup;
-- phone-side package download/update;
-- runtime latency;
-- Director usability;
-- provenance traceability;
-- package size;
-- incremental update workflow.
-
-Chengdu is the right first scope because it contains enough diversity to stress the schema:
-- dense urban districts;
-- suburban districts;
-- county-level cities;
-- historic towns;
-- temples / gardens / museums / heritage;
-- mountains / rivers / irrigation;
-- agriculture / industry / transport;
-- rich local chronicles and public institutional sources.
-
-Do not treat the Chengdu pilot as a toy. It should be the first production-shaped package.
-
-### Phase 2 — Sichuan expansion
-
-Only after the Chengdu package proves the schema and update workflow should the NAS pipeline expand to Sichuan.
-
-Expansion should reuse the same pack contract and production pipeline rather than creating province-specific schemas.
-
-The key gate is:
-
-> If Chengdu cannot be represented cleanly, queried quickly, updated incrementally, and used naturally by Director, do not scale the crawler.
-
+**Stop Rule**：用户未另外批准时，不扩工作到新地区、地图、批量抓取、GitHub Release 下载平台、Android 新版本或语音模型安装器；也不回溯修改 #20 原工程授权。旧单层事实包、NAS 强制依赖、必须云端 AI 才能讲述、整趟唯一固定脚本等旧设计自本版起不再有效。
