@@ -1,4 +1,47 @@
-# KITT V0.4.1 / code15 — 已阶段性接受并合并 main（2026-10-14）
+# KITT V0.4.2 / code16 — 工程PASS，STOP等待真机升级确认（2026-10-14）
+
+当前唯一交付为 [Issue #23](https://github.com/shimao1115/KITT/issues/23)，分支 `feat/v042-simplify-end-summary`，实现提交 `d64adf8`。**工程完成；本轮未连接/操作手机、未发送真实云请求，不合并、不关闭Issue、不进入V0.5.0。** 手机code15是前轮历史实测，本轮未重新读取；本版升级及真人验收全部PENDING。下方V0.4.1历史与 #24 外场PENDING完整保留。
+
+## 当前能力与兼容性
+
+结束页删除五项评分、默认全3分状态、评语、保存评分按钮及专用提示，清理全仓无其他调用的 `TripStore.feedback()`。保留标题、时长、跳过数、主题、无主题安静文案和直接返回；仅隐藏空值/未询问/未提供/等待回答，明确提供的目的地正常显示。EndScreen无存储实例依赖，不产生保存交互。
+
+原 `KittRuntime.end()` → `TripStore.finish()` 自动保存、JSON版本/字段、原子写入、恢复及既有最多20份纪要保留策略不变；没有迁移、批量清空或扫描重写。旧JSON的ratings/feedback额外键可忽略并读出纪要，读取/显示/返回不改写文件。新纪要无评分字段。定位、自动本地零云、目的地不主动追问、TTS/ASR、账号设置与知识资产未修改。
+
+## 实际工程验证
+
+- 最终 `scripts/verify.ps1 -Offline` **实际重新执行 Debug446 / Release433 = 879项，failure/error/skipped均0**。较code15的441/428各新增5项，总增10；两个旧测试修订保留历史兼容与结束保存验证。UI/持久化专项10项另跑通过，不重复计入879。旧本地优先、生命周期、定位/语音/持久化回归保留。
+- Compose/Robolectric验证评分/评语/分数及文本输入不存在、明确/技术目的地和安静文案、竖屏/小横屏/平板返回可见，真实MainActivity结束按钮在返回前自动保存。手写旧ratings/feedback样本，重读及保存另一趟后逐字节不变；损坏current.json安全恢复断言保留。
+- **首轮Debug446有1失败、0error/skipped，Release未执行**：旧 `ResearchTransportProbeTest.totalDeadlineReleasesCallerEvenWhenNativeCallbackIsStillBlocked` 的150ms墙钟可能在OkHttp回调初始化前到期，随后读取未初始化句柄。仅修测试：先确认真实回调进入阻塞，再推进同一150ms测试时钟，保留取消/有界返回断言；专项及两Variant完整重跑通过，生产网络代码未改。首轮日志及最终suite-case清单留证。
+- Debug/Release assemble与lint PASS；每个标准Variant及runtimecheck lint各2条既有Warning（ExifInterface、ChromeOsAbiSupport），Error/Fatal0。JDK17.0.19、SDK35/build-tools35.0.0、离线依赖。最终runtimecheck `assembleDebug/assembleDebugAndroidTest/lintDebug` exit0，75任务9执行/66复用；AndroidTest只构建/验签，**未执行instrumentation**。原签名回归2接受+6拒绝PASS，测试APK原签名PASS。41个生产Kotlin+4个离线包文件与副本SHA256对照0差异。
+- **六组成都→绵阳模拟在全量中重新执行，最终PASS**：full80km/h、29点/90,912米/68分钟、56 Director/2声音；accelerated22调用/22声音；batch13章/23主题/23调用；landmark4节点/28调用；dossier13讲述/33调用/19研究；合成700米章节80/100km/h下12/10查询、最短16秒。均为Fake/确定性Provider和Voice，不是实际云计数、真实行驶或真人耳听。
+
+[完整脱敏证据](docs/evidence/v042-verification.json) 含suite/case、首轮失败、源码/产物/日志摘要；原日志与APK留本机忽略的artifacts。没有提交私钥、账号值、凭据、录音、轨迹或聊天。实现提交后只补证据/文档，不以旧UP-TO-DATE单测冒称新执行。
+
+## 原签名产物
+
+三个生产APK均0.4.2/code16，唯一原证书SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**。现有手机账号数据空间对应runtimecheck，标准包不能替代。
+
+| APK | applicationId / 字节 | APK SHA256 |
+| --- | --- | --- |
+| [runtimecheck验收](artifacts/kitt-v0.4.2-runtimecheck.apk) | com.kitt.reader.runtimecheck / 74,369,322 | 36d39438c8efb735cd8e67bee1a250c8e789a25061a9425cb8d9ae7bebe0ccb3 |
+| [Debug](artifacts/kitt-v0.4.2-debug.apk) | com.kitt.reader / 74,369,302 | 095e7e30bd3b56c28500c29bb0ec51003f87e9ed8d49f0481132faa958c4aef2 |
+| [Release验收](artifacts/kitt-v0.4.2-release.apk) | com.kitt.reader / 70,712,058 | c9bedf1ac8d4c0392abab7b2bbe30205307959945d3208361968b2fa8be9641b |
+
+## 配置、待真人与最近提交
+
+新安装默认仍Fake / gpt-4.1-mini / effort空，无新增OAuth/API密钥/签名准备待办。原手机ChatGPT/gpt-6.1-sol/low等为code15历史记录，**本轮没有读取/修改或验活**。唯一需用户本人完成的下一动作是明确批准code15→16原签名原位升级；批准后仍须读取实际装机状态并核安全门禁。
+
+最短真人步骤见 [结束页验收](docs/ACCEPTANCE_END_SUMMARY.md)：升级/账号设置保留、实际无评分结束页及直接返回、返回前自动纪要/旧记录仍在、竖横屏，以及联网真实可信位置下本地讲述0自动云。**这些本版均PENDING**。#24断网新鲜定位完整地方链、有限问答/重播及同旅程云失败后恢复等仍OPEN/PENDING；不以code16合成回归改写前轮外场结论。
+
+- `2982b70` — 已阶段性接受code15主干基线（含PR25合并）。
+- `259d160` — 最新V0.4.2单一任务卡/授权基线。
+- `d64adf8` — code16结束页精简、自动保存/旧JSON/布局回归、旧超时测试调度修复。
+- 交接/证据提交见分支HEAD，Draft PR将指向本分支。**STOP等待真机升级确认，不安装、不卸载、不清数据、不合并、不关闭Issue、不启动下一版本。**
+
+---
+
+# 历史：KITT V0.4.1 / code15 — 已阶段性接受并合并 main（2026-10-14）
 
 > **现行权威状态（覆盖下文合并前历史描述）**：用户已确认**“剩余外场测试以后补做”**，同意 V0.4.1 阶段性通过并合并主分支。[PR #25](https://github.com/shimao1115/KITT/pull/25) 已真实合并，merge commit [`65ec2726`](https://github.com/shimao1115/KITT/commit/65ec2726e0fe173ff431db8ecfebade7c645d179)，工程候选最后提交 [`bc3dea6`](https://github.com/shimao1115/KITT/commit/bc3dea64c6728759dc09457ae53d40d538a37ce9)。**Issue #24 保持 OPEN，仅追踪外场待验**，不得因为合并自动标注全部 PASS；现有手机已装 code15、已安全完成验收、账号及已核设置保留，**不要再装一次**。
 >
