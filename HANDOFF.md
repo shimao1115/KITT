@@ -1,6 +1,6 @@
 # KITT V0.4.2 / code16 — 工程PASS，STOP等待真机升级确认（2026-10-14）
 
-当前唯一交付为 [Issue #23](https://github.com/shimao1115/KITT/issues/23)，分支 `feat/v042-simplify-end-summary`，实现提交 `d64adf8`。**工程完成；本轮未连接/操作手机、未发送真实云请求，不合并、不关闭Issue、不进入V0.5.0。** 手机code15是前轮历史实测，本轮未重新读取；本版升级及真人验收全部PENDING。下方V0.4.1历史与 #24 外场PENDING完整保留。
+当前唯一交付为 [Issue #23](https://github.com/shimao1115/KITT/issues/23) / [Draft PR #26](https://github.com/shimao1115/KITT/pull/26)，分支 `feat/v042-simplify-end-summary`，实现提交 `d64adf8`。**工程完成；本轮未连接/操作手机、未发送真实云请求，不合并、不关闭Issue、不进入V0.5.0。** 手机code15是前轮历史实测，本轮未重新读取；本版升级及真人验收全部PENDING。下方V0.4.1历史与 #24 外场PENDING完整保留。
 
 ## 当前能力与兼容性
 
@@ -37,7 +37,7 @@
 - `2982b70` — 已阶段性接受code15主干基线（含PR25合并）。
 - `259d160` — 最新V0.4.2单一任务卡/授权基线。
 - `d64adf8` — code16结束页精简、自动保存/旧JSON/布局回归、旧超时测试调度修复。
-- 交接/证据提交见分支HEAD，Draft PR将指向本分支。**STOP等待真机升级确认，不安装、不卸载、不清数据、不合并、不关闭Issue、不启动下一版本。**
+- `dcaf390` — 全量工程、产物/日志证据及STOP交接；后续PR26链接文档提交见分支HEAD，生产源码/APK未变。**STOP等待真机升级确认，不安装、不卸载、不清数据、不合并、不关闭Issue、不启动下一版本。**
 
 ---
 

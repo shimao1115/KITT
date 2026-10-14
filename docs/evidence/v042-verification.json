@@ -4,6 +4,7 @@
   "date": "2026-10-14",
   "timezone": "Asia/Shanghai",
   "issue": 23,
+  "draftPr": 26,
   "branch": "feat/v042-simplify-end-summary",
   "buildBase": "259d160",
   "synchronizedMain": "2982b70",

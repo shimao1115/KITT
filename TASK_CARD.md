@@ -1,5 +1,7 @@
 # CURRENT TASK CARD — KITT V0.4.2 / Issue #23 结束旅程页面精简
 
+工程候选已推送 [Draft PR #26](https://github.com/shimao1115/KITT/pull/26)，保持Draft，等待真机升级确认。
+
 **2026-10-14 当前工程结果：V0.4.2/code16 已完成，STOP等待用户明确批准真机升级。** 独立分支 `feat/v042-simplify-end-summary`，唯一目标 [#23 删除五项评分](https://github.com/shimao1115/KITT/issues/23)，实现 `d64adf8`；评分/评语/保存接口已移除，自动纪要/旧JSON/直接返回保留。最终Debug446/Release433共879项、failure/error/skipped0，六组模拟、构建/lint、原签名及runtimecheck APK PASS。首轮Debug1个旧超时测试调度失败已修订并两Variant完整重跑。见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v042-verification.json)、[真机步骤](docs/ACCEPTANCE_END_SUMMARY.md)。本轮未操作手机/发送真实云请求；code16真人全部PENDING，Issue23保持OPEN，Draft PR不合并，#24外场PENDING不改写。**不据下方开发授权重新施工或自动安装；工程验收已结束，等待新指令。**
 
 > **STOP 边界**：本轮只做 UI/旧评分接口的必要清理，完成工程构建与签名产物后 STOP 请求用户确认。**本句“继续”仅授权开发、测试及准备验收 APK，不视为已经授权对手机执行 `adb install -r`**。用户当前手机上是已验收的 `com.kitt.reader.runtimecheck` V0.4.1/code15；不可卸载、清数据、换签名、擅自替换标准包、合并 PR、关闭 Issue 或进入 V0.5.0。V0.4.1 [Issue #24](https://github.com/shimao1115/KITT/issues/24) 真实断网和恢复外场 PENDING **继续 OPEN**，不得改写。

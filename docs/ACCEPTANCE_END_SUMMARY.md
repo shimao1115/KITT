@@ -1,6 +1,6 @@
 # V0.4.2 / code16 — 结束旅程页精简验收
 
-唯一任务 [Issue #23](https://github.com/shimao1115/KITT/issues/23)，分支 `feat/v042-simplify-end-summary`。本轮只做工程候选，不连接或操作手机；真机所有本版步骤均 **PENDING**，工程结果见根 [HANDOFF](../HANDOFF.md)。V0.4.1 的 [#24 外场待验](https://github.com/shimao1115/KITT/issues/24) 独立保留，不能被本版 UI 测试覆盖。
+唯一任务 [Issue #23](https://github.com/shimao1115/KITT/issues/23) / [Draft PR #26](https://github.com/shimao1115/KITT/pull/26)，分支 `feat/v042-simplify-end-summary`。本轮只做工程候选，不连接或操作手机；真机所有本版步骤均 **PENDING**，工程结果见根 [HANDOFF](../HANDOFF.md)。V0.4.1 的 [#24 外场待验](https://github.com/shimao1115/KITT/issues/24) 独立保留，不能被本版 UI 测试覆盖。
 
 ## 行为与工程范围
 
