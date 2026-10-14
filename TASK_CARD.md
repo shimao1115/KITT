@@ -1,5 +1,23 @@
 # CURRENT TASK CARD — KITT V0.4.2 / Issue #23 结束旅程页面精简
 
+## 2026-10-14 用户已明确批准 code16 原位升级与真机验收 — 当前唯一活动步骤
+
+用户在 V0.4.2/code16 工程已完成、[Draft PR #26](https://github.com/shimao1115/KITT/pull/26) 等待真机确认后，明确答复**“进入真机验收”**。承接上一轮已明确提出的“允许 Codex 将 V0.4.1/code15 原位升级到 V0.4.2/code16 并检查”的询问，该回复构成**本轮手机原位安装和有界验收的明确授权**，**不用再重复请求是否允许同签名安装**。但 USB 授权和 vivo 系统安装确认仍需用户在手机上操作；不允许绕过设备安全提示。
+
+**当前已知实测手机是 `com.kitt.reader.runtimecheck` V0.4.1/code15，来自前轮记录；此次操作必须重新读取实际手机状态，不能照抄历史。**
+
+### Codex 本轮唯一任务
+
+1. **先同步当前分支，不重新开发已完成功能**：在办公室 Windows `H:\CODEX\KITT` 检查 `git status`，若有未提交改动不要覆盖；`git fetch origin` 后检出 `feat/v042-simplify-end-summary` 并快进到远端最新，先阅读本卡、`HANDOFF.md`、`docs/ACCEPTANCE_END_SUMMARY.md` 和工程证据；现有候选生产版 code16 / 工程 Debug446＋Release433＝879 已实际完成，**不用为了验收盲目重跑或重新打包**。
+2. **安装前安全门禁**：核验磁盘文件 `artifacts\kitt-v0.4.2-runtimecheck.apk` 真实存在、文件大小 **74,369,322 bytes**、SHA256 **`36d39438c8efb735cd8e67bee1a250c8e789a25061a9425cb8d9ae7bebe0ccb3`**、applicationId **`com.kitt.reader.runtimecheck`**、`versionName=0.4.2`/`versionCode=16`、唯一证书 SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**，继续使用仓库既有 `scripts/check-kitt-signing.ps1`。读取当前 ADB 设备的实际包名、versionCode/签名及连接授权状态，确认 **code15 且同证书**，否则安全 STOP、报告，不要重复安装、降级或生成新密钥。
+3. **条件全部满足才做单次原位升级**：`adb install -r artifacts\kitt-v0.4.2-runtimecheck.apk`；绝不 `adb uninstall`、`pm clear`、`-d` 降级、改包名或安装标准 `com.kitt.reader`；不读出/上传账号密钥与私密历史资料。系统若要求确认，在手机上等用户手动批准；无法通过则停止，不绕过安全防护。
+4. **升级后回验**：回读 code16/包名/原签名（可安全验证装机 APK SHA256）、首次安装时间/数据空间与升级前对照、可见账号/模型偏好/语速/离线中文声音等设置保留；不要编辑或重登账号制造网络请求。
+5. **最短真实 UI 黄金路径**：普通“开始沿途”→“结束旅程”后出现**无评分、无评语、无保存按钮**的简洁纪要，显示时长/跳过次数/已讲主题（无主题时“这一程以安静相伴”）；目的地未提供时不出现“未询问/未提供”等技术状态；“回到出发页”一次返回且前台服务停止。核实纪要在结束时自动保存，返回不丢失。用**只读、必要且脱敏**的方法检查含旧 `ratings`/`feedback` 的历史旅程仍可被读取、内容未被 UI 操作改写；旧数据若无法安全取得则记 PENDING，**不要构造假历史实机证据**。
+6. **保护上轮已验能力**：有新鲜可信真实新都 GPS/NETWORK 时再检查自动本地故事及自动 Director/Research 增量 0、不主动询问目的地；没有可信位置就标本项 PENDING，不注入假位置、不放宽定位门槛、不把断网安全安静当断网故事成功。Issue #24 关于断网新鲜位置、重播/有限问答和云失败后恢复等外场事项继续 OPEN，**本任务不得擅自关闭它**。竖横屏 UI 如设备支持可验证；不必为 UI 项目强行室外路测。
+7. **交接与 STOP**：把安装前后实际 code/哈希、原签名、真实 UI 与纪要保留情况、已核设置、PASS/PENDING/失败和脱敏证据写入 `HANDOFF.md`、`docs/ACCEPTANCE_END_SUMMARY.md`、新的手机验收 evidence、Issue #23 和 PR #26；提交并推送此分支，工作树清洁后 STOP。**保持 PR #26 为 Draft、不合并、不关闭 Issue #23、不启动 V0.5.0**。此授权仅覆盖这一次 code16 安全原位升级和真实验收。
+
+> 本段覆盖下方“等待升级授权/不能手机安装”等**工程交付时的历史 STOP 文案**；用户尚未实际通过本轮 Codex 对手机安装，**本任务卡更新不是手机安装成功的证据**。
+
 工程候选已推送 [Draft PR #26](https://github.com/shimao1115/KITT/pull/26)，保持Draft，等待真机升级确认。
 
 **2026-10-14 当前工程结果：V0.4.2/code16 已完成，STOP等待用户明确批准真机升级。** 独立分支 `feat/v042-simplify-end-summary`，唯一目标 [#23 删除五项评分](https://github.com/shimao1115/KITT/issues/23)，实现 `d64adf8`；评分/评语/保存接口已移除，自动纪要/旧JSON/直接返回保留。最终Debug446/Release433共879项、failure/error/skipped0，六组模拟、构建/lint、原签名及runtimecheck APK PASS。首轮Debug1个旧超时测试调度失败已修订并两Variant完整重跑。见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v042-verification.json)、[真机步骤](docs/ACCEPTANCE_END_SUMMARY.md)。本轮未操作手机/发送真实云请求；code16真人全部PENDING，Issue23保持OPEN，Draft PR不合并，#24外场PENDING不改写。**不据下方开发授权重新施工或自动安装；工程验收已结束，等待新指令。**
