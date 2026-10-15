@@ -1,3 +1,13 @@
+# KITT V0.4.2 / code16 — 已阶段性验收并合并 main（2026-10-15）
+
+> **最新权威状态**：用户已明确同意将 V0.4.2 阶段性通过并合并，剩余待验以后补做。[PR #26](https://github.com/shimao1115/KITT/pull/26) 已合并，merge commit [`9351f17`](https://github.com/shimao1115/KITT/commit/9351f17f1c4d03143c57e04e1b74311a858528a6)；工程/手机证据来自分支 `ddda17c`。此轮**没有再次操作手机、安装 APK 或重跑 879 项测试**，当前真机已为原签名 `com.kitt.reader.runtimecheck` V0.4.2/code16，**切勿重复安装**。
+>
+> **PASS（分级）**：Debug446＋Release433＝879 项工程零失败；单次同签名 code15→16 原位升级及设置保留；结束页无五项评分、意见框、保存按钮，主题/空旅程纪要在结束时自动写入并直接返回，真实手机竖横屏可见；真实新都 NETWORK 本地自动讲述及 Director/Research 启动0 为**设备记录 PASS_ENGINE_ONLY**，**真人耳听未核**。
+>
+> **仍然 PENDING**：[Issue #23](https://github.com/shimao1115/KITT/issues/23) 保持 OPEN，等待有真实旧 `ratings`/`feedback` 文件时只读实机兼容验证（工程回归已通过），以及真人耳听、可选显式目的地/平板等未完成检查。原有最多20份纪要轮换规则未变；测试新增2份后18份旧记录保留、较旧的2份依旧规则淘汰，升级本身未清空数据。独立 [Issue #24](https://github.com/shimao1115/KITT/issues/24) 的断网可信物理定位/重播/云失败后本地恢复等仍 OPEN/PENDING。
+>
+> **STOP**：V0.4.2 已归档，不重启开发、手机升级或 PR 合并；下一候选 V0.5.0 的高质量离线 Fact/Narrative 双包仍须另行授权。本文件下方“PR26 仍 Draft / 不合并 / 等待用户确认”等描述都是**合并之前的历史现场记录**。
+
 # KITT V0.4.2 / code16 — 真机原位升级与有界验收完成，STOP（2026-10-15）
 
 用户明确授权后，在 `feat/v042-simplify-end-summary` 快进至 `b8890f7`，对唯一候选执行**一次** `adb install -r` 成功；vivo超级守护由用户本人确认。**手机现为 `com.kitt.reader.runtimecheck` 0.4.2/code16，不得再安装一次。** [Issue #23](https://github.com/shimao1115/KITT/issues/23)保持OPEN，[PR #26](https://github.com/shimao1115/KITT/pull/26)保持Draft；不合并、不进入V0.5.0。下方“等待升级授权/手机code15”等为各轮历史。
