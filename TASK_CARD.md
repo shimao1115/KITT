@@ -1,3 +1,17 @@
+## 2026-10-15 用户已确认 v2.1 双篇最终定稿｜下一步仅补史实复核与工程验收
+
+**当前唯一有效的新授权事实**：用户看完 `db4d0da` 两篇 v2.1 最终全文后明确回复 **“确认定稿”**。可追溯记录：[PR #28 用户文字定稿确认](https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143)。这是真实的**两篇最终文字确认（EDITORIAL / FINAL TEXT APPROVED）**，不再启动第三轮文字改写；不是独立史实终审、真人 TTS 已听通过、代码合并或手机安装许可。下面“等待最终文字确认”等描述均已成为历史，仅本段覆盖。
+
+- 主篇 `yangshen-main`：SHA256 `f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4`。
+- 延伸 `yangshen-followup-dianzai`：SHA256 `559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f`。
+- 当前定稿版本：Narrative `2026.10.15-draft2.1`，Fact `2026.10.15-review2`；两篇故事正文与既有 Claim 引用不得为凑时长随意变更。
+
+**下一步最小施工目标**（继承 Issue #27 已授权范围）：只对必要但仍 PENDING 的关键史实/来源做独立可追溯复核，重点是赵晓晖论文原文支持《临江仙》进入毛氏《三国演义》评本卷首的论据；不获取到来源或不能证明时如实 BLOCKED，不代签已读影印件或擅自更改讲述。事实核验达到要求后再按现有批准字段/审核脚本处理事实审批，严禁把“文字定稿”直接填成 `fact_gate=passed` 或 `visitor_gate=passed`。必要的正式可播审批缺失前继续 `review_status=draft`、两个 gate PENDING、`approval_ref` 空、`approvals.json` 空。不要设计额外审批系统。
+
+**下一工程验收**：审批证据足够后，同步正式包和正文指纹，实际执行内容门禁、Debug/Release 全量、六组既有模拟、assemble/lint、原签名验证；全部通过再做 code17 同签名 runtimecheck 候选并交用户决定是否安装。不要把旧915项作为本轮重跑。**禁止安装/卸载/清除手机、合并 PR #28、关闭 Issue #27、开始 V0.5.1/其他功能**；#23/#24 外场独立 PENDING。当前仍没有 code17 runtimecheck 候选 APK。
+
+---
+
 # CURRENT TASK CARD — KITT V0.5.0 / Issue #27 杨慎完整离线故事黄金路径
 
 ## 2026-10-15 最新用户反馈：认可 v2 两篇故事的**内容方向与整体讲法**，仅两句润色后进行最终文本确认
