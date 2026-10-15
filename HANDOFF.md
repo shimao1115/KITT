@@ -1,4 +1,19 @@
-# KITT V0.5.0 — 第二稿供审阅 / REVIEW-STOP（2026-10-15）
+# KITT V0.5.0 — v2.1 最终候选供逐字确认 / REVIEW-STOP（2026-10-15）
+
+已读取 `b448a9b` 最新任务卡及PR #28后两轮审稿评论。用户认可v2内容方向和整体讲法；本轮仅主篇两句轻量润色，不把方向认可写成最终文字批准、事实终审或真人试听通过。
+
+- [主篇v2.1全文](content/yangshen/yangshen-main.md)：583字符，估计109–135秒（未实测）。只将大礼议句改为生父尊崇与皇位继承礼制下父子名分的冲突；词作流传句省去“毛宗岗父子评刻”，后台仍限定毛氏评本。其他主篇正文未改。
+- [延伸全文](content/yangshen/yangshen-followup-dianzai.md)：297字符；Markdown文件、整个Narrative对象、全部引用及正文哈希逐项与输入提交相同。
+- [两句前后对照、来源及最终哈希](docs/YANGSHEN_CONTENT_REVIEW.md)：主篇SHA256 `f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4`；延伸SHA256 `559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f`。沿用原Claim及Source修订，9来源/16核验条目不变，不扩史料。Narrative版本`2026.10.15-draft2.1`；Fact保持`2026.10.15-review2`。
+- 本轮实际校验：两句变更范围、Markdown/JSON一致、正文哈希、精确Claim依赖、延伸对象/文件及事实包/审批表不变PASS；Python发布门禁4项PASS；`--check --require-playable`预期BLOCKED，正式故事0。[本轮证据](docs/evidence/v050-v21-content-validation.json)。未执行Android专项/全量测试，不把历史16项或915项算成本轮。
+- 两篇继续`draft`、`fact_gate=pending_human`、`visitor_gate=pending`、`approval_ref`空，审批表空。PR评论里的书面游客编辑PASS只记录其原范围，不等于全史实人工审定/用户最终逐字认可/真人耳听。
+- 未改Android框架或生产逻辑，未构建任何APK、未操作手机、不合并PR、不关闭Issue；#23/#24外场PENDING不变，不启动新功能。
+
+已将最终候选留在 [Draft PR #28](https://github.com/shimao1115/KITT/pull/28)。**STOP等待用户最后逐字确认。**
+
+---
+
+# v2 改稿交付历史（以下字符数与校验仅属于上一轮）
 
 当前最新交付是按 `1de6549` 任务卡和 PR #28 两轮意见完成的 **v2文字改稿**，未扩功能。下方v1工程交接与915项证据保留作历史，不代表本轮重跑；旧字符数/选题由本段覆盖。
 

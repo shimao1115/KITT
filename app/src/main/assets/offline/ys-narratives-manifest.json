@@ -2,7 +2,7 @@
   "schema_version": 1,
   "minimum_code": 17,
   "pack_id": "xindu-yangshen-narratives",
-  "content_version": "2026.10.15-draft2",
-  "bytes": 130,
-  "sha256": "8d7d26b957a9957a86cdd81607bf28b56daa9da52b6811bde2ecb9e8e384fd4f"
+  "content_version": "2026.10.15-draft2.1",
+  "bytes": 132,
+  "sha256": "64b78398728b6b710d74133d5b381ce3740524127bfe7d74dfb7bea42944e676"
 }
