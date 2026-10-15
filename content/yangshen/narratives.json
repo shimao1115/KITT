@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "pack_id": "xindu-yangshen-narratives",
+  "content_version": "2026.10.15-draft1",
+  "narratives": [
+    {
+      "narrative_id": "yangshen-main",
+      "title": "从新都状元到云南远谪",
+      "story_type": "main",
+      "entity_id": "person-yang-shen",
+      "area_id": "cn-510114",
+      "primary_category": "HISTORY",
+      "secondary_categories": [],
+      "text": "说起新都，有一个名字值得先记住：杨慎，也就是杨升庵。桂湖和升庵祠，是这里纪念他的重要地方。我们先不急着背他的官职，先想一个问题：一个考到全国第一的读书人，为什么后来要在遥远的云南度过那么长的岁月？\n\n杨慎字用修，籍贯新都。明朝正德六年，也就是一五一一年，他在殿试中取得第一名，成为状元，随后担任翰林修撰。只看这一段，很像一条顺顺当当的成才路：读书，考试，进入朝廷。可是，决定他后半生的，恰恰是一次与皇帝意见相反的争论。\n\n这场争论叫大礼议。“礼”在这里，不只是见面行礼，而是皇室的亲属名分与继承秩序。新即位的嘉靖皇帝，究竟应该在礼制上认谁为父亲？许多旧臣主张尊孝宗为皇考，也就是已故的父皇；皇帝则坚持自己亲生父亲的名分。今天听来像是家事，放在当时，却关系到皇位继承应该怎样解释、皇室祭祀应该怎样安排。双方各有依据，不能只用一句谁忠谁奸，就把事情讲完。\n\n杨慎站在反对皇帝主张的一边。一五二四年，嘉靖三年，他和其他官员到左顺门力谏。《明史》记载，冲突升级后，他被关入监狱，受到廷杖，过了十天又被杖打一次。最后，他被谪戍云南永昌卫。谪戍意味着带着惩罚身份去戍守。从状元、翰林，到远地戍卒，这个转折不能用一次普通调职来理解。\n\n说到这里，也要避开一个容易讲错的地方：他并不是离开后就再也没有回过四川。《明史》记载，他曾因父亲患病返家，后来又获准归葬父亲，葬毕再回云南。这些往返，不等于惩罚已经解除。读他的人生，既要看见远谪的沉重，也不能把几十年压成一条从未变化的直线。\n\n他后来的岁月里，还有读书和写作。《明史》说他广泛阅读，直到年老仍然笃学。他的《滇载记》，也把目光投向了云南的古代历史。于是，认识杨慎，不能停在“考过状元”，也不能停在“得罪皇帝”。仕途发生了剧变，他仍然留下文字。这让一个人的经历，超出了官职升降所能概括的范围。\n\n你或许还熟悉“滚滚长江东逝水”这句词。它属于杨慎的《临江仙》。我们能在《廿一史弹词注》第三段“说秦汉”的开头读到它。后来毛宗岗父子评刻《三国演义》，又把这首词放在卷首。也就是说，今天人们把它和三国故事联系起来，是作品流传中的一层关系；它在弹词里的位置，说的却是秦汉。不能因为熟悉后来的用法，就替作者补出一个当年站在江边落笔的场景。\n\n现在再把目光放回新都。桂湖与升庵祠留下的，是这座地方与一个人的纪念联系；这并不说明我们此刻就能从车窗看见它们。值得带走的，也许是两条线：一条从科举成名走向政治挫折，一条从个人遭际走向长久流传的文字。记住这两条线，再听到杨升庵的名字，它就不只是状元名录上的一行了。",
+      "supported_claim_refs": [
+        {
+          "claim_id": "ys-identity",
+          "accepted_revision": "60bc5fd190c79b1d517ddf0edc965b08f4b84ae542cc00970dfec4bb587e1455"
+        },
+        {
+          "claim_id": "ys-guihu",
+          "accepted_revision": "e3136a2a2c14e1dddd2ece0dab377f120f369e4b23e17f0d66691d3a28993ea6"
+        },
+        {
+          "claim_id": "ys-exam",
+          "accepted_revision": "f512c5c6b71c4d51ea3c1286ce5f0b598e1cdad056a2f12d64e6a906ddc5a11f"
+        },
+        {
+          "claim_id": "ys-protest",
+          "accepted_revision": "012dca39fa30021cb0ca356e4fcfb5360997e04af37c2f8b1d5f16c643183adf"
+        },
+        {
+          "claim_id": "ys-ritual",
+          "accepted_revision": "291625a87cb846ba53ab765e9693030925f5925e7f9e71fe17e71278742ad514"
+        },
+        {
+          "claim_id": "ys-return",
+          "accepted_revision": "9cac19a966c5b6bff7cdacb832d210cad60dfa3cb85120dec3aabdb6728e3476"
+        },
+        {
+          "claim_id": "ys-study",
+          "accepted_revision": "84d134b2151a2468c16e0c719c16deb3345a5d7c6f3e6a2c528374d56de7f9a9"
+        },
+        {
+          "claim_id": "ys-tanci",
+          "accepted_revision": "cce2f8e2b10b607e8549292cfcd4241b1beb5cb5622cfbf643d699a5a90af83c"
+        },
+        {
+          "claim_id": "ys-mao",
+          "accepted_revision": "33c6fec70d10d8a3072f7ec6def8230cb5b80cab8a2297a18a31acabd937d124"
+        },
+        {
+          "claim_id": "ys-dianzai",
+          "accepted_revision": "90b2d3d5777c51c1fca3de17a200244a9c323311358fbf39ba7224ba80dcfb0c"
+        }
+      ],
+      "review_status": "draft",
+      "fact_gate": "pending_human",
+      "visitor_gate": "pending",
+      "approval_ref": "",
+      "license": "CC-BY-4.0",
+      "estimated_duration_seconds": [
+        199,
+        245
+      ],
+      "applicability": "仅关联新都区；不证明就在眼前；无当前开放或行车信息",
+      "paragraph_claims": [
+        {
+          "paragraph": 1,
+          "claim_ids": [
+            "ys-identity",
+            "ys-guihu",
+            "ys-exam",
+            "ys-protest"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 2,
+          "claim_ids": [
+            "ys-identity",
+            "ys-exam",
+            "ys-protest"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 3,
+          "claim_ids": [
+            "ys-ritual"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 4,
+          "claim_ids": [
+            "ys-protest"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 5,
+          "claim_ids": [
+            "ys-return"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 6,
+          "claim_ids": [
+            "ys-study",
+            "ys-exam",
+            "ys-protest",
+            "ys-dianzai"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 7,
+          "claim_ids": [
+            "ys-tanci",
+            "ys-mao"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 8,
+          "claim_ids": [
+            "ys-guihu",
+            "ys-exam",
+            "ys-protest",
+            "ys-study",
+            "ys-tanci"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        }
+      ],
+      "text_sha256": "70fa7d37e1ca2797621f5e98e3554bf4a1b269912a1a2bc09ca80fb5aab767df"
+    },
+    {
+      "narrative_id": "yangshen-followup-dianzai",
+      "title": "翻开滇载记：古书中的留白",
+      "story_type": "followup",
+      "entity_id": "person-yang-shen",
+      "area_id": "cn-510114",
+      "primary_category": "HISTORY",
+      "secondary_categories": [
+        "CULTURE"
+      ],
+      "text": "关于杨慎，还有一条适合慢慢看的线索：他怎样把目光转向云南的过去。这里先翻一部题署杨慎的古书，叫《滇载记》。不再顺着科举和朝争讲，我们看的是，古人留下的书，能告诉我们什么，又有哪些事情不能只凭一本书就认定。\n\n这部书开篇写到六诏，随后叙述云南古代政权的更替。书中有名字、世系，也有故事。不过，有一处很值得留意：讲到早期张氏的年代时，作者承认，具体年代不能详细推考。一本古书里，既有试图把过去连接起来的努力，也会留下无法确定的空白。\n\n再看开头，书里还收录了一位女子触到沉木、生下九个儿子的故事。如果把它直接念成云南古代确实发生过的事，就跨过了证据的边界。我们能确认的是，这部书记录了这样的传说；至于传说中的事件是否发生，不能靠它自身来证明。保留一则故事，和证实一件史事，是两种不同的工作。\n\n这也给旅行中的阅读提了个醒：书名古老、作者著名，并不意味着里面每句话都能直接搬来说明今天。我们读《滇载记》，可以看到杨慎所记录的云南历史面貌，却还要分清记载、传说和待考的地方。对这位以博学闻名的人，最好的纪念，或许也包括保留这种追问：这句话依据什么？不知道的地方，就让它暂时留白。",
+      "supported_claim_refs": [
+        {
+          "claim_id": "ys-dianzai",
+          "accepted_revision": "90b2d3d5777c51c1fca3de17a200244a9c323311358fbf39ba7224ba80dcfb0c"
+        },
+        {
+          "claim_id": "ys-dianzai-reading",
+          "accepted_revision": "f318fb1355217f7ef9d742f68c71c44aab7766aff66c406cfeb95c9cdac1adb2"
+        },
+        {
+          "claim_id": "ys-study",
+          "accepted_revision": "84d134b2151a2468c16e0c719c16deb3345a5d7c6f3e6a2c528374d56de7f9a9"
+        }
+      ],
+      "review_status": "draft",
+      "fact_gate": "pending_human",
+      "visitor_gate": "pending",
+      "approval_ref": "",
+      "license": "CC-BY-4.0",
+      "estimated_duration_seconds": [
+        91,
+        112
+      ],
+      "applicability": "仅关联新都区；不证明就在眼前；无当前开放或行车信息",
+      "paragraph_claims": [
+        {
+          "paragraph": 1,
+          "claim_ids": [
+            "ys-dianzai"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 2,
+          "claim_ids": [
+            "ys-dianzai"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 3,
+          "claim_ids": [
+            "ys-dianzai-reading"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        },
+        {
+          "paragraph": 4,
+          "claim_ids": [
+            "ys-dianzai",
+            "ys-dianzai-reading",
+            "ys-study"
+          ],
+          "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
+        }
+      ],
+      "text_sha256": "03fe946cf1484bcce11c6258374d98405075f38f8a095f53a2df5097c501e221"
+    }
+  ]
+}
