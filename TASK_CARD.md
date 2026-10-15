@@ -1,3 +1,13 @@
+# ARCHIVED TASK CARD — V0.4.2/code16 已阶段性合并（2026-10-15）
+
+**现行状态：STOP / 本轮任务完成归档。** 用户明确同意 V0.4.2 阶段性验收通过并合并 `main`，详见 [已合并 PR #26](https://github.com/shimao1115/KITT/pull/26)，merge commit [`9351f17`](https://github.com/shimao1115/KITT/commit/9351f17f1c4d03143c57e04e1b74311a858528a6)。Debug446/Release433 合计879项工程 PASS；真实手机 `com.kitt.reader.runtimecheck` 已是 code16，删除评分、自动纪要、原签名升级、设置保留、直接返回 PASS；联网 NETWORK 本地自动讲述零云调用是设备级记录，真人耳听未核。
+
+**剩余待验以后补做**：[Issue #23](https://github.com/shimao1115/KITT/issues/23) OPEN，真实旧评分字段实机样本为0、真人耳听等继续 PENDING；[Issue #24](https://github.com/shimao1115/KITT/issues/24) OPEN，断网新鲜位置下地方讲述/重播/云失败后恢复另验。历史20份纪要上限不变，新增两趟测试按既有规则淘汰最旧2份，未保留为永久档案。
+
+**不再是当前施工任务**：下方所有手机安装授权、PR Draft 与禁止合并文字已因用户后续确认而成为历史，绝不能据其重复执行安装/升级/清数据。新版本（候选 V0.5.0）应新建单一授权任务卡后再动工；现在没有开启下一版本。
+
+---
+
 # CURRENT TASK CARD — KITT V0.4.2 / Issue #23 结束旅程页面精简
 
 > **2026-10-15 当前执行结果：本轮唯一升级授权已使用，单次code15→16原位安装成功；真机有界验收完成，STOP。** 无评分结束页、自动保存/一次返回、账号设置与联网真实NETWORK本地自动0云分项PASS；真实旧评分样本0份/真人耳听及#24外场仍PENDING。详见 [HANDOFF](HANDOFF.md) 与 [手机证据](docs/evidence/v042-phone-acceptance.json)。**手机已是code16，不得根据下方历史授权重复安装；PR26保持Draft、Issue23保持OPEN、不合并、不启动V0.5.0。**
