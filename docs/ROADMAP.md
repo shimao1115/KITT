@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-14 当前V0.4.2/code16 / #23工程PASS，STOP等真机升级确认**：评分/评语/保存按钮移除，自动纪要/旧JSON/返回保留；Debug446+Release433=879零失败/错误/跳过，六组模拟、构建/lint、原签名runtimecheck APK通过。见 [HANDOFF](../HANDOFF.md)、[证据](evidence/v042-verification.json)、[验收](ACCEPTANCE_END_SUMMARY.md)。本轮不操作手机、不合并、不关闭Issue或进入V0.5.0；本版真人PENDING，#24外场未验独立保留。PR25/code15已阶段性合并；下方旧Draft/未启动/评分要求按历史时点理解。
+
 > **同日真机阶段最新结果**：用户授权后code14→15原位升级PASS，联网真实NETWORK→新都本地讲述/0自动云/真人听清PASS，独立断网中文TTS/按钮打断/默认静音及提前退出PASS；断网120秒无新鲜位置，完整断网地方链及部分同Journey追问/恢复PENDING。已恢复手机网络、结束旅程与服务，STOP等待用户决定，Issue24 OPEN/PR25 Draft，不合并或进入下一版。见 [手机证据](evidence/v041-phone-acceptance.json) 与根HANDOFF；下方安装前状态作历史。
 
 > **2026-10-14 V0.4.1/code15 / #24工程交付，STOP等待确认。** Debug441/Release428、构建/lint、六组Fake模拟和原签名PASS，runtimecheck APK已生成；联网本地自动讲述、0自动云调用、不主动问目的地由工程验证。真机安装/GPS/实际计数/耳听PENDING，Draft PR #25未合并，未操作手机，不进入后续版本。见根 [HANDOFF](../HANDOFF.md)、[验收](ACCEPTANCE_LOCAL_FIRST.md)；下方较早任务与排序作历史。

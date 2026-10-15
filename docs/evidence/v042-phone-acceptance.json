@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-15",
+  "timezone": "Asia/Shanghai",
+  "branch": "feat/v042-simplify-end-summary",
+  "synchronizedHead": "b8890f7682373a1ee3d8aea378c97870a6cde91e",
+  "implementation": "d64adf8",
+  "scope": "One authorized same-signature code15 -> code16 install and bounded phone acceptance; STOP",
+  "apk": {
+    "package": "com.kitt.reader.runtimecheck",
+    "version": "0.4.2",
+    "versionCode": 16,
+    "bytes": 74369322,
+    "sha256": "36d39438c8efb735cd8e67bee1a250c8e789a25061a9425cb8d9ae7bebe0ccb3",
+    "signerCount": 1,
+    "originalCertificateSha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "installedReadbackMatchesCandidate": true,
+    "signingCheck": "scripts/check-kitt-signing.ps1 PASS for candidate, pre-upgrade installed base and post-upgrade installed base"
+  },
+  "install": {
+    "beforeCode": 15,
+    "beforeVersion": "0.4.1",
+    "beforeApkSha256": "8beac9f79e4adcf8a31f95b742562ea393d996c337be3e1ee87cc8c2e58ce43f",
+    "command": "adb install -r artifacts/kitt-v0.4.2-runtimecheck.apk",
+    "attempts": 1,
+    "result": "Success",
+    "vivoConfirmation": "User manually authorized system prompt; no automated bypass",
+    "firstInstallUnchanged": "2026-10-09 09:42:45",
+    "lastUpdate": "2026-10-15 08:27:34",
+    "ceDeInodesUnchanged": true,
+    "noUninstallClearDowngradeOrResign": true
+  },
+  "settings": {
+    "entireSettingsFileSha256UnchangedFromImmediatelyBeforeInstallThroughFinal": true,
+    "sameVisibleConnectedAccount": true,
+    "provider": "CHATGPT",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "speechRate": 1.0,
+    "voice": "system default; stored tts_voice empty",
+    "separateResearch": false,
+    "noSettingsSaveOrReconnect": true,
+    "limits": "Opening Settings automatically initiated one model-catalog request and changed settings-file hash before final pre-install baseline. No token values read/decrypted/exported, no Director/Research test request; account inference connectivity and audible voice identity not asserted."
+  },
+  "ui": {
+    "portrait": "PASS; topic summary, no ratings/feedback/save UI, hidden unspecified destination; screenshot manually inspected",
+    "landscape": "PASS; same summary and return visible without scroll; screenshot manually inspected",
+    "quietSummary": "PASS; 这一程以安静相伴。 plus duration/skips and return; no EditText/rating/save/technical destination",
+    "return": "PASS; exactly one return tap per completed trip reaches ordinary start page",
+    "explicitDestination": "PENDING on phone; prior automated engineering coverage retained",
+    "tabletHardware": "PENDING; not available"
+  },
+  "persistence": {
+    "method": "Bounded read-only run-as: JSON fields/types and content hashes in memory; only counts/comparison results published. No raw trip files or private destination/instructions exported. This is JSON compatibility/retention observation, not an invocation of TripStore.latest on every old record. Trip JSON digests use UTF-8 cat text after strip of leading/trailing whitespace; equality proves parsed/canonical content retention, not independent byte-level whitespace or mtime identity. Settings digests are device sha256sum over exact file bytes.",
+    "comparisons": {
+      "upgrade": {
+        "before": 20,
+        "after": 20,
+        "retained": 20,
+        "unchangedRetained": 20,
+        "added": 0,
+        "removed": 0
+      },
+      "endFirst": {
+        "before": 20,
+        "after": 20,
+        "retained": 19,
+        "unchangedRetained": 19,
+        "added": 1,
+        "removed": 1
+      },
+      "firstReturn": {
+        "before": 20,
+        "after": 20,
+        "retained": 20,
+        "unchangedRetained": 20,
+        "added": 0,
+        "removed": 0
+      },
+      "endQuiet": {
+        "before": 20,
+        "after": 20,
+        "retained": 19,
+        "unchangedRetained": 19,
+        "added": 1,
+        "removed": 1
+      },
+      "quietReturn": {
+        "before": 20,
+        "after": 20,
+        "retained": 20,
+        "unchangedRetained": 20,
+        "added": 0,
+        "removed": 0
+      }
+    },
+    "finalReadableSummaries": 20,
+    "legacyRatingsFeedbackRecordsFound": 0,
+    "legacyRatingsFeedbackPhone": "PENDING_NO_REAL_LEGACY_RECORD; do not fabricate phone fixture; engineering legacy fixture PASS remains separate",
+    "automaticBeforeReturn": "PASS; new persisted summary present while each end screen is still open, one with topics and one empty; no ratings/feedback; return leaves every current summary content-digest-identical",
+    "retention": "Existing 20-record cap executes on finish: each of two real test endings adds one and prunes one older record. Retained 19 content-digest-identical at each finish, 18 original records remain finally. No migration, bulk rewrite or manual deletion."
+  },
+  "localAutomatic": {
+    "result": "PASS_ENGINE_ONLY_CURRENT_ONLINE_NETWORK",
+    "source": "Natural physical NETWORK; UI observed ±37m/0s, later ±30m/3s; not satellite GPS and no injected fix",
+    "coverage": "App resolved installed Xindu pack",
+    "localOutcomes": [
+      "active=false outcome=SILENT cloud_calls=0",
+      "active=false outcome=SPEAK_NOW cloud_calls=0",
+      "active=false outcome=SILENT cloud_calls=0"
+    ],
+    "successfulAutomaticVoiceCompletions": 1,
+    "cloudStartsInCompleteCurrentProcessDiagnostics": {
+      "directorDispatch": 0,
+      "directorStarted": 0,
+      "researchStarted": 0,
+      "activeResearchDecision": 0
+    },
+    "diagnosticBytes": 1267,
+    "measurement": "Complete small debug diagnostic file since code16 process startup, corroborated with current-process logcat. These are dispatch/start event counts, not an instrumented requests counter snapshot or packet capture.",
+    "noAutomaticDestinationQuestion": true,
+    "humanAudibility": "PENDING; no new human listening confirmation",
+    "offlineFullChainAndCloudFailureRecovery": "PENDING; Issue24 unchanged"
+  },
+  "final": {
+    "startPageVisible": true,
+    "journeyForegroundServiceAbsent": true,
+    "rotationRestored": "accelerometer_rotation=0, user_rotation=0",
+    "physicalNetworkConfigurationUnchanged": true,
+    "currentProcessAndroidRuntimeFatalCount": 0,
+    "noInstrumentationInstalledOrExecuted": true,
+    "productionSourceUnchanged": true,
+    "engineering": "Prior Debug446/Release433=879, errors/failures/skipped0, six simulations/build/lint/signing PASS; not rerun or rebuilt for this phone-only task",
+    "pr26": "Draft; not merged",
+    "issue23": "OPEN",
+    "issue24": "OPEN; prior pending field gates unchanged",
+    "next": "STOP; no V0.5.0"
+  },
+  "privacy": "No device serial, coordinates, account text/digest, settings hash/ciphertext, raw private summaries, chat, recording, key or credential included. Screenshots are only controlled summary pages with public topic text and system status bar."
+}

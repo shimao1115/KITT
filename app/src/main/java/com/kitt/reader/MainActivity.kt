@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity() {
                     if (settings) SettingsScreen(runtime, NotificationManagerCompat.from(this).areNotificationsEnabled(), {
                         startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, packageName))
                     }, { settings = false })
-                    else if (summary != null) EndScreen(summary, runtime.store, runtime::dismissSummary)
+                    else if (summary != null) EndScreen(summary, runtime::dismissSummary)
                     else DrivingScreen(runtime.journey, (if (runtime.config.kind == ProviderKind.FAKE) "离线演示 · " else "") + runtime.sourceLabel,
                         { startJourney() }, runtime.loop::speak, ::endJourney,
                         { if (runtime.journey.running) unavailableSettings = true else settings = true },
