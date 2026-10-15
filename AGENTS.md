@@ -1,5 +1,7 @@
 # AGENTS.md — KITT Autonomous Build Contract
 
+> **2026-10-15 最新权威交接（覆盖下方历史优先级与 STOP 文字）**：用户同意 V0.4.2/code16 阶段性通过并合并 `main`，已合并 [PR #26](https://github.com/shimao1115/KITT/pull/26)，merge `9351f17`；原版 [PR #25](https://github.com/shimao1115/KITT/pull/25) 已更早合并。手机现为 `com.kitt.reader.runtimecheck` **code16**，不得重复安装、卸载、清数据；此轮工程879项/结束页与自动纪要已通过，联网本地自动讲述零云调用为设备级观测。[#23](https://github.com/shimao1115/KITT/issues/23) OPEN，仅补旧评分实机样本兼容/真人耳听等 PENDING；[#24](https://github.com/shimao1115/KITT/issues/24) OPEN，仅补离线实地定位与恢复等 PENDING。**V0.4.2 任务卡已归档，下一候选 V0.5.0 高质量 Fact/Narrative 离线双包尚未授权**；Codex 不得按下方旧“code16 等待安装/PR Draft”任务重复执行，也不能自动启动下一版本。详见 [HANDOFF](HANDOFF.md)、[已归档 TASK_CARD](TASK_CARD.md) 和 [路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)。
+
 > **2026-10-15 当前STOP状态**：用户已授权并完成V0.4.2/code16单次同签名原位升级及有界真机验收；手机已code16，不得重复安装。最新结果见 [HANDOFF](HANDOFF.md)、[TASK_CARD](TASK_CARD.md)、[手机证据](docs/evidence/v042-phone-acceptance.json)。旧评分实机样本/真人耳听及#24外场仍PENDING；Issue23/24保持OPEN、PR26 Draft、不合并、不启动V0.5.0。下方“等待手机升级许可”等为历史。
 
 > **2026-10-14 最新用户授权 / 当前唯一施工目标：V0.4.2/code16 的旅程结束页评分移除**。V0.4.1/code15 已阶段性接受并通过 [PR #25](https://github.com/shimao1115/KITT/pull/25) 合并 `main`，真机手机 code15、[#24](https://github.com/shimao1115/KITT/issues/24) 的断网定位/云失败恢复外场仍 OPEN/PENDING。本分支 `feat/v042-simplify-end-summary` 有[最新独立 TASK_CARD.md](TASK_CARD.md)：只删 5 项 1—5 评分、可选评语及保存按钮；保留纪要及返回，`TripStore.finish()` 继续自动写入并保持历史 JSON（含旧 `ratings`/`feedback`）兼容性。**不得为了完成 UI 而修改定位/在线调用/TTS/账号，六类偏好和双层包下版再做**。V0.4.2 开发/测试/生成新签名 APK 已授权，**手机 code16 原位安装未获本轮独立许可**，构建后先 STOP 等确认；**本段覆盖下方旧版本排序与 STOP 文字，它们仅为当时历史**。
