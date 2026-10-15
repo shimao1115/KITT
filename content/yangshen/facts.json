@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "pack_id": "xindu-yangshen-facts",
-  "content_version": "2026.10.15-review2",
+  "content_version": "2026.10.15-review3",
   "area_id": "cn-510114",
   "entities": [
     {
@@ -158,6 +158,42 @@
         "final_url": "https://www.nopss.gov.cn/n1/2026/0909/c461624-40795331.html"
       },
       "registry_revision": "931321ed6fbc5985ad5bbecd3407a190e28ed1aa00f6b566fc9fe2662973c664"
+    },
+    {
+      "source_id": "people-2018-versions",
+      "title": "人民网转载文汇报：《经典咏流传》传统文化进行时 听，古诗词在歌唱",
+      "url": "https://media.people.com.cn/n1/2018/0320/c40606-29877094.html",
+      "publication": "2018-03-20；文汇报，王彦",
+      "access_status": "read",
+      "rights": "现代文章保留版权；只自行概括基本事实，不转载原文、图片或页面",
+      "limitation": "独立新闻评论旁证；只核杨慎弹词说秦汉章首及毛氏评本卷首关系，不认定最早版本或成文时地；HTTPS本机证书主机名不匹配，网页工具502；直接HTTP原文200，GB2312/GBK解码；传输不具HTTPS认证",
+      "accessed_at": "2026-10-15",
+      "evidence_grade": "C_secondary_report",
+      "retrieval_fingerprint": {
+        "raw_sha256": "89493d8e587eea865c570bce3eec9059cf949e80b6f5bbe6d4c7802027885d44",
+        "raw_bytes": 37324,
+        "final_url": "http://media.people.com.cn/n1/2018/0320/c40606-29877094.html",
+        "http_status": 200
+      },
+      "registry_revision": "ba0d629546ef3d5fbb55850a58905cbc090f29d398d0fef892f00b951be1064c"
+    },
+    {
+      "source_id": "people-2017-versions",
+      "title": "人民网转载中国新闻网：《军师联盟》不合史实？你可知三国演义改了多少历史",
+      "url": "https://culture.people.com.cn/n1/2017/0720/c172318-29416428.html",
+      "publication": "2017-07-20；中国新闻网",
+      "access_status": "read",
+      "rights": "现代文章保留版权；只自行概括基本事实，不转载原文、图片或页面",
+      "limitation": "独立报道的版本说明；只核卷首词为毛本增加，不能据此认定全部历史情节；HTTPS本机证书主机名不匹配，网页工具502；直接HTTP原文200，GB2312/GBK解码；传输不具HTTPS认证",
+      "accessed_at": "2026-10-15",
+      "evidence_grade": "C_secondary_report",
+      "retrieval_fingerprint": {
+        "raw_sha256": "e962746b45228c306a1993fa9a5797ed3152fd5a2583fe57388db7d31c2ffaad",
+        "raw_bytes": 37773,
+        "final_url": "http://culture.people.com.cn/n1/2017/0720/c172318-29416428.html",
+        "http_status": 200
+      },
+      "registry_revision": "a7bdd84a63eb974e1eb84fccaba4eac48750dd317c31710759ea58c7e50d888e"
     }
   ],
   "claims": [

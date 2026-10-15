@@ -62,6 +62,27 @@ class StoryPacksTest {
         assertEquals(StoryCategory.HISTORY, p.stories.first().category)
         assertEquals(candidates().getValue("narratives").jsonArray.first().jsonObject.getValue("text").jsonPrimitive.content, p.stories.first().text)
     }
+    @Test fun finalTextCandidateIsExcludedByDefaultButAuditionRetainsCompleteText() {
+        val raw = Json.parseToJsonElement(File(source, "narratives.json").readText()).jsonObject
+        val (fm, fb) = seal(facts()); val (nm, nb) = seal(raw)
+        assertTrue(StoryPacks.parse(fm, fb, nm, nb).stories.isEmpty())
+        val audition = StoryPacks.parse(fm, fb, nm, nb, acceptanceCandidate = true)
+        assertEquals(2, audition.stories.size); assertTrue(audition.blocked.isEmpty())
+        assertEquals(raw.getValue("narratives").jsonArray.map { it.jsonObject.getValue("text").jsonPrimitive.content },
+            audition.stories.map { it.text })
+        assertTrue(raw.getValue("narratives").jsonArray.all { it.jsonObject.getValue("visitor_gate").jsonPrimitive.content == "pending" })
+    }
+    @Test fun auditionStillRejectsUnreviewedDraftOrMissingFactGate() {
+        val raw = Json.parseToJsonElement(File(source, "narratives.json").readText()).jsonObject
+        val (fm, fb) = seal(facts())
+        for ((field, value) in listOf("review_status" to "draft", "fact_gate" to "pending_human", "approval_ref" to "",
+                "visitor_gate" to "passed")) {
+            val changed = mutate(raw, "narratives") { JsonObject(it + (field to JsonPrimitive(value))) }
+            val (nm, nb) = seal(changed)
+            assertEquals(field, listOf("yangshen-followup-dianzai"),
+                StoryPacks.parse(fm, fb, nm, nb, acceptanceCandidate = true).stories.map { it.id })
+        }
+    }
     @Test fun corruptedBytesLengthSchemaAndFutureCodeRejectBeforeReadingContent() {
         val (fm, fb) = seal(facts()); val (nm, nb) = seal(candidates())
         for (m in listOf(nm.decodeToString().replace("\"schema_version\":1", "\"schema_version\":99"),

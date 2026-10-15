@@ -1,17 +1,19 @@
 # V0.5.0 / code17 杨慎故事最短验收
 
-本轮不安装手机。两篇仍是待审稿，当前runtimecheck候选构建应被内容门禁阻断。下面是真正审稿通过、另行生成候选并获安装授权后的验收步骤，不是本轮实机证据。#23/#24既有外场待验不被本页改写。
+**仅验收候选；本轮不安装、不操作手机、不合并。** 用户已确认v2.1双篇最终文字，本轮来源复核相符。两篇 `candidate / fact_gate=passed / visitor_gate=pending`，审批范围只到 `acceptance_candidate`；真实耳听、正式发布与实机全链未完成。#23/#24外场独立PENDING。
 
-## 先审文字与事实
+## 当前门禁与安装边界
 
-阅读 [主篇全文](../content/yangshen/yangshen-main.md)、[延伸篇全文](../content/yangshen/yangshen-followup-dianzai.md) 和 [来源/争议/逐句审校](YANGSHEN_CONTENT_REVIEW.md)。用户认可必须记录真实证据，绑定正文哈希及Claim引用集；不能只把 `draft` 改成 `approved`。大礼议解释、两次廷杖/返乡时序、词作归属与版本、古书转录及版权限制需独立/人工复核。
+标准 `python scripts/build-story-packs.py --check` 应PASS且完整故事0；加 `--require-playable` 的正式发布门禁仍BLOCKED。`scripts/build-runtime-smoke.ps1 -Offline` 在独立目录按真实文字和事实审批生成候选，只有Debug/runtimecheck装载候选；这一步不是正式批准，也不能把耳听写成PASS。
 
-打包后运行 `python scripts/build-story-packs.py --check --require-playable`，必须存在同一杨慎对象的合格主篇、含新事实的延伸篇。当前审批为空，预期 BLOCKED。没有这一步的PASS，不生成候选runtimecheck，不发布。
+候选 applicationId 必须为 `com.kitt.reader.runtimecheck`、versionCode17、唯一原证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。**未来仅用户另行明确授权安装后**：先只读核手机当时实际包名/版本/签名、候选哈希与同签名递增；满足才使用一次 `adb install -r`，不卸载、不清数据、不降级、不重签。核同一账号与原设置/数据保留，不导出凭据。标准 `com.kitt.reader` 不能替代账号所在runtimecheck包。
+
+独立无GPS试听需另获授权安装配套同签名测试APK：`artifacts/runtime-smoke-workspace/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`。先试听两篇，再补真实位置下完整自动链路；无新鲜位置保持安静/PENDING。
 
 ## 不需要GPS的独立完整试听
 
 1. 只在后续明确获准安装同签名runtimecheck候选及配套instrumentation之后进行；先结束当前Journey。
-2. 显式手动执行 `mode=story-preview`，`narrative_id=yangshen-main`；这不是默认启动流程或探索地点。仪器入口只读取已批准正文，离线中文TTS强制开启；缺审核、缺正文、缺声音均不能假成功。
+2. 显式手动执行 `mode=story-preview`，`narrative_id=yangshen-main`；这不是默认启动流程或探索地点。仪器入口只读取事实/文字合格的同一候选正文，离线中文TTS强制开启；缺审核、缺正文、缺声音均不能假成功。
 3. 未来的调用示例：`adb shell am instrument -w -e mode story-preview -e narrative_id yangshen-main com.kitt.reader.runtimecheck.test/com.kitt.reader.HotfixPhoneProbe`。本轮没有运行该命令，也不据此授权任何安装。
 4. 试听不写入GPS、不启动Journey、不写已播记忆/纪要、不改账号和语速/声音设置。朗读与正常沿途使用同一份完整正文与AndroidVoice分段路径。测试结果绑定文字SHA256。
 5. 用户耳听到结尾，检查中文发音、节奏、术语、是否有拖沓/难懂段落；另试听延伸 `yangshen-followup-dianzai`。`PASS_ENGINE_ONLY`只证明TTS引擎最终回调，不证明听者听见或认可。真人结果另记。
@@ -27,4 +29,4 @@
 
 ## 工程证据边界
 
-JVM中的审核通过故事仅是明确标记的测试夹具，验证纯本地选择、依赖、全正文和Journey状态。Robolectric长篇TTS测试手动控制最后分段回调；不等于设备实际朗读或真人听感。实际数目、执行时间、哈希与构建阻断结果见 `docs/evidence/v050-verification.json` 和根目录HANDOFF。
+JVM中的正式批准状态仅是明确标记的测试夹具；另有实际候选状态隔离回归，验证纯本地选择、依赖、全正文和Journey状态。Robolectric长篇TTS测试手动控制最后分段回调；不等于设备实际朗读或真人听感。本轮实际数目、执行时间、哈希见 `docs/evidence/v050-final-verification.json`；旧915项历史在 `docs/evidence/v050-verification.json` 和根目录HANDOFF。

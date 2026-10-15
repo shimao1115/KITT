@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "pack_id": "xindu-yangshen-narratives",
-  "content_version": "2026.10.15-draft2.1",
+  "content_version": "2026.10.15-candidate2.1",
   "narratives": [
     {
       "narrative_id": "yangshen-main",
@@ -58,10 +58,10 @@
           "accepted_revision": "e3136a2a2c14e1dddd2ece0dab377f120f369e4b23e17f0d66691d3a28993ea6"
         }
       ],
-      "review_status": "draft",
-      "fact_gate": "pending_human",
+      "review_status": "candidate",
+      "fact_gate": "passed",
       "visitor_gate": "pending",
-      "approval_ref": "",
+      "approval_ref": "yangshen-main-v21-acceptance-20261015",
       "license": "CC-BY-4.0",
       "estimated_duration_seconds": [
         109,
@@ -158,10 +158,10 @@
           "accepted_revision": "f512c5c6b71c4d51ea3c1286ce5f0b598e1cdad056a2f12d64e6a906ddc5a11f"
         }
       ],
-      "review_status": "draft",
-      "fact_gate": "pending_human",
+      "review_status": "candidate",
+      "fact_gate": "passed",
       "visitor_gate": "pending",
-      "approval_ref": "",
+      "approval_ref": "yangshen-followup-dianzai-v21-acceptance-20261015",
       "license": "CC-BY-4.0",
       "estimated_duration_seconds": [
         56,

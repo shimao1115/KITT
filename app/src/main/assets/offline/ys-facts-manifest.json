@@ -2,7 +2,7 @@
   "schema_version": 1,
   "minimum_code": 17,
   "pack_id": "xindu-yangshen-facts",
-  "content_version": "2026.10.15-review2",
-  "bytes": 27883,
-  "sha256": "d52015984ea9051bf3f5bca6c24f8d99a6439d7a565024aa7794694a7fc5d3d4"
+  "content_version": "2026.10.15-review3",
+  "bytes": 30198,
+  "sha256": "397a3795c4fdefe63632ae358bec2208fae8b90f25372aa3ca439802b6495a20"
 }

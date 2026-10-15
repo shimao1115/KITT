@@ -70,5 +70,33 @@ class PublishingGate(unittest.TestCase):
         with self.assertRaises(AssertionError):
             builder.build()
 
+    def test_acceptance_pair_requires_text_and_fact_evidence_but_keeps_listening_pending(self):
+        builder.build(require_playable=True, acceptance_candidate=True)
+        stories = builder.read(builder.ASSETS / 'ys-narratives.json')['narratives']
+        self.assertEqual(2, len(stories))
+        self.assertTrue(all(n['review_status'] == 'candidate' and n['visitor_gate'] == 'pending' for n in stories))
+        approvals = builder.read(builder.SOURCE / 'approvals.json')
+        for field in ['text_sha256', 'claim_refs_sha256', 'fact_evidence', 'fact_reviewer', 'scope', 'human_listening']:
+            bad = copy.deepcopy(approvals)
+            bad['approvals'][0][field] = 'invalid' if field in ['scope', 'human_listening'] else ''
+            (builder.SOURCE / 'approvals.json').write_bytes(builder.encode(bad))
+            with self.assertRaises(AssertionError, msg=field):
+                builder.build(acceptance_candidate=True)
+
+    def test_candidate_approval_cannot_be_promoted_to_formal_release(self):
+        n = self.stories()
+        for story in n['narratives']:
+            story.update(review_status='approved', visitor_gate='passed')
+        self.save(n)
+        with self.assertRaises(AssertionError):
+            builder.build(require_playable=True)
+
+    def test_acceptance_rejects_missing_fact_review_or_pending_text_approval(self):
+        for field, value in [('fact_gate', 'pending_human'), ('approval_ref', ''), ('visitor_gate', 'passed')]:
+            n = self.stories(); n['narratives'][0][field] = value; self.save(n)
+            with self.assertRaises(AssertionError):
+                builder.build(acceptance_candidate=True)
+            (builder.SOURCE / 'narratives.json').write_bytes((ORIGINAL / 'narratives.json').read_bytes())
+
 if __name__ == '__main__':
     unittest.main()

@@ -61,10 +61,12 @@ class StoryPacks private constructor(val stories: List<LocalStory>, val blocked:
         }
         fun load(context: Context): StoryPacks? = runCatching {
             fun read(name: String) = context.assets.open("offline/ys-$name.json").use { it.readBytes() }
-            parse(read("facts-manifest"), read("facts"), read("narratives-manifest"), read("narratives"))
+            parse(read("facts-manifest"), read("facts"), read("narratives-manifest"), read("narratives"),
+                acceptanceCandidate = BuildConfig.DEBUG && BuildConfig.APPLICATION_ID == "com.kitt.reader.runtimecheck")
         }.getOrNull()
 
-        fun parse(factManifest: ByteArray, facts: ByteArray, narrativeManifest: ByteArray, narratives: ByteArray): StoryPacks {
+        fun parse(factManifest: ByteArray, facts: ByteArray, narrativeManifest: ByteArray, narratives: ByteArray,
+            acceptanceCandidate: Boolean = false): StoryPacks {
             val f = checked(factManifest, facts, "xindu-yangshen-facts")
             val n = checked(narrativeManifest, narratives, "xindu-yangshen-narratives")
             require(f.string("area_id") == "cn-510114")
@@ -82,8 +84,13 @@ class StoryPacks private constructor(val stories: List<LocalStory>, val blocked:
             val stories = candidates.mapNotNull { (id, story) ->
                 runCatching {
                     require(id.matches(Regex("yangshen-[a-z0-9-]+"))) { "invalid_id" }
-                    require(story.string("review_status") == "approved" && story.string("fact_gate") == "passed" &&
-                        story.string("visitor_gate") == "passed" && story.string("approval_ref").isNotBlank()) { "review_pending" }
+                    // The acceptance APK exists so a person can audition the final text. Never
+                    // represent pending human listening as passed, or admit candidates in standard loads.
+                    val reviewed = story.string("review_status") == "approved" && story.string("visitor_gate") == "passed"
+                    val candidate = acceptanceCandidate && story.string("review_status") == "candidate" &&
+                        story.string("visitor_gate") == "pending"
+                    require((reviewed || candidate) && story.string("fact_gate") == "passed" &&
+                        story.string("approval_ref").isNotBlank()) { "review_pending" }
                     require(story.string("area_id") == "cn-510114" && story.string("entity_id") == "person-yang-shen" &&
                         story.string("entity_id") in entities) { "entity_or_area" }
                     require(story.string("license") == "CC-BY-4.0") { "rights" }
