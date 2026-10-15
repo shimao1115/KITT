@@ -1,3 +1,24 @@
+# KITT V0.4.2 / code16 — 真机原位升级与有界验收完成，STOP（2026-10-15）
+
+用户明确授权后，在 `feat/v042-simplify-end-summary` 快进至 `b8890f7`，对唯一候选执行**一次** `adb install -r` 成功；vivo超级守护由用户本人确认。**手机现为 `com.kitt.reader.runtimecheck` 0.4.2/code16，不得再安装一次。** [Issue #23](https://github.com/shimao1115/KITT/issues/23)保持OPEN，[PR #26](https://github.com/shimao1115/KITT/pull/26)保持Draft；不合并、不进入V0.5.0。下方“等待升级授权/手机code15”等为各轮历史。
+
+| 检查 | 本轮实际结果 |
+| --- | --- |
+| 安全升级 | **PASS**。候选74,369,322字节，SHA256 `36d39438c8efb735cd8e67bee1a250c8e789a25061a9425cb8d9ae7bebe0ccb3`；手机升级前0.4.1/code15、APK SHA256 `8beac9f79e4adcf8a31f95b742562ea393d996c337be3e1ee87cc8c2e58ce43f`。候选/升级前/升级后回读APK均通过原验签脚本，唯一证书SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`；回读code16 APK与候选哈希完全相同。未卸载/清数据/降级/重签。 |
+| 账号、设置与数据空间 | **PASS已核字段**。同一可见账号、ChatGPT启用；CHATGPT/gpt-6.1-sol/low、语速1.0、默认声音（tts_voice空）、独立研究false保留。安装前最后基线→安装后→验收后整个settings.xml哈希一致。首次安装2026-10-09 09:42:45、CE/DE目录inode不变，更新时间2026-10-15 08:27:34。未保存设置、重连或读取凭据值。打开设置自动触发1次模型目录请求，并在安装前改变文件哈希，因此使用其完成后的安装前基线；**零自动Director/Research不等于全程零网络请求**。不宣称在线推理可用或本轮真人耳听声音身份。 |
+| 精简结束页 | **PASS真机**。有主题及空旅程两条路径均显示标题/时长/跳过次数和主题或“这一程以安静相伴。”，无五项评分、意见框、保存按钮、未提供目的地技术状态。有主题页竖横屏均完整可见且无须滚动。每趟恰好一次“回到出发页”到正常出发页，结束后JourneyService不存在。 |
+| 自动纪要与历史 | **PASS有界文件核验**。升级本身20份原记录逐份内容摘要相同，全部可按既有纪要字段解析。两次结束各新增1份JSON，仍停在结束页时即已保存；新记录无ratings/feedback。两次返回前后当时20份文件内容摘要逐份一致。**既有20份保留上限正常执行：每次结束各淘汰1份较旧记录，最终18份原记录＋2份测试纪要，保留的原记录未改写**，没有迁移或手工删除。无历史浏览UI，不冒称逐份执行TripStore.latest。纪要摘要对UTF-8读取文本去首尾空白后计算，证明内容一致，不单独证明空白字节/mtime未变；设置哈希为设备sha256sum逐字节核验。 |
+| 旧评分字段实机 | **PENDING**：升级前20份真实记录中含ratings/feedback的为0；未向手机伪造旧记录。上轮工程遗留JSON读取/逐字节兼容测试PASS继续有效，但不代替该实机项。 |
+| 联网本地自动讲述 | **PASS_ENGINE_ONLY当前条件**。普通开始取得真实NETWORK（±37m/0秒，后见±30m/3秒）并命中新都离线包，自动杨慎主题SPEAK_NOW、`cloud_calls=0`，Voice completed success=true/active=false/ask=false共1次；完整小型本进程诊断及logcat无Director dispatch/start、Research start或active research decision。计数为诊断事件，不冒称仪表requests快照/抓包；非卫星GPS、未注入位置。未主动问目的地。**本轮真人耳听PENDING**。 |
+
+脱敏 [手机证据](docs/evidence/v042-phone-acceptance.json)、[真机验收](docs/ACCEPTANCE_END_SUMMARY.md)及 [竖屏](docs/evidence/v042-end-portrait.png) / [横屏](docs/evidence/v042-end-landscape.png) / [安静页](docs/evidence/v042-end-quiet.png)已提交。原始账号文字/摘要、设备序列号、坐标/轨迹、设置密文/哈希、原始私人纪要、聊天/录音与签名私钥均未上传。仅公开受控结束页截图与汇总布尔/计数。当前进程AndroidRuntime FATAL=0；无持续无崩溃保证。
+
+手机最终在正常出发页，无旅程定位前台服务、录音或TTS；恢复原锁定竖屏（accelerometer_rotation=0/user_rotation=0），Wi-Fi/蜂窝/VPN配置未动。没有安装或运行instrumentation，没有改生产源码/重打包，也没有重跑上轮已完成的Debug446/Release433=879项、六组成都→绵阳模拟、build/lint/签名；这些继续引用2026-10-14工程证据，不算本轮新执行。
+
+后续最短人工项仅为真实旧ratings/feedback记录可得时只读补验、明确目的地/平板硬件和真人耳听；[#24](https://github.com/shimao1115/KITT/issues/24)断网可信新鲜定位地方全链、重播/有限问答和同旅程云失败恢复等仍OPEN/PENDING，不用本轮联网结果覆盖。无待用户本人完成的安装/账号配置动作。实现 `d64adf8`、工程交接 `dcaf390`、同步授权 `b8890f7`；本轮验收文档/证据提交见分支HEAD。**完成即STOP，不重装、不合并、不关闭Issue、不启动下一版。**
+
+---
+
 # KITT V0.4.2 / code16 — 工程PASS，STOP等待真机升级确认（2026-10-14）
 
 当前唯一交付为 [Issue #23](https://github.com/shimao1115/KITT/issues/23) / [Draft PR #26](https://github.com/shimao1115/KITT/pull/26)，分支 `feat/v042-simplify-end-summary`，实现提交 `d64adf8`。**工程完成；本轮未连接/操作手机、未发送真实云请求，不合并、不关闭Issue、不进入V0.5.0。** 手机code15是前轮历史实测，本轮未重新读取；本版升级及真人验收全部PENDING。下方V0.4.1历史与 #24 外场PENDING完整保留。

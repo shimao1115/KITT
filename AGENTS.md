@@ -1,5 +1,7 @@
 # AGENTS.md — KITT Autonomous Build Contract
 
+> **2026-10-15 当前STOP状态**：用户已授权并完成V0.4.2/code16单次同签名原位升级及有界真机验收；手机已code16，不得重复安装。最新结果见 [HANDOFF](HANDOFF.md)、[TASK_CARD](TASK_CARD.md)、[手机证据](docs/evidence/v042-phone-acceptance.json)。旧评分实机样本/真人耳听及#24外场仍PENDING；Issue23/24保持OPEN、PR26 Draft、不合并、不启动V0.5.0。下方“等待手机升级许可”等为历史。
+
 > **2026-10-14 最新用户授权 / 当前唯一施工目标：V0.4.2/code16 的旅程结束页评分移除**。V0.4.1/code15 已阶段性接受并通过 [PR #25](https://github.com/shimao1115/KITT/pull/25) 合并 `main`，真机手机 code15、[#24](https://github.com/shimao1115/KITT/issues/24) 的断网定位/云失败恢复外场仍 OPEN/PENDING。本分支 `feat/v042-simplify-end-summary` 有[最新独立 TASK_CARD.md](TASK_CARD.md)：只删 5 项 1—5 评分、可选评语及保存按钮；保留纪要及返回，`TripStore.finish()` 继续自动写入并保持历史 JSON（含旧 `ratings`/`feedback`）兼容性。**不得为了完成 UI 而修改定位/在线调用/TTS/账号，六类偏好和双层包下版再做**。V0.4.2 开发/测试/生成新签名 APK 已授权，**手机 code16 原位安装未获本轮独立许可**，构建后先 STOP 等确认；**本段覆盖下方旧版本排序与 STOP 文字，它们仅为当时历史**。
 
 > **2026-10-14 优先级修正**：已核实 V0.4.0/code14 真正的 Android 源码：联网时自动沿途仍会调用云端 Director，且 Fake/提示词有“去哪儿”的目的地追问。**当前最高优先的未来施工任务改为 [#24 本地原生开口热修](https://github.com/shimao1115/KITT/issues/24)，候选在 [Draft PR #25](https://github.com/shimao1115/KITT/pull/25)**；必须先用办公室/家庭电脑实跑 Android Debug/Release、模拟、真机 GPS/断网及原签名回归，审核通过后才能合并/发布。**随后**是 #23 删评分，再 V0.5.0 成品双包。旧版 code14、当前 TASK_CARD/#20 与真机状态尚未修改；以下先 #23 的日期较早排序由本条取代。

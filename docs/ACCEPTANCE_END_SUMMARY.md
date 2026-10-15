@@ -1,6 +1,18 @@
 # V0.4.2 / code16 — 结束旅程页精简验收
 
-唯一任务 [Issue #23](https://github.com/shimao1115/KITT/issues/23) / [Draft PR #26](https://github.com/shimao1115/KITT/pull/26)，分支 `feat/v042-simplify-end-summary`。本轮只做工程候选，不连接或操作手机；真机所有本版步骤均 **PENDING**，工程结果见根 [HANDOFF](../HANDOFF.md)。V0.4.1 的 [#24 外场待验](https://github.com/shimao1115/KITT/issues/24) 独立保留，不能被本版 UI 测试覆盖。
+唯一任务 [Issue #23](https://github.com/shimao1115/KITT/issues/23) / [Draft PR #26](https://github.com/shimao1115/KITT/pull/26)，分支 `feat/v042-simplify-end-summary`。工程候选及2026-10-15真机有界验收已完成；实际PASS/PENDING见下文与根 [HANDOFF](../HANDOFF.md)。V0.4.1 的 [#24 外场待验](https://github.com/shimao1115/KITT/issues/24) 独立保留，不能被本版 UI 测试覆盖。
+
+
+## 2026-10-15 真机结果（覆盖下方安装前步骤）
+
+- **PASS安全原位升级**：真实同签名code15→16，单次adb install -r成功，vivo确认由用户本人完成。候选及装机回读74,369,322字节、SHA256 `36d39438c8efb735cd8e67bee1a250c8e789a25061a9425cb8d9ae7bebe0ccb3`；唯一原证书 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。首次安装时间、数据目录inode及最后安装前基线至最终的完整设置文件哈希一致。
+- **PASS UI/保存/返回**：有主题结束页竖横屏完整可见；空旅程显示安静文案。两者评分/评语/保存及技术目的地均不存在；纪要在结束页打开时已经落盘，恰好一次返回到出发页，返回不改写文件，JourneyService停止。
+- **PASS已核账号设置**：同一可见账号，CHATGPT/gpt-6.1-sol/low，语速1.0、默认声音、独立研究false；未保存/重连。打开设置本身自动发起1次模型目录请求，不是Director/Research；其导致安装前哈希变化后重新记录基线，升级后至验收结束哈希一致。在线推理可用性与真人听音身份未作确认。
+- **PASS普通历史保留；旧评分实机PENDING**：升级20份记录内容摘要一致、字段可解析；两次结束各新增1份，按原20份上限各淘汰1份较旧记录，最终18份原记录＋2份测试纪要；保留原记录不改写，返回时全部20份内容摘要一致。真实旧ratings/feedback样本0份，未伪造；工程遗留兼容PASS独立保留。只读JSON核验不等于逐份调用TripStore.latest或不存在的历史UI。
+- **PASS_ENGINE_ONLY联网本地链**：真实NETWORK ±37m/0秒（后±30m/3秒）→新都离线包→自动SPEAK_NOW/Voice success=true一次；完整本进程诊断/当前进程logcat中Director dispatch/start与Research start、active research decision均0，且local事件cloud_calls=0。未注入位置，不是卫星GPS/抓包/计数器快照；本轮真人耳听仍PENDING。
+- **PENDING不扩验**：明确目的地、平板硬件、真人耳听及#24原外场项目。未安装/运行instrumentation、未重建生产APK或重跑879项工程测试。最终出发页、无旅程服务，原旋转/网络配置保留，当前进程AndroidRuntime FATAL0。
+
+[脱敏手机证据](evidence/v042-phone-acceptance.json) · [主题竖屏](evidence/v042-end-portrait.png) · [横屏](evidence/v042-end-landscape.png) · [安静页](evidence/v042-end-quiet.png)。**手机已经code16，不重复安装；Issue23/24 OPEN、PR26 Draft，不合并、不进入V0.5.0，STOP。**
 
 ## 行为与工程范围
 
