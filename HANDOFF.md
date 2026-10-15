@@ -1,3 +1,13 @@
+# KITT V0.5.0 — v2.1 最终文字已由用户确认，进入史实复核待验（2026-10-15）
+
+用户阅读提交 `db4d0da` 对应的杨慎主篇与《滇载记》延伸篇 v2.1 全文后，明确回复 **“确认定稿”**。已在 [PR #28 记录用户确认](https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143)，两篇正文不再反复改写。正式文字绑定 `yangshen-main` SHA256 `f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4`，`yangshen-followup-dianzai` SHA256 `559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f`。
+
+**范围说明**：FINAL TEXT APPROVED 只代表用户最终文字确认；独立史实审查尚未完成，赵晓晖论文原件独立复核 PENDING；真人中文 TTS/听感与真机 GPS/离线播放也 PENDING。两篇仍 draft、`fact_gate=pending_human`、`visitor_gate=pending`、`approval_ref` 空、正式故事0，`approvals.json` 仍为空（审批记录不得伪造）；`--require-playable` 仍应 BLOCKED。此前 v2.1 内容校验已通过，但未重跑 Android 测试，915项是旧工程证据。
+
+**下一步**：Codex 依 [最新 TASK_CARD.md](TASK_CARD.md) 和 [Issue #27](https://github.com/shimao1115/KITT/issues/27) 只补来源独立复核与必要真实审批证据；证据通过后执行完整工程回归，才考虑 code17 APK 候选。绝不因文字已确认就跳过审核门禁、擅自制作或安装 APK。PR #28 保持 Draft、不合并；不清手机数据、不关闭 #27、不开其他版本。#23/#24 仍待外场。
+
+---
+
 # KITT V0.5.0 — v2.1 最终候选供逐字确认 / REVIEW-STOP（2026-10-15）
 
 已读取 `b448a9b` 最新任务卡及PR #28后两轮审稿评论。用户认可v2内容方向和整体讲法；本轮仅主篇两句轻量润色，不把方向认可写成最终文字批准、事实终审或真人试听通过。
