@@ -1,3 +1,14 @@
+# v2.1 用户最终文字确认（2026-10-15）｜只对文案定稿
+
+用户在阅读 `db4d0da` 对应的 v2.1 双篇最终全文与改句对照后明确回复 **“确认定稿”**。审批范围是两篇**最终文字内容和讲述方式**，证据见 [PR #28 记录](https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143)。
+
+- `yangshen-main` 正文 SHA256：`f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4`
+- `yangshen-followup-dianzai` 正文 SHA256：`559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f`
+
+既有 v2.1 Claim 引用集未变化。此定稿不等于用户审过每条原始史料或实际完成 TTS 真人试听；赵晓晖论文原件独立复核仍 PENDING，Fact Gate 和真实听感/Visitor Gate 待后续真实证据。当前不得把状态改成可播 approved；不在此处填入虚假的事实终审/耳听通过。以下原“等待用户逐字确认”为提交当时的历史状态，现已由本段覆盖。
+
+---
+
 # v2.1 最终候选审校增量 — 等用户逐字确认（2026-10-15）
 
 输入分支提交 `b448a9b`；依据最新任务卡、[v2书面审稿](https://github.com/shimao1115/KITT/pull/28#issuecomment-6186232006)、[用户反馈与两句收尾](https://github.com/shimao1115/KITT/pull/28#issuecomment-6187103676)及本对话授权。用户已认可v2的内容方向与整体讲法；这不等于逐字批准尚未呈现的v2.1、事实终审或真人TTS通过。审稿助手的书面游客编辑PASS按其原始范围记录，不代签用户或全部史实审核。
