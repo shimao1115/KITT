@@ -1,5 +1,7 @@
 # CURRENT TASK CARD — KITT V0.5.0 / Issue #27 杨慎完整离线故事黄金路径
 
+> **2026-10-15 V0.5.0当前交付 / REVIEW-STOP**：杨慎主篇＋延伸全文与9来源/14核验条目已提交审阅；两篇仍draft、正式故事0。工程冻结回归 Debug 464 + Release 451 = 915 项零失败，Python4项、构建/lint及原签名回归通过；详见 [HANDOFF](HANDOFF.md)、[Draft PR](https://github.com/shimao1115/KITT/pull/28)。**内容人工/独立终审和游客试听PENDING，runtimecheck code17被门禁阻断、没有候选APK；手机未操作，不合并，不开下一版本。** 下方“目前仅任务卡/尚未实施”等为施工前记录，由本段覆盖；不能据旧授权重复安装code16。
+
 **2026-10-15 用户明确要求“下一阶段”**：现在授权**正式开始本版本的内容研究、事实核验、最小双包架构、Android 消费者/测试与同签名 APK 工程候选开发**。本任务为唯一活跃施工单：[Issue #27](https://github.com/shimao1115/KITT/issues/27)，分支 `feat/v050-xindu-yangshen-story-packs`，基线为已合并 V0.4.2/code16 的 `main`。**当前只是分支和任务卡已准备，不能称 V0.5.0 已实施、史料已查证或设备已验收。**
 
 ## 首先继承最新事实、不得返工上一版

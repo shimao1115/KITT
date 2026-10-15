@@ -1,5 +1,7 @@
 # KITT 下一阶段开发路线图 — 本地知识优先（2026-10-14 用户同意）
 
+> **2026-10-15 V0.5.0当前交付 / REVIEW-STOP**：杨慎主篇＋延伸全文与9来源/14核验条目已提交审阅；两篇仍draft、正式故事0。工程冻结回归 Debug 464 + Release 451 = 915 项零失败，Python4项、构建/lint及原签名回归通过；详见 [HANDOFF](../HANDOFF.md)、[Draft PR](https://github.com/shimao1115/KITT/pull/28)。**内容人工/独立终审和游客试听PENDING，runtimecheck code17被门禁阻断、没有候选APK；手机未操作，不合并，不开下一版本。** 下方“目前仅任务卡/尚未实施”等为施工前记录，由本段覆盖；不能据旧授权重复安装code16。
+
 > **2026-10-15 最新现行状态**：用户已要求正式进入 V0.5.0，唯一已授权施工目标是 [Issue #27 杨慎真实来源 Fact Pack ＋已审稿完整 Narrative Pack](https://github.com/shimao1115/KITT/issues/27)；独立开发分支 `feat/v050-xindu-yangshen-story-packs`，任务卡 [TASK_CARD.md](../TASK_CARD.md)。V0.4.2/code16 的 [PR #26](https://github.com/shimao1115/KITT/pull/26) 已合并 `main`，用户手机 code16 无需重复安装；#23/#24 真机/外场余项继续 PENDING。V0.5.0 **目前仅授权开始，内容未核、代码未做、测试/安装均未执行**；只有通过真实来源 Fact Gate 与游客故事 Gate、全量工程回归，才能交付 code17 原签名 APK 候选。用户没有授权 code17 手机安装或 PR 合并。只做新都杨慎一篇约3–5分钟主故事＋至少一篇不重复的延伸篇、两层纯文字包及最小本地选择/离线中文播放；不提前开发探索地点、六类偏好或下载器。下方已完成/尚未授权历史文字以此段更新为准。
 
 > **2026-10-15 最新现行状态（覆盖下文历史叙述）**：V0.4.2/code16 删除结束页评分已通过 879 项工程测试及有界真机验收，用户明确同意阶段性合并；[PR #26](https://github.com/shimao1115/KITT/pull/26) 已合并 `main`（`9351f17`），现有手机已是 code16，不重复安装。结束页与自动纪要/账号设置 PASS，真实 NETWORK 本地自动讲述、零自动云调用为设备级记录，真人耳听未验。[#23](https://github.com/shimao1115/KITT/issues/23) 保留真实旧评分样本兼容/耳听等 PENDING；[#24](https://github.com/shimao1115/KITT/issues/24) 保留断网新鲜真实定位讲述、重播及云失败后恢复等 PENDING。**V0.4.2 开发 STOP/归档**；下一建议 V0.5.0 新都 Fact/Narrative 两层高质量文字包尚未授权/施工，按用户下一轮要求单独立卡。下文旧“PR26 Draft、未装机、code15”均为当时记录。
