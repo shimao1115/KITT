@@ -1,5 +1,7 @@
 # AGENTS.md — KITT Autonomous Build Contract
 
+> **2026-10-15 最新 v2 改稿交付 / REVIEW-STOP**：已按驾驶场景重写主篇580字符、延伸297字符，延伸改讲《滇载记》商旅歌谣；9来源/16核验条目。两篇仍draft，Fact人工终审/Visitor Gate均PENDING，审批空，正式故事0。仅内容改稿、追踪与专项校验；本轮Python4项、StoryPacks Debug专项16项PASS，发布门禁仍BLOCKED。下方915项为v1冻结工程历史，未在本轮重跑。**未构建任何APK，未操作手机，PR #28保持Draft、不合并；STOP等用户审阅第二稿。**
+
 > **2026-10-15 V0.5.0当前交付 / REVIEW-STOP**：杨慎主篇＋延伸全文与9来源/14核验条目已提交审阅；两篇仍draft、正式故事0。工程冻结回归 Debug 464 + Release 451 = 915 项零失败，Python4项、构建/lint及原签名回归通过；详见 [HANDOFF](HANDOFF.md)、[Draft PR](https://github.com/shimao1115/KITT/pull/28)。**内容人工/独立终审和游客试听PENDING，runtimecheck code17被门禁阻断、没有候选APK；手机未操作，不合并，不开下一版本。** 下方“目前仅任务卡/尚未实施”等为施工前记录，由本段覆盖；不能据旧授权重复安装code16。
 
 > **2026-10-15 最高优先：用户已授权启动 V0.5.0/code17 杨慎完整离线主故事+延伸篇**，唯一活动任务 [Issue #27](https://github.com/shimao1115/KITT/issues/27)，独立分支 `feat/v050-xindu-yangshen-story-packs` 的 [TASK_CARD.md](TASK_CARD.md) 为施工权威入口。V0.4.2/code16 已阶段性通过并由 [PR #26](https://github.com/shimao1115/KITT/pull/26) 合并，手机已有原签名 code16，**不可重装或在本轮直接安装 code17**。本轮先来源核实与事实/游客双 Gate、纯文字 Fact/Narrative 双包、仅杨慎完整主篇＋至少一篇延伸、最小 Story Selector 和真实全量 Android 测试，工程/内容达标才产候选 APK。**创建分支或 AI 草稿≠来源已核验/用户已经审稿/手机已经听完**；稿件审核不充分宁可留 BLOCKED，不可编造来源、卒年、写作年份或正式批准。**V0.5.1 探索地点、V0.5.2 六类偏好、V0.6.0 GitHub Releases、KITT-PACKS 仓库、登录/定位重构均未授权**。#23/#24 外场待验继续开放。下文所有“V0.5.0 尚未授权”等为历史。

@@ -10,6 +10,8 @@
 
 **内容改稿后**保留 `review_status=draft`、`fact_gate=pending_human`、`visitor_gate=pending`、`approvals.json` 空表；不伪造来源、真人已读或试听。只按改动实际执行内容校验；不重复宣称已做手机试听/安装。提交 v2 全文与逐段事实/文风修改说明，留在 Draft PR #28 供用户审稿。**尚未授权 code17 手机安装、PR 合并或正式发布**，内容审稿完成前原代码17 runtimecheck 构建应继续被 BLOCKED。STOP 等用户审稿。
 
+**本步执行结果 / v2 REVIEW-STOP**：主篇580字符、延伸297字符，正文及逐段依据见 [内容审校](docs/YANGSHEN_CONTENT_REVIEW.md)。补核首次赴戍病困与《滇载记》商旅歌谣两条Claim，未把九男/十男异文放进故事。两篇仍draft、审批空、正式故事0；Python4项及StoryPacks Debug专项16项通过，内容发布门禁仍BLOCKED。[本轮记录](docs/evidence/v050-v2-content-validation.json)与下方v1的915项工程历史分开。未构建APK、未操作手机、不合并PR，等待第二稿审阅。
+
 > **2026-10-15 V0.5.0当前交付 / REVIEW-STOP**：杨慎主篇＋延伸全文与9来源/14核验条目已提交审阅；两篇仍draft、正式故事0。工程冻结回归 Debug 464 + Release 451 = 915 项零失败，Python4项、构建/lint及原签名回归通过；详见 [HANDOFF](HANDOFF.md)、[Draft PR](https://github.com/shimao1115/KITT/pull/28)。**内容人工/独立终审和游客试听PENDING，runtimecheck code17被门禁阻断、没有候选APK；手机未操作，不合并，不开下一版本。** 下方“目前仅任务卡/尚未实施”等为施工前记录，由本段覆盖；不能据旧授权重复安装code16。
 
 **2026-10-15 用户明确要求“下一阶段”**：现在授权**正式开始本版本的内容研究、事实核验、最小双包架构、Android 消费者/测试与同签名 APK 工程候选开发**。本任务为唯一活跃施工单：[Issue #27](https://github.com/shimao1115/KITT/issues/27)，分支 `feat/v050-xindu-yangshen-story-packs`，基线为已合并 V0.4.2/code16 的 `main`。**当前只是分支和任务卡已准备，不能称 V0.5.0 已实施、史料已查证或设备已验收。**

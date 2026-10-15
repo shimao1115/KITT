@@ -1,4 +1,19 @@
-# KITT V0.5.0/code17 — 工程框架通过，杨慎双篇待审，STOP（2026-10-15）
+# KITT V0.5.0 — 第二稿供审阅 / REVIEW-STOP（2026-10-15）
+
+当前最新交付是按 `1de6549` 任务卡和 PR #28 两轮意见完成的 **v2文字改稿**，未扩功能。下方v1工程交接与915项证据保留作历史，不代表本轮重跑；旧字符数/选题由本段覆盖。
+
+- [主篇v2全文](content/yangshen/yangshen-main.md)：580字符，按260–320字/分钟估计109–134秒。主线为状元—大礼议—受杖赴戍病困—返川与读写—词作流传—新都纪念地；省略年号、官职及审校旁白。
+- [延伸v2全文](content/yangshen/yangshen-followup-dianzai.md)：297字符，估计56–69秒。改讲《滇载记》商旅歌谣中的冬雪、夏热、盘缠；有主篇未讲的新Claim，不重讲朝争或古书阅读方法。均未真人计时/试听，不以时长灌水。
+- [逐段事实与文风修改](docs/YANGSHEN_CONTENT_REVIEW.md)：来源仍9，核验条目16（14 verified / 1 lead / 1 rejected）。新增赴戍病困与书中歌谣两条原文依据；verified只表示执行者来源相符。九男/十男差异保留后台待核，不播；论文独立终审仍PENDING，不冒签审稿人已读PDF。
+- 两篇 `draft` / `fact_gate=pending_human` / `visitor_gate=pending` / `approval_ref`空，审批表保持空；内置正式故事0、候选构建门禁仍BLOCKED。源码版本Fact `2026.10.15-review2`，Narrative `2026.10.15-draft2`，独立manifest已同步，待审正文未入应用资产。
+- 本轮实际：结构/哈希/精确依赖与Markdown副本一致性校验PASS，Python发布门禁4项PASS，Debug `StoryPacksTest` 16项、0失败/错误/跳过。删去测试中旧稿“大于1000字符”的硬断言，仍逐字验证全文相等，未改生产Android逻辑。首次专项有2项失败，发现主篇“风土”概述引用了延伸歌谣Claim、使其不再有新Claim；已把主篇收拢为云南历史，歌谣专留延伸，最终专项实际执行通过。不是全量915项复跑。[本轮校验记录](docs/evidence/v050-v2-content-validation.json)。
+- 本轮未运行assemble/lint/签名或runtimecheck构建，未生成任何APK，未读/安装/操作手机，未改账号、签名、定位、TTS、Journey或云调用路径；#23/#24待验不变。真实听感、独立/人工事实终审仍PENDING。
+
+第二稿留在 [Draft PR #28](https://github.com/shimao1115/KITT/pull/28)，不合并、不批准、不发布。**STOP等待用户审稿。**
+
+---
+
+# v1 工程框架交付历史（2026-10-15；以下正文字符数不代表v2）
 
 最新权威状态：已在 `feat/v050-xindu-yangshen-story-packs` 完成研究、可追溯待审双包、Android本地消费者及回归。当前 [Draft PR](https://github.com/shimao1115/KITT/pull/28)，**不合并；Issue #27 保持OPEN/REVIEW；没有code17 runtimecheck候选，也没有操作手机**。下方V0.4.2/旧版本文字保留作历史，不据其重复施工或安装。
 

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "pack_id": "xindu-yangshen-facts",
-  "content_version": "2026.10.15-review1",
+  "content_version": "2026.10.15-review2",
   "area_id": "cn-510114",
   "entities": [
     {
@@ -524,6 +524,54 @@
       "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
       "review_note": "旧来源内部矛盾，本条为拒绝项，不能成为故事依赖",
       "revision": "b414dc4f35e3d9719e226eda8d2ea89386567b25f561d03e2c3bae1ffd1787d1",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-ill-journey",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《明史·杨慎传》在首次谪戍永昌的叙述末记杨慎扶病远行、疲惫甚，抵戍所几不起。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第2段末，起“扶病驰万里”，至“抵戍所，几不起”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "按首次赴戍时序表述；不把“万里”当精确现代里程，不补抵达日月、病名、施救者或心理。",
+      "revision": "0e3b08259fa99d625b213e69e4c04928242fb04ea15c5e4e311a6d345ec5998a",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-dianzai-travel-song",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《滇载记》异牟寻一节介绍山川时，在高黎共山相关夹注收录商旅歌谣，依次写冬雪、夏秋暑热、春时资粮已绝而欲归不得。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "dianzai",
+          "locator": "“异牟寻以唐代宗大历十四年嗣立”一节，高黎共山夹注，“商贾愁怨，为之谣曰”至“春时欲归来，囊中资粮绝”",
+          "relation": "supports",
+          "accepted_source_revision": "8037c285aa01d625f5026b5044696e93e885411bd0fb70a6f633617b258ef591"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "只核古书收录及歌谣大意；不认定杨慎亲耳采集、歌谣确切产生年代、人物实有或现代气候路况。盘缠为资粮的口语概括，感受为歌谣解读。",
+      "revision": "b67650a311b14c716f67a887fa3d51e2da4183f94ae0488458100812a9d013cf",
       "verified_at": "2026-10-15",
       "verified_by": "Codex source cross-check; independent/human final review pending"
     }

@@ -1,5 +1,7 @@
 # KITT 下一阶段开发路线图 — 本地知识优先（2026-10-14 用户同意）
 
+> **2026-10-15 最新 v2 / REVIEW-STOP**：按驾驶听感修订杨慎主篇580字符与延伸297字符；延伸讲书中赶路人的歌谣，9来源/16核验条目。仍为draft、审批空、正式故事0。仅本次内容校验与StoryPacks专项，不把下方v1的915项当本轮重跑；未构建APK、未操作手机，PR #28保持Draft。等待用户审稿，不进入探索地点、兴趣设置或下载功能。详见 [HANDOFF](../HANDOFF.md)。
+
 > **2026-10-15 V0.5.0当前交付 / REVIEW-STOP**：杨慎主篇＋延伸全文与9来源/14核验条目已提交审阅；两篇仍draft、正式故事0。工程冻结回归 Debug 464 + Release 451 = 915 项零失败，Python4项、构建/lint及原签名回归通过；详见 [HANDOFF](../HANDOFF.md)、[Draft PR](https://github.com/shimao1115/KITT/pull/28)。**内容人工/独立终审和游客试听PENDING，runtimecheck code17被门禁阻断、没有候选APK；手机未操作，不合并，不开下一版本。** 下方“目前仅任务卡/尚未实施”等为施工前记录，由本段覆盖；不能据旧授权重复安装code16。
 
 > **2026-10-15 最新现行状态**：用户已要求正式进入 V0.5.0，唯一已授权施工目标是 [Issue #27 杨慎真实来源 Fact Pack ＋已审稿完整 Narrative Pack](https://github.com/shimao1115/KITT/issues/27)；独立开发分支 `feat/v050-xindu-yangshen-story-packs`，任务卡 [TASK_CARD.md](../TASK_CARD.md)。V0.4.2/code16 的 [PR #26](https://github.com/shimao1115/KITT/pull/26) 已合并 `main`，用户手机 code16 无需重复安装；#23/#24 真机/外场余项继续 PENDING。V0.5.0 **目前仅授权开始，内容未核、代码未做、测试/安装均未执行**；只有通过真实来源 Fact Gate 与游客故事 Gate、全量工程回归，才能交付 code17 原签名 APK 候选。用户没有授权 code17 手机安装或 PR 合并。只做新都杨慎一篇约3–5分钟主故事＋至少一篇不重复的延伸篇、两层纯文字包及最小本地选择/离线中文播放；不提前开发探索地点、六类偏好或下载器。下方已完成/尚未授权历史文字以此段更新为准。

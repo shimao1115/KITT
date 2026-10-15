@@ -58,7 +58,7 @@ class StoryPacksTest {
     }
     @Test fun approvedFixtureParsesIndependentVersionsAndFullText() {
         val p = parse(); assertEquals(2, p.stories.size); assertTrue(p.blocked.isEmpty())
-        assertTrue(p.stories.first().text.length > 1000)
+        // The equality below checks complete text; editorial duration is not a minimum length.
         assertEquals(StoryCategory.HISTORY, p.stories.first().category)
         assertEquals(candidates().getValue("narratives").jsonArray.first().jsonObject.getValue("text").jsonPrimitive.content, p.stories.first().text)
     }
