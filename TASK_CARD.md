@@ -1,3 +1,51 @@
+# CURRENT TASK CARD — KITT V0.5.0 / Issue #27 杨慎完整离线故事黄金路径
+
+**2026-10-15 用户明确要求“下一阶段”**：现在授权**正式开始本版本的内容研究、事实核验、最小双包架构、Android 消费者/测试与同签名 APK 工程候选开发**。本任务为唯一活跃施工单：[Issue #27](https://github.com/shimao1115/KITT/issues/27)，分支 `feat/v050-xindu-yangshen-story-packs`，基线为已合并 V0.4.2/code16 的 `main`。**当前只是分支和任务卡已准备，不能称 V0.5.0 已实施、史料已查证或设备已验收。**
+
+## 首先继承最新事实、不得返工上一版
+
+1. 读本卡、[AGENTS.md](AGENTS.md)、[HANDOFF.md](HANDOFF.md)、[正式知识内容标准 V2.4](docs/KITT_KNOWLEDGE_STANDARD.md)、[知识工厂 V2.4](docs/KITT_KNOWLEDGE_FACTORY.md)、[未来双包蓝图](docs/FUTURE_OFFLINE_KNOWLEDGE_PACKS.md)、[离线包管理标准](docs/KITT_OFFLINE_PACK_MANAGEMENT.md)、[本地优先路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)，然后读现有 `OfflinePack.kt`/`DirectorLoop.kt`/`KittRuntime.kt`/`Journey.kt`/`AndroidVoice.kt` 与 `app/src/main/assets/offline/xindu-*`、[原离线来源登记](docs/OFFLINE_XINDU_SOURCES.md) 及相关测试。
+2. V0.4.2/code16 真实手机 `com.kitt.reader.runtimecheck` **已安全原位升级**；Debug446 + Release433 =879 项工程 PASS；[#23](https://github.com/shimao1115/KITT/issues/23)（旧评分实机样本、真人听感）与 [#24](https://github.com/shimao1115/KITT/issues/24)（无网新鲜位置下地方讲述/重播/在线失败后恢复等）**独立 OPEN/PENDING**。不可更新为“已完整验收”。别重装 code16、别动密钥或账号、别排查 ChatGPT 连接作为本版前置。
+3. 以**最短原生黄金路径**施工：真实有效 GPS/NETWORK 新都区→已装的审核过的杨慎 Fact + Narrative 互相校验→本地选择可播主故事→设备真正离线中文 TTS 播**完整正文**。有网络/无网络/云不可达三种情况正常自动讲述均不经过在线 Director/Research；不得假定 Fake 模拟等于真机。
+
+## 本版严格限定的内容：杨慎（杨升庵）一个对象
+
+**先核验史料、再写成品、再上设备，不反过来让漂亮故事“倒逼”虚构事实。** 以下是研究提纲，不是预先核实的定论：
+
+- 人物与新都、桂湖/升庵祠的实际联系；字用修、号升庵、1511 年科举状元及翰林身份。
+- 嘉靖朝“大礼议”背后的冲突是什么、杨慎参与到什么程度、结局/谪戍云南具体时序；拒绝把复杂朝争简化成单一口号。
+- 在云南的经历、文学与学术工作的可核实成就，不止念官职和著作目录。
+- 《临江仙·滚滚长江东逝水》作者/版本、与其他作品和后世《三国演义》相关改编的关系，**尤其核查历史出处、年代及作品归属，不将电视剧/小说中的使用等同于原作历史诞生情景**。
+- 梳理旧中央纪委页面 `source_id=yang` 已记录的**卒年矛盾**（见 `docs/OFFLINE_XINDU_SOURCES.md`），不能直接继承矛盾年份。其他有争议的游记/传说/逸闻须归属来源，证据不足就不要作为肯定句播放。
+
+**应交付的内容**：
+
+A. 一个可以独立审查的 **Fact Pack**：稳定 Area/Entity/Claim/Source ID、`source_id+locator` 真实可回读、访问/出版时间、版本/修订指纹、有效性/证据状态（`verified|contested|lead|rejected`）、适用范围与版权/许可；从旧6对象/22条事实增补，不得丢旧知识或把旧 `TopicFamily` 强行映射成六类 Story 分类。
+
+B. 一个独立版本的 **Narrative Pack**：至少**一篇经过事实和游客双 Gate 审核的杨慎主故事**（目标约3–5分钟、本地 TTS 可完整读完；有背景、人生转折、远谪/创作、作品与新都联系、收束，非年表）和**至少一篇有不同新事实的延伸篇**（如远谪/学问、作品流传，避免重复）；每篇稳定 `narrative_id`、`story_type=main|followup`、`primary_category=HISTORY` 或通过审核更合适的六类之一、辅分类仅在实际内容适用时标记、`supported_claim_refs` 精确绑定所用的 Claim ID + 认可修订、`review_status`、预计时长、县域关联≠现场可见。
+
+C. **审稿产物**：Source Registry、Claim 核验表/冲突与不可读来源说明、主要叙事句子与 Claim 追踪、普通游客听稿反馈/未完成项、版权核查和稳定包 manifest。来源必须真的打开或拿到合法的具体书目/卷页再标已读；只搜索到标题/二次摘要则登记为 `lead/unverified`，**不能编造页码、DOI、访问成功、人体试听结果或作者归属**。模型换个名字不代表独立来源。
+
+**关键冻结 Gate**：`draft/lead/rejected` 或无必要证据/许可/人工认可的 Narrative **不能伪标 approved 或以“正式可播”方式入 APK**。Codex 可制作真实草稿及供用户核阅的文本，不能代替用户签署“已读/亲耳听完”的最终审核。如没有通过内容门禁，应独立交付审校草稿/阻断信息，**阶段 STOP，不强行做成假合格发行**。实际审稿来源及期限诚实记录。
+
+## Android 最小实现边界
+
+1. **两包独立**：设计最小可审计 UTF-8 JSON（或 JSONL）来源稿、manifest、schema/version/hash/byte length/Claim 精确依赖与审稿状态的校验；在本版先**跟 APK 内置**，不建立计划中的 `KITT-PACKS` 仓库，也不做 GitHub Releases、全国包、在线下载器/自动更新或泛化复杂平台。既有 `xindu-facts.json` / polygon 的加载规则与保守位置门禁不回退。推荐为正式事实来源档案与 Android 内置适配提供可复现转换，不把受版权限制的原文直接上传公共 GitHub。
+2. **本地选择器最小化**：真实物理旅程在新都区且主 Narrative 通过内容/依赖审查时，优先输出一次**完整杨慎主故事文字**，走既有 `Journey/Voice` 播放完成/取消/跳过/静音/冷却/已播记忆。首次自然开口不能只讲杨慎身份和官职，把人生转折留待用户追问；`再讲一点` 候选同主题**未讲过的延伸篇**，`再说一遍` 回放已完成主篇正文，不把未播/已中断当完成；正常自动不能在同旅程连续重复主篇，也不能播完长故事立刻重复旧两条同角度事实。对其余5个旧对象保持有来源的短事实降级，**不要扩建第二完整主故事**。
+3. **失败关门**：Source/Claim 缺失、版本指纹不符、审核状态非 approved、包 SHA 失败或内容损坏，都不可播该“完整故事”；可明确降级原有 verified 事实级介绍或安静，不能静默改为在线 Director 编一篇。不同版本 Fact/Narrative 协同必须只对该故事引用的 claim 失效，不能因无关 claim 修改让整个地区全体故事过期。
+4. **独立可测试的真人试听**：因为用户办公室在无可靠 GPS 时长期不能完成真机完整自动链路，可提供**显式、手动、不冒充真实位置**的开发/验收用本地故事试听（例如专用调试/验收入口或安全的 instrumentation 入口，择最少代码）；可读**同一完整成品文字**，离线 TTS 真正读完，供用户初步验稿。它**不能更改可信 GPS 状态/讲述记忆或默认启动流程**。这一点不是未来 V0.5.1 的正式“探索地点”跨地区搜索 UI。
+5. 讲述文本/知识包**只存文字**、不用预生成音频/SSML 厂商绑定；设备离线中文 TTS，不从云端获取配音。长篇文本分段若必要，保持回调生命周期与打断/skip 语义正确，不出现前半段播完就记“全部完成”。可用有界测试验证正文未丢、未提前成功。
+
+## 测试、交付、STOP
+
+- 先 Review `main` 最新状态和真实内容审核结果，再选择合法递增版本，**建议 V0.5.0/versionCode17**，不改 `applicationId`（标准包是 `com.kitt.reader`、原手机账号使用 `com.kitt.reader.runtimecheck`）。原签名证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
+- 增加 Source/Claim/Narrative 依赖、哈希/schema/篡改、审稿状态、六类枚举、已播/重播/延伸/打断、缺包回退、无可信定位安静、不联网且无云账号/开启联网但模型不可达均 **0 自动 Director/Research** 的真实确定性单测/Robolectric。仍跑旧 Debug/Release 全量、六组成都→绵阳模拟、assemble/lint、2接受+6拒绝原证书验证及 `scripts/build-runtime-smoke.ps1 -Offline`；输出具体运行而非 UP-TO-DATE 假计数。
+- 通过内容 Gate + 工程 Gate **两者**后生成原签名 `com.kitt.reader.runtimecheck` code17 APK 工程候选、字节/SHA256、来源和审稿报告、文本可读性/独立离线试听方案、最短真机有 GPS/无 GPS 两种验收。用户**尚未授权手机 code17 安装或 PR 合并**，不 `adb install`、`adb uninstall`、`pm clear`、`-d`、不下载/上传任何私钥/token/私人纪要；完成提交推送后先 STOP。审核/工程不达标的事项以 PENDING/BLOCKED 如实报告，**不要伪称新版本工程全部 PASS 或真人已听过**。
+- 仅本版 Issue #27，PR 创建为 **Draft**；更新 `HANDOFF.md`、`docs/ROADMAP_OFFLINE_FIRST_NEXT.md`、来源审稿文件、脱敏日志证据。禁止顺便开发 V0.5.1 探索地点、V0.5.2 六类偏好、V0.6.0 下载发布、地图重构、云连接修复。**完成后 STOP 等待用户验收。**
+
+---
+
+## 历史交接（下面归档卡保留以防误读，不能再执行）
 # ARCHIVED TASK CARD — V0.4.2/code16 已阶段性合并（2026-10-15）
 
 **现行状态：STOP / 本轮任务完成归档。** 用户明确同意 V0.4.2 阶段性验收通过并合并 `main`，详见 [已合并 PR #26](https://github.com/shimao1115/KITT/pull/26)，merge commit [`9351f17`](https://github.com/shimao1115/KITT/commit/9351f17f1c4d03143c57e04e1b74311a858528a6)。Debug446/Release433 合计879项工程 PASS；真实手机 `com.kitt.reader.runtimecheck` 已是 code16，删除评分、自动纪要、原签名升级、设置保留、直接返回 PASS；联网 NETWORK 本地自动讲述零云调用是设备级记录，真人耳听未核。
