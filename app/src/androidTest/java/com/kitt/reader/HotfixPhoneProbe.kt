@@ -14,6 +14,7 @@ class HotfixPhoneProbe : Instrumentation() {
         val result = Bundle()
         val startedAt = System.currentTimeMillis()
         try {
+            if (mode == "story-preview") { finish(0, storyPreviewPhoneProbe(this, probeArguments)); return }
             if (mode == "area-stability") { finish(0, AreaStabilityPhoneProbe(this).run()); return }
             if (mode == "fused-location") { finish(0, FusedLocationPhoneProbe(this, probeArguments).run()); return }
             if (mode == "runtime-status") {

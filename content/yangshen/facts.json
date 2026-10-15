@@ -72,14 +72,17 @@
       "source_id": "zhao-three-kingdoms",
       "title": "赵晓晖：《三国演义》与佛教，印刷页159–166",
       "url": "https://kufs.repo.nii.ac.jp/record/138/files/ronso84159166.pdf",
-      "publication": "所读PDF未确认出版年月；不猜年份/DOI",
+      "publication": "《研究論叢》第84号，国際言語平和研究所，2014-01-31；库公开日期2015-02-20（已读机构API record138）",
       "access_status": "read",
       "rights": "论文保留版权；只自行概括版本流传结论，不公开镜像PDF",
       "limitation": "读取PDF第1、6页，目视核对印刷页164；其佛教思想阐释不作为作者心理事实",
       "local_file_sha256": "0fb25bd39fdfebf11c4b3c2e49fdf425d90ea31a317e7b6487195aa35d4f1e0d",
       "accessed_at": "2026-10-15",
-      "registry_revision": "fe46f3a583c4504da5ce0f6e5747a45a8692800db2b3b9c199ec07e3339be408",
-      "evidence_grade": "B"
+      "registry_revision": "26919ebd2987aa3619a34c4183e33be83ec016dfc28749f66050794d30394736",
+      "evidence_grade": "B",
+      "bibliography_metadata_url": "https://kufs.repo.nii.ac.jp/api/records/138",
+      "bibliography_metadata_sha256": "bd2b0f49fe44b42d0048b06bda8ffead2daf010706dd9ad7c54a9b9a34b7a92a",
+      "bibliography_fingerprint_note": "本地解析后JSON的SHA256；不是原HTTP响应字节指纹"
     },
     {
       "source_id": "dianzai",
@@ -138,6 +141,23 @@
       "accessed_at": "2026-10-15",
       "registry_revision": "21a366a87fd6f60e916cdcc7ffc565d679b22fa86747c0953f6b8d682a498b72",
       "evidence_grade": "D"
+    },
+    {
+      "source_id": "zhang-ming-ci",
+      "title": "张仲谋：《一代有一代之词》——谈明词的经典化问题",
+      "url": "https://www.nopss.gov.cn/n1/2026/0909/c461624-40795331.html",
+      "publication": "正文标光明日报2026-09-02；全国哲社办转刊URL为2026/0909",
+      "access_status": "read",
+      "accessed_at": "2026-10-15",
+      "rights": "现代专家文章保留版权；只自行概括作者归属与篇章关系，不复制全文",
+      "limitation": "已读“明词经典化的偶然个案与谱系流变”首段。作者本人研究阐释，转刊仍算同一来源；未替代明代初刻本校勘",
+      "evidence_grade": "B_expert_essay",
+      "retrieval_fingerprint": {
+        "raw_sha256": "1a2ca81260c1a6b1f14d016d9b684fac2596c530e77b4c5411a9033f4e4f7191",
+        "raw_bytes": 21973,
+        "final_url": "https://www.nopss.gov.cn/n1/2026/0909/c461624-40795331.html"
+      },
+      "registry_revision": "931321ed6fbc5985ad5bbecd3407a190e28ed1aa00f6b566fc9fe2662973c664"
     }
   ],
   "claims": [
@@ -348,12 +368,18 @@
           "source_id": "zhao-three-kingdoms",
           "locator": "印刷页164，第2段（PDF第6页）",
           "relation": "supports",
-          "accepted_source_revision": "fe46f3a583c4504da5ce0f6e5747a45a8692800db2b3b9c199ec07e3339be408"
+          "accepted_source_revision": "26919ebd2987aa3619a34c4183e33be83ec016dfc28749f66050794d30394736"
+        },
+        {
+          "source_id": "zhang-ming-ci",
+          "locator": "“明词经典化的偶然个案与谱系流变”首段，起“谈到明词”",
+          "relation": "supports",
+          "accepted_source_revision": "931321ed6fbc5985ad5bbecd3407a190e28ed1aa00f6b566fc9fe2662973c664"
         }
       ],
       "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
       "review_note": "支持通行作者归属/篇章位置；不证明现存最早刻本或作者亲定标点",
-      "revision": "cce2f8e2b10b607e8549292cfcd4241b1beb5cb5622cfbf643d699a5a90af83c",
+      "revision": "c9d654e2af26ef85be8e149150ecb35ba2ec77dd6bb085b7d14be3c6e7dc1821",
       "verified_at": "2026-10-15",
       "verified_by": "Codex source cross-check; independent/human final review pending"
     },
@@ -372,12 +398,12 @@
           "source_id": "zhao-three-kingdoms",
           "locator": "印刷页164，第2段，起“清人毛宗岗父子”",
           "relation": "supports",
-          "accepted_source_revision": "fe46f3a583c4504da5ce0f6e5747a45a8692800db2b3b9c199ec07e3339be408"
+          "accepted_source_revision": "26919ebd2987aa3619a34c4183e33be83ec016dfc28749f66050794d30394736"
         }
       ],
       "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
       "review_note": "只陈述论文所指后世评刻关系；未对勘毛本初刊，不断言确切首刊年",
-      "revision": "33c6fec70d10d8a3072f7ec6def8230cb5b80cab8a2297a18a31acabd937d124",
+      "revision": "1cff183ce0a3eeb1d6b337e8051c79484bce258564ccfc29d43fcb90ebecce3b",
       "verified_at": "2026-10-15",
       "verified_by": "Codex source cross-check; independent/human final review pending"
     },

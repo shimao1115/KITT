@@ -1,0 +1,170 @@
+{
+  "date": "2026-10-15",
+  "version": "0.5.0",
+  "version_code": 17,
+  "branch": "feat/v050-xindu-yangshen-story-packs",
+  "status": "ENGINEERING_PASS_CONTENT_PENDING_STOP",
+  "source_input_sha256": "e2b9fa3cd5133eef7449e2b3b99b6f8498488b8edb073a5605df45bbbb6a9890",
+  "build": "Debug/Release and DebugAndroidTest assembled; standard engineering builds only",
+  "variants": {
+    "Debug": {
+      "tests": 464,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 69,
+      "first_suite_at_utc": "2026-10-15T01:24:15",
+      "last_suite_at_utc": "2026-10-15T01:35:51",
+      "reports_sha256": "851bba14d2ae48594f5004577d3da5cfa1f8790fe15748017d2d3e502e5d71c6"
+    },
+    "Release": {
+      "tests": 451,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 67,
+      "first_suite_at_utc": "2026-10-15T01:36:38",
+      "last_suite_at_utc": "2026-10-15T01:46:59",
+      "reports_sha256": "cbc879b4618d966acc9a7e424edd386e29eb6e7f2cb466a4f6d1db446e28a710"
+    }
+  },
+  "total_tests": 915,
+  "lint": {
+    "debug": {
+      "status": "PASS",
+      "severities": {
+        "Warning": 2
+      },
+      "sha256": "4b4f79fa3a09279bd42b1d4f62c76964a17c85827668ceda4390b12cc60b7e1e"
+    },
+    "release": {
+      "status": "PASS",
+      "severities": {
+        "Warning": 2
+      },
+      "sha256": "4b4f79fa3a09279bd42b1d4f62c76964a17c85827668ceda4390b12cc60b7e1e"
+    }
+  },
+  "simulations": [
+    {
+      "file": "full-simulation.txt",
+      "bytes": 710,
+      "sha256": "8569182fe83dd66008502168967396ec916b565d58b7323c60aecb0cd9612538",
+      "evidence": "deterministic/Fake Provider and Voice, not phone or human"
+    },
+    {
+      "file": "accelerated-simulation.txt",
+      "bytes": 320,
+      "sha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
+      "evidence": "deterministic/Fake Provider and Voice, not phone or human"
+    },
+    {
+      "file": "batch-simulation.txt",
+      "bytes": 1596,
+      "sha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b",
+      "evidence": "deterministic/Fake Provider and Voice, not phone or human"
+    },
+    {
+      "file": "landmark-simulation.txt",
+      "bytes": 605,
+      "sha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
+      "evidence": "deterministic/Fake Provider and Voice, not phone or human"
+    },
+    {
+      "file": "dossier-simulation.txt",
+      "bytes": 45348,
+      "sha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8",
+      "evidence": "deterministic/Fake Provider and Voice, not phone or human"
+    },
+    {
+      "file": "driving-area-resolution.txt",
+      "bytes": 437,
+      "sha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd",
+      "evidence": "deterministic/Fake Provider and Voice, not phone or human"
+    }
+  ],
+  "log": {
+    "path": "artifacts/v050-frozen-verification.log",
+    "sha256": "dcdfb465995d516bbe54faaa9095ea0d3251ae9fe6b958528cf82a8927f82bfb"
+  },
+  "publisher_tests": 4,
+  "publisher_log_sha256": "bb799b0e017c26efa7448904d0e76cd1eefae3eff2c5618f7169a54ec2245575",
+  "sources": {
+    "total": 9,
+    "statuses": {
+      "read": 7,
+      "unavailable": 1,
+      "lead": 1
+    }
+  },
+  "claims": {
+    "total": 14,
+    "statuses": {
+      "verified": 12,
+      "lead": 1,
+      "rejected": 1
+    }
+  },
+  "narratives": [
+    {
+      "id": "yangshen-main",
+      "review_status": "draft",
+      "text_sha256": "70fa7d37e1ca2797621f5e98e3554bf4a1b269912a1a2bc09ca80fb5aab767df",
+      "characters": 1063,
+      "estimated_seconds": [
+        199,
+        245
+      ]
+    },
+    {
+      "id": "yangshen-followup-dianzai",
+      "review_status": "draft",
+      "text_sha256": "03fe946cf1484bcce11c6258374d98405075f38f8a095f53a2df5097c501e221",
+      "characters": 485,
+      "estimated_seconds": [
+        91,
+        112
+      ]
+    }
+  ],
+  "content_gate": "PENDING: source cross-check/editorial self-review completed by Codex; independent/human fact review, visitor reading and device hearing not signed",
+  "bundled_approved_stories": 0,
+  "runtimecheck_candidate": "BLOCKED as designed; no code17 runtimecheck APK generated",
+  "runtimecheck_gate_log_sha256": "482ed14aae6421d336d33f19b432ecac29c2fcb3e45fd4fe4dc3c74591ab4843",
+  "signing": {
+    "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "regression": "2 accepted + 6 rejected; accepted runtime APK fixture is existing code16, not code17",
+    "log_sha256": "0c9eb9b5e42fb7a3b7e4796c81fdbb47208583f9a913b7b6a146512232dda695"
+  },
+  "phone": "NOT TOUCHED: no adb, installation, settings change, account access or real cloud request. Installed code16 is inherited last-known evidence, not read this turn.",
+  "review_scope": "Approved labels exist only in test fixtures; tests do not approve history, copyright or human listening.",
+  "earlier_runs": [
+    "Focused TTS test initially failed because default Robolectric shadow automatically finished every chunk; manual-progress shadow fixed and focused rerun passed.",
+    "Two earlier full runs were explicitly stopped when code review identified final lifecycle/summary/duplicate-angle corrections. Neither is counted as a PASS. Frozen run is authoritative."
+  ],
+  "pending": [
+    "independent/human fact review and visitor reading acceptance",
+    "real offline Chinese TTS hearing and duration",
+    "real fresh GPS/NETWORK Journey golden path after separately authorized candidate installation",
+    "Issue #23/#24 existing field checks remain OPEN"
+  ],
+  "command": ".\\gradlew.bat assembleDebug assembleRelease assembleDebugAndroidTest testDebugUnitTest testReleaseUnitTest lintDebug lintRelease --offline --console=plain",
+  "standard_engineering_apk_check": {
+    "standard_engineering_package_only": true,
+    "not_runtimecheck_candidate": true,
+    "version": "0.5.0",
+    "code": 17,
+    "embedded_files": [
+      "assets/offline/ys-narratives-manifest.json",
+      "assets/offline/ys-narratives.json",
+      "assets/offline/ys-facts-manifest.json",
+      "assets/offline/ys-facts.json"
+    ],
+    "bundled_approved_stories": 0,
+    "draft_narratives_bundled": false,
+    "sha256": "e15524147fe4910f612245d5dce52d36c17fbbc9925b0dfac1408a2f44e58c74",
+    "bytes": 74901361
+  },
+  "standard_engineering_signing_log_sha256": "7ad8737e689c11c6245ab84b2feaddac22d447f4ddcc4decb10e0a15ced194dd",
+  "sanitized_gradle_summary_sha256": "83d172e6ed6f1731ed448a28063e0c8aa1c692a3261071fdb3b894d16740db4b"
+}

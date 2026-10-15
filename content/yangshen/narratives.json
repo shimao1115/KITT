@@ -43,11 +43,11 @@
         },
         {
           "claim_id": "ys-tanci",
-          "accepted_revision": "cce2f8e2b10b607e8549292cfcd4241b1beb5cb5622cfbf643d699a5a90af83c"
+          "accepted_revision": "c9d654e2af26ef85be8e149150ecb35ba2ec77dd6bb085b7d14be3c6e7dc1821"
         },
         {
           "claim_id": "ys-mao",
-          "accepted_revision": "33c6fec70d10d8a3072f7ec6def8230cb5b80cab8a2297a18a31acabd937d124"
+          "accepted_revision": "1cff183ce0a3eeb1d6b337e8051c79484bce258564ccfc29d43fcb90ebecce3b"
         },
         {
           "claim_id": "ys-dianzai",
@@ -94,7 +94,8 @@
         {
           "paragraph": 4,
           "claim_ids": [
-            "ys-protest"
+            "ys-protest",
+            "ys-exam"
           ],
           "editorial": "问题、过渡与收束为原创编辑解释，不是人物内心证言"
         },

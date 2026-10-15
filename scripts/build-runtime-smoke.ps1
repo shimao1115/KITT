@@ -5,6 +5,11 @@ $taskRoot = Split-Path -Parent $PSScriptRoot
 $taskCopy = Join-Path $taskRoot 'artifacts\runtime-smoke-workspace'
 Push-Location $taskRoot
 try {
+    $taskVersionSource = Get-Content -LiteralPath (Join-Path $taskRoot 'app\build.gradle.kts') -Raw -Encoding utf8
+    if ($taskVersionSource -match 'versionName = "0\.5\.0"') {
+        & python (Join-Path $PSScriptRoot 'build-story-packs.py') --check --require-playable
+        if ($LASTEXITCODE -ne 0) { throw 'Content gate BLOCKED: no approved main story; runtimecheck candidate not built.' }
+    }
     # Acceptance APKs must always use the phone's existing signature, never a random local Debug key.
     & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1')
     if ($LASTEXITCODE -ne 0) { throw 'Canonical KITT signing preflight failed.' }
