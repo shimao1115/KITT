@@ -1,5 +1,7 @@
 # KITT 下一阶段开发路线图 — 本地知识优先（2026-10-14 用户同意）
 
+> **2026-10-15 最新现行状态（覆盖下文历史叙述）**：V0.4.2/code16 删除结束页评分已通过 879 项工程测试及有界真机验收，用户明确同意阶段性合并；[PR #26](https://github.com/shimao1115/KITT/pull/26) 已合并 `main`（`9351f17`），现有手机已是 code16，不重复安装。结束页与自动纪要/账号设置 PASS，真实 NETWORK 本地自动讲述、零自动云调用为设备级记录，真人耳听未验。[#23](https://github.com/shimao1115/KITT/issues/23) 保留真实旧评分样本兼容/耳听等 PENDING；[#24](https://github.com/shimao1115/KITT/issues/24) 保留断网新鲜真实定位讲述、重播及云失败后恢复等 PENDING。**V0.4.2 开发 STOP/归档**；下一建议 V0.5.0 新都 Fact/Narrative 两层高质量文字包尚未授权/施工，按用户下一轮要求单独立卡。下文旧“PR26 Draft、未装机、code15”均为当时记录。
+
 > **最新交付（2026-10-14）**：V0.4.2/code16 / #23评分删除工程完成，Debug446/Release433=879零失败/错误/跳过、六组模拟/构建/lint/原签名APK PASS，自动纪要/旧JSON兼容保留。本版手机未操作、真人PENDING，STOP等升级确认；Draft PR不合并/Issue不关闭，不启动V0.5.0。#24外场待验不变。见根 [HANDOFF](../HANDOFF.md)、[证据](evidence/v042-verification.json)、[验收](ACCEPTANCE_END_SUMMARY.md)。下方“尚无APK”是授权时状态。
 
 > **2026-10-14 最新执行顺序（以本段为准）**：V0.4.1/code15 [PR #25](https://github.com/shimao1115/KITT/pull/25) 已合并 `main`，实机阶段性通过，#24 外场 PENDING 不受影响。用户已授权**开始 V0.4.2/code16 单功能施工**：移除结束旅程五项评分/评语/保存按钮，保留自动纪要与历史记录兼容性。唯一当前分支 `feat/v042-simplify-end-summary`，唯一任务卡 [TASK_CARD](../TASK_CARD.md)，[Issue #23](https://github.com/shimao1115/KITT/issues/23) IN PROGRESS。允许 Codex 本地开发/全量测试/同签名候选构建，**手机升级与 PR 合并仍须再次确认**；尚无新版 APK/代码通过证据。完成此版后才考虑 V0.5.0 成品故事，别先开发六类偏好与知识下载器。本文下方旧“尚未授权”或“PR25仍Draft”段均为历史过程。
