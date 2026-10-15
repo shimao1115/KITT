@@ -1,3 +1,49 @@
+# V0.5.0 / code17 — 仅验收候选已生成，STOP 等待用户授权安装与真人验收
+
+本轮按最新任务卡完成来源复核、现有门禁的最小区分、完整工程回归与原签名验收候选。**两篇 v2.1 正文、SHA256及原 Claim 接受修订集均未改变；没有安装/操作手机，没有合并 Draft PR #28，没有关闭 #23/#24/#27，也没有提前制作后续主题或开发探索地点/下载器。** 下面“尚无code17候选/用户尚未确认文字/915项冻结”等为历史，由本段覆盖。
+
+## 实际审核结论
+
+用户已[确认最终文字](https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143)；本轮 Codex 亲读人民网2018、2017两文，并从本机原指纹一致的赵晓晖论文重新提取/渲染、目视核第164页，与现稿版本关系相符。网页工具HTTPS失败、本机证书主机名不符，实际取得的是同站HTTP200原文；机构PDF远端本轮没有下载成功。已在[审校报告](docs/YANGSHEN_CONTENT_REVIEW.md)准确区分本轮亲读、既有独立助手回读及人工未验边界；没有把前次助手PDF不可读或模型互述冒充独立史料。
+
+Fact `2026.10.15-review3`：11来源、16核验条目（14 verified / 1 lead / 1 rejected）；只是增加两条版本旁证，旧Claims和接受集未改。Narrative `2026.10.15-candidate2.1`：主583字符、延伸297字符。两篇 `review_status=candidate / fact_gate=passed / visitor_gate=pending`；Fact passed表示来源复核相符，非人类专家终审。审批表范围严格为 `acceptance_candidate`，绑定真实文字批准、正文及Claim集，`human_listening=pending`。**真人离线TTS、实际时长/发音/听懂、实机全链仍PENDING；正式发布仍BLOCKED，正式故事0。**
+
+最小工程调整只允许 Debug `com.kitt.reader.runtimecheck` 载入事实与文字合格的候选；标准Debug/Release资产仍排除候选。候选制包仅写独立目录，不覆盖标准资产，审批不能被提升为正式发布批准。未改GPS、Journey、TTS、账号或云路径；没有另立Gate/Phase/Agent/Schema。
+
+## 本轮实际验证
+
+- **Debug 466 + Release 453 = 919项**，failures/errors/skipped全0；强制 `--rerun-tasks` 执行，非旧915项或UP-TO-DATE计数。`StoryPacksTest`每Variant18项已计入总数，新增候选隔离、全文与缺审核拒绝检查。Python制包门禁7项另行PASS。
+- 六组成都新都→绵阳安州雎水的确定性/Fake模拟本轮重新执行PASS；Debug/Release assemble、两Variant lint、标准及runtimecheck DebugAndroidTest组装PASS。三个lint报告各0 errors/2既有warnings。仪器测试只构建/验签，**没有设备执行**。
+- 原签名回归 **2接受+6拒绝PASS**，runtimecheck正例使用本轮code17；配套测试APK验签通过。旧code16本机已知APK与新候选同包名/原证书、16→17递增，本轮没有读取手机当时装机状态，故不冒称真实原位升级或数据保留已验。
+- 标准两APK内正式故事0，runtimecheck内准确2篇候选；每个JSON/manifest字节、SHA256、原22条事实/几何均逐字节核对。独立复制工作区42个生产Kotlin与本分支0差异。Markdown正文、JSON、候选正文及用户确认哈希一致。
+
+[完整本轮证据](docs/evidence/v050-final-verification.json) / [脱敏Gradle任务摘要](docs/evidence/v050-final-gradle-summary.txt)。原日志、受限论文/渲染图、APK留本机忽略的artifacts，未上传密钥/token/私人纪要/真实坐标/录音。旧工程记录保留作历史，未混计。
+
+## 唯一手机升级候选（尚未安装）
+
+`artifacts/kitt-v0.5.0-runtimecheck.apk`；`com.kitt.reader.runtimecheck`，0.5.0/code17。
+
+- 字节：**74399802**。
+- SHA256：`9d2d2b312c669e0469113e80a54164e3217519c77a6692c80037b4b98c776a6d`。
+- 唯一原证书SHA256：`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
+- 配套独立试听测试包：`artifacts/runtime-smoke-workspace/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`，同原签名；当前未安装/执行。
+
+标准 `com.kitt.reader` Debug/Release只是工程产物，不能替代手机账号所在runtimecheck；各自摘要在证据JSON中。本轮没有发布Release或上传APK。
+
+## 待用户最小动作与已知限制
+
+下一步只需用户另行明确授权 code16→17同签名原位升级；执行前须只读核手机当时包名/版本/签名和候选摘要。不能卸载、清数据、降级、重签或重装code16。无GPS时若另获配套测试包安装许可，使用既有 `story-preview` 分别完整听主篇/延伸；真人给听感、发音及实际时长反馈，`PASS_ENGINE_ONLY`不能当耳听PASS。[有GPS/无GPS最短步骤](docs/ACCEPTANCE_YANGSHEN_STORIES.md)。
+
+可信新鲜物理GPS/NETWORK下自动完整主篇、重播/延伸、离线及云失败恢复仍须真机验证；没有可靠位置就PENDING/安静，不能注入位置。#23旧评分真实样本/耳听、#24外场独立OPEN/PENDING。原签名/历史JSON工程回归不代替设备数据保留核查。
+
+默认Provider/模型配置未改，新装默认仍继承Fake / gpt-4.1-mini / effort空；本地自动主链不依赖云账号。本轮未读取/改手机设置或账号、未发真实App云请求，无需新增OAuth/API密钥。
+
+**V0.5.0真机验收后内容先行**：先广汉三星堆一组经审Fact+Narrative，再做另一种题材，复用现有纯文字/本地TTS路径，以真实内容验证复用；本轮仅记录优先级，没有提前施工探索UI、下载器、全国平台、Releases或KITT-PACKS仓库。
+
+最近milestone：`87e41d1` 本轮来源审核及候选隔离；`d6ce317` 收尾/内容优先任务卡；`db4d0da` 固定v2.1最终文字；`9351f17` 已合并code16基线。最终交接证据提交见分支HEAD。**交付后STOP：不安装、不合并、不关闭Issue，等待用户验收。**
+
+---
+
 # KITT V0.5.0 — v2.1 最终文字已由用户确认，进入史实复核待验（2026-10-15）
 
 用户阅读提交 `db4d0da` 对应的杨慎主篇与《滇载记》延伸篇 v2.1 全文后，明确回复 **“确认定稿”**。已在 [PR #28 记录用户确认](https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143)，两篇正文不再反复改写。正式文字绑定 `yangshen-main` SHA256 `f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4`，`yangshen-followup-dianzai` SHA256 `559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f`。

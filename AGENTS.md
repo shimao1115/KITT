@@ -1,3 +1,7 @@
+> **2026-10-15 最新交付 / CANDIDATE-STOP（覆盖下方REVIEW-STOP）**：用户已确认v2.1双篇最终文字；本轮来源复核相符，原正文/哈希/Claim修订不变，Debug 466 + Release 453 = 919项零失败/错误/跳过，Python7、六组模拟、构建/lint及原签名2接受+6拒绝PASS。已生成仅供用户验收的原签名 `com.kitt.reader.runtimecheck` code17，74399802字节、SHA256 `9d2d2b312c669e0469113e80a54164e3217519c77a6692c80037b4b98c776a6d`。两篇仅candidate，Visitor/真人耳听PENDING，标准正式故事0、发布BLOCKED。详见[HANDOFF](HANDOFF.md)及[本轮证据](docs/evidence/v050-final-verification.json)。**本轮未安装/操作手机；不重装code16，不合并Draft PR28，不关闭23/24/27。STOP等用户另行授权升级与真机验收，随后内容先行，先广汉三星堆再另一题材；不提前施工探索UI/下载器/平台。**
+
+---
+
 # AGENTS.md — KITT Autonomous Build Contract
 
 > **2026-10-15 最新 v2 改稿交付 / REVIEW-STOP**：已按驾驶场景重写主篇580字符、延伸297字符，延伸改讲《滇载记》商旅歌谣；9来源/16核验条目。两篇仍draft，Fact人工终审/Visitor Gate均PENDING，审批空，正式故事0。仅内容改稿、追踪与专项校验；本轮Python4项、StoryPacks Debug专项16项PASS，发布门禁仍BLOCKED。下方915项为v1冻结工程历史，未在本轮重跑。**未构建任何APK，未操作手机，PR #28保持Draft、不合并；STOP等用户审阅第二稿。**

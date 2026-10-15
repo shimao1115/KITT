@@ -1,3 +1,13 @@
+## 2026-10-15 本轮余项执行完成：code17 仅验收候选已生成 / STOP
+
+最新任务已执行：来源复核相符、v2.1正文/哈希/原Claim修订不变；Debug 466 + Release 453 = 919项零失败/错误/跳过，Python7、六组模拟、assemble/lint、原签名2接受+6拒绝PASS。候选 `74399802`字节，SHA256 `9d2d2b312c669e0469113e80a54164e3217519c77a6692c80037b4b98c776a6d`。
+
+两篇仅 `candidate`，Fact为Codex来源复核、Visitor及human_listening仍pending；标准正式故事0/发布BLOCKED。runtimecheck候选仅供用户验收，解决首次APK与耳听先后循环，不伪标耳听。事实、实际日志/产物与最短真机步骤见[HANDOFF](HANDOFF.md)、[证据](docs/evidence/v050-final-verification.json)、[审校报告](docs/YANGSHEN_CONTENT_REVIEW.md)。
+
+**STOP等用户另行授权原位升级和真人试听；本轮未操作手机、未合并PR28、未关闭23/24/27。** 验收后先广汉三星堆Fact+Narrative、再跨题材内容；没有提前开发后续功能。下方“仍无候选”等是此前时点。
+
+---
+
 ## 2026-10-15 收尾提速与下一站内容生产（最新安排）
 
 用户最新要求：“尽快做完，然后进入到之后的离线知识包制作去。”当前仍先完成 **V0.5.0 / Issue #27 / Draft PR #28**，不跳过事实准确、工程与真机安全边界，但**禁止继续无必要的论文追索、第三轮改稿或新架构设计**。
