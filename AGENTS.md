@@ -1,3 +1,7 @@
+> **2026-10-17 当前唯一新施工任务：V0.6.0 · D0 / code20 县级 Fact+Narrative 通用加载器首个小版本**。用户在 V0.5.2/code19 [PR #35](https://github.com/shimao1115/KITT/pull/35) 已合并 main（`53c0e0fa`）、用户真机手工体验 PASS 后同意推进下一阶段“先审 PR29、再拆最小通用加载器工程”。本轮已经完成只读 [PR29差距审计](docs/reviews/V060_PR29_AND_LOADER_AUDIT.md)，当前仅执行 [Issue #36](https://github.com/shimao1115/KITT/issues/36)／分支 `feat/v060-county-pack-loader-d0` 最新 [TASK_CARD.md](TASK_CARD.md)，以 **Draft PR + 全量测试 + 真实工程证据后 STOP** 为唯一交付。**不合并 PR29、本工程PR、不碰手机、不创建 KITT-PACKS、无 GitHub Release、不允许外部未经验证的包成为正式内容、不审批杨慎、不开六区采集。** 正式故事0、20份真实历史保留、兴趣保存PASS；原 `settings.xml` 首进设置页哈希漂移根因 UNKNOWN，云账号在线可用性未证，离线/即时双模式DEFERRED。用户要求“保存讲述兴趣”和“保存”两个按钮挨太近暂时不改，等后续统一UI优化。旧本文下方 V0.5.2 “工程未完/手机未升级/不得开始新版本”属于**历史阶段**，不得覆盖当前授权。
+
+---
+
 > **2026-10-17 最新：V0.5.2/code19 用户人工体验 PASS，已明确批准文档收口及 PR #35 正式合并**：用户亲手检查已安装 code19 后反馈“都正常”，唯独设置页 **「保存讲述兴趣」与原「保存」按钮挨得太近**；用户明确要求**本版不改，留到以后集中 UI 优化**，也可顺便处理更改 Chip 后旧“已保存”提示可能未清除的问题。Qoder 本版 Debug511 + Release498 = **1009项**零失败/错误/跳过；一次 code18→19 原签名原位升级PASS；六类兴趣真实设备辅助检查PASS，用户体验亦PASS；20/20真实历史逐文件哈希不变；兴趣保存只写独立 `story_interests.xml`。**首次打开原设置页时 `settings.xml` 又出现字节漂移，具体字段与根因仍 UNKNOWN，不代表账号在线可用已验证**。正式完整故事仍0篇，杨慎两篇仍候选/Visitor Gate未过，双来源模式DEFERRED、外场#23/#24/#27及#30保持OPEN/PENDING。此授权**仅允许先完成去敏文档收口，在PR无冲突、无未解决review、未夹带代码/内容改动等门禁通过后把 [PR #35](https://github.com/shimao1115/KITT/pull/35) 合并到 main**；不允许再次访问/安装手机、重建APK、正式发布、变更故事审核、开始V0.5.3/V0.6.x或关闭旧Issue。**合并是否完成以 GitHub PR 实际状态为准；下方旧“code19未安装/不得合并”均为历史阶段文字。**详见[HANDOFF](HANDOFF.md)与[设备证据](docs/evidence/v052-phone-acceptance.json)。
 
 ---
