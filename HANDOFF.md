@@ -1,3 +1,44 @@
+# 2026-10-16 最终阶段验收与合并交接：工程/探索 UI 接受，设置漂移根因 UNKNOWN
+
+**用户已接受 V0.5.1/code18 工程及探索 UI 阶段，并明确批准文档同步及 PR #31 正式合并至 main。** [人工反馈](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212597341)：用户“我没有发现什么问题，都是正常的”，记 **HUMAN_UI_ACCEPTANCE=PASS**；[最终合并授权](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212644800)及最新[TASK_CARD](TASK_CARD.md)覆盖下方旧 Draft/HOLD/禁止合并文字的工程合并限制。实际合并状态及 merge SHA 以[PR #31记录](https://github.com/shimao1115/KITT/pull/31)为准，不把人工体验改写成账号、故事或外场全链PASS。
+
+| 项目 | 最终接受范围与保留限制 |
+| --- | --- |
+| 工程 | **Debug489 + Release476 =965项，0失败/错误/跳过**，Python7、六组模拟、assemble/lint、原签名2接受+6拒绝均为既有真实工程结果；本次文档收口没有重跑或重计。 |
+| 手机升级 | 原签名code17→18唯一一次原位升级成功；许可用尽。本轮未操作手机、未重建或发布APK。 |
+| 探索 | 新都1县/6对象/22事实/6来源，搜索、来源阅读、横竖屏、键盘、返回、字号与后台恢复等已有辅助检查PASS；用户当前亲手体验PASS。侧滑手势、平板实机仍PENDING。 |
+| 历史 | 20/20真实历史三阶段逐文件哈希一致，原记录保留；本次仅复核本机已有证据。 |
+| 设置 | 最终XML整体字节漂移确实存在，原FAIL保留；字段、根因、完整升级前后语义等价仍 **UNKNOWN / INSUFFICIENT_BASELINE**。一次只读核查确认六项普通配置匹配较早code17参考，不能补成缺失的紧邻升级前基线。当前用户无可见异常，剩余风险有记录地保留，不声称已修复。 |
+| 账号 | 只证明非空加密记录存在；当前解密及在线可用性仍PENDING，人工正常显示不等于令牌刷新或真实请求成功。 |
+| 故事/发行 | **正式故事仍0**；杨慎两篇 `candidate / visitor_gate=pending`，审批仍仅acceptance_candidate，发布BLOCKED。探索正式故事实机离线TTS仍PENDING；code17双篇独立人耳历史PASS保留。 |
+| 外场 | #23/#24/#27实地GPS/恢复等原余项继续OPEN/PENDING；#30也不由本次合并自动关闭。不施工下一版本。 |
+
+两份办公室真实脱敏报告现纳入本次文档提交：[PC离线调查](docs/evidence/v051-settings-drift-analysis.md)、[一次当前设置只读核查](docs/evidence/v051-current-settings-readonly.md)。本次已先备份并保留原本未提交内容，仅将远端纯任务卡提交安全快进到本地；原始设备XML/截图/旅程/账号及本机脚本留在忽略目录，不上传。生产代码、正文、审批、Manifest、APK和原工程/手机JSON证据不修改。
+
+**收口边界：按用户授权完成GitHub门禁后合并PR31，仅接受工程与探索UI；合并结果见PR最终记录。完成核验即STOP，不再访问手机、不发APK、不提升故事Gate、不关闭旧Issue或启动V0.5.2/V0.6.x。** 下文是各阶段原始交接，保留当时PASS/FAIL/PENDING和STOP，不用后续反馈倒改历史。
+
+---
+
+# 2026-10-16 17:27 最新：一次当前设置只读核查完成 / 再次设备 STOP
+
+**`CURRENT_NON_SENSITIVE_SETTINGS_READABLE` / `ACCOUNT_ENCRYPTED_RECORD_PRESENT`；`PRE_UPGRADE_SEMANTIC_EQUIVALENCE_UNPROVEN`，原漂移根因仍 `UNKNOWN / INSUFFICIENT_BASELINE`，PR31保持Draft/HOLD。** 用户新增一次仅限当前状态的只读授权后，确认唯一USB vivo X200 Pro/V2405A、已装code18、无运行服务和Journey恢复文件；沿用已有非root run-as路径，仅一次在内存读取设置XML。未启动App/设置页、刷新模型/账号、解密、发起账号网络请求或改变任何设备设置，未保存/输出原始XML或账号敏感值。
+
+当前provider=CHATGPT、model=gpt-6.1-sol、effort=low、speech_rate=1.0、tts_voice为空/系统默认、separate_research=false，均存在且类型符合源码，与较早code17验收记录一致；simulation/acceleration/simulation_speed未存储，无基准可据此判为重置。chatgpt为非空string，credential为空string，research_credential不存在；**只证实存储结构，未验证解密或在线账号可用性**。20/20历史不变、code18探索辅助可用沿用原证据；本轮没有重测历史或UI，用户亲手体验仍PENDING。
+
+详见[当前只读脱敏报告](docs/evidence/v051-current-settings-readonly.md)。较早配置记录不能代替缺失的紧邻升级前字段快照，原设置字节FAIL及原965项工程结论不变。上轮未提交调查与HANDOFF已备份并保留；本轮只增补文档，没有提交/推送、生产代码/APK/审批改动。**一次当前状态检查已完成并用尽；再次STOP，不再访问设备，不重复安装，不合并/发布/关闭Issue或开始未来版本，等待用户亲手体验及是否合并的单独决策。**
+
+---
+
+# 2026-10-16 最新：PC本地设置漂移调查完成 / 设备 STOP
+
+**`INSUFFICIENT_BASELINE`；设置语义与根因仍 `UNKNOWN`，整体 HOLD / `FAIL_SETTINGS_BYTE_PRESERVATION_SEMANTICS_UNDETERMINED`。** 本机三阶段JSON仅保留整体设置文件哈希及账号密文存在布尔值；检查已知 `artifacts/` 目录未发现升级前/后/最终原始偏好XML，不能重建升级前字段。仅复核已有记录：升级后立即设置一致，最终仅设置文件变化；**20/20历史始终不变**。已装code18可用的结论限原探索辅助证据；账号可用性、最终密文可解密性及用户亲手UI反馈仍未验证。
+
+详见[无敏感技术判定](docs/evidence/v051-settings-drift-analysis.md)。启动移除旧 `simulation` 与设置页自动模型刷新/临期令牌加密保存均有源码依据，并已存在于code17；本次是否触发仍为hypothesis。AES-GCM密文变化不能证明账号变化或解密失败。本轮只做PC离线文件比较/源码调查，没有访问手机、刷新账号、改生产代码/设置/APK/原设备证据或提交历史，没有重跑或改写原965项结果。
+
+**唯一升级许可已用尽，禁止再次安装。完成本机诊断即STOP，等待用户决定是否新增一次独立手机只读语义检查；新增当前数据也不能补成升级前基线。** 进入设置页/构造Store本身有写入路径，不能未经新授权用这些动作补采。PR31保持Draft；不合并/发布/关闭#23/#24/#27/#30，不启动下一版本。下方为原设备交接与历史证据，原FAIL/PENDING保留。
+
+---
+
 # 2026-10-16 V0.5.1/code18 — 单次真机升级成功；设置文件漂移 / STOP 待用户复核
 
 **手机现为原签名 `com.kitt.reader.runtimecheck` 0.5.1/code18，已用完本轮唯一一次保数据升级许可，不得重复安装。整体真机验收尚未通过：最终设置文件哈希发生变化，检测后已停止手机交互。** 设备记录见 [独立手机证据](docs/evidence/v051-phone-acceptance.json)。本段覆盖下方“手机未访问/仍code17/等待安装授权”等历史状态；工程965项及其原结论保留，不能把本轮辅助观察写成用户亲手满意。
