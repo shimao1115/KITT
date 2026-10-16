@@ -1,3 +1,20 @@
+# 2026-10-16 V0.5.1/code18 最新验收指令：设备 STOP；仅准本机已有证据的只读诊断
+
+**本条优先于下方“允许一次原位升级”的历史授权。** 用户于 2026-10-16 16:43 提供 Codex 的 [设备报告](docs/evidence/v051-phone-acceptance.json)：**单次 code17→18 已在手机成功完成，授权已用尽，不得再执行第二次安装。** 当前 Draft [PR #31](https://github.com/shimao1115/KITT/pull/31) HEAD 至少含设备交接 `00fb499498f9a1cf6ee55dd719fa4d53f31754bf`，**整体验收仍 HOLD/FAIL_SETTINGS_BYTE_PRESERVATION_SEMANTICS_UNDETERMINED**，但20份真实历史逐文件哈希稳定，账号加密记录存在；探索UI辅助检查均PASS，用户亲手使用反馈仍PENDING。
+
+## 本轮唯一施工：PC 本地证据比对和源码调查，不操作手机
+
+1. 在现有办公室仓库保护工作树，阅读本卡、[PR #31 设备证据](docs/evidence/v051-phone-acceptance.json)、[HANDOFF](HANDOFF.md)、相关 `SettingsStore.kt`、`SettingsScreen.kt`、`ChatGptAccount.kt`、`KittRuntime.kt` 和现成测试。**不调用 adb／scrcpy／手机UI／KITT安装命令，不在手机创建额外快照，不改本机账号设置，不联网刷新账号**。
+2. **只在此前验收过程中已保存在本机 `artifacts/v051-phone/` 或其他已知本地忽略目录的“升级前/升级后/最终”设置快照真实存在时**，做离线字段级差异。先检查是否保存了真实的原始 XML；如仅有三份整体SHA256而没有升级前 XML，明确结论**无法重建升级前字段**，不能靠猜测或对手机取新数据“补采”冒充升级前证据。
+3. 若可从**已有本地快照**比对，安全地只输出：设置项 key 名、类型、是否存在、值是否一致，普通非敏感设置（provider/model/tts声速/voice/模拟开关等）是否改变，**对于 chatgpt／credential／research_credential 等敏感密文字段只输出“存在/密文是否相同/是否有安全可确认的语义证据”，不输出密文本体、原始XML、个人账号信息、令牌、密钥、旅程原文或可用于跨用户关联的值/散列**。AES-GCM 每次加密使用随机 IV，**密文变化不等于登录资料变化，更不等于解密失败**。
+4. 对照实际时序重点审核两条有界候选路径：`SettingsStore.init` 每次构造执行 `prefs.edit().remove("simulation").apply()`；`SettingsScreen` 在已启用ChatGPT计划且模型列表空时 `LaunchedEffect` 自动 `refreshModels()`，其 `ChatGptAccount.accessLocked()` 可在令牌临期时触发刷新、通过 `saveChatGpt()` 用新随机IV重新加密。解释何时会写盘、网络恢复/设置页进入的先后，以及有没有其它无保存按钮写入路径。**只把有源码/快照证据支持的结论写成 confirmed，其余为 hypothesis**。
+5. 允许用**纯本地临时测试/静态代码证据**说明启动迁移、模型刷新、保存的可能性，但**不改变生产 Kotlin、真实设置/账号资料、密钥、APK、包、提交历史或原有965项验收数字**；严禁为复现而用真账号触发网络请求。测试若没实跑不能称PASS。
+6. 交付一份简短技术判定：`VERIFIED_BENIGN_SERIALIZATION_OR_MIGRATION` / `VERIFIED_MEANINGFUL_PREFERENCE_CHANGE` / `INSUFFICIENT_BASELINE` 等，在无证据时维持**UNKNOWN**；单列“20/20历史不变”“已装code18可用”与“账号可用性/用户操作尚未验证”。可以将分析**无敏感字段**写入 PR #31 评论/HANDOFF 或独立 `docs/evidence/v051-settings-drift-analysis.md`。完成即 **STOP 等用户决定是否授予一次新增的、只读的手机设置语义检查**，不得先行操作手机。
+
+**明确禁止**：再次 `adb install`、卸载、清数据、修改设置/保存/刷新模型、重新连接/断开账号、绕过杨慎 visitor Gate、发布 APK、合并 PR #31、关闭 #23/#24/#27/#30、开始 V0.5.2/V0.6.x。若需要设备新证据或修代码，先报告最小理由并等待新的用户授权。
+
+---
+
 ## 2026-10-16 用户最新授权：V0.5.1/code18 单次手机原位升级 + 有界真实设备验收（当前唯一任务）
 
 **用户明确回复“批准”**，针对 [PR #31 工程评审提出的下一步](https://github.com/shimao1115/KITT/pull/31)：允许 Codex **在办公室电脑实际连接已安装 code17 的 vivo X200 Pro 后，仅将 `com.kitt.reader.runtimecheck` 从 V0.5.0/code17 原签名原位升级一次到 V0.5.1/code18，并完成探索地点的真实手机 UI 验收**。工程已交付；此授权只解除本文件旧版针对“安装/操作手机”的 STOP，且仅限下列步骤。**不许可卸载、清数据、重签名、修改生产代码、合并 PR、发布APK、改审批状态或展开新功能。**
