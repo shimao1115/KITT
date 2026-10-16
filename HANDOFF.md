@@ -1,3 +1,28 @@
+# 2026-10-17 V0.5.2/code19 最终人工验收与合并收口（用户明确批准）
+
+**人工体验：PASS。** 在 Qoder 唯一一次 code18→19 原签名保数据升级、六类兴趣实机辅助验收后，用户亲手检查已装的 vivo X200 Pro / `com.kitt.reader.runtimecheck` code19，并回复：**“都正常，就是‘保存讲述兴趣’ 和 ‘保存’两个按钮挨的太近，图标就要连在一起了，不过这个是小问题，暂时不修改，以后优化UI的时候一起修改”**。人工认可范围为当前 code19 的设置与兴趣体验；**并不等于** ChatGPT 在线请求、原设置完整语义等价、正式多类故事真实排序、冷进程重启、平板或者真实 GPS 全链已验收。用户随后再次明确**“批准”本次文档收口及 PR #35 正式合并至 main**；实际合并状态/merge SHA 始终以 [PR #35](https://github.com/shimao1115/KITT/pull/35) 为准。
+
+## 本次阶段验收与遗留事项
+
+| 项目 | 最终阶段判定 |
+| --- | --- |
+| 工程 | **PASS**：Qoder 在实现提交 `d9d9b41` 对 Debug511 + Release498 = **1009项**实际重跑，0失败/错误/跳过，Python7、六组Fake模拟、构建/lint及签名回归均有真实证据；这次最终文档收口**未重跑**。 |
+| 原签名一次升级 | **PASS**：唯一 vivo X200 Pro 上 code18→19 一次 `adb -d install -r`、同包同证书、已装APK回读一致；本次文档收口**不操作手机/不重装**。 |
+| 六类偏好 | **设备辅助PASS + 用户亲手体验PASS**：六类三档初始全 NORMAL；明确一次保存 `HISTORY=MORE`、`ENGINEERING=LESS`、其余 NORMAL，独立 `story_interests.xml` 生效、重新进入后仍在，未保存选择不落盘；辅助验收没有执行**冷进程重启**，不对此额外声称 PASS。 |
+| 旧历史与配置 | **保留PASS（既有证据）**：20/20份真实历史三阶段逐文件 SHA256不变，六项非敏感设置升级前后值一致、账号加密记录存在且非空；不代表账号解密与在线调用已证实。 |
+| 设置字节漂移 | **UNKNOWN（未解决风险）**：`settings.xml` 升级前/刚升级后哈希相同，首进设置页从 `4c267ca3…` 改为 `269dc8d6…`，兴趣编辑与独立保存后未再次变化；可确认**不是本次兴趣保存引发的写入**，但具体变化字段/根因和升级前后全量语义等价仍未知，不宣称已修复或账号损坏。 |
+| 内容正式发行 | **BLOCKED**：正式审核完整故事 **0篇**；杨慎主/延伸 `candidate / fact_gate=passed / visitor_gate=pending` 原样；“六类兴趣改变实际已审核多类故事播报次序”仍 PENDING（仅内存 TEST_ONLY 夹具测试）。 |
+| 来源双模式 | **DEFERRED**：即时优先/离线优先自动切换尚未实现；无需在此版冒险改动云端路由与失败回退。 |
+| 历史外场余项 | [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27)、[#30](https://github.com/shimao1115/KITT/issues/30) **保持 OPEN**，真实GPS/TTS/侧滑/Tab S9 等仅按已测范围验收，不据本次合并自动关闭。 |
+
+**明确延期的两个 UI 细节（非阻断、不得在当前版本修复/重装）**：①「保存讲述兴趣」与底部旧「保存」按钮过近，分组/间距不足，这是**用户亲自确认**的问题；以后集中优化设置界面时增加明显间隔、区块分隔或操作提示。② 在成功保存之后若继续点击某类 Chip，原“已保存讲述兴趣”成功提示可能残留而造成误解，这是**源码评审提示，尚非用户亲测确认**；同次 UI 优化一起回归即可。**用户明确要求本版不修改**，不能以此扩大施工。
+
+**证据链接**：[工程证据](docs/evidence/v052-verification.json)、[本次真实手机证据](docs/evidence/v052-phone-acceptance.json)、[人工体验记录](https://github.com/shimao1115/KITT/pull/35#issuecomment-6220432321)、[正式工程评审](https://github.com/shimao1115/KITT/pull/35#issuecomment-6219618938)、[验收指导](docs/ACCEPTANCE_STORY_INTERESTS.md)。
+
+**本次最终执行边界**：用户已明确批准仅将 V0.5.2 文档收口并在最终合并门禁 PASS 时**合并 PR #35 到 main**。本次仅修订 AGENTS/HANDOFF/任务入口等文字，不修改生产 Kotlin、内容 Story/Claim/approval/manifest、已有设备/工程证据、APK或证书，不重复测试、安装、操作真实设备，也不提前启动 V0.5.3 / V0.6.x。合并成功后 STOP，下一版本独立授权。下方历史 HANDOFF 按其记录当时的 STOP/PENDING 解读；本段优先于之前的“用户亲手体验仍PENDING”或“合并未批准”等历史文字。
+
+---
+
 # 2026-10-17 V0.5.2/code19 — 一次原签名真机升级完成 / 六类兴趣真机 PASS / STOP 待用户亲手验收
 
 **用户批准的唯一一次 code18→code19 原签名保数据原位升级已执行完毕并成功。手机现为 `com.kitt.reader.runtimecheck` 0.5.2/code19。六类讲述兴趣的默认值、独立保存与重进持久化在真机 PASS；20/20 真实旅程历史逐文件哈希安装前后完全相同；普通设置与账号加密记录仍在。唯一升级许可已用尽，不得二次安装。见[本次真机证据](docs/evidence/v052-phone-acceptance.json)。工程 1009 项仍是此前 Qoder 实跑结果，本轮未重跑。**
