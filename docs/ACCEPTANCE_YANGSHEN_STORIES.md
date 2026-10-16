@@ -1,5 +1,17 @@
 # V0.5.0 / code17 杨慎故事最短验收
 
+> **2026-10-16最终收口**：工程为 `MERGE-READY-FOR-USER-REVIEW`，仅待用户决定是否阶段性合并；PR保持Draft。双篇独立真人试听已PASS，无需重复安装或重听；真实GPS自动/重播/追问/断网恢复仍PENDING。正式发布BLOCKED：尚缺游客Gate最终判定和明确的正式发布授权及对应正式审批记录，不能从候选审批自动提升。完整结论及按#23/#24/#27分列的外场清单见[HANDOFF](../HANDOFF.md)。下文安装命令与“未来”说明保留为历史操作说明，**本轮不执行、不再操作手机**。
+
+## 已完成的真人试听审核记录
+
+用户明确“两篇都完整听完，没问题”，已记[PR确认](https://github.com/shimao1115/KITT/pull/28#issuecomment-6205351157)及[手机证据](evidence/v050-phone-acceptance.json)：主篇117.149秒、SHA256 `f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4`；延伸59.532秒、SHA256 `559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f`。本轮回读核对Markdown、JSON、候选审批和实际试听正文哈希一致。此为**真人完整耳听PASS**，未声称逐词专家审音或完整Journey PASS。
+
+`approvals.json` 是10月15日候选构建时的审批快照，其 `human_listening=pending` 不否认10月16日后续反馈；保持 `scope=acceptance_candidate`，后续PASS通过上述现有审核记录补充。`review_status=candidate / fact_gate=passed / visitor_gate=pending` 与标准正式故事0保持不变。正式批准时应引用已完成耳听的原证据，不再把“用户未听完”列为缺项。**GPS自动链待验与文字正式审核是独立结论，不能互相代替。**
+
+---
+
+## 历史：安装与试听步骤（现已执行完独立试听，不重做）
+
 > **2026-10-16状态覆盖**：用户已明确授权一次code16→17原位升级及配套测试APK安装；经只读核验和用户结束遗留旅程后，均已安装成功。手机code17，禁止重复安装。主篇117.149秒、延伸59.532秒均成功结束；用户明确确认“两篇都完整听完，没问题”，**HUMAN_LISTENING=PASS**。原文“本轮不安装/未来另行授权/真人未听”均为10月15日历史；本轮只执行既有 `story-preview`，详见[HANDOFF](../HANDOFF.md)及[手机证据](evidence/v050-phone-acceptance.json)。不自动提升Visitor或正式发布状态；实机全链未验，无可信现场条件不启动定位黄金路径，不注入位置。
 
 **仅验收候选；本轮不安装、不操作手机、不合并。** 用户已确认v2.1双篇最终文字，本轮来源复核相符。两篇 `candidate / fact_gate=passed / visitor_gate=pending`，审批范围只到 `acceptance_candidate`；真实耳听、正式发布与实机全链未完成。#23/#24外场独立PENDING。

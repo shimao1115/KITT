@@ -1,4 +1,12 @@
-## 2026-10-15 v2.1 候选审核结论
+## 2026-10-16 收口审核增量：真人完整耳听PASS，正式发布仍BLOCKED
+
+两篇正文、SHA256、原Claim接受修订集均未改动。用户最终文字确认、Codex来源复核及书面编辑审阅已有记录；后续用户明确“两篇都完整听完，没问题”，**HUMAN_LISTENING=PASS**，证据见[PR确认](https://github.com/shimao1115/KITT/pull/28#issuecomment-6205351157)、[手机记录](evidence/v050-phone-acceptance.json)及[正文哈希绑定的验收记录](ACCEPTANCE_YANGSHEN_STORIES.md)。下方“真人未听/PENDING”仅表示10月15日历史时点，不再作为当前缺项。
+
+10月15日 `approvals.json` 的候选审批及原始仪器human PENDING保持原样，后续人耳事实由本增量记录补齐。仍 `candidate / fact_gate=passed / visitor_gate=pending`、审批范围 `acceptance_candidate`、正式故事0；不代签游客Gate最终批准或正式发布授权。来源复核不是人类史学专家终审，无需为本次工程收口重查已满足的论文依据。真实GPS自动/重播/延伸和断网恢复仍PENDING，不能用耳听替代。具体两个独立结论及正式发布缺项见[最终HANDOFF](../HANDOFF.md)。
+
+---
+
+## 2026-10-15 v2.1 候选审核结论（历史）
 
 **实际结论：文字确认已完成，必要事实依据复核相符，可构建仅供用户验收的 code17；真人离线 TTS 听感、实机链路和正式发布仍 PENDING/BLOCKED。** 本段覆盖下方早期“用户尚未审稿/审批空”的历史。没有再改两篇正文、正文 SHA256、supported_claim_refs 或原 Claim 修订。
 
