@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-17T00:41:30+08:00",
+  "task": "V0.5.2/code19 one original-signature physical-phone upgrade (code18 -> code19) and bounded acceptance of six story interests",
+  "overall_status": "PASS_ONE_UPGRADE_AND_INTERESTS_PERSISTENCE / DEVICE_HUMAN_HANDS_ON_AND_INTEREST_EFFECT_ON_REAL_STORIES_PENDING / SETTINGS_PAGE_ENTRY_BYTE_DRIFT_REPRODUCED_ROOT_CAUSE_UNKNOWN",
+  "fully_accepted": false,
+  "repository": "shimao1115/KITT",
+  "branch": "feat/v052-story-preferences",
+  "pr": 35,
+  "pr_state_after_this_run": "Draft, OPEN, not merged",
+  "issue": 34,
+  "authorized_task_commit": "0d3b291bd1fb85b10ee4795554d933ac9e551849",
+  "implementation_commit": "d9d9b41b17961c8ed848c12218d3cfb06694ce9e",
+  "engineering_handoff_commit": "2a331d999c4cd369ed3ae809b02031915f1a995c",
+  "engineering_baseline_note": "Only TASK_CARD.md changed between the delivery HEAD 2a331d9 and the authorization commit 0d3b291 (verified with git diff --name-only), so the installed code19 candidate still corresponds to the reviewed engineering commit d9d9b41.",
+  "authorization_comments": [
+    "https://github.com/shimao1115/KITT/pull/35#issuecomment-6219482502",
+    "https://github.com/shimao1115/KITT/pull/35#issuecomment-6219618938",
+    "https://github.com/shimao1115/KITT/pull/35#issuecomment-6219804731"
+  ],
+  "observer": "Qoder via USB ADB: package/signature readback, run-as read-only preference and history file hashing, uiautomator hierarchy and input taps. No user satisfaction assertion.",
+  "device": {
+    "manufacturer": "vivo",
+    "market_name": "vivo X200 Pro",
+    "model": "V2405A",
+    "vendor_model": "V2405DA",
+    "android_release": "16",
+    "android_sdk": 36,
+    "unique_adb_device": true,
+    "adb_devices_lines_excluding_header": 1,
+    "usb_selector_get_state": "device",
+    "serial": "WITHHELD",
+    "physical_portrait_px": [1260, 2800],
+    "density_dpi": 560
+  },
+  "preflight": {
+    "all_items_pass_before_install": true,
+    "worktree_clean": true,
+    "single_worktree": "H:/CODEX/KITT only",
+    "production_package_com_kitt_reader_installed": false,
+    "production_package_touched": false,
+    "unique_usb_adb_target": true,
+    "active_journey": false,
+    "journey_restore_files_absent": true,
+    "running_services_for_package": "none",
+    "kitt_tts_playback_active": false,
+    "driving_environment_indication": "not driving: 00:25 CST overnight, USB powered from the office host, cellular data connection state 0",
+    "candidate_apk": {
+      "path": "artifacts/kitt-v0.5.2-runtimecheck.apk",
+      "bytes": 74444882,
+      "sha256": "3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b",
+      "package": "com.kitt.reader.runtimecheck",
+      "version_name": "0.5.2",
+      "version_code": 19,
+      "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "certificate_dn": "C=US, O=Android, CN=Android Debug",
+      "rehashed_immediately_before_install": true
+    },
+    "installed_before": {
+      "package": "com.kitt.reader.runtimecheck",
+      "version_name": "0.5.1",
+      "version_code": 18,
+      "pulled_installed_apk_bytes": 74976037,
+      "pulled_installed_apk_sha256": "8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea",
+      "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "same_certificate_as_candidate": true,
+      "readback_re_measured_this_round": true,
+      "matches_v051_recorded_hash": true
+    }
+  },
+  "install": {
+    "attempts": 1,
+    "command": "adb -d install -r <absolute path to> artifacts/kitt-v0.5.2-runtimecheck.apk",
+    "command_note": "The approved repository artifact was addressed by absolute path from the repository root so the single attempt could not fail on path resolution; the transferred file is hash-verified identical to artifacts/kitt-v0.5.2-runtimecheck.apk.",
+    "started_at": "2026-10-17T00:28:46+08:00",
+    "completed_at": "2026-10-17T00:29:02+08:00",
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "Performing Streamed Install\nSuccess",
+    "stderr": "",
+    "forbidden_actions_not_used": [
+      "adb uninstall",
+      "pm clear",
+      "install -d",
+      "install -g",
+      "install -t",
+      "signature substitution",
+      "package-name switch",
+      "standard debug/release install",
+      "retry after failure",
+      "force-stop",
+      "am clear"
+    ]
+  },
+  "after_version": {
+    "version_name": "0.5.2",
+    "version_code": 19,
+    "last_update_time": "2026-10-17 00:29:01",
+    "first_install_time": "2026-10-09 09:42:45",
+    "first_install_time_unchanged": true,
+    "uid": 10340,
+    "uid_unchanged": true,
+    "data_directory_identity_unchanged": true,
+    "signature_object_unchanged": "PackageSignatures version:2 signatures:[c7e3ea93]",
+    "pulled_installed_apk_sha256": "3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b",
+    "installed_apk_byte_identical_to_candidate": true,
+    "same_certificate_verified": true
+  },
+  "history_preservation": {
+    "files_count_each_stage": [20, 20, 20],
+    "stages": ["pre-install", "immediately after install", "final after UI"],
+    "schema_valid_json_count_each_stage": [20, 20, 20],
+    "json_keys_observed": ["destination", "ended", "skipped", "started", "topics", "version"],
+    "all_file_hashes_equal": true,
+    "per_file_hash_manifest_sha256_each_stage": [
+      "e7f8bd101a02d93e7c14719b135d434e399888e2183db141ba953ab4574db027",
+      "e7f8bd101a02d93e7c14719b135d434e399888e2183db141ba953ab4574db027",
+      "e7f8bd101a02d93e7c14719b135d434e399888e2183db141ba953ab4574db027"
+    ],
+    "manifest_format": "sorted lines of '<file sha256>  <trip file name>'",
+    "manifest_not_comparable_to_v051_value": "v051 recorded e596897c... from a different manifest serialization; the v051 value is not restated as this round's measurement.",
+    "raw_trip_names_text_published": false,
+    "history_ui_limitation": "No history-list entry on the phone; preservation is proved by read-only real files, per-file SHA256 and JSON parse, not by browsing 20 trips in the UI."
+  },
+  "settings_byte_windows": {
+    "file": "shared_prefs/settings.xml",
+    "non_sensitive_fields_identical_in_every_window": true,
+    "windows": [
+      {"id": "W0", "when": "pre-install, before any device interaction", "at": "2026-10-17T00:27:30+08:00", "bytes": 5167, "sha256": "4c267ca3b08922a09b0fb7445d915e3d5330e07f01c8184b871012a7c32e25e6"},
+      {"id": "W1", "when": "immediately after install, before opening any UI", "at": "2026-10-17T00:29:11+08:00", "bytes": 5167, "sha256": "4c267ca3b08922a09b0fb7445d915e3d5330e07f01c8184b871012a7c32e25e6"},
+      {"id": "W2", "when": "after first opening the settings page", "at": "2026-10-17T00:30:50+08:00", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"},
+      {"id": "W2b", "when": "before the two interest chip taps", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"},
+      {"id": "W2c", "when": "after the two interest chip taps, before pressing save", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"},
+      {"id": "W3", "when": "after pressing 保存讲述兴趣", "at": "2026-10-17T00:33:11+08:00", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"},
+      {"id": "W4", "when": "after exiting and re-entering the app and settings page", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"},
+      {"id": "W5", "when": "after a further settings-page entry that displayed 已更新账号模型", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"},
+      {"id": "W6", "when": "final, after all UI work", "at": "2026-10-17T00:38:11+08:00", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"},
+      {"id": "W7", "when": "after a fourth settings-page entry with no edits", "bytes": 5167, "sha256": "269dc8d6811a381acbda17454f6f467ff1c7d2809217332dccad9fa1f276ac60"}
+    ],
+    "install_wrote_settings_file": false,
+    "interest_save_wrote_settings_file": false,
+    "drift_window_narrowed_to": "the single write at 00:30 coincident with first opening the settings page; the file mtime stayed 2026-10-17 00:30 through W7 despite three later settings-page entries",
+    "drift_field_level_status": "UNKNOWN - only whole-file SHA256 was captured, the raw XML was never persisted or published, no decryption or field-level diff was performed, so which key changed cannot be stated",
+    "drift_interpretation_limits": [
+      "File size unchanged at 5167 bytes and all six non-sensitive values plus every sensitive presence boolean are identical before and after, which is consistent with a re-serialization or AES-GCM re-encryption of an unchanged record, but this is a hypothesis and not a measured conclusion.",
+      "The W0 hash equals the v051 recorded post-drift final hash, so the previously reported drift had not recurred between 2026-10-16 16:36 and this run; the drift observed at W2 is a new event in the same file, not a restatement of the old one.",
+      "Account record presence is not proof of decryptability, valid grant, or working online requests."
+    ],
+    "declared_unexpected_drift_stop_triggered": false,
+    "declared_unexpected_drift_reason": "The only whole-file change occurred on opening the settings page, a behaviour the authorization explicitly anticipated and asked to separate; interest saving provably wrote nothing to this file, so the authorized persistence test could continue."
+  },
+  "story_interests_preservation": {
+    "file": "shared_prefs/story_interests.xml",
+    "absent_on_code18": true,
+    "absent_after_upgrade_before_first_save": true,
+    "created_by": "explicit 保存讲述兴趣 press only",
+    "created_at": "2026-10-17 00:33",
+    "bytes": 329,
+    "sha256": "54a9930453c55300071ebac4cc1b7ba6f03d96411ad3f57fec5a01e2654facc5",
+    "contains_only_six_category_keys": true,
+    "no_credential_or_account_material_in_file": true,
+    "key_levels_final": {
+      "NATURE": "NORMAL",
+      "ENGINEERING": "LESS",
+      "CULTURE": "NORMAL",
+      "LOCAL_LIFE": "NORMAL",
+      "HISTORY": "MORE",
+      "TRAVEL": "NORMAL"
+    },
+    "unchanged_by_later_settings_entries": true
+  },
+  "non_sensitive_settings_comparison": {
+    "basis": "read-only run-as parse of shared_prefs/settings.xml in process memory; sensitive keys recorded only as presence and empty/non-empty booleans",
+    "before_upgrade": {"provider": "CHATGPT", "model": "gpt-6.1-sol", "effort": "low", "speech_rate": "1.0", "tts_voice": "empty (system default)", "separate_research": "false", "simulation": "absent", "acceleration": "absent", "simulation_speed": "absent"},
+    "after_upgrade_and_after_all_ui": {"provider": "CHATGPT", "model": "gpt-6.1-sol", "effort": "low", "speech_rate": "1.0", "tts_voice": "empty (system default)", "separate_research": "false", "simulation": "absent", "acceleration": "absent", "simulation_speed": "absent"},
+    "all_non_sensitive_keys_match": true,
+    "account_encrypted_record": {"key": "chatgpt", "present_each_stage": true, "non_empty_each_stage": true},
+    "legacy_credential_key": {"key": "credential", "present_each_stage": true, "empty_each_stage": true},
+    "research_credential_key": {"present": false},
+    "online_account_usability": "PENDING - not tested, no Director or ChatGPT request was intentionally issued"
+  },
+  "interests_ui_acceptance": {
+    "settings_page_version_line": "沿途 · 0.5.2 · 读懂沿途的世界",
+    "single_interests_section_present": true,
+    "section_heading": "讲述兴趣",
+    "categories_visible_on_device": ["自然地理生态", "交通与工程", "人文文化社会", "物产产业生活", "历史与人物", "旅行现场与常识"],
+    "three_levels_per_category_visible": ["多讲", "正常", "少讲"],
+    "initial_state_all_six_normal": true,
+    "initial_state_proof": "uiautomator reported exactly one checked chip per row, always the middle 正常 container, for all six rows before any save",
+    "empty_gate_notice": "当前没有已通过审核门禁的完整故事；兴趣将在有合格故事时影响自动讲述的相对优先级。",
+    "isolation_notice": "本区块单独保存，不改动账号、模型或语音设置。",
+    "chips_clickable_on_real_device": true,
+    "long_page_scroll_portrait": "PASS",
+    "back_navigation": "PASS",
+    "save_action": {
+      "button": "保存讲述兴趣",
+      "confirmation_message_observed": "已保存讲述兴趣",
+      "explicit_rounds_performed": 1,
+      "selection": {"HISTORY": "MORE", "ENGINEERING": "LESS", "NATURE": "NORMAL", "CULTURE": "NORMAL", "LOCAL_LIFE": "NORMAL", "TRAVEL": "NORMAL"},
+      "untouched_categories_verified": true
+    },
+    "chip_tap_without_save_wrote_nothing": true,
+    "persistence_after_exit_and_reenter": {
+      "result": "PASS",
+      "method": "two BACK presses then HOME, then relaunch from the launcher intent",
+      "process_restarted": false,
+      "pid_unchanged_across_reentry": 31366,
+      "limitation": "The app process survived HOME, so this is a re-entry of a live process rather than a proven cold start; the file was already committed synchronously by edit().commit() and re-read on re-entry, and the install itself had earlier killed and restarted the process without any interests file present."
+    },
+    "unsaved_change_discarded": {
+      "result": "PASS",
+      "action": "tapped 自然地理生态 多讲 then left the settings page with BACK and never pressed save",
+      "evidence": "story_interests.xml SHA256 identical before the tap, after the tap and after leaving; NATURE still NORMAL on re-entry, ENGINEERING still LESS and HISTORY still MORE"
+    },
+    "landscape": {
+      "attempt": "temporarily set system/user_rotation with auto-rotate disabled, then restored",
+      "applied": true,
+      "observed_extent_px": [2800, 1260],
+      "on_rotation_activity_recreated_to_home": true,
+      "interests_section_in_landscape": "PASS after re-entering settings; category rows, three chips each, and 保存讲述兴趣 render and scroll",
+      "persisted_selection_survived_rotation": true
+    },
+    "preserved_unchanged_around_the_interests_block": {
+      "provider_row": "ChatGPT 账号（推荐）still selected",
+      "account_line_present": true,
+      "plan_usage": "ChatGPT 计划使用：已启用",
+      "speech_rate_row": "语音速度 1.0×",
+      "voice_row": "朗读声音 / 系统中文声音 · 2 个 / 系统默认中文声音",
+      "original_save_and_back_buttons_present": true,
+      "offline_pack_info_present": true
+    },
+    "ux_observation_not_fixed": {
+      "issue": "The reviewer noted that 已保存讲述兴趣 is not cleared if the user changes a chip afterwards, which can read as though the new change was saved.",
+      "verified_this_round": false,
+      "detail": "After saving, the page was left before any further chip edit inside the same compose session, so the stale-message state was not directly observed on device. No code was changed and no second save was pressed, because the authorization covers one explicit save round only.",
+      "recommendation": "Clear the success message, or mark the draft dirty, when a chip changes; needs its own test and a rebuilt APK, so it is left as a follow-up rather than patched this round."
+    }
+  },
+  "system_settings": {
+    "before": {"global/wifi_on": "1", "global/airplane_mode_on": "0", "system/accelerometer_rotation": "0", "system/user_rotation": "0", "secure/location_mode": "3"},
+    "after": {"global/wifi_on": "1", "global/mobile_data": "1", "global/bluetooth_on": "0", "global/airplane_mode_on": "0", "system/accelerometer_rotation": "0", "system/user_rotation": "0", "system/font_scale": "1.0", "secure/location_mode": "3"},
+    "measured_before_this_run": ["global/wifi_on", "global/airplane_mode_on", "system/accelerometer_rotation", "system/user_rotation", "secure/location_mode"],
+    "not_measured_before_this_run": ["global/mobile_data", "global/bluetooth_on", "system/font_scale"],
+    "restored_values_match_measured_before": true,
+    "anomaly_note": "The pre-install read at 00:25 reported accelerometer_rotation=0; a read at 00:35 immediately before the landscape step reported 1. Nothing in this run wrote that key before 00:35. Both values are recorded rather than reconciled, and the final state was set to the 00:25 baseline.",
+    "ssid_and_other_network_identity_published": false
+  },
+  "content_gate_state_unchanged": {
+    "formal_complete_stories": 0,
+    "yangshen_main_and_followup": "candidate / fact_gate=passed / visitor_gate=pending",
+    "visitor_gate_changed": false,
+    "approvals_claims_text_manifest_or_assets_modified": false,
+    "require_playable_gate": "still BLOCKED, not exercised this round",
+    "interest_injection_or_unlock_on_device": "not attempted",
+    "observed_on_device": "Settings page still states that no complete story has passed the review gates"
+  },
+  "pending": [
+    "The user's own hands-on interaction, comfort and reach on the vivo X200 Pro for the six-category block; this run records automated taps and hierarchy reads only.",
+    "Whether interests change the real broadcast order of approved multi-category stories: formal complete stories are still 0, so this remains unobservable on device.",
+    "Root cause and field-level identity of the settings.xml whole-file hash change on first opening the settings page.",
+    "Account decryptability and online usability, side-swipe gesture navigation, Samsung Tab S9 real layout, real off-line TTS listening on this build, and field GPS for #23/#24/#27/#30.",
+    "Cold-process (force-stop or swipe-away) re-entry proof for the interests file; the authorized scope did not include killing the app."
+  ],
+  "not_claimed": [
+    "This run did not re-run Debug/Release tests, Python content gates, simulation, build or lint; the 1009 items remain the earlier Qoder engineering evidence for commit d9d9b41 and were not re-measured.",
+    "Presence of a non-empty encrypted account record is not proof that ChatGPT requests work.",
+    "Automated device UI interaction is not the user's own acceptance.",
+    "The settings.xml change at W2 is not evidence of account corruption or of data loss, and identical non-sensitive values plus a single whole-file hash are not proof that every historical field is preserved."
+  ],
+  "scope_controls": {
+    "production_kotlin_changed": false,
+    "story_claim_approval_or_asset_changed": false,
+    "gradle_certificate_or_build_changed": false,
+    "prior_engineering_evidence_edited": false,
+    "apk_rebuilt_or_resigned": false,
+    "uninstall_or_data_clear": false,
+    "install_attempts": 1,
+    "pr_merged": false,
+    "pr_still_draft": true,
+    "apk_uploaded_or_released": false,
+    "next_version_started": false,
+    "raw_device_xml_screenshots_account_values_trip_text_or_device_serial_published": false,
+    "local_captures_kept_only_in_ignored_directory": "artifacts/v052-phone-acceptance/"
+  },
+  "stop": "One authorized upgrade performed and finished; bounded device acceptance complete. STOP. No second install, no merge, no release, no story-gate change, no code change. Awaiting the user's own hands-on acceptance and separate decisions on merging PR #35."
+}

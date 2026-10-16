@@ -1,3 +1,128 @@
+# 2026-10-17 V0.5.2/code19 最终人工验收与合并收口（用户明确批准）
+
+**人工体验：PASS。** 在 Qoder 唯一一次 code18→19 原签名保数据升级、六类兴趣实机辅助验收后，用户亲手检查已装的 vivo X200 Pro / `com.kitt.reader.runtimecheck` code19，并回复：**“都正常，就是‘保存讲述兴趣’ 和 ‘保存’两个按钮挨的太近，图标就要连在一起了，不过这个是小问题，暂时不修改，以后优化UI的时候一起修改”**。人工认可范围为当前 code19 的设置与兴趣体验；**并不等于** ChatGPT 在线请求、原设置完整语义等价、正式多类故事真实排序、冷进程重启、平板或者真实 GPS 全链已验收。用户随后再次明确**“批准”本次文档收口及 PR #35 正式合并至 main**；实际合并状态/merge SHA 始终以 [PR #35](https://github.com/shimao1115/KITT/pull/35) 为准。
+
+## 本次阶段验收与遗留事项
+
+| 项目 | 最终阶段判定 |
+| --- | --- |
+| 工程 | **PASS**：Qoder 在实现提交 `d9d9b41` 对 Debug511 + Release498 = **1009项**实际重跑，0失败/错误/跳过，Python7、六组Fake模拟、构建/lint及签名回归均有真实证据；这次最终文档收口**未重跑**。 |
+| 原签名一次升级 | **PASS**：唯一 vivo X200 Pro 上 code18→19 一次 `adb -d install -r`、同包同证书、已装APK回读一致；本次文档收口**不操作手机/不重装**。 |
+| 六类偏好 | **设备辅助PASS + 用户亲手体验PASS**：六类三档初始全 NORMAL；明确一次保存 `HISTORY=MORE`、`ENGINEERING=LESS`、其余 NORMAL，独立 `story_interests.xml` 生效、重新进入后仍在，未保存选择不落盘；辅助验收没有执行**冷进程重启**，不对此额外声称 PASS。 |
+| 旧历史与配置 | **保留PASS（既有证据）**：20/20份真实历史三阶段逐文件 SHA256不变，六项非敏感设置升级前后值一致、账号加密记录存在且非空；不代表账号解密与在线调用已证实。 |
+| 设置字节漂移 | **UNKNOWN（未解决风险）**：`settings.xml` 升级前/刚升级后哈希相同，首进设置页从 `4c267ca3…` 改为 `269dc8d6…`，兴趣编辑与独立保存后未再次变化；可确认**不是本次兴趣保存引发的写入**，但具体变化字段/根因和升级前后全量语义等价仍未知，不宣称已修复或账号损坏。 |
+| 内容正式发行 | **BLOCKED**：正式审核完整故事 **0篇**；杨慎主/延伸 `candidate / fact_gate=passed / visitor_gate=pending` 原样；“六类兴趣改变实际已审核多类故事播报次序”仍 PENDING（仅内存 TEST_ONLY 夹具测试）。 |
+| 来源双模式 | **DEFERRED**：即时优先/离线优先自动切换尚未实现；无需在此版冒险改动云端路由与失败回退。 |
+| 历史外场余项 | [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27)、[#30](https://github.com/shimao1115/KITT/issues/30) **保持 OPEN**，真实GPS/TTS/侧滑/Tab S9 等仅按已测范围验收，不据本次合并自动关闭。 |
+
+**明确延期的两个 UI 细节（非阻断、不得在当前版本修复/重装）**：①「保存讲述兴趣」与底部旧「保存」按钮过近，分组/间距不足，这是**用户亲自确认**的问题；以后集中优化设置界面时增加明显间隔、区块分隔或操作提示。② 在成功保存之后若继续点击某类 Chip，原“已保存讲述兴趣”成功提示可能残留而造成误解，这是**源码评审提示，尚非用户亲测确认**；同次 UI 优化一起回归即可。**用户明确要求本版不修改**，不能以此扩大施工。
+
+**证据链接**：[工程证据](docs/evidence/v052-verification.json)、[本次真实手机证据](docs/evidence/v052-phone-acceptance.json)、[人工体验记录](https://github.com/shimao1115/KITT/pull/35#issuecomment-6220432321)、[正式工程评审](https://github.com/shimao1115/KITT/pull/35#issuecomment-6219618938)、[验收指导](docs/ACCEPTANCE_STORY_INTERESTS.md)。
+
+**本次最终执行边界**：用户已明确批准仅将 V0.5.2 文档收口并在最终合并门禁 PASS 时**合并 PR #35 到 main**。本次仅修订 AGENTS/HANDOFF/任务入口等文字，不修改生产 Kotlin、内容 Story/Claim/approval/manifest、已有设备/工程证据、APK或证书，不重复测试、安装、操作真实设备，也不提前启动 V0.5.3 / V0.6.x。合并成功后 STOP，下一版本独立授权。下方历史 HANDOFF 按其记录当时的 STOP/PENDING 解读；本段优先于之前的“用户亲手体验仍PENDING”或“合并未批准”等历史文字。
+
+---
+
+# 2026-10-17 V0.5.2/code19 — 一次原签名真机升级完成 / 六类兴趣真机 PASS / STOP 待用户亲手验收
+
+**用户批准的唯一一次 code18→code19 原签名保数据原位升级已执行完毕并成功。手机现为 `com.kitt.reader.runtimecheck` 0.5.2/code19。六类讲述兴趣的默认值、独立保存与重进持久化在真机 PASS；20/20 真实旅程历史逐文件哈希安装前后完全相同；普通设置与账号加密记录仍在。唯一升级许可已用尽，不得二次安装。见[本次真机证据](docs/evidence/v052-phone-acceptance.json)。工程 1009 项仍是此前 Qoder 实跑结果，本轮未重跑。**
+
+## 前置核查（全部 PASS 后才装）
+
+- worktree 干净、单一 worktree；`fetch` 后快进到授权提交 `0d3b291`。工程基线核实为实现提交 `d9d9b41b17961c8ed848c12218d3cfb06694ce9e`、交付 HEAD `2a331d999c4cd369ed3ae809b02031915f1a995c`；`2a331d9..0d3b291` 仅改 `TASK_CARD.md`，故所装候选仍对应已审工程提交。
+- 候选 `artifacts/kitt-v0.5.2-runtimecheck.apk` **74444882 字节**、SHA256 `3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b`、包 `com.kitt.reader.runtimecheck`、`0.5.2/code19`、证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`；安装前一刻再次重算哈希相符。
+- 唯一 USB/ADB 目标 = vivo X200 Pro（V2405A／V2405DA，Android 16／SDK 36，1260×2800@560dpi）。已装旧包 `0.5.1/code18`，**本轮重新回读手机 APK 实测** 74976037 字节、SHA256 `8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea`，与 V0.5.1 历史记录一致（不再是只引用旧证据）；证书与候选同为 `3139a293…9502ba`，versionCode 18→19 单调。
+- 无活动 Journey：`files/trips/current.json` 与 `current.json.new` 均不存在、包过滤服务查询为空、无本应用 TTS 播放；非驾车（凌晨 00:25、USB 供电、蜂窝数据连接状态 0）。标准生产包 `com.kitt.reader` 未安装，全程未触碰。
+- 安装前只读基准：20 份真实历史逐文件 SHA256、`settings.xml` 整体哈希与非敏感字段摘要、`chatgpt` 记录“存在且非空”布尔值。原始 XML／旅程文本／账号值／设备序列号均未写盘或上传。
+
+## 唯一一次安装
+
+`adb -d install -r` 恰好一次（00:28:46→00:29:02，exit 0，Success）；未 uninstall、未 `pm clear`、未用 `-d/-g/-t`、未重试、未 force-stop。安装后 `versionCode=19`、签名对象与 uid(10340) 未变、`firstInstallTime=2026-10-09 09:42:45` 与数据目录标识不变，手机回读 APK 与批准候选**逐字节相同**（`3af6f91a…`）。
+
+## 真机验收结果
+
+| 项目 | 结果 |
+| --- | --- |
+| 六类与三档 | 设置页单一「讲述兴趣」区块，自然地理生态／交通与工程／人文文化社会／物产产业生活／历史与人物／旅行现场与常识 × 多讲／正常／少讲；**保存前六行实测均为中间「正常」选中**，即初值全部正常。 |
+| 独立保存 | 只把 历史与人物=多讲、交通与工程=少讲，点一次「保存讲述兴趣」→ UI 回显「已保存讲述兴趣」，并新建 `shared_prefs/story_interests.xml`（329 字节，仅六键：`HISTORY=MORE / ENGINEERING=LESS / NATURE=CULTURE=LOCAL_LIFE=TRAVEL=NORMAL`）。 |
+| 旧文件隔离 | **点 Chip 与点保存前后，`settings.xml` 哈希逐次相同且 mtime 未变；兴趣写入只产生新文件。**本版“不改旧设置文件”的设计在真机得到证实。 |
+| 持久化 | 退出（两次返回＋Home）再重进 App 与设置页，两项选择仍在、其余四类仍正常；未点保存的改动（把自然地理生态改多讲后返回）**未落盘**，文件哈希与内容均不变。 |
+| 20 份历史 | 三阶段计数均 20、均可 JSON 解析、逐文件 SHA256 清单哈希完全相同（`e7f8bd10…`），安装与全部 UI 操作未改动任何历史。 |
+| 普通设置与账号 | `provider=CHATGPT / model=gpt-6.1-sol / effort=low / speech_rate=1.0 / tts_voice 空(系统默认) / separate_research=false` 升级前后逐项相同；`chatgpt` 记录存在且非空、`credential` 存在且为空、`research_credential` 不存在——**仅证存储结构，未验证解密或联网可用**。设置页仍显示原账号行、“ChatGPT 计划使用：已启用”、原「保存／返回」按钮。 |
+| 布局 | 竖屏长页滚动＋返回可用；临时改横屏（随后恢复）后类别行、三档 Chip 与「保存讲述兴趣」仍可呈现并滚动，已保存选择在旋转后保留。旋转会使 MainActivity 重建并回到驾驶首页（非崩溃）。 |
+| 内容门禁 | 设置页如实显示“当前没有已通过审核门禁的完整故事”；**正式完整故事仍 0**，杨慎两篇仍 `candidate / visitor_gate=pending`，未注入、未解锁、未改任何审批。 |
+
+## 本轮唯一异常（须用户复核，根因仍 UNKNOWN）
+
+`settings.xml` 整体哈希在 **00:30 第一次打开设置页**时由 `4c267ca3…` 变为 `269dc8d6…`：文件大小仍 5167 字节、六个非敏感值与所有敏感项存在/非空布尔值逐项相同，且此后 W3～W7（含兴趣保存与三次再进设置页）**再未变化**，mtime 一直停在 00:30。这把 code18 遗留的漂移**收窄到“首次进入设置页”这一次写入**，并证明它**不是**兴趣保存造成的。具体改了哪个键仍 **UNKNOWN**：本轮只存整体哈希，未保存原始 XML、未解密、未做逐字段差异，因此不判账号损坏、也不声称全部历史字段保留。另注：本轮 W0 哈希等于 V0.5.1 记录的漂移后终值，说明 16:36 之后未再自行变化；00:25 读到 `accelerometer_rotation=0`、00:35 读到 `1`（本轮此前未写该键），两个读数均如实保留，最终恢复为 00:25 基准。
+
+## 保留的 PENDING 与未声称
+
+用户本人亲手操作舒适度与可达性、真实多类正式故事被偏好改变播报次序（正式故事 0 无法观察）、设置页首进漂移的根因、账号解密与在线可用性、侧滑手势、Tab S9 实机、本版真机离线 TTS 耳听、#23/#24/#27/#30 外场，均未在本轮 PASS。本轮**未重跑**任何 Gradle／Python／模拟／构建／lint／签名回归，1009 项仍是 `d9d9b41` 的工程证据。评审提出的“保存后继续改 Chip 时旧成功提示未清除”一项，本轮未点第二次保存（授权仅一轮明确保存），故**未在真机验证**，留作后续小修。
+
+**执行一次后 STOP。** PR #35 保持 **Draft／OPEN／未合并**，未发布 APK、未改正式故事审核、未启动 V0.5.3／V0.6.x；#23/#24/#27/#30 原状态不变。不得再次安装 code19。下一步由用户本人亲手体验并单独决定是否合并。
+
+最近 commits：`0d3b291` docs 授权一次 code18→19 原位升级与有界验收 ← `2a331d9` docs code19 工程交接 ← `d9d9b41` feat 六类兴趣柔性排序。
+
+---
+
+# 2026-10-16 V0.5.2/code19 — 工程交付 / STOP 待用户工程验收
+
+**分支 `feat/v052-story-preferences`，实现提交 `d9d9b41`，交付 [Draft PR #35](https://github.com/shimao1115/KITT/pull/35)，关联 [Issue #34](https://github.com/shimao1115/KITT/issues/34)，分支基线为已含 PR #31 合并（`9319c271`）的 main。** 本版实际完成：设置页单一「讲述兴趣」区块（六类 `StoryCategory` × 三档 多讲/正常/少讲，初值全部正常）、独立 `story_interests` 偏好文件持久化，以及在**既有资格门禁全部通过之后**的类别柔性排序接线。**手机未访问/未安装，PR 未合并，APK 未上传或发布，任何故事审批未改变。**
+
+## 本版真正可用的能力
+
+| 项目 | 实际状态 |
+| --- | --- |
+| 六类兴趣设置 | 自然地理生态／交通与工程／人文文化社会／物产产业生活／历史与人物／旅行现场与常识，各三档，**初值全部正常且彼此均衡**；重启与重新进入设置页仍保留。 |
+| 独立持久化 | 新命名空间文件 `shared_prefs/story_interests.xml`，有独立的「保存讲述兴趣」动作。缺键→正常，非法/空/类型错值→正常且不崩溃；返回或离开页面不落盘。**不复用原「保存」路径**，因此 `provider/model/effort/tts_voice/speech_rate/chatgpt/credential/research_*` 任一字节都不因调兴趣而变化。 |
+| 柔性排序 | 稳定软权重 多讲 > 正常 > 少讲，只重排**已经通过**区域、审批、Fact/Visitor Gate、版权、Claim 修订、可信定位、本趟已播与节奏等既有资格的候选；全正常时结果与旧行为逐字一致。少讲不禁讲，多讲不得让候选/未过门禁内容入场，`stories.count(main) <= 1` 数据门禁保留。 |
+| 解耦范围 | 偏好只作用于**自动讲述**候选次序。探索阅读、手动点播、原文重播以及用户明确说出的「再讲一点/这里有什么」不按自动选题偏好重排；旧 `TopicFamily` 未映射到六类。 |
+| 内容真实数量 | 标准包与本版 runtimecheck 仍 **新都区1县/6对象/22基础事实/6来源，正式完整故事0**。杨慎两篇 `candidate / fact_gate=passed / visitor_gate=pending` 的正文、Claim、approval、manifest 与标准资产逐字节未改；`--require-playable` 仍如实 BLOCKED，`--acceptance-candidate` 缺独立输出目录仍被拒。设置页显示“当前没有已通过审核门禁的完整故事”。 |
+
+## 工程结果（本版真实重跑，不沿用旧计数）
+
+- **Debug 511 + Release 498 = 1009 项，0 失败 / 0 错误 / 0 跳过**（77/75 个套件，逐套计数与用例名见 [工程证据](docs/evidence/v052-verification.json)）。旧 code18 的 965 项只是历史，未计入本版。
+- 新增 22 项专项：六类×三档默认值、重启持久化、非法值回退、code18 旧设置无新键迁移、改一类不动另五类、`settings.xml` 逐字节与 20 份**合成**纪要前后哈希一致、未启动 Journey／未改定位／已播与调度计数不变、云调用为 0、排序只在合格候选内生效、已播不重播、越区静默、候选稿件不因“多讲历史”而可播。多类别竞争一律用**纯内存 TEST_ONLY 夹具**，未写入源码资产或 APK。
+- 六组确定性/Fake 模拟 PASS（成都新都→安州雎水 29 点粗粒度轨迹，Fake Provider/fake Voice，生产 Context/Journey/Director）；`driving-area-resolution` 四项节流区间记录一致。Python 内容门禁 7 项 OK 且标准 `--check` 为 STRUCTURE PASS／0 篇合格叙事。`assembleDebug/Release`、`lintDebug/Release`（6 warnings、0 error）与 runtimecheck 独立构建均成功。
+- 原签名回归 **2 接受 + 6 拒绝 PASS**；标准包与 runtimecheck 证书 SHA256 仍为 `3139a293…9502ba`。
+- 本地候选（**不入 Git，仅本机**）：`artifacts/kitt-v0.5.2-runtimecheck.apk`，`com.kitt.reader.runtimecheck` **code19 / 0.5.2**，74444882 字节，SHA256 `3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b`；标准 `kitt-v0.5.2-debug.apk` 74444866 字节 `c5e0aacccb5ff792922745c034c9ec746706362838865627a0822b09274641bf`、`kitt-v0.5.2-release.apk` 70773822 字节 `ef4fd86b4d8e42359c3ed160e656cf3b913367dea9cf0a32338c8d516d3b4256`。
+- **code18→code19 仅静态兼容**：同包名、同证书、versionCode 单调 18→19，故原位升级在签名层面被允许。本机没有 code18 APK 文件，基线一侧沿用已记录的`docs/evidence/v051-verification.json`手机回读哈希；**本轮未安装、未访问手机**。
+
+## Provider/模型配置与密钥
+
+本版全部功能不依赖任何密钥或登录：兴趣偏好与排序纯本地。应用内 `SettingsStore` 默认仍是 `FAKE / gpt-4.1-mini`，未改动读取/保存逻辑；真机现装 code18 的实际账号配置以 [V0.5.1 只读核查](docs/evidence/v051-current-settings-readonly.md) 为准，本轮没有再次读取。用户无需为本版执行任何 OAuth 或密钥步骤。
+
+## 来源双模式（离线优先／即时优先）：**DEFERRED，未实现**
+
+按任务卡的停止门槛核查后判定为超出版本边界，理由全部有源码依据：
+
+1. [KittRuntime.kt:93](app/src/main/java/com/kitt/reader/KittRuntime.kt#L93) 把 `preferOffline` 硬绑为 `{ !simulation }`，即真机自动讲述**当前总是本地**；改成两档开关会把自动主链放到真实云/账号/网络路径上，而该行为只能靠活账号联网与真机才能验收，本轮两者均未获授权。
+2. [DirectorLoop.kt:81](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L81) 之后，自动分支的云失败只会 `deliver(null)` 静默记 `FAILURE`（[DirectorLoop.kt:177](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L177)），**没有“有界退回已审本地故事”的实现**；补这段退回属于任务卡明确排除的“失败重试调度/大重构”。
+3. `!preferOffline()` 还会在连通与进入新区域章节时启动后台 `research.enter(...)`（[DirectorLoop.kt:49](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L49)、[:62](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L62)），触及研究/缓存框架的云上行为，不在本版边界内。
+
+因此本版**没有做只有 UI 的假开关**，也没有声称测试过即时优先的真实网络行为；建议另立独立小版本（V0.5.3 或既定 V0.7.x）专门施工与验收。
+
+## 已知限制与保留的 PENDING
+
+- 「用户现在就能听到六类正式故事」不成立；**正式多类内容真机播报确实受偏好影响**仍 PENDING，本版只交付可靠保存 + 已接入的可复用排序基础设施。
+- Compose/Robolectric 的 411×914、914×411、1280×800、320×568+1.5 倍字体检查是合成布局证据，**不是 vivo X200 Pro / Samsung Tab S9 真实屏幕与触控**；侧滑手势、真机大字号与真实 TTS 耳听仍 PENDING。
+- code18 的 `settings.xml` 整体字节漂移根因仍是 `UNKNOWN / INSUFFICIENT_BASELINE`；本版只做“新写入隔离在独立文件”的防扩散设计，没有试图修复或重新解释它。账号在线有效性仍未单独验证。
+- [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27)、[#30](https://github.com/shimao1115/KITT/issues/30) 的原 OPEN/PENDING 状态未变；PR [#29](https://github.com/shimao1115/KITT/pull/29) 县级采集分支未触碰；V0.6.x、车机、实时导航未启动。
+
+## 用户下一次最短总验收
+
+1. 审 [Draft PR #35](https://github.com/shimao1115/KITT/pull/35) 代码、[工程证据](docs/evidence/v052-verification.json) 与 [验收说明](docs/ACCEPTANCE_STORY_INTERESTS.md)，核对上面 code19 候选的包名、版本、大小与 SHA256。
+2. 若同意升级，**另行明确授权**一次同签名原位升级；本文与验收说明都不构成安装许可。
+3. 升级后先看设置页：六类都在且初值全是「正常」，账号/Provider/模型/音色/语速与升级前相同；只改历史与人物=多讲、交通与工程=少讲并点「保存讲述兴趣」，退出重进确认仍在、其余四类未变，20 份纪要原样。
+4. 新都区旅程可正常跑且不出现异常讲述；**不应据此声称“偏好已让我多听某类正式故事”**，因为正式故事仍是 0。
+
+**完成工程交付即 STOP。** 等待用户工程验收；代码合并、真机升级、故事正式发布是三件需分别明确授权的事，本轮未执行其中任何一件。
+
+最近 milestone commits：`d9d9b41` feat 六类兴趣柔性排序（V0.5.2/code19）← `c2bf1f2` docs 归一化 Agent 说明头部 ← `f966908` docs 界定 V0.5.2 code19 任务卡 ← `9319c27` Merge PR #31（V0.5.1/code18，main）。
+
+---
+
 # 2026-10-16 最终阶段验收与合并交接：工程/探索 UI 接受，设置漂移根因 UNKNOWN
 
 **用户已接受 V0.5.1/code18 工程及探索 UI 阶段，并明确批准文档同步及 PR #31 正式合并至 main。** [人工反馈](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212597341)：用户“我没有发现什么问题，都是正常的”，记 **HUMAN_UI_ACCEPTANCE=PASS**；[最终合并授权](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212644800)及最新[TASK_CARD](TASK_CARD.md)覆盖下方旧 Draft/HOLD/禁止合并文字的工程合并限制。实际合并状态及 merge SHA 以[PR #31记录](https://github.com/shimao1115/KITT/pull/31)为准，不把人工体验改写成账号、故事或外场全链PASS。

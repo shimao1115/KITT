@@ -1,0 +1,3005 @@
+{
+  "date": "2026-10-16",
+  "version": "0.5.2",
+  "version_code": 19,
+  "status": "ENGINEERING-STOP-USER-ACCEPTANCE-PENDING",
+  "issue": 34,
+  "pull_request": 35,
+  "branch": "feat/v052-story-preferences",
+  "branch_base": "9319c271f878000f79a71be92df7bee6ec92605f",
+  "implementation_commit": "d9d9b41b17961c8ed848c12218d3cfb06694ce9e",
+  "build_provenance": "APKs built from the working tree before its delivery commit; source_sha256 records those production bytes and the runtime copy is compared against them.",
+  "recorded_at": "2026-10-16T23:57:34.274423+08:00",
+  "variants": {
+    "Debug": {
+      "tests": 511,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ActiveResearchTest",
+          "timestamp": "2026-10-16T15:42:17",
+          "report_sha256": "b659d34ce3d5959a696dfeb9bf61a5de424111c6ea180ce1a0312254c1b697b1",
+          "cases": [
+            "realtimeResearchUsesChinaDateRatherThanHostOrUtcDate",
+            "sameProviderDecisionUsesOriginalStrictEightFields",
+            "failedSearchBrieflyReportsFailureAndNeverFallsBackToModelMemory",
+            "typedAndAsrRepliesUseSameSearchDecisionAndDirectorPath",
+            "searchTimeoutIsHonestAndDoesNotRetry",
+            "ordinaryStableKnowledgeDoesNotSearch",
+            "newUserIntentCancelsLateSearchAndCannotQueueOldAnswer",
+            "explicitSearchAndRealtimeAlwaysForceResearchEvenWithSufficientDossier",
+            "activeSearchCanTakeMoreThan45SecondsButAutoTicketStillExpires",
+            "sufficientDossierAnswersDirectlyWithoutDuplicateSearch",
+            "questionFinishesInSameJourneyChapterAndSessionDossierWithoutMergingDynamicFacts",
+            "missingLocalEvidenceSearchesBeforeOriginalDirectorNarrates",
+            "nearbySearchPromptKeepsGpsGroundingButNeverPromisesMapDistances"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AndroidAreaResolverTest",
+          "timestamp": "2026-10-16T15:42:18",
+          "report_sha256": "edeb7e31f4527bd58585a21b0b0c5242607059443fdda8804d8966ba518e46bc",
+          "cases": [
+            "absentPlatformGeocoderCompletesUnresolvedWithoutCrash[26]",
+            "absentPlatformGeocoderCompletesUnresolvedWithoutCrash",
+            "timeoutAndErrorAreDistinguishableAndNeverLeakNamesCoordinatesOrExceptionText",
+            "staleMissingOrBridgePositionsDoNotStartLookups",
+            "delayedResponseCannotUndoProviderSwitchOrApplyAfterStop"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AndroidLifecycleTest",
+          "timestamp": "2026-10-16T15:42:25",
+          "report_sha256": "02b7288916a5524115e19177e440fc45194bf4689d2d6e74551a3b300ef3aa59",
+          "cases": [
+            "activityLaunchesAndServiceQuietEndControlsWork"
+          ]
+        },
+        {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AndroidVoiceExperienceTest",
+          "timestamp": "2026-10-16T15:42:33",
+          "report_sha256": "818339fe8a4ea40f2e5bb9f9e7b0624b1a95b8a36c3cccb0e0012a8b8dc172fa",
+          "cases": [
+            "androidErrorResetsLevelAndPreservesCode",
+            "permissionCancellationDoesNotStartARecognizerAfterGrant",
+            "androidCallbacksDriveLiveRmsAndReturnOnlyOneResult",
+            "androidCancellationRejectsQueuedRmsAndLateResult",
+            "cancelledPlatformQueueIgnoresLateStartAndDone",
+            "previewUsesDraftVoiceRateAndLeavesJourneyProviderAndSavedVoiceAlone",
+            "selectedVoiceAndRatePersistRestoreAndLegacySavesPreserveSelection",
+            "systemChineseDefaultCanStillPreviewWhenEngineDoesNotEnumerateVoices",
+            "permissionDenialAndUnavailableServiceHaveAccurateOutcomes",
+            "androidWatchdogFinishesOnceAndReleasesMicrophone",
+            "platformTtsProgressSeparatesQueuedStartedAndFinalCompletion"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AreaChapterTest",
+          "timestamp": "2026-10-16T15:42:37",
+          "report_sha256": "4a6cdc3c751c739ef96b6db3e8d194dcc53dcefe91132d51f998f2ae9d628fb8",
+          "cases": [
+            "familyHistoryIsBoundedAndUnknownFamilyFailsValidation",
+            "unresolvedAreaKeepsGpsAndBoundedContextAvailable",
+            "normalizeAndDistinguishChapterFromCounty",
+            "quietAndCooldownRetainUnexaminedChapterWithoutQueuingNarration",
+            "chapterEntryWakesDirectorBelowOrdinaryCadenceAndSilentStaysLegal",
+            "chapterExposesNeutralLocalDossierWithoutForcingNarration",
+            "geocodingThrottlesPendingMovementStalenessAndFailure",
+            "cacheRefreshesOnChapterChangeAndReusesVisitedCard"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AreaResolutionCacheTest",
+          "timestamp": "2026-10-16T15:42:39",
+          "report_sha256": "00992bb0ddc2cd77d8b6041ed3f1ee12dcab29e52c696962e188e573a75f86d0",
+          "cases": [
+            "unobservedGapAlsoBreaksContinuityWithFreshReturningFix",
+            "lateResultCannotCrossInvalidationOrRelabelDistantCurrentPosition",
+            "coarsePositionWithdrawsStreetAndAccuracyRecoveryNeedsNewGeocode",
+            "staleOrMissingPositionInvalidatesWithoutResurrection",
+            "emptyDoesNotReplaceSuccessButReliableDifferentOrDistrictOnlyResultDoes",
+            "providerSwitchAndLastKnownCannotCarryOldStreetOrRestoreItOnSwitchBack",
+            "stopClearsLabelsAndInvalidatesPendingResult",
+            "tenMinutesOfFreshGpsAndNetworkKeepOneChapterAcrossOldThirtySecondExpiry",
+            "hundredKmhMovementInvalidatesBy450MetersAndNeverResurrectsOnReturn"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.BatchSimulationTest",
+          "timestamp": "2026-10-16T15:42:39",
+          "report_sha256": "27b3db3ca80ef1ee84792ab7c382618d9f84142f3ad9682482d4764961c4fb56",
+          "cases": [
+            "complete100Kmh16xDossierPipelineSpeaksThroughChaptersWithoutStaleReplay",
+            "newChaptersWithFailedProviderProduceSilenceAndBoundedOpportunities",
+            "newRouteHasDetailedChaptersAndNeutralGroundedSubjects",
+            "geocoderNormalizesCommonChineseFieldLayoutsWithoutInventingTown"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.BootstrapTest",
+          "timestamp": "2026-10-16T15:42:41",
+          "report_sha256": "ad4dcaf481209eb5739c989d91f41463d25add3842ba579013fc5ca7e7dafca3",
+          "cases": [
+            "applicationIdentity"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChapterOpportunityTest",
+          "timestamp": "2026-10-16T15:42:41",
+          "report_sha256": "2e468edd0b8e367136d38ab66d44e262f4d15eb8ce1f0549d1f50ee31c5a6281",
+          "cases": [
+            "unresolvedGapDoesNotCreateRepeatedVisitOfCheckedChapter",
+            "lateNarrationFromPreviousChapterDiesEvenWithinDistanceGuard",
+            "landmarkBreaksOnlyOrdinaryAutomaticSpeechCooldown",
+            "dossierEntityAndLandmarkShareDeliveryDedupButFollowUpIsAllowed",
+            "staleGpsNeverDeliversRetainedReadyChapter",
+            "canceledDispatchBeforeActualDirectorCheckRetainsContextOpportunity",
+            "speakingListeningTypingImageQuietAndCooldownDelayButNeverEraseReadyChapter"
+          ]
+        },
+        {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChatGptAccountTest",
+          "timestamp": "2026-10-16T15:42:43",
+          "report_sha256": "b3c5b7a943a3d006f1ca05e802425558f16df5a42afc9e0f7101e318a11bd632",
+          "cases": [
+            "encryptedRecordKeepsAllIdentityAndTokenValuesOutOfPreferencesAndDiagnostics",
+            "researchCannotBlockActiveDirectorAndDisconnectedResearchCannotReturn",
+            "identityOnlyGrantCannotInvokeModelsOrResponsesOrPaidFallback",
+            "compatibleAndOpenaiKeyProvidersRemainSeparateFromChatGpt",
+            "completeSignInValidatesBeforeReplacingAccountAndPreservesIdentityOnlyGrant",
+            "cancelAuthorizationClosesLoopbackAndEndsProtectionWithoutReplacingRegistration",
+            "signOutRevokesAndRetainsRegistrationWithoutHintsEvenIfRemoteFails",
+            "rejectedChecksDoNotExtendTransientNetworkBackoffForever",
+            "researchRejectionPreservesAcceptedNarrationAuthorizationAndHasNoPaidFallback",
+            "transientFailurePreservesCredentialsAndAdmissionOrLimitStopsNewRequests",
+            "refreshRotationSerializedAndPersistedWithIssuedClientAndResource",
+            "earliestRefreshHonoredAndTerminalRefreshClearsOnlyTokens"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChatGptImagePayloadTest",
+          "timestamp": "2026-10-16T15:42:48",
+          "report_sha256": "231490ecbf5f6ef7fe9c165a0c8da4c2cb671392decc197995dffbc57e9ce08b",
+          "cases": [
+            "chatGptUsesExistingAuthorizationAdapterWithImagePartsAndNoStorage"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChatGptProtocolTest",
+          "timestamp": "2026-10-16T15:42:52",
+          "report_sha256": "7aedb64e2b35b2b98eb17ed64542231ad677acd7346eda63d9827265d84bb778",
+          "cases": [
+            "realLoopbackListenerBindsBeforeCallbackAndDoesNotEchoCredentials",
+            "sseOnlyCompletedValidatedDirectorTextSucceeds",
+            "rejectMissingMismatchedStateClientErrorsAndDuplicateParameters",
+            "freshPkceNonceStateAndDynamicRegistration",
+            "sseRejectsFailedIncompleteInterruptedAndDoneWithoutCompletion",
+            "returningRegistrationUsesSavedIdentityHintsAndNeverDynamic",
+            "modelCatalogUsesOnlyVisibleSlugsAndExplicitCapabilityMetadata",
+            "validatesJwksSignatureIssuerAudienceExpiryNonceAndSubject",
+            "streamedTextIsValidatedOnlyAfterCompletionEvenWhenFinalSnapshotIsEmpty"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ContextTest",
+          "timestamp": "2026-10-16T15:42:53",
+          "report_sha256": "a6b41d6431a0060b0bcddf014be4917e023c942d5660c99d2405dbb2cec39b6a",
+          "cases": [
+            "sourceIndependentPipelineAndAltitudeSummary"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DirectorLoopTest",
+          "timestamp": "2026-10-16T15:42:54",
+          "report_sha256": "d734cba94581c89739b2b792b777c8d0260c40dae2b5e50ded7210b40e1ee29f",
+          "cases": [
+            "prepareIsOnlyRevalidationContextAndCannotBecomeAudioByItself",
+            "automaticFailureWaitsForNewInformation",
+            "lateAutomaticResponseCannotOverrideUserIntent"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DossierSimulationTest",
+          "timestamp": "2026-10-16T15:42:55",
+          "report_sha256": "25bb378af2b3ac772a2026e942d23b43236a52adc5bc558428b778b467994ecc",
+          "cases": [
+            "existingRouteResearchesEachChapterAndNarratesOnlyDeliveredEvidence"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DrivingAreaResolutionTest",
+          "timestamp": "2026-10-16T15:42:56",
+          "report_sha256": "16add0bd02d6bac5501e2a72141466c9f62d7884568e52e0bcdf86013b3f2b0b",
+          "cases": [
+            "stationaryFailuresAreBoundedAndPendingLookupsNeverMultiply",
+            "cachedTownUsesCurrentFreshnessAndDistanceRatherThanGeocodeAnchorAge",
+            "provinceIsPreservedWithoutInventingMissingTown",
+            "shortChaptersAreNotSystematicallySwallowedAt80And100Kmh"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DrivingUiTest",
+          "timestamp": "2026-10-16T15:42:57",
+          "report_sha256": "a76b46fdeed64ae8bec730097c1335d0fcbd34fb9c29b410596e7ee92a8776df",
+          "cases": [
+            "drivingButtonsAreVisibleAndOneTapQuietAndEndWork"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.EditorialFreedomTest",
+          "timestamp": "2026-10-16T15:43:05",
+          "report_sha256": "6d125bb7a8ee8f83f31346567620a565acc689c170b793b4717b2b71a30e6136",
+          "cases": [
+            "constitutionForbidsTheFixedRhetoricalTemplateAndLandThesis",
+            "strictContractAndFactBoundariesSurviveTheReset",
+            "unmappedSubjectIsAcceptedByTheStrictContract",
+            "dossierTextPresentsShelfNotPlaylist",
+            "chapterOpensBroadDossierAcrossMaterialTypes",
+            "recentFamilyHistoryIsWeakSignalNotCandidateBlacklist",
+            "constitutionStatesFreedomDestinationAndHardBoundaries",
+            "groundedSubjectsKeepSourceNotesAndNeutralLabels"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.EndUiTest",
+          "timestamp": "2026-10-16T15:43:06",
+          "report_sha256": "146f183dc1796d46af4e4c7443ac383c05463c73d0ab341386e76e0c5feab627",
+          "cases": [
+            "endScreenShowsSavedSummaryWithoutRatingsAndReturns",
+            "landscapeSummaryAndReturnAreVisibleWithoutScrolling",
+            "actualEndButtonAutomaticallySavesBeforeReturningToStart",
+            "tabletSummaryAndReturnAreVisibleWithoutScrolling",
+            "technicalDestinationStatesAreHiddenAndEmptyTripStaysQuiet"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExplorePlacesTest",
+          "timestamp": "2026-10-16T15:43:14",
+          "report_sha256": "0682bdd1ddd6f954c9386d448f46d53572872562e6938b98f4c3d80a60cd7cde",
+          "cases": [
+            "missingPackNeverInventsInstalledRegions",
+            "approvedFixtureOffersSeparateCompleteArticlesAndRealSources",
+            "exactFullTextIsPassedOnlyAfterManualPlayAndNeverAutoAdvances",
+            "actualInstalledCountyObjectsFactsAndSourceIdsAreTruthful",
+            "synchronousEngineExceptionIsContainedAndCanRetry",
+            "noOfflineVoiceRefusesToSpeakAndProvidesActionableMessage",
+            "keywordSearchCoversNamesFactsAndWhitespaceWithoutGps",
+            "stoppedOrReplacedArticleIgnoresLateSuccessAndFailure",
+            "candidateReviewRightsHashAndDependenciesStayBlockedInExplorer"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExploreRestoreUiTest",
+          "timestamp": "2026-10-16T15:43:15",
+          "report_sha256": "75f50278ae77a4c24286debe0849aea1c491445ac62e552ca7b3191e523aad63",
+          "cases": [
+            "restoredArticleRetainsTextAndNavigationButStopsPlayback"
+          ]
+        },
+        {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExploreUiTest",
+          "timestamp": "2026-10-16T15:43:23",
+          "report_sha256": "55a43f0624a9d81c284de12407c17abce9a490b61c11a8af36b5d3b059116bad",
+          "cases": [
+            "unavailableCatalogHasTruthfulEmptyState",
+            "tabletHasDiscoverableHomeEntry",
+            "runningJourneyDoesNotOfferExplorationOrLoseItsState",
+            "phoneLandscapeReadingAndControlsFit",
+            "standardActivityBrowsesWithoutPermissionsLoginJourneyOrPersistentWrites",
+            "longArticleManualPlayStopErrorAndReturnNeverAutoPlayFollowup",
+            "backgroundingStopsManualSpeechAndLateCallbacksCannotRestartIt",
+            "tabletLandscapeReadingAndControlsFit",
+            "smallPhoneLargeTextCanScrollWithVisiblePlayback",
+            "emptyResultsClearSearchAndBackKeepOriginalEntry",
+            "phoneLandscapeHasDiscoverableHomeEntry"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExploreVoiceTest",
+          "timestamp": "2026-10-16T15:43:34",
+          "report_sha256": "9392c897619c1722fc300f49f2f8a76286cd5183c090aee08855413140d1b6a2",
+          "cases": [
+            "engineWatchdogMakesStalledManualPlaybackRetryable",
+            "dedicatedAndroidVoiceUsesOfflineChineseAndSavedRateWithoutTouchingRuntimeVoice"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.FullSimulationTest",
+          "timestamp": "2026-10-16T15:43:39",
+          "report_sha256": "bbdc709cf088cd6cd96f63bc7a2fd36ee1e74c7344e0a9215dd90b7250f222dd",
+          "cases": [
+            "chengduToMianyangFullGoldenPath"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.FusedLocationTest",
+          "timestamp": "2026-10-16T15:43:40",
+          "report_sha256": "0c3a1e1d03d4e57bb292f1883ad8c3466bc2c70434e71cdbcfb7aef8b3efbbc6",
+          "cases": [
+            "fusedUsesThirtySecondWindowThenOriginalClockBridgeThenUnknown",
+            "fusedMirrorsNeverRefreshOriginalMeasurementOrReplayOldCoordinates",
+            "freshFusedCanFillAnActualGapAndHealthyGpsRecovers",
+            "fusedNeverClaimsGpsAltitude",
+            "cachedFusedCannotBecomeLiveOrPreciselyArrived",
+            "fusedJumpTooCoarseStaleAndMalformedReasonsAreDistinct",
+            "coarseFusedAndItsBridgeAreHonestlyDisplayed"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ImageBoundaryTest",
+          "timestamp": "2026-10-16T15:43:41",
+          "report_sha256": "646583e13e72cefee8116327518fae781860da50b95a6f60115abc59cd4c86e6",
+          "cases": [
+            "cameraProviderDeclaresOnlyCaptureCacheWithoutCameraOrStoragePermission",
+            "decodeBoundsAndReencodeRemovesExifLocation",
+            "malformedAndOversizedFilesAreRejectedBeforeProvider",
+            "runtimeEndAndServiceLossClearRouteVisualCacheAndNeverPersistMedia"
+          ]
+        },
+        {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.JourneyTest",
+          "timestamp": "2026-10-16T15:43:46",
+          "report_sha256": "f88188ee7406a99f9e6abae4f587ab7eb5b7b62e59b67bcef33b8cf7a3e88137",
+          "cases": [
+            "activeQuestionCanTemporarilyTakeOverQuietWithoutCancellingTimer",
+            "intentPreferencesAndQuietCommands",
+            "sensorsHighFrequencyAiLowFrequency",
+            "startEndAndQuietExpiryEarlyExit",
+            "clarificationAnswerDoesNotBecomeDestinationAndVolunteeredDestinationStillWorks",
+            "staleRequestNeverReplaysAfterUserAction",
+            "backgroundDoesNotAskAndNoGpsDoesNotCall",
+            "destinationIsOptionalButOtherClarificationsRemainAvailable",
+            "failuresAutoSilentActiveBrieflyReports",
+            "skipSuppressesOnlyTopicAndDoesNotInferPreference",
+            "prepareReplacesExpiresAndIsNeverSpoken",
+            "interruptStopsImmediatelyAndStaleCallbackDies",
+            "contextBoundedDoesNotDumpTrajectoryOrInventMissingAltitude"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.KittPolishLandscapeTest",
+          "timestamp": "2026-10-16T15:43:47",
+          "report_sha256": "3d3a7bed1f915750962f65eaba0068cce2045a4ce6e77255b05fd3075ff9e5cd",
+          "cases": [
+            "daylightLandscapeKeepsPlaceQuietAndImageControlsVisibleWithoutScrolling"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.KittPolishPortraitTest",
+          "timestamp": "2026-10-16T15:43:54",
+          "report_sha256": "3a4c3f1c8a80aa47b94595d02b0889d40c9ddacc216f961f5896f3df83a551e5",
+          "cases": [
+            "compactDarkPortraitShowsEveryStatePlaceAndSecondaryControlsWithoutScrolling"
+          ]
+        },
+        {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LandmarkProximityTest",
+          "timestamp": "2026-10-16T15:44:02",
+          "report_sha256": "d88be8fdb3b8df7c3b221f4e135f83a17834afade69560f8320aabeb01ffe5fc",
+          "cases": [
+            "silentIsValidAndStationaryNodeDoesNotCreateRetryStorm",
+            "sameLandmarkFactIsSuppressedButNewFactInSameChapterCanSpeak",
+            "recedingWithinExisting1500mGuardStillKillsDelayedLandmarkResponse",
+            "imageAndListeningUserPriorityHoldAutomaticOpportunity",
+            "completeRefinedRouteExercisesRealCatalogWithoutStaleOrDuplicateNarration",
+            "everySupportedKindCreatesIndependentOpportunityInsideSameChapterBelowNormalDistance",
+            "catalogRejectsUngroundedInvalidAndDuplicateNodes",
+            "deliveredNodeConsumesOnlyExtraWakeupAndKeepsEvidenceForNewFacts",
+            "unknownIdCannotCreateAnAutomaticLandmarkAndSchemaRetainsSixAndSevenFieldCompatibility",
+            "quietPassesNodeAndResumeNeverQueuesIt"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LandscapeUiTest",
+          "timestamp": "2026-10-16T15:44:03",
+          "report_sha256": "343d58943ac1e0130b3b0e3225186ebcdf28902c40462b08b72c2e923a40e6e7",
+          "cases": [
+            "landscapeControlsRemainVisibleWithoutScrolling"
+          ]
+        },
+        {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocalFirstHotfixTest",
+          "timestamp": "2026-10-16T15:44:10",
+          "report_sha256": "3aba4811e74284117b32bdc231256782717b82565b7409bf5ddbb99c2076f941",
+          "cases": [
+            "disconnectCancelsExplicitCloudWithoutRestartingItOnReconnect",
+            "onlineOfflineAndUnreachableCloudAllSpeakSynchronouslyWithZeroRequests",
+            "localHereMoreAndReplayStayLocalOnlineAndPreserveFactCoverage",
+            "missingPackNeverFallsBackToAutomaticCloud",
+            "onlineButStaleCloudFailureDoesNotMaskLocalHealthOrUnknownLocation",
+            "explicitCloudTimeoutEndsAndCannotBlockSubsequentLocalNarration",
+            "unknownStaleCoarseBridgeAndUncoveredPositionsStaySilentOnline",
+            "explicitWeatherSearchFailureReportsBrieflyThenLocalStoryRecovers",
+            "networkRestorationDoesNotInterruptLocalSpeechOrStartResearch",
+            "localQuestionCancelsOldCloudAnswerAndLateResponseNeverReplays",
+            "openQuestionUsesCloudOnlyOnDemandAndNextAutomaticStoryRemainsLocal"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocalFirstRuntimeTest",
+          "timestamp": "2026-10-16T15:44:11",
+          "report_sha256": "65266288194746ea17cc428c4a33aa615e79e87e8b8e6aa032fd453172177f0e",
+          "cases": [
+            "onlineRuntimeUsesOfflineChineseTtsWhileRecognitionRemainsOnlineCapable",
+            "normalPhysicalSourceSpeaksWithBrokenChatGptConfigurationAndNoCloudCalls"
+          ]
+        },
+        {
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocalResearchTest",
+          "timestamp": "2026-10-16T15:44:16",
+          "report_sha256": "32416ea48bd934b014f9ba4d3f9101e39ee2c249b4b8c8ee7b631ca7866e0f31",
+          "cases": [
+            "compatibleEndpointCannotPretendToSearchOrCallNetwork",
+            "modelMemoryWithoutSearchOrEvidenceCannotBeReady",
+            "failureIsAccurateAndNeverRepeatedByGpsTicks",
+            "leavingBeforeResearchCompletesCachesEvidenceButDropsDeliveryOpportunity",
+            "requiredSearchUsesFullIdentityAndSeparateStrictSchema",
+            "citationAnnotationsAlsoProvideEvidenceButIncompleteSearchDoesNot",
+            "xinduProductionRequestIsBlackBoxAndOutsiderDepthHasNoScript",
+            "lateDistrictEvidenceGetsAnOpportunityEvenAfterTownWasChecked",
+            "emptyActualResearchIsDistinctFromUnavailableAndStillGetsOneCheck",
+            "lowQualityLeadsAreNotEnoughForGroundedFacts",
+            "interruptedTripNeverAcceptsLateResearch",
+            "researchTimeoutIsBoundedAndNeverBecomesNoContent",
+            "officialDesignationsRequireGovernmentEvidenceEvenIfModelLabelsBlogOfficial",
+            "chapterAndDistrictResearchAreOncePerTripIncludingRevisit",
+            "sourceProvenanceSurvivesCompressionAndInventedLinksFail",
+            "rapidChaptersHaveAtMostTwoResearchRequestsAndEndCancelsAll",
+            "researchSseKeepsToolItemsCitationsAndDoesNotUseDirectorParser"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocationCompatibilityTest",
+          "timestamp": "2026-10-16T15:44:17",
+          "report_sha256": "6289549af55617acbcedb549c65ce9be046037325a83730a706ca938013fee14",
+          "cases": [
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[26]",
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[30]",
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[31]",
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion[26]",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion[30]",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion[31]",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion"
+          ]
+        },
+        {
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocationFallbackTest",
+          "timestamp": "2026-10-16T15:44:28",
+          "report_sha256": "fd8d2444ab7181614a268970768c85f02e0a39c39b3749ed066b29f5e3193dff",
+          "cases": [
+            "cachedCoordinatesNeverBecomeFreshGpsAndExpireWithoutRenewingTimestamp",
+            "smallQualityDifferencesDoNotOscillate",
+            "networkChapterStillResearchesAndSpeaksThroughExistingLoop",
+            "weakGpsDoesNotBeatBetterNetworkBecauseOfProviderName",
+            "stalePreciseFixCannotDispatchLandmarkOrDeliverLateArrival",
+            "accuracyCirclesAllowPlausibleHandoffNoise",
+            "coarseNetworkRetainsChapterContextButClearsLandmarkAndPrecisePrepare",
+            "coarseHandoffKillsLatePreciseLandmarkSpeech",
+            "bothLiveSourcesExpireIntoBridgeThenUnknown",
+            "movingCarIsNotSmoothedOrFrozen",
+            "monotonicAgeAndOrderingSurviveWallClockChanges",
+            "disablingGpsLeavesNetworkAndRecoveryPromotesGps",
+            "asynchronousSecondaryFixIsStoredWithoutReplayingAnOlderPosition",
+            "newerAccurateNetworkCanBeatAgingGps",
+            "impossibleHandoffAndForeignCoordinatesAreRejectedAndDoNotPoisonRecovery",
+            "gpsFallbackAndRecoveryWithoutRestart",
+            "invalidFutureOutOfOrderAndTooCoarseMeasurementsAreRejected"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.NarrationLoopTest",
+          "timestamp": "2026-10-16T15:44:29",
+          "report_sha256": "c9a52cae21a44a962a509c469bf2a2a63cbe55c385652bd3466dcdfb24190751",
+          "cases": [
+            "replayAfterMovingRetainsOriginalSubjectArea",
+            "explicitReplayStopsPendingAudioAndOnlyReplaysPreviouslyCompletedText",
+            "moreSearchFailureReportsFailureWithoutInventingOrWritingCoverage",
+            "moreWithoutNewSourcesCannotRecycleOldFactsButOrdinaryQuestionAndImageCanAnswer",
+            "moreUsesOneSuccessfulSearchForNewEvidenceAndNormalDirector",
+            "routeCanRejectRepeatedCoverageWhileEveryChapterGetsNewObjectAndNewFact",
+            "overviewToTopicReturnSuppressesOnlyCoveredFactsAndNewFactStillSpeaks"
+          ]
+        },
+        {
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.NarrationMemoryTest",
+          "timestamp": "2026-10-16T15:44:30",
+          "report_sha256": "80a40b4f12a6805e3808eb54d2731ee0c32e3337ae8c14b319f1870f68c0891e",
+          "cases": [
+            "restartAndLegacyRecoveryDoNotImportCompletedClaimsOrReplayText",
+            "sameObjectWithNewFactRemainsEligible",
+            "obsoleteStartAndCompletionCannotMarkANewJourney",
+            "startedThenInterruptedNeverClaimsFullCoverageOrResumesAutomatically",
+            "failedVoiceDoesNotClaimCompletedOrAutomaticallyReplay",
+            "memoryIsBoundedAndContainsNoNarrationOrCoordinates",
+            "queuedNarrationIsNotCompletedMemory",
+            "moreWithNewCoverageAndExplicitRepeatAreEligible",
+            "subsetAndReorderedFactsDoNotRepeatButDifferentObjectCanShareMechanism",
+            "legacyBlankSummaryCannotPermanentlyBlacklistTopicWithNewFacts",
+            "landmarkIdentitySurvivesRegionAndTitleChange",
+            "cancelledBeforeStartIsNotCompletedAndLateCompletionCannotChangeIt",
+            "leaveAndReturnRetainsCoverageButDifferentDistrictSameNameSpeaks",
+            "prepareRecheckStillFiltersDeliveredCoverage",
+            "moreWithNoNewCoverageReportsBrieflyAndKeepsMemoryHonest",
+            "ordinaryActiveQuestionAndImageTakeoverBypassAutoCoverage",
+            "priorFactsAccumulateWithoutBlacklistingObject",
+            "topicDifferentFromSummaryStillSuppressesRepeatedFact",
+            "duplicatedCompletionCannotFinishNextAutomaticSpeechInSameEpoch"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.NetworkStatusTest",
+          "timestamp": "2026-10-16T15:44:31",
+          "report_sha256": "9412275f54fc50c14de48cd88d3243d64a47a804c8e8da1a85741dd794aaa839",
+          "cases": [
+            "validatedGhostVpnAndImsWithoutInternetCannotEnableCloud",
+            "visibleSystemVpnIsDetectedEvenWhenDefaultAppNetworkBypassesIt",
+            "physicalInternetLossAndReturnUnderValidatedVpnSwitchCloudWithoutPing",
+            "callbackHandoffAndStopIgnoreLateEventsAndStartDoesNotDuplicate",
+            "internetCapabilityAloneIsNotValidated",
+            "wifiAndCellularVpnAreSystemSignalsOnly",
+            "missingInformationAndVpnWithoutPhysicalTransportStayUnknown"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.OfflineLocationTest",
+          "timestamp": "2026-10-16T15:44:36",
+          "report_sha256": "8b927d3358ae9a7a06f16aaf80d534f888014ffffcb7d34558021362e30e24ed",
+          "cases": [
+            "leavingInstalledCountyOnlineDoesNotRetainItsLabelOrOldStreet",
+            "offlineGpsNetworkSwitchKeepsOnlyFreshCountyAndRejectsCoarse",
+            "staleBridgeCannotReuseOfflineCounty",
+            "installedCountyWinsOverOnlineGeocoderAndSurvivesNetworkLoss",
+            "realSourceOfflineUsesBundledGeometryAndNeverInvokesGeocoder"
+          ]
+        },
+        {
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.OfflinePackTest",
+          "timestamp": "2026-10-16T15:44:40",
+          "report_sha256": "c9477f6b62460cca42133e229e0888be8abc65c837cf41f910e1333a34d902e7",
+          "cases": [
+            "onlinePhoneWithoutLocalCoverageDoesNotMakeAutomaticCloudRequest",
+            "futureSchemaOrAppVersionFailsClosed",
+            "missingPackUnknownOrOldLocationNeverUsesHistoricalAreaLabel",
+            "badReferencesFailEvenIfChecksumIsResealed",
+            "staleFutureBridgeSimulationFusedAndInvalidNeverResolve",
+            "actualPackageHas22UniqueTraceableFactsAcrossSixObjects",
+            "newJourneyDoesNotInheritPackPlaybackMemory",
+            "offlineLoopHasZeroCloudCallsHonorsQuietInterruptionAndReplay",
+            "localVoiceSelectionRejectsNetworkUninstalledAndCantoneseOnly",
+            "onlinePackDoesNotPretendToBeFreshHostedSearchOrPersistEvidence",
+            "accuracyDiskAndOneKilometerBoundaryMarginAreConservative",
+            "offlineDirectorSpeaksTwoGroundedFactsAndNextNewObject",
+            "moreStaysWithObjectThenHonestlyRunsOut",
+            "failedOrInterruptedSegmentIsNeverCountedCompleteOrAutoReplayed",
+            "disconnectCancelsInFlightCloudAndReconnectRestoresExistingOnlinePath",
+            "corruptionOrEmptyContentFailsClosed",
+            "allNewFactsEventuallyExhaustWithoutRepeat",
+            "realInteriorGpsAndNetworkResolveCountyWithoutStreets",
+            "onlinePhonePrefersLocalAutomaticNarrationAndKnownLocalQuestion",
+            "dynamicQuestionsAndUnsupportedImagesNeverInventAnswers",
+            "outsideAndTrueBoundaryVertexAreUnknown"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.OfflineVoiceTest",
+          "timestamp": "2026-10-16T15:44:42",
+          "report_sha256": "2a9f9a844841e21b5810c07f68effb47807b9424f928307a8e56ca60a434f0fd",
+          "cases": [
+            "missingOfflineDataFailsWithoutQueuingNetworkSpeech",
+            "offlineListeningStartsOnlyBundledVoskAndNeverSystemNetworkRecognizer",
+            "offlineUsesInstalledLocalVoiceWithoutChangingSavedSelection",
+            "localSpeechRequirementPreservesOnlineSystemRecognitionOrder"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.PersistenceTest",
+          "timestamp": "2026-10-16T15:44:46",
+          "report_sha256": "73b96165161d965d7fed07f170ae3efb94f17ea939f62fe5efe91a9f29cba6a2",
+          "cases": [
+            "finishSavesSummaryAndClearsCheckpointWithoutRatingInput",
+            "abnormalReopenRestoresOnlyLightweightState",
+            "legacyRatingsAndFeedbackRemainReadableUnchangedAndCorruptRecoveryIsSafe",
+            "resumedRuntimeKeepsTravelOffsetBeforeItsFirstPeriodicCheckpoint",
+            "completedSummarySurvivesCheckpointButPlaybackClaimsAndReplayNeverPersist"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ProviderTest",
+          "timestamp": "2026-10-16T15:44:51",
+          "report_sha256": "6b5af43eb594e0b364a3a6be02a092b432414a1ff5d5e625e66217a16b543b73",
+          "cases": [
+            "fakeHonorsContract",
+            "strictSchemaAndActionSemantics",
+            "apiBuildsThreeLayersAndExtractsValidatedResponse"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.QuietCountdownTest",
+          "timestamp": "2026-10-16T15:44:52",
+          "report_sha256": "a7f11880f985c0eff102459adeb8bf7a279cff3d658bbf55f77608287655af96",
+          "cases": [
+            "quietCountdownKeepsCountingWhenNothingElseChanges",
+            "indefiniteQuietNeverShowsAFakeNumber",
+            "countdownLeavesQuietModeTheSecondItRunsOut"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RealAreaContinuityTest",
+          "timestamp": "2026-10-16T15:44:59",
+          "report_sha256": "2ec1e423c2980a2e516d82dd250e876295ef24a5c0a65b1400a4dda6dbd0575b",
+          "cases": [
+            "tenMinutePublicationSurvivesEmptyErrorTimeoutAndRefreshWithoutFalseChapterChange",
+            "neverSuccessfulLookupStaysUnresolvedAndDoesNotStorm",
+            "drivingDistanceAndGpsNetworkSwitchInvalidateBeforeFailedRefreshCanCarryOldStreet",
+            "coarsePermissionNeverPublishesStreetEvenIfProviderReportsSmallAccuracy",
+            "reliableDifferentDistrictOnStationaryRefreshReplacesLabelImmediately",
+            "bridgeStripsStreetThenFreshReturnAndRestartRequireNewResolution"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RealLocationSourceTest",
+          "timestamp": "2026-10-16T15:45:04",
+          "report_sha256": "7f7e997e3749f0b58e476a2afdd7a619ec39aaa1bd1136b3976f35518886637a",
+          "cases": [
+            "timerBridgesAndExpiresWithoutFurtherLocationCallbacks",
+            "unknownProvidersMissingAccuracyAndMissingMonotonicTimeCannotBecomePhysicalFixes",
+            "missingPermissionReturnsNoticeAndRegistersNothing",
+            "stopAndRestartRejectOldListenerAndDoNotLeakRegistrations",
+            "foreignGeocoderResultCannotChangePhysicalCoordinateOrChapter",
+            "bothProvidersRegisterAndNetworkContinuesWhenGpsDisabledThenGpsRecovers",
+            "coarsePermissionRunsNetworkWithoutRequiringFinePermission",
+            "missingNetworkProviderStillRunsGps",
+            "cachesAreLastKnownAndStaleCacheIsRejected"
+          ]
+        },
+        {
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RecognizerBackendTest",
+          "timestamp": "2026-10-16T15:45:08",
+          "report_sha256": "97f0af2d2a989400de1c70daddad29cb310e4009cb2bb87c8d9e8ca1488634c8",
+          "cases": [
+            "aBusyRecogniserIsRetriedNextTimeInsteadOfBeingWrittenOff",
+            "everyBackendUnusableIsRememberedSoTheNextTapAnswersImmediately",
+            "brokenSystemRecognizerFallsBackOnceAndDeliversOneLocalTranscript",
+            "aMissOrASilenceNeverLeavesAnInventedTranscriptOnScreen",
+            "cancellingDuringTheFallbackDiscardsTheLateLocalTranscript",
+            "chineseTranscriptsLoseVoskSpacingAndEmptyJsonStaysEmpty",
+            "theAbandonedAttemptCannotFireASecondFallbackWhenTheWatchdogExpires",
+            "cancelAndTheNextListenBothStartFromAnEmptyTranscript",
+            "theLocalEngineRefusesToOpenTheMicrophoneWithoutThePermissionAndSaysSo",
+            "aTransientErrorAfterListeningStartedDoesNotRestartRecognition",
+            "whenNoBackendCanServeTheFailureStaysAccurateAndIsNotCalledNoMatch",
+            "anUnusableRecognizerIsNotProbedAgainOnTheNextListen",
+            "silenceAndNoMatchAreNeverRewrittenAsABackendFallback",
+            "interimHypothesisAppearsOnScreenButIsNeverSubmitted",
+            "finalTranscriptStaysVisibleAfterTheAttemptCloses",
+            "interruptionOfSpeechStillOpensTheMicrophoneForOneShotListening",
+            "localEngineLevelsDriveTheSameListeningMeter",
+            "spokenFallbackTextReachesTheQuietCommandPath",
+            "startupFailuresAreExactlyTheBackendBreakages"
+          ]
+        },
+        {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ReplyExchangeTest",
+          "timestamp": "2026-10-16T15:45:12",
+          "report_sha256": "8ca7b549977bf28067e25ab58d62175a76c200d05f4b1f38ca91067a106f56d8",
+          "cases": [
+            "speechAnswerSubmitsOnceAndRejectsASecondTranscript",
+            "silenceClosesTheExchangeWithoutPretendingTypingIsStillPending",
+            "aLateTranscriptAfterTypedAnswerCannotOverwriteOrDuplicate",
+            "skippingQuietingOrEndingAbandonsThePendingExchange",
+            "anOpenExchangeIsNotTalkedOverByAutomaticNarration",
+            "anUnavailableRecogniserStillLeavesTheExchangeOpenForTyping",
+            "anUnansweredExchangeExpiresAndStopsCapturing",
+            "askedQuestionCanBeAnsweredByVoiceAndClosesAfterOneResult",
+            "typedAnswerTravelsTheSameRequestInputPathAsSpeech",
+            "choosingTheKeyboardReleasesTheMicrophoneButKeepsTheExchangeOpen",
+            "aStartupErrorFromEveryBackendIsNotAMissingAnswer",
+            "askedQuestionAcceptsEitherSpokenOrTypedReply",
+            "cancelClosesTheExchangeAndHandsTheMicrophoneBack"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ReplySurfaceUiTest",
+          "timestamp": "2026-10-16T15:45:13",
+          "report_sha256": "9b1bbb2c6559f3c9d1aa2aee505b2764e7b336583d377dcdd613277f5cbdfae7",
+          "cases": [
+            "theOpenExchangeOffersTypingAlongsideTheMicrophone",
+            "interimTextIsShownAsStillBeingHeardAndNeverLooksCommitted",
+            "finalTextIsShownAsWhatTheUserActuallySaid",
+            "cancelClosesTheSurfaceAndReportsBackToTheCaller",
+            "recognitionTroubleIsShownAsANoticeNotAsTranscriptText",
+            "reachingForTheKeyboardHandsTheMicrophoneBackButKeepsTypingOpen"
+          ]
+        },
+        {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ResearchEvidenceStoreTest",
+          "timestamp": "2026-10-16T15:45:22",
+          "report_sha256": "4ed3b4fef5e8c83db6d237c8c12fd5231625ecbfc789c0961b23f80b86281204",
+          "cases": [
+            "topicNormalizationAndFullIdentityNeverCollide",
+            "incompleteRegionAndCoarseLocationNeverReuseOldTownEvidence",
+            "interruptedAtomicReplaceKeepsPriorFileAndIgnoresOrphanTemporary",
+            "oldEmptyDamagedAndAlteredFilesSafelyResearchAgain",
+            "simulationAndFakeModeBypassPersistentReadsAndWrites",
+            "entryAndTotalCapacityBoundariesEvictWithoutRequestStorms",
+            "districtAndTownSurviveJourneyEndAndNewStoreWithZeroRepeatCalls",
+            "filesContainOnlyFactsAndSourcesAndDiagnosticsContainNoIdentityOrUrl",
+            "unavailableStorageDoesNotBlockReadyEvidenceOrDirector",
+            "realtimeAndExplicitRefreshBypassCacheAndDoNotPersistDynamicAnswer",
+            "emptyUnverifiedFakeWrongIdentityAndInvalidFactsNeverSave",
+            "concurrentStoresAndManagersCoalesceSameOverviewAndTopic",
+            "newDirectorActuallyJudgesCachedEvidenceAfterEndAndReconstruction",
+            "cancellationReleasesSingleFlightAndDoesNotSaveLateContent",
+            "providerExceptionCannotCreateOrOverwriteEvidence",
+            "invalidationIsExplicitAndFailedRefreshStaysHonest"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ResearchSocketCancellationTest",
+          "timestamp": "2026-10-16T15:45:24",
+          "report_sha256": "29aba2c6bdee2cc795a330ff253a44d55bfed7045f1a3c0d14bd55478b7455be",
+          "cases": [
+            "nativeCallTimeoutBoundsARealSocketWaitingForResponseHeaders",
+            "cancelledResearchClosesBlockedTransportAndReleasesItsSlot"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ResearchTransportProbeTest",
+          "timestamp": "2026-10-16T15:45:25",
+          "report_sha256": "b9a154d57898a28c8cdfc9c96caebe81a3f07b5a9cff50ef996bf1c18cded4e5",
+          "cases": [
+            "cancellationReleasesCallerAndCancelsNativeCallWhileBodyIsBlocked",
+            "boundedReaderChecksActualBytesAndDoesNotUseSse",
+            "streamIsTheOnlyPayloadDifferenceAndNoBenchmarkNamesAreSeeded",
+            "jsonProbeUsesSavedBearerAndRetainsExactRejectionWithoutLoggingCredentials",
+            "bodySocketFailureAfter200IsTransportFailureWithNoCapabilityRejection",
+            "totalDeadlineReleasesCallerEvenWhenNativeCallbackIsStillBlocked",
+            "searchSuccessIsPreservedAcrossEachParserFailureAndShapeIsRedacted"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RouteReferenceTest",
+          "timestamp": "2026-10-16T15:45:26",
+          "report_sha256": "613ca3f1252ffa2757c9655b197614a5b7cd91032f5d7c620e28354716949f89",
+          "cases": [
+            "unsupportedNeverLoadsOrSilentlyDropsImage",
+            "screenshotAnalyzedOnceThenOnlyHintReusedAndClearDropsIt",
+            "startOrClearCancelsPendingAndLateHintNeverAppears",
+            "apiImagePayloadsUseNativeShapesAndTextRequestsHaveNoOldImage",
+            "timeoutAndMalformedOrModelRejectionAreExplicitWithoutRetries"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
+          "timestamp": "2026-10-16T15:45:28",
+          "report_sha256": "4ea2c38f7d3a7311b3fde3e220d3398248e522acaf7a4bf1a7ea743a183c7f28",
+          "cases": [
+            "phoneLandscapeStatusAndReplyKeepControlsVisible"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
+          "timestamp": "2026-10-16T15:45:35",
+          "report_sha256": "11f881d798c94668f6fd72d4b74cb2726d67d29da0ef5556b2108eaf8b58514c",
+          "cases": [
+            "compactPortraitReplyKeepsInputCancelAndDrivingControlsVisible",
+            "statusUpdatesWithoutMovingControlsAndNoCoordinatesOrFalseGreen"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
+          "timestamp": "2026-10-16T15:45:42",
+          "report_sha256": "b76490ae77b4c138e8fa8af3084287f140da231c66be7f8a40bca7dced63b4e6",
+          "cases": [
+            "tabletSixteenToTenStatusAndControlsFit"
+          ]
+        },
+        {
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusTest",
+          "timestamp": "2026-10-16T15:45:48",
+          "report_sha256": "f36a7ded61987680150c8ae7f4e110b16aaf9eaf097d45b9e6c192dd0b37f15d",
+          "cases": [
+            "successfulCallAndInvalidReplyAreObservedSeparately",
+            "topicInterruptClearsImmediatelyAndActiveQuestionWins",
+            "endAndRecoveryCannotRestorePendingLabelsOrAcceptOldCompletion",
+            "departedAreaOverviewCanContinueButCannotLookLikeCurrentWork",
+            "speechQueuedAndPlaybackStartAreDistinctAndBackgroundIsSecondary",
+            "cancellationIsNotAnOutageAndCannotClearReplacementWork",
+            "noFixAndAreaLookupHaveIndependentAcquisitionLabels",
+            "untestedAndDemoCannotBecomeSuccessfulService",
+            "failedRequestClearsInflightAndDoesNotInventVpnFailure",
+            "researchTimeoutClearsSearchAndRetainsFailure",
+            "unavailableResearchDoesNotPretendAnAiConnectionWasTested",
+            "recentSuccessDoesNotEraseSeparateResearchFailure",
+            "quietAndListeningOverrideBackgroundWork",
+            "oldActiveChainKeepsTicketOwnerAfterSkipEvenIfNextStageStartsLate",
+            "overviewPastThirtySecondsHasElapsedButDirectorStillRuns",
+            "locationQualityFollowsSelectorFallbackRecoveryAndMonotonicAge",
+            "configurationChangeResetsEvidenceAndOldCompletionCannotRestoreIt",
+            "prepareNeverClaimsNarrationReadyAndCooldownIsIntentional"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeVoiceTest",
+          "timestamp": "2026-10-16T15:45:49",
+          "report_sha256": "a950db688014eef6b07177b267fb6335a598eab11dcd622fcbd3d757bb4d9065",
+          "cases": [
+            "coldTtsIsPreparingAndStartupWatchdogClearsIt",
+            "interruptionDropsQueuedSpeechAndLateStartCannotClaimPlayback",
+            "longOfflineTextOnlyCompletesAfterFinalChunkAndLateCallbacksAfterStopAreIgnored"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SearchCapabilityProbeTest",
+          "timestamp": "2026-10-16T15:45:53",
+          "report_sha256": "90b1cc339e23bdd3f98717e10156b32b7b55b15429c252ed583360c115e085a1",
+          "cases": [
+            "completedToolWithoutResponseCompletedIsBAndDoneMarkerCannotFakeA",
+            "noToolIsCAndOnlyExplicitToolPermissionErrorsAreD",
+            "allActualTypesIncludingAddedSearchingAndUnknownEventsAreRecordedWithoutBody",
+            "totalDeadlinePreservesLastEventAndCancelsNativeCallWithoutWaitingForClose",
+            "namedEventsAndCitationsAreAcceptedAndLateEventsCannotMutateFrozenEvidence",
+            "payloadIsExactlyOneUnseededSearchWithNoSchemaAndDiagnosticOnlyDeadline"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SettingsBackTest",
+          "timestamp": "2026-10-16T15:45:54",
+          "report_sha256": "82cd6ac582e69d7a60709dc21e4dd23b26dde389abed4cb4e526dead58b48dc8",
+          "cases": [
+            "developerStartPassesSimulationOnlyForThatAction",
+            "idleMainSystemBackRetainsPlatformExitBehavior",
+            "systemBackFromSettingsReturnsToMainWithoutFinishingAndPageReturnStillWorks"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SettingsTest",
+          "timestamp": "2026-10-16T15:46:02",
+          "report_sha256": "eaf739653142f9a55b15957bfa3c54cac50b1efb2a6ee539d845db2ed52f497e",
+          "cases": [
+            "settingsRoundtripKeepsKeyEncryptedAndOmitsUnsupportedEffort",
+            "lostCredentialFailsClosedAndFakeNeedsNoKey",
+            "researchConfigIsExplicitEncryptedAndIndependentFromNarrationProvider"
+          ]
+        },
+        {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SimulationCadenceTest",
+          "timestamp": "2026-10-16T15:46:06",
+          "report_sha256": "a8ad072b9661e75cfb41abba874da71c3eef927df9a569e0707a3ee7d1f4ce7e",
+          "cases": [
+            "interruptionCancelsPendingRequestAndOldSpeechCannotReplayInSimulation",
+            "prepareExpiryDeviationAndOldEpochRemainProtectedWithSimulationCadence",
+            "requestSpeechAndOneShotListeningFreezeTravelWithFreshFixesThenResume",
+            "reproduceLegacy100Kmh16xDropsEveryFiveSecondAutoResponse",
+            "simulationContextSeparatesTravelFromWallTimeAndOrdinaryRestartRemovesIt",
+            "sixtyTimesSmokeModeIsNotLimitedByWallCadence",
+            "quietTenMinutesAndNaturalLanguageDurationsStayOnWallClockAt16And60Times",
+            "full100Kmh16xDelayedProviderDeliversAutomaticSpeechAndDialogue",
+            "full16xRouteHasMeaningfulProgressOpportunitiesWithDelayedSilentProvider",
+            "realGpsCadenceAndSpatialProtectionKeepTheirOriginalBoundaries"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SimulationTest",
+          "timestamp": "2026-10-16T15:46:07",
+          "report_sha256": "b50f4845e8430879e32f44e851a84b856d3081b9b821616a45aab897c2ae6956",
+          "cases": [
+            "continuous80KmhRouteCompletesAndCanAccelerate",
+            "simulationUsesSameContextAndNoImaginaryAltitude"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SourceIsolationTest",
+          "timestamp": "2026-10-16T15:46:08",
+          "report_sha256": "cdc99360105eb11ad4710af097641e25df3bdf46d195f43b9d658ff544553d61",
+          "cases": [
+            "serviceLossKeepsExplicitSimulationRecoveryWithoutMakingItTheDefault",
+            "stoppedSourceClearsRouteAndCompletionNotice",
+            "serviceStartDefaultsToRealAndExplicitExtraStartsSimulation",
+            "upgradeDiscardsLegacySimulationButPreservesProviderAndSpeedPreferences",
+            "allProvidersUseRealGpsNormallyAndSimulationOnlyWhenExplicitlyStarted"
+          ]
+        },
+        {
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StagedResearchTest",
+          "timestamp": "2026-10-16T15:46:13",
+          "report_sha256": "f460d85a0365d18da08714f2a48b7451af0acfd368bcbdf102f5aace0b3a314c",
+          "cases": [
+            "singleTopicAddsEvidenceAndCachesOnlyUntilTripEnd",
+            "readyOverviewImmediatelyProvidesOpportunityWithoutTopic",
+            "overviewHasSmallSchemaRequiredSearchAndNoBenchmarkInjection",
+            "emptyUnsupportedAndOversizedOverviewCannotBeReady",
+            "userQuestionPreemptsTopicButKeepsCompletedOverview",
+            "narratedObjectWinsOverUnrelatedHighSalienceLead",
+            "moreAboutCurrentTopicCarriesReadyNewFactsIntoUnchangedActiveBranch",
+            "leavingCancelsTopicAndCannotDeliverItLater",
+            "overviewReadyDispatchesDirectorWhileTopicDoesNotPauseSimulation",
+            "topicTimeoutDoesNotRemoveOverviewOrBlockDirector",
+            "topicUsesNarrowPromptWithRequiredToolAndProvenanceValidation",
+            "officialRecognitionStillRequiresGovernmentSource",
+            "overviewRequiresCompletedToolAndMatchingProvenance",
+            "overviewFailureRetainsSafeOpportunityWithoutTopics"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryInterestSelectionTest",
+          "timestamp": "2026-10-16T15:46:14",
+          "report_sha256": "a2bc21a3d169959fd65d7ec0e6028ef4e380c75b6507060fb0ae4d120cc7a2ef",
+          "cases": [
+            "moreOnItsOwnCategoryRaisesThatAngleWithoutRemovingTheOther",
+            "unreviewedManuscriptsStayUnplayableEvenWhenHistoryIsWantedMore",
+            "oneMainStoryStillPlaysWhenItsCategoryIsMarkedLessAndGainsNothingFromMore",
+            "balancedInterestsKeepTheExistingDeterministicAngle",
+            "locationAndPlaybackGatesOutrankAnyInterest",
+            "automaticNarrationUsesSavedInterestsWhileAnExplicitRequestStaysDeterministic"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryInterestStoreTest",
+          "timestamp": "2026-10-16T15:46:15",
+          "report_sha256": "aaa8ed41520c8170d0eadf7f4d70f9b894ba885adb19380a1b25ecf593d4e043",
+          "cases": [
+            "legacyInstallWithoutAnyInterestKeysReadsEveryCategoryAsNormal",
+            "saveWritesAllSixKeysAndSurvivesARestart",
+            "interestSaveNeverRewritesAccountProviderOrLegacySettingKeys",
+            "corruptForeignOrMissingStoredValuesFailClosedToNormalWithoutCrashing",
+            "anEmptyDraftIsSavedAsBalancedDefaultsRatherThanSilentlyKeepingStaleKeys"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryInterestUiTest",
+          "timestamp": "2026-10-16T15:46:19",
+          "report_sha256": "74a64df546058382f1d11cd4b0007776dc6b2cecd53921283ffdcc7111b6c54d",
+          "cases": [
+            "tabletLandscapeCanReachEveryCategoryAndSave",
+            "choosingTwoCategoriesSavesOnlyInterestsAndSurvivesARestart",
+            "phoneLandscapeCanReachEveryCategoryAndSave",
+            "sixCategoriesDefaultToNormalWithTruthfulStoryCountNotice",
+            "smallPhoneLargeTextCanScrollAndSave",
+            "leavingWithoutSavingNeverWritesThePreferenceFile",
+            "oneCategoryChangeNeverRewritesTheOtherFive"
+          ]
+        },
+        {
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryPacksTest",
+          "timestamp": "2026-10-16T15:46:29",
+          "report_sha256": "f1df7bf4f2be06d0cec39c75e572e227506026b6c26668069d2f2f5383e592d3",
+          "cases": [
+            "mainDoesNotReplayAutomaticallyAfterGeneralMemoryRotates",
+            "missingOrChangedReferencedClaimDisablesMainButUnrelatedClaimDoesNot",
+            "approvedFixtureParsesIndependentVersionsAndFullText",
+            "finalTextCandidateIsExcludedByDefaultButAuditionRetainsCompleteText",
+            "corruptedBytesLengthSchemaAndFutureCodeRejectBeforeReadingContent",
+            "textTamperingAndInvalidCategoriesDisableOnlyTheirStory",
+            "onlineOfflineAndUnconfiguredCloudAllDispatchCompleteFixtureLocally",
+            "unknownCoarseStaleAndOutOfAreaRemainSilentWithApprovedFixture",
+            "nonVerifiedClaimCannotBeUsedEvenWhenContainerIsResealed",
+            "priorExplicitCloudFailureDoesNotBlockFirstFullLocalStory",
+            "auditionStillRejectsUnreviewedDraftOrMissingFactGate",
+            "followupWithOnlyMainClaimsIsNotSelectedAsNewContent",
+            "failedFollowupKeepsCompletedMainAsReplayAndNewJourneyResetsSelection",
+            "mainCompletesThenMoreHasNewFactsAndExhaustionDoesNotOverwriteReplay",
+            "productionHasNoApprovedStoryAndKeepsEveryLegacyFact",
+            "interruptionSkipQuietAndEndNeverCompleteOrReplayPartialStory",
+            "missingCatalogFallsBackToOldFactsWithoutClaimingCompleteStory",
+            "sourceMissingDowngradedOrRightsChangedInvalidatesItsUsers"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryRankingTest",
+          "timestamp": "2026-10-16T15:46:30",
+          "report_sha256": "78a1222122b03f27591d494dd068e53c0581ed9615570b2861940f3a39054d9a",
+          "cases": [
+            "allNormalKeepsTheExistingDeterministicOrder",
+            "lessNeverBansAndMoreNeverAdmitsAnUngatedStory",
+            "moreBeatsNormalBeatsLessWithoutReorderingTies",
+            "aMissingEntryIsTreatedAsNormalAndNeverAsLess"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.TotalSilenceHotfixTest",
+          "timestamp": "2026-10-16T15:46:31",
+          "report_sha256": "dedd4158ad90047b5288275f9055c20a70ad151407f01ded6989bef940eaa8ba",
+          "cases": [
+            "failureRetainsOneSafeChapterCheckWithoutForgingEvidence",
+            "groundedLandmarkRunsWithoutWaitingForChapterResearch",
+            "unresolvedGpsGapNeverRepeatsConsumedFailureOpportunity",
+            "initialAskUserRunsDuringPendingResearch",
+            "simulationMovesWhileResearchIsPending",
+            "readyAfterDepartureNeverCreatesOldChapterNarration",
+            "typedAndAsrInputCancelAutomaticRequestDuringPendingResearch"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VisualTalkTest",
+          "timestamp": "2026-10-16T15:46:32",
+          "report_sha256": "75184fd9afcb9408089a67bb342b2f4ef20f7b131b9e3ed258293cac95a160ba",
+          "cases": [
+            "latestSelectionWinsAndOptionalTypedQuestionUsesSameDirector",
+            "imageIsActiveMessageIncludesContextAndNeverLeaksIntoAutoChecks",
+            "openingVisualTalkInterruptsVoiceAndCancellationDropsSelectedImage",
+            "unsupportedPhotoIsExplainedWithoutLoadingAndTimeoutDoesNotRetry",
+            "visualRequestFailureSpeaksBrieflyThroughNormalFlow",
+            "quietSkipEndAndNewUserInputInvalidatePendingPhoto"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
+          "timestamp": "2026-10-16T15:46:33",
+          "report_sha256": "bc5912191de4db298bb9cabf8892a7c03863be930fe940a7268e4a8d3f6a87ae",
+          "cases": [
+            "listeningAndSpeakingStayVisibleWithAllLandscapeControls"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceIndicatorUiTest",
+          "timestamp": "2026-10-16T15:46:40",
+          "report_sha256": "94949ea2ca4ab0e1a276dc900db35e68ad71c1240e5109848bcad6ba0b25fa22",
+          "cases": [
+            "realJourneyTransitionsReplaceAndRemoveIndicatorsWithoutMovingControls"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceOutcomeTest",
+          "timestamp": "2026-10-16T15:46:47",
+          "report_sha256": "0d58820bec54596d3b4d045183084c67b5469af291d9973d7a6c0e60f6378d11",
+          "cases": [
+            "chineseVoiceOrderPreservesNamesLocalesAndNetworkMetadata",
+            "everyAndroidErrorMapsExplicitlyIncludingNewerCodes",
+            "journeyUsesStructuredFailuresAndOnlySuccessGoesToDirector",
+            "speakingVisualEndsOnCompletionFailureInterruptSkipQuietAndEnd",
+            "changedIntentCancelsWithoutFalseErrorsOrLateTranscripts",
+            "missingVoiceFallsBackToChineseSystemDefaultThenUsableChinese",
+            "rmsIsSmoothedClampedFiniteAndResetsAtEveryBoundary",
+            "failuresCannotMasqueradeAsNoMatchAndCancelledHasNoNotice"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceTest",
+          "timestamp": "2026-10-16T15:46:48",
+          "report_sha256": "12bbda1be7862457756800f89e518dd42bf7b136bdaff8dbb7ade5e7a67e51d9",
+          "cases": [
+            "longStoryWatchdogAllowsSavedSlowRateButRemainsBounded",
+            "duplicateRecognitionAndOldCompletionCannotRestartDialogue",
+            "paragraphChunksRespectSystemLimitAndPreserveText"
+          ]
+        }
+      ]
+    },
+    "Release": {
+      "tests": 498,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ActiveResearchTest",
+          "timestamp": "2026-10-16T15:47:58",
+          "report_sha256": "8824dabaef8f2ac52bafd972e04dadfd34c9f9ca8102de30efae38b4fbc02221",
+          "cases": [
+            "realtimeResearchUsesChinaDateRatherThanHostOrUtcDate",
+            "sameProviderDecisionUsesOriginalStrictEightFields",
+            "failedSearchBrieflyReportsFailureAndNeverFallsBackToModelMemory",
+            "typedAndAsrRepliesUseSameSearchDecisionAndDirectorPath",
+            "searchTimeoutIsHonestAndDoesNotRetry",
+            "ordinaryStableKnowledgeDoesNotSearch",
+            "newUserIntentCancelsLateSearchAndCannotQueueOldAnswer",
+            "explicitSearchAndRealtimeAlwaysForceResearchEvenWithSufficientDossier",
+            "activeSearchCanTakeMoreThan45SecondsButAutoTicketStillExpires",
+            "sufficientDossierAnswersDirectlyWithoutDuplicateSearch",
+            "questionFinishesInSameJourneyChapterAndSessionDossierWithoutMergingDynamicFacts",
+            "missingLocalEvidenceSearchesBeforeOriginalDirectorNarrates",
+            "nearbySearchPromptKeepsGpsGroundingButNeverPromisesMapDistances"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AndroidAreaResolverTest",
+          "timestamp": "2026-10-16T15:48:02",
+          "report_sha256": "788dc4601916a4510e4f29dbdaaccea8725ec22062e4e69f21a57a24bd747459",
+          "cases": [
+            "absentPlatformGeocoderCompletesUnresolvedWithoutCrash[26]",
+            "absentPlatformGeocoderCompletesUnresolvedWithoutCrash",
+            "timeoutAndErrorAreDistinguishableAndNeverLeakNamesCoordinatesOrExceptionText",
+            "staleMissingOrBridgePositionsDoNotStartLookups",
+            "delayedResponseCannotUndoProviderSwitchOrApplyAfterStop"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AndroidLifecycleTest",
+          "timestamp": "2026-10-16T15:48:17",
+          "report_sha256": "45474d4d401951d749415a6ad318de6abbf09351e2b2ee3bf93982ae7242b9d6",
+          "cases": [
+            "activityLaunchesAndServiceQuietEndControlsWork"
+          ]
+        },
+        {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AndroidVoiceExperienceTest",
+          "timestamp": "2026-10-16T15:48:31",
+          "report_sha256": "e3f8204b5d6f833f029b5a1d0af5f8d53998c611e74984403c510f826e3da41a",
+          "cases": [
+            "androidErrorResetsLevelAndPreservesCode",
+            "permissionCancellationDoesNotStartARecognizerAfterGrant",
+            "androidCallbacksDriveLiveRmsAndReturnOnlyOneResult",
+            "androidCancellationRejectsQueuedRmsAndLateResult",
+            "cancelledPlatformQueueIgnoresLateStartAndDone",
+            "previewUsesDraftVoiceRateAndLeavesJourneyProviderAndSavedVoiceAlone",
+            "selectedVoiceAndRatePersistRestoreAndLegacySavesPreserveSelection",
+            "systemChineseDefaultCanStillPreviewWhenEngineDoesNotEnumerateVoices",
+            "permissionDenialAndUnavailableServiceHaveAccurateOutcomes",
+            "androidWatchdogFinishesOnceAndReleasesMicrophone",
+            "platformTtsProgressSeparatesQueuedStartedAndFinalCompletion"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AreaChapterTest",
+          "timestamp": "2026-10-16T15:48:36",
+          "report_sha256": "0b223d651458fed5f460196cbf8fe4c5d96904e43f698be2c7154ca965fbf107",
+          "cases": [
+            "familyHistoryIsBoundedAndUnknownFamilyFailsValidation",
+            "unresolvedAreaKeepsGpsAndBoundedContextAvailable",
+            "normalizeAndDistinguishChapterFromCounty",
+            "quietAndCooldownRetainUnexaminedChapterWithoutQueuingNarration",
+            "chapterEntryWakesDirectorBelowOrdinaryCadenceAndSilentStaysLegal",
+            "chapterExposesNeutralLocalDossierWithoutForcingNarration",
+            "geocodingThrottlesPendingMovementStalenessAndFailure",
+            "cacheRefreshesOnChapterChangeAndReusesVisitedCard"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.AreaResolutionCacheTest",
+          "timestamp": "2026-10-16T15:48:37",
+          "report_sha256": "c740ae9f1ec97f240f8190139ef6a859381a6877bceac955394fa33cfb525040",
+          "cases": [
+            "unobservedGapAlsoBreaksContinuityWithFreshReturningFix",
+            "lateResultCannotCrossInvalidationOrRelabelDistantCurrentPosition",
+            "coarsePositionWithdrawsStreetAndAccuracyRecoveryNeedsNewGeocode",
+            "staleOrMissingPositionInvalidatesWithoutResurrection",
+            "emptyDoesNotReplaceSuccessButReliableDifferentOrDistrictOnlyResultDoes",
+            "providerSwitchAndLastKnownCannotCarryOldStreetOrRestoreItOnSwitchBack",
+            "stopClearsLabelsAndInvalidatesPendingResult",
+            "tenMinutesOfFreshGpsAndNetworkKeepOneChapterAcrossOldThirtySecondExpiry",
+            "hundredKmhMovementInvalidatesBy450MetersAndNeverResurrectsOnReturn"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.BatchSimulationTest",
+          "timestamp": "2026-10-16T15:48:37",
+          "report_sha256": "d0d946d7386bd8dd3ead51d53aeb27b263dcd47d23f89406ad2d89137a93be67",
+          "cases": [
+            "complete100Kmh16xDossierPipelineSpeaksThroughChaptersWithoutStaleReplay",
+            "newChaptersWithFailedProviderProduceSilenceAndBoundedOpportunities",
+            "newRouteHasDetailedChaptersAndNeutralGroundedSubjects",
+            "geocoderNormalizesCommonChineseFieldLayoutsWithoutInventingTown"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.BootstrapTest",
+          "timestamp": "2026-10-16T15:48:39",
+          "report_sha256": "3dc3cae5f09a5297eef9761721895c2cce42b38df5b5fbb8cea15615cb756018",
+          "cases": [
+            "applicationIdentity"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChapterOpportunityTest",
+          "timestamp": "2026-10-16T15:48:39",
+          "report_sha256": "54104594acc188585ad7169d7756b1896a5fddf572a14eaf2efe9a2b02003555",
+          "cases": [
+            "unresolvedGapDoesNotCreateRepeatedVisitOfCheckedChapter",
+            "lateNarrationFromPreviousChapterDiesEvenWithinDistanceGuard",
+            "landmarkBreaksOnlyOrdinaryAutomaticSpeechCooldown",
+            "dossierEntityAndLandmarkShareDeliveryDedupButFollowUpIsAllowed",
+            "staleGpsNeverDeliversRetainedReadyChapter",
+            "canceledDispatchBeforeActualDirectorCheckRetainsContextOpportunity",
+            "speakingListeningTypingImageQuietAndCooldownDelayButNeverEraseReadyChapter"
+          ]
+        },
+        {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChatGptAccountTest",
+          "timestamp": "2026-10-16T15:48:40",
+          "report_sha256": "ad8e8349546e59dde40e23b7ddb31b9e8dd51cff89846331883c84f5f161f2d6",
+          "cases": [
+            "encryptedRecordKeepsAllIdentityAndTokenValuesOutOfPreferencesAndDiagnostics",
+            "researchCannotBlockActiveDirectorAndDisconnectedResearchCannotReturn",
+            "identityOnlyGrantCannotInvokeModelsOrResponsesOrPaidFallback",
+            "compatibleAndOpenaiKeyProvidersRemainSeparateFromChatGpt",
+            "completeSignInValidatesBeforeReplacingAccountAndPreservesIdentityOnlyGrant",
+            "cancelAuthorizationClosesLoopbackAndEndsProtectionWithoutReplacingRegistration",
+            "signOutRevokesAndRetainsRegistrationWithoutHintsEvenIfRemoteFails",
+            "rejectedChecksDoNotExtendTransientNetworkBackoffForever",
+            "researchRejectionPreservesAcceptedNarrationAuthorizationAndHasNoPaidFallback",
+            "transientFailurePreservesCredentialsAndAdmissionOrLimitStopsNewRequests",
+            "refreshRotationSerializedAndPersistedWithIssuedClientAndResource",
+            "earliestRefreshHonoredAndTerminalRefreshClearsOnlyTokens"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChatGptImagePayloadTest",
+          "timestamp": "2026-10-16T15:48:45",
+          "report_sha256": "ae21cecfa3c91b0aaf7bceced58fe6eaf3775f58e48721cd4d35537e7431173a",
+          "cases": [
+            "chatGptUsesExistingAuthorizationAdapterWithImagePartsAndNoStorage"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ChatGptProtocolTest",
+          "timestamp": "2026-10-16T15:48:48",
+          "report_sha256": "285ab018db4758824118e5bd42e1da1968b0ec3f323ac0d1e6ecf6d53c06e0ff",
+          "cases": [
+            "realLoopbackListenerBindsBeforeCallbackAndDoesNotEchoCredentials",
+            "sseOnlyCompletedValidatedDirectorTextSucceeds",
+            "rejectMissingMismatchedStateClientErrorsAndDuplicateParameters",
+            "freshPkceNonceStateAndDynamicRegistration",
+            "sseRejectsFailedIncompleteInterruptedAndDoneWithoutCompletion",
+            "returningRegistrationUsesSavedIdentityHintsAndNeverDynamic",
+            "modelCatalogUsesOnlyVisibleSlugsAndExplicitCapabilityMetadata",
+            "validatesJwksSignatureIssuerAudienceExpiryNonceAndSubject",
+            "streamedTextIsValidatedOnlyAfterCompletionEvenWhenFinalSnapshotIsEmpty"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ContextTest",
+          "timestamp": "2026-10-16T15:48:50",
+          "report_sha256": "aa511da79cae68e67fdb66a3ad7a2034739f620ada0167b57afee4f658016316",
+          "cases": [
+            "sourceIndependentPipelineAndAltitudeSummary"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DirectorLoopTest",
+          "timestamp": "2026-10-16T15:48:50",
+          "report_sha256": "bc61453187e5d16aeca944e1d19102368bd98adae419d94de2eb251490e94bc3",
+          "cases": [
+            "prepareIsOnlyRevalidationContextAndCannotBecomeAudioByItself",
+            "automaticFailureWaitsForNewInformation",
+            "lateAutomaticResponseCannotOverrideUserIntent"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DossierSimulationTest",
+          "timestamp": "2026-10-16T15:48:51",
+          "report_sha256": "882de2c30a334c4b4b8329990a4379a75b597e46bb33631cf4b4e6d3be64c6a6",
+          "cases": [
+            "existingRouteResearchesEachChapterAndNarratesOnlyDeliveredEvidence"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DrivingAreaResolutionTest",
+          "timestamp": "2026-10-16T15:48:52",
+          "report_sha256": "c84d52b4df6d454afedbbc8da59245926101bc1c5157a8a464da5de845bd54f4",
+          "cases": [
+            "stationaryFailuresAreBoundedAndPendingLookupsNeverMultiply",
+            "cachedTownUsesCurrentFreshnessAndDistanceRatherThanGeocodeAnchorAge",
+            "provinceIsPreservedWithoutInventingMissingTown",
+            "shortChaptersAreNotSystematicallySwallowedAt80And100Kmh"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.DrivingUiTest",
+          "timestamp": "2026-10-16T15:48:53",
+          "report_sha256": "1c5a0dd93da457267601232bd2d9031afd268720e6534ebb4940caa0a01dc3cf",
+          "cases": [
+            "drivingButtonsAreVisibleAndOneTapQuietAndEndWork"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.EditorialFreedomTest",
+          "timestamp": "2026-10-16T15:49:00",
+          "report_sha256": "16cdf5ba14537ba9ecc1559461fd37802f48594076f176638a4410d1741472ae",
+          "cases": [
+            "constitutionForbidsTheFixedRhetoricalTemplateAndLandThesis",
+            "strictContractAndFactBoundariesSurviveTheReset",
+            "unmappedSubjectIsAcceptedByTheStrictContract",
+            "dossierTextPresentsShelfNotPlaylist",
+            "chapterOpensBroadDossierAcrossMaterialTypes",
+            "recentFamilyHistoryIsWeakSignalNotCandidateBlacklist",
+            "constitutionStatesFreedomDestinationAndHardBoundaries",
+            "groundedSubjectsKeepSourceNotesAndNeutralLabels"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.EndUiTest",
+          "timestamp": "2026-10-16T15:49:01",
+          "report_sha256": "72c4be973a8f196854a80868e9ed475f66b832b07d162d6861ea6dc5b6448073",
+          "cases": [
+            "endScreenShowsSavedSummaryWithoutRatingsAndReturns",
+            "landscapeSummaryAndReturnAreVisibleWithoutScrolling",
+            "actualEndButtonAutomaticallySavesBeforeReturningToStart",
+            "tabletSummaryAndReturnAreVisibleWithoutScrolling",
+            "technicalDestinationStatesAreHiddenAndEmptyTripStaysQuiet"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExplorePlacesTest",
+          "timestamp": "2026-10-16T15:49:08",
+          "report_sha256": "8604e8a7845df3855b06dd1dd8ce2621adf0cc7effcf64aba7d748e74bce2a99",
+          "cases": [
+            "missingPackNeverInventsInstalledRegions",
+            "approvedFixtureOffersSeparateCompleteArticlesAndRealSources",
+            "exactFullTextIsPassedOnlyAfterManualPlayAndNeverAutoAdvances",
+            "actualInstalledCountyObjectsFactsAndSourceIdsAreTruthful",
+            "synchronousEngineExceptionIsContainedAndCanRetry",
+            "noOfflineVoiceRefusesToSpeakAndProvidesActionableMessage",
+            "keywordSearchCoversNamesFactsAndWhitespaceWithoutGps",
+            "stoppedOrReplacedArticleIgnoresLateSuccessAndFailure",
+            "candidateReviewRightsHashAndDependenciesStayBlockedInExplorer"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExploreRestoreUiTest",
+          "timestamp": "2026-10-16T15:49:09",
+          "report_sha256": "a848bd52a707741038d519827e9b2f79f15824819899e37706adb3d73aaea3c7",
+          "cases": [
+            "restoredArticleRetainsTextAndNavigationButStopsPlayback"
+          ]
+        },
+        {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExploreUiTest",
+          "timestamp": "2026-10-16T15:49:16",
+          "report_sha256": "aa5a886658f16d3bd91d14ade48152389093259cec2467e73d8f0e45f05ce88b",
+          "cases": [
+            "unavailableCatalogHasTruthfulEmptyState",
+            "tabletHasDiscoverableHomeEntry",
+            "runningJourneyDoesNotOfferExplorationOrLoseItsState",
+            "phoneLandscapeReadingAndControlsFit",
+            "standardActivityBrowsesWithoutPermissionsLoginJourneyOrPersistentWrites",
+            "longArticleManualPlayStopErrorAndReturnNeverAutoPlayFollowup",
+            "backgroundingStopsManualSpeechAndLateCallbacksCannotRestartIt",
+            "tabletLandscapeReadingAndControlsFit",
+            "smallPhoneLargeTextCanScrollWithVisiblePlayback",
+            "emptyResultsClearSearchAndBackKeepOriginalEntry",
+            "phoneLandscapeHasDiscoverableHomeEntry"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ExploreVoiceTest",
+          "timestamp": "2026-10-16T15:49:26",
+          "report_sha256": "46f098d102a95076bd2e0da28b8868275495107212bf6ffb1dab76ec664d4411",
+          "cases": [
+            "engineWatchdogMakesStalledManualPlaybackRetryable",
+            "dedicatedAndroidVoiceUsesOfflineChineseAndSavedRateWithoutTouchingRuntimeVoice"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.FullSimulationTest",
+          "timestamp": "2026-10-16T15:49:30",
+          "report_sha256": "e8bde7a1dad5ab558f287abb63545f8bc02465dd5d788ed1c161cf993a853df8",
+          "cases": [
+            "chengduToMianyangFullGoldenPath"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.FusedLocationTest",
+          "timestamp": "2026-10-16T15:49:31",
+          "report_sha256": "c693af022d2c9365f111db5f901fae7c77242411f33058c85e9bafc92e2895dd",
+          "cases": [
+            "fusedUsesThirtySecondWindowThenOriginalClockBridgeThenUnknown",
+            "fusedMirrorsNeverRefreshOriginalMeasurementOrReplayOldCoordinates",
+            "freshFusedCanFillAnActualGapAndHealthyGpsRecovers",
+            "fusedNeverClaimsGpsAltitude",
+            "cachedFusedCannotBecomeLiveOrPreciselyArrived",
+            "fusedJumpTooCoarseStaleAndMalformedReasonsAreDistinct",
+            "coarseFusedAndItsBridgeAreHonestlyDisplayed"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ImageBoundaryTest",
+          "timestamp": "2026-10-16T15:49:32",
+          "report_sha256": "504164d77ce144b222d2dbe5526cdb2bfcdab6409bce5dbf98d0af86569e13a9",
+          "cases": [
+            "cameraProviderDeclaresOnlyCaptureCacheWithoutCameraOrStoragePermission",
+            "decodeBoundsAndReencodeRemovesExifLocation",
+            "malformedAndOversizedFilesAreRejectedBeforeProvider",
+            "runtimeEndAndServiceLossClearRouteVisualCacheAndNeverPersistMedia"
+          ]
+        },
+        {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.JourneyTest",
+          "timestamp": "2026-10-16T15:49:36",
+          "report_sha256": "66583390b1153472af0fa6efad78723ef5c8403cbee1a2db036cc6199d987206",
+          "cases": [
+            "activeQuestionCanTemporarilyTakeOverQuietWithoutCancellingTimer",
+            "intentPreferencesAndQuietCommands",
+            "sensorsHighFrequencyAiLowFrequency",
+            "startEndAndQuietExpiryEarlyExit",
+            "clarificationAnswerDoesNotBecomeDestinationAndVolunteeredDestinationStillWorks",
+            "staleRequestNeverReplaysAfterUserAction",
+            "backgroundDoesNotAskAndNoGpsDoesNotCall",
+            "destinationIsOptionalButOtherClarificationsRemainAvailable",
+            "failuresAutoSilentActiveBrieflyReports",
+            "skipSuppressesOnlyTopicAndDoesNotInferPreference",
+            "prepareReplacesExpiresAndIsNeverSpoken",
+            "interruptStopsImmediatelyAndStaleCallbackDies",
+            "contextBoundedDoesNotDumpTrajectoryOrInventMissingAltitude"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.KittPolishLandscapeTest",
+          "timestamp": "2026-10-16T15:49:37",
+          "report_sha256": "db49f60807a8df62bc2e8e234d8c5064ec8bc2a686d184311321c49a9c6fe8aa",
+          "cases": [
+            "daylightLandscapeKeepsPlaceQuietAndImageControlsVisibleWithoutScrolling"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.KittPolishPortraitTest",
+          "timestamp": "2026-10-16T15:49:44",
+          "report_sha256": "ba42acb4d7e210cab8ac41bfc2a43953b3cc92d59fa835f8e8ab1d227898df3a",
+          "cases": [
+            "compactDarkPortraitShowsEveryStatePlaceAndSecondaryControlsWithoutScrolling"
+          ]
+        },
+        {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LandmarkProximityTest",
+          "timestamp": "2026-10-16T15:49:50",
+          "report_sha256": "45faa3cc9e5a422d29415056cabb7af289a5086addebc657851480e777b9c73d",
+          "cases": [
+            "silentIsValidAndStationaryNodeDoesNotCreateRetryStorm",
+            "sameLandmarkFactIsSuppressedButNewFactInSameChapterCanSpeak",
+            "recedingWithinExisting1500mGuardStillKillsDelayedLandmarkResponse",
+            "imageAndListeningUserPriorityHoldAutomaticOpportunity",
+            "completeRefinedRouteExercisesRealCatalogWithoutStaleOrDuplicateNarration",
+            "everySupportedKindCreatesIndependentOpportunityInsideSameChapterBelowNormalDistance",
+            "catalogRejectsUngroundedInvalidAndDuplicateNodes",
+            "deliveredNodeConsumesOnlyExtraWakeupAndKeepsEvidenceForNewFacts",
+            "unknownIdCannotCreateAnAutomaticLandmarkAndSchemaRetainsSixAndSevenFieldCompatibility",
+            "quietPassesNodeAndResumeNeverQueuesIt"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LandscapeUiTest",
+          "timestamp": "2026-10-16T15:49:51",
+          "report_sha256": "ba6076d6ff394f971d3b80672874c746336265943fc2d33cff3c6208a3b98ada",
+          "cases": [
+            "landscapeControlsRemainVisibleWithoutScrolling"
+          ]
+        },
+        {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocalFirstHotfixTest",
+          "timestamp": "2026-10-16T15:49:57",
+          "report_sha256": "b99bfc11baf9432f540df6303f76246804f5c1d51631e88995fe72452d29496b",
+          "cases": [
+            "disconnectCancelsExplicitCloudWithoutRestartingItOnReconnect",
+            "onlineOfflineAndUnreachableCloudAllSpeakSynchronouslyWithZeroRequests",
+            "localHereMoreAndReplayStayLocalOnlineAndPreserveFactCoverage",
+            "missingPackNeverFallsBackToAutomaticCloud",
+            "onlineButStaleCloudFailureDoesNotMaskLocalHealthOrUnknownLocation",
+            "explicitCloudTimeoutEndsAndCannotBlockSubsequentLocalNarration",
+            "unknownStaleCoarseBridgeAndUncoveredPositionsStaySilentOnline",
+            "explicitWeatherSearchFailureReportsBrieflyThenLocalStoryRecovers",
+            "networkRestorationDoesNotInterruptLocalSpeechOrStartResearch",
+            "localQuestionCancelsOldCloudAnswerAndLateResponseNeverReplays",
+            "openQuestionUsesCloudOnlyOnDemandAndNextAutomaticStoryRemainsLocal"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocalFirstRuntimeTest",
+          "timestamp": "2026-10-16T15:49:59",
+          "report_sha256": "397d8877da7a4d9580765b75dddbfabe3802786410d7198f3f6ea768be832572",
+          "cases": [
+            "onlineRuntimeUsesOfflineChineseTtsWhileRecognitionRemainsOnlineCapable",
+            "normalPhysicalSourceSpeaksWithBrokenChatGptConfigurationAndNoCloudCalls"
+          ]
+        },
+        {
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocalResearchTest",
+          "timestamp": "2026-10-16T15:50:03",
+          "report_sha256": "40bdef1aa1f1dcbc8ac4a3aa24371d798cba47d45a2fddbf8a5cefb0252d847d",
+          "cases": [
+            "compatibleEndpointCannotPretendToSearchOrCallNetwork",
+            "modelMemoryWithoutSearchOrEvidenceCannotBeReady",
+            "failureIsAccurateAndNeverRepeatedByGpsTicks",
+            "leavingBeforeResearchCompletesCachesEvidenceButDropsDeliveryOpportunity",
+            "requiredSearchUsesFullIdentityAndSeparateStrictSchema",
+            "citationAnnotationsAlsoProvideEvidenceButIncompleteSearchDoesNot",
+            "xinduProductionRequestIsBlackBoxAndOutsiderDepthHasNoScript",
+            "lateDistrictEvidenceGetsAnOpportunityEvenAfterTownWasChecked",
+            "emptyActualResearchIsDistinctFromUnavailableAndStillGetsOneCheck",
+            "lowQualityLeadsAreNotEnoughForGroundedFacts",
+            "interruptedTripNeverAcceptsLateResearch",
+            "researchTimeoutIsBoundedAndNeverBecomesNoContent",
+            "officialDesignationsRequireGovernmentEvidenceEvenIfModelLabelsBlogOfficial",
+            "chapterAndDistrictResearchAreOncePerTripIncludingRevisit",
+            "sourceProvenanceSurvivesCompressionAndInventedLinksFail",
+            "rapidChaptersHaveAtMostTwoResearchRequestsAndEndCancelsAll",
+            "researchSseKeepsToolItemsCitationsAndDoesNotUseDirectorParser"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocationCompatibilityTest",
+          "timestamp": "2026-10-16T15:50:04",
+          "report_sha256": "7a2d5b28c4949793b8b5de8f993fc40555c7312e57f28ac0feaef27308a49da9",
+          "cases": [
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[26]",
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[30]",
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[31]",
+            "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion[26]",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion[30]",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion[31]",
+            "deviceRejectionReasonsDoNotLeakCoordinatesAndPreserveConversion"
+          ]
+        },
+        {
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.LocationFallbackTest",
+          "timestamp": "2026-10-16T15:50:17",
+          "report_sha256": "8bf5450dc444843439776fd0ce16c4bdd831a542b5fd02ca5daaa047cfa8bed7",
+          "cases": [
+            "cachedCoordinatesNeverBecomeFreshGpsAndExpireWithoutRenewingTimestamp",
+            "smallQualityDifferencesDoNotOscillate",
+            "networkChapterStillResearchesAndSpeaksThroughExistingLoop",
+            "weakGpsDoesNotBeatBetterNetworkBecauseOfProviderName",
+            "stalePreciseFixCannotDispatchLandmarkOrDeliverLateArrival",
+            "accuracyCirclesAllowPlausibleHandoffNoise",
+            "coarseNetworkRetainsChapterContextButClearsLandmarkAndPrecisePrepare",
+            "coarseHandoffKillsLatePreciseLandmarkSpeech",
+            "bothLiveSourcesExpireIntoBridgeThenUnknown",
+            "movingCarIsNotSmoothedOrFrozen",
+            "monotonicAgeAndOrderingSurviveWallClockChanges",
+            "disablingGpsLeavesNetworkAndRecoveryPromotesGps",
+            "asynchronousSecondaryFixIsStoredWithoutReplayingAnOlderPosition",
+            "newerAccurateNetworkCanBeatAgingGps",
+            "impossibleHandoffAndForeignCoordinatesAreRejectedAndDoNotPoisonRecovery",
+            "gpsFallbackAndRecoveryWithoutRestart",
+            "invalidFutureOutOfOrderAndTooCoarseMeasurementsAreRejected"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.NarrationLoopTest",
+          "timestamp": "2026-10-16T15:50:18",
+          "report_sha256": "abac46f6033ab5dd07d822e1c181d1eeb8e53c406d4068a7c0f3fc09e2dff232",
+          "cases": [
+            "replayAfterMovingRetainsOriginalSubjectArea",
+            "explicitReplayStopsPendingAudioAndOnlyReplaysPreviouslyCompletedText",
+            "moreSearchFailureReportsFailureWithoutInventingOrWritingCoverage",
+            "moreWithoutNewSourcesCannotRecycleOldFactsButOrdinaryQuestionAndImageCanAnswer",
+            "moreUsesOneSuccessfulSearchForNewEvidenceAndNormalDirector",
+            "routeCanRejectRepeatedCoverageWhileEveryChapterGetsNewObjectAndNewFact",
+            "overviewToTopicReturnSuppressesOnlyCoveredFactsAndNewFactStillSpeaks"
+          ]
+        },
+        {
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.NarrationMemoryTest",
+          "timestamp": "2026-10-16T15:50:19",
+          "report_sha256": "4df6ba69865484bc691e6946b50cd11365bdf362a61afdeb8d70c5b0c16e9f58",
+          "cases": [
+            "restartAndLegacyRecoveryDoNotImportCompletedClaimsOrReplayText",
+            "sameObjectWithNewFactRemainsEligible",
+            "obsoleteStartAndCompletionCannotMarkANewJourney",
+            "startedThenInterruptedNeverClaimsFullCoverageOrResumesAutomatically",
+            "failedVoiceDoesNotClaimCompletedOrAutomaticallyReplay",
+            "memoryIsBoundedAndContainsNoNarrationOrCoordinates",
+            "queuedNarrationIsNotCompletedMemory",
+            "moreWithNewCoverageAndExplicitRepeatAreEligible",
+            "subsetAndReorderedFactsDoNotRepeatButDifferentObjectCanShareMechanism",
+            "legacyBlankSummaryCannotPermanentlyBlacklistTopicWithNewFacts",
+            "landmarkIdentitySurvivesRegionAndTitleChange",
+            "cancelledBeforeStartIsNotCompletedAndLateCompletionCannotChangeIt",
+            "leaveAndReturnRetainsCoverageButDifferentDistrictSameNameSpeaks",
+            "prepareRecheckStillFiltersDeliveredCoverage",
+            "moreWithNoNewCoverageReportsBrieflyAndKeepsMemoryHonest",
+            "ordinaryActiveQuestionAndImageTakeoverBypassAutoCoverage",
+            "priorFactsAccumulateWithoutBlacklistingObject",
+            "topicDifferentFromSummaryStillSuppressesRepeatedFact",
+            "duplicatedCompletionCannotFinishNextAutomaticSpeechInSameEpoch"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.NetworkStatusTest",
+          "timestamp": "2026-10-16T15:50:20",
+          "report_sha256": "39f1e074ac443a843facc5a167eab04126f3b6fd2b822212e8cebbe7fa5da866",
+          "cases": [
+            "validatedGhostVpnAndImsWithoutInternetCannotEnableCloud",
+            "visibleSystemVpnIsDetectedEvenWhenDefaultAppNetworkBypassesIt",
+            "physicalInternetLossAndReturnUnderValidatedVpnSwitchCloudWithoutPing",
+            "callbackHandoffAndStopIgnoreLateEventsAndStartDoesNotDuplicate",
+            "internetCapabilityAloneIsNotValidated",
+            "wifiAndCellularVpnAreSystemSignalsOnly",
+            "missingInformationAndVpnWithoutPhysicalTransportStayUnknown"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.OfflineLocationTest",
+          "timestamp": "2026-10-16T15:50:27",
+          "report_sha256": "23bc9a31884c21d9d9fc715f8d051be5752bc06f14f19740c86f76e53551d9d2",
+          "cases": [
+            "leavingInstalledCountyOnlineDoesNotRetainItsLabelOrOldStreet",
+            "offlineGpsNetworkSwitchKeepsOnlyFreshCountyAndRejectsCoarse",
+            "staleBridgeCannotReuseOfflineCounty",
+            "installedCountyWinsOverOnlineGeocoderAndSurvivesNetworkLoss",
+            "realSourceOfflineUsesBundledGeometryAndNeverInvokesGeocoder"
+          ]
+        },
+        {
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.OfflinePackTest",
+          "timestamp": "2026-10-16T15:50:30",
+          "report_sha256": "2e05695403f5c12a5d49df6e5912585862402b96c0d8b75ea0fe0d78fe74a7c0",
+          "cases": [
+            "onlinePhoneWithoutLocalCoverageDoesNotMakeAutomaticCloudRequest",
+            "futureSchemaOrAppVersionFailsClosed",
+            "missingPackUnknownOrOldLocationNeverUsesHistoricalAreaLabel",
+            "badReferencesFailEvenIfChecksumIsResealed",
+            "staleFutureBridgeSimulationFusedAndInvalidNeverResolve",
+            "actualPackageHas22UniqueTraceableFactsAcrossSixObjects",
+            "newJourneyDoesNotInheritPackPlaybackMemory",
+            "offlineLoopHasZeroCloudCallsHonorsQuietInterruptionAndReplay",
+            "localVoiceSelectionRejectsNetworkUninstalledAndCantoneseOnly",
+            "onlinePackDoesNotPretendToBeFreshHostedSearchOrPersistEvidence",
+            "accuracyDiskAndOneKilometerBoundaryMarginAreConservative",
+            "offlineDirectorSpeaksTwoGroundedFactsAndNextNewObject",
+            "moreStaysWithObjectThenHonestlyRunsOut",
+            "failedOrInterruptedSegmentIsNeverCountedCompleteOrAutoReplayed",
+            "disconnectCancelsInFlightCloudAndReconnectRestoresExistingOnlinePath",
+            "corruptionOrEmptyContentFailsClosed",
+            "allNewFactsEventuallyExhaustWithoutRepeat",
+            "realInteriorGpsAndNetworkResolveCountyWithoutStreets",
+            "onlinePhonePrefersLocalAutomaticNarrationAndKnownLocalQuestion",
+            "dynamicQuestionsAndUnsupportedImagesNeverInventAnswers",
+            "outsideAndTrueBoundaryVertexAreUnknown"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.OfflineVoiceTest",
+          "timestamp": "2026-10-16T15:50:32",
+          "report_sha256": "8ee45c562f030dd06f03b04222ec1951e02b6f5a5c8ce1c83f5241253a7960a8",
+          "cases": [
+            "missingOfflineDataFailsWithoutQueuingNetworkSpeech",
+            "offlineListeningStartsOnlyBundledVoskAndNeverSystemNetworkRecognizer",
+            "offlineUsesInstalledLocalVoiceWithoutChangingSavedSelection",
+            "localSpeechRequirementPreservesOnlineSystemRecognitionOrder"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.PersistenceTest",
+          "timestamp": "2026-10-16T15:50:35",
+          "report_sha256": "0dcc5237d8b5bd67b7b4551485feb2502cfb9af2847c539d24d60f7278bfb681",
+          "cases": [
+            "finishSavesSummaryAndClearsCheckpointWithoutRatingInput",
+            "abnormalReopenRestoresOnlyLightweightState",
+            "legacyRatingsAndFeedbackRemainReadableUnchangedAndCorruptRecoveryIsSafe",
+            "resumedRuntimeKeepsTravelOffsetBeforeItsFirstPeriodicCheckpoint",
+            "completedSummarySurvivesCheckpointButPlaybackClaimsAndReplayNeverPersist"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ProviderTest",
+          "timestamp": "2026-10-16T15:50:40",
+          "report_sha256": "b02ad2cebe2d6200578a3b31dee3ac3bd358faeee5422e0739f5331bcf073147",
+          "cases": [
+            "fakeHonorsContract",
+            "strictSchemaAndActionSemantics",
+            "apiBuildsThreeLayersAndExtractsValidatedResponse"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.QuietCountdownTest",
+          "timestamp": "2026-10-16T15:50:41",
+          "report_sha256": "2c2d2ce0ec630006bee092d045614411ed7fb552bfdcb25812f26e92ca7657a0",
+          "cases": [
+            "quietCountdownKeepsCountingWhenNothingElseChanges",
+            "indefiniteQuietNeverShowsAFakeNumber",
+            "countdownLeavesQuietModeTheSecondItRunsOut"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RealAreaContinuityTest",
+          "timestamp": "2026-10-16T15:50:48",
+          "report_sha256": "70997300549ee92726363e79fdc1d2fd8639d48fc5f7d9a8be1ded96c02f05ba",
+          "cases": [
+            "tenMinutePublicationSurvivesEmptyErrorTimeoutAndRefreshWithoutFalseChapterChange",
+            "neverSuccessfulLookupStaysUnresolvedAndDoesNotStorm",
+            "drivingDistanceAndGpsNetworkSwitchInvalidateBeforeFailedRefreshCanCarryOldStreet",
+            "coarsePermissionNeverPublishesStreetEvenIfProviderReportsSmallAccuracy",
+            "reliableDifferentDistrictOnStationaryRefreshReplacesLabelImmediately",
+            "bridgeStripsStreetThenFreshReturnAndRestartRequireNewResolution"
+          ]
+        },
+        {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RealLocationSourceTest",
+          "timestamp": "2026-10-16T15:50:52",
+          "report_sha256": "5793ffcb1cd687eca6a2190c73d816240df893cf2a6522d2155d8d1c7d0c74fc",
+          "cases": [
+            "timerBridgesAndExpiresWithoutFurtherLocationCallbacks",
+            "unknownProvidersMissingAccuracyAndMissingMonotonicTimeCannotBecomePhysicalFixes",
+            "missingPermissionReturnsNoticeAndRegistersNothing",
+            "stopAndRestartRejectOldListenerAndDoNotLeakRegistrations",
+            "foreignGeocoderResultCannotChangePhysicalCoordinateOrChapter",
+            "bothProvidersRegisterAndNetworkContinuesWhenGpsDisabledThenGpsRecovers",
+            "coarsePermissionRunsNetworkWithoutRequiringFinePermission",
+            "missingNetworkProviderStillRunsGps",
+            "cachesAreLastKnownAndStaleCacheIsRejected"
+          ]
+        },
+        {
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RecognizerBackendTest",
+          "timestamp": "2026-10-16T15:50:56",
+          "report_sha256": "0d22f00561aa4433b0701e4f0799f741ef8e732343d54903e0832c78a525efe9",
+          "cases": [
+            "aBusyRecogniserIsRetriedNextTimeInsteadOfBeingWrittenOff",
+            "everyBackendUnusableIsRememberedSoTheNextTapAnswersImmediately",
+            "brokenSystemRecognizerFallsBackOnceAndDeliversOneLocalTranscript",
+            "aMissOrASilenceNeverLeavesAnInventedTranscriptOnScreen",
+            "cancellingDuringTheFallbackDiscardsTheLateLocalTranscript",
+            "chineseTranscriptsLoseVoskSpacingAndEmptyJsonStaysEmpty",
+            "theAbandonedAttemptCannotFireASecondFallbackWhenTheWatchdogExpires",
+            "cancelAndTheNextListenBothStartFromAnEmptyTranscript",
+            "theLocalEngineRefusesToOpenTheMicrophoneWithoutThePermissionAndSaysSo",
+            "aTransientErrorAfterListeningStartedDoesNotRestartRecognition",
+            "whenNoBackendCanServeTheFailureStaysAccurateAndIsNotCalledNoMatch",
+            "anUnusableRecognizerIsNotProbedAgainOnTheNextListen",
+            "silenceAndNoMatchAreNeverRewrittenAsABackendFallback",
+            "interimHypothesisAppearsOnScreenButIsNeverSubmitted",
+            "finalTranscriptStaysVisibleAfterTheAttemptCloses",
+            "interruptionOfSpeechStillOpensTheMicrophoneForOneShotListening",
+            "localEngineLevelsDriveTheSameListeningMeter",
+            "spokenFallbackTextReachesTheQuietCommandPath",
+            "startupFailuresAreExactlyTheBackendBreakages"
+          ]
+        },
+        {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ReplyExchangeTest",
+          "timestamp": "2026-10-16T15:51:00",
+          "report_sha256": "93864cccf0da3c12f9483a1964a3952fd646e6c0646b0dc5e4a5d06799fa89b4",
+          "cases": [
+            "speechAnswerSubmitsOnceAndRejectsASecondTranscript",
+            "silenceClosesTheExchangeWithoutPretendingTypingIsStillPending",
+            "aLateTranscriptAfterTypedAnswerCannotOverwriteOrDuplicate",
+            "skippingQuietingOrEndingAbandonsThePendingExchange",
+            "anOpenExchangeIsNotTalkedOverByAutomaticNarration",
+            "anUnavailableRecogniserStillLeavesTheExchangeOpenForTyping",
+            "anUnansweredExchangeExpiresAndStopsCapturing",
+            "askedQuestionCanBeAnsweredByVoiceAndClosesAfterOneResult",
+            "typedAnswerTravelsTheSameRequestInputPathAsSpeech",
+            "choosingTheKeyboardReleasesTheMicrophoneButKeepsTheExchangeOpen",
+            "aStartupErrorFromEveryBackendIsNotAMissingAnswer",
+            "askedQuestionAcceptsEitherSpokenOrTypedReply",
+            "cancelClosesTheExchangeAndHandsTheMicrophoneBack"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ReplySurfaceUiTest",
+          "timestamp": "2026-10-16T15:51:01",
+          "report_sha256": "52e6e30a84dd01c5a7335ddb14e4a3da082f52f0352eb4bcdad94fea0e9de81c",
+          "cases": [
+            "theOpenExchangeOffersTypingAlongsideTheMicrophone",
+            "interimTextIsShownAsStillBeingHeardAndNeverLooksCommitted",
+            "finalTextIsShownAsWhatTheUserActuallySaid",
+            "cancelClosesTheSurfaceAndReportsBackToTheCaller",
+            "recognitionTroubleIsShownAsANoticeNotAsTranscriptText",
+            "reachingForTheKeyboardHandsTheMicrophoneBackButKeepsTypingOpen"
+          ]
+        },
+        {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ResearchEvidenceStoreTest",
+          "timestamp": "2026-10-16T15:51:09",
+          "report_sha256": "221a23b3d3d75d593138254cbb6f2b2a66c89f507bf963e4a684097f52a89ab4",
+          "cases": [
+            "topicNormalizationAndFullIdentityNeverCollide",
+            "incompleteRegionAndCoarseLocationNeverReuseOldTownEvidence",
+            "interruptedAtomicReplaceKeepsPriorFileAndIgnoresOrphanTemporary",
+            "oldEmptyDamagedAndAlteredFilesSafelyResearchAgain",
+            "simulationAndFakeModeBypassPersistentReadsAndWrites",
+            "entryAndTotalCapacityBoundariesEvictWithoutRequestStorms",
+            "districtAndTownSurviveJourneyEndAndNewStoreWithZeroRepeatCalls",
+            "filesContainOnlyFactsAndSourcesAndDiagnosticsContainNoIdentityOrUrl",
+            "unavailableStorageDoesNotBlockReadyEvidenceOrDirector",
+            "realtimeAndExplicitRefreshBypassCacheAndDoNotPersistDynamicAnswer",
+            "emptyUnverifiedFakeWrongIdentityAndInvalidFactsNeverSave",
+            "concurrentStoresAndManagersCoalesceSameOverviewAndTopic",
+            "newDirectorActuallyJudgesCachedEvidenceAfterEndAndReconstruction",
+            "cancellationReleasesSingleFlightAndDoesNotSaveLateContent",
+            "providerExceptionCannotCreateOrOverwriteEvidence",
+            "invalidationIsExplicitAndFailedRefreshStaysHonest"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.ResearchSocketCancellationTest",
+          "timestamp": "2026-10-16T15:51:10",
+          "report_sha256": "070a5a955d6cb335d56b8762befe6a4caed7306c9e6629bca5d45f0b8f998994",
+          "cases": [
+            "nativeCallTimeoutBoundsARealSocketWaitingForResponseHeaders",
+            "cancelledResearchClosesBlockedTransportAndReleasesItsSlot"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RouteReferenceTest",
+          "timestamp": "2026-10-16T15:51:12",
+          "report_sha256": "dc9d4512e31f1aa653ea2babb3b51c1a9ec227dd1c11e06d44a72a2c820e1752",
+          "cases": [
+            "unsupportedNeverLoadsOrSilentlyDropsImage",
+            "screenshotAnalyzedOnceThenOnlyHintReusedAndClearDropsIt",
+            "startOrClearCancelsPendingAndLateHintNeverAppears",
+            "apiImagePayloadsUseNativeShapesAndTextRequestsHaveNoOldImage",
+            "timeoutAndMalformedOrModelRejectionAreExplicitWithoutRetries"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
+          "timestamp": "2026-10-16T15:51:13",
+          "report_sha256": "d7dc9ee5849e46bbc0bca231d97cc08ebbe4d6626a9798ae4662cfc1a12cf3f2",
+          "cases": [
+            "phoneLandscapeStatusAndReplyKeepControlsVisible"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
+          "timestamp": "2026-10-16T15:51:19",
+          "report_sha256": "574bf626146d1fde320940bb063a125c3f45ec5bd7b57d054e2abc823e03c140",
+          "cases": [
+            "compactPortraitReplyKeepsInputCancelAndDrivingControlsVisible",
+            "statusUpdatesWithoutMovingControlsAndNoCoordinatesOrFalseGreen"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
+          "timestamp": "2026-10-16T15:51:26",
+          "report_sha256": "f7cdd667d1d6956858e7c147a6ba613d7f5fc176b67565d7003b35f9b45e1931",
+          "cases": [
+            "tabletSixteenToTenStatusAndControlsFit"
+          ]
+        },
+        {
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeStatusTest",
+          "timestamp": "2026-10-16T15:51:32",
+          "report_sha256": "5e7efaddb16c88f85097836c874abc525c3ebf671d7be29bcc577a83e6e7f1e6",
+          "cases": [
+            "successfulCallAndInvalidReplyAreObservedSeparately",
+            "topicInterruptClearsImmediatelyAndActiveQuestionWins",
+            "endAndRecoveryCannotRestorePendingLabelsOrAcceptOldCompletion",
+            "departedAreaOverviewCanContinueButCannotLookLikeCurrentWork",
+            "speechQueuedAndPlaybackStartAreDistinctAndBackgroundIsSecondary",
+            "cancellationIsNotAnOutageAndCannotClearReplacementWork",
+            "noFixAndAreaLookupHaveIndependentAcquisitionLabels",
+            "untestedAndDemoCannotBecomeSuccessfulService",
+            "failedRequestClearsInflightAndDoesNotInventVpnFailure",
+            "researchTimeoutClearsSearchAndRetainsFailure",
+            "unavailableResearchDoesNotPretendAnAiConnectionWasTested",
+            "recentSuccessDoesNotEraseSeparateResearchFailure",
+            "quietAndListeningOverrideBackgroundWork",
+            "oldActiveChainKeepsTicketOwnerAfterSkipEvenIfNextStageStartsLate",
+            "overviewPastThirtySecondsHasElapsedButDirectorStillRuns",
+            "locationQualityFollowsSelectorFallbackRecoveryAndMonotonicAge",
+            "configurationChangeResetsEvidenceAndOldCompletionCannotRestoreIt",
+            "prepareNeverClaimsNarrationReadyAndCooldownIsIntentional"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.RuntimeVoiceTest",
+          "timestamp": "2026-10-16T15:51:33",
+          "report_sha256": "363b40c4597b811a7cc7be2df2a927c91743dce240ae697ed1d17a0e4e85543c",
+          "cases": [
+            "coldTtsIsPreparingAndStartupWatchdogClearsIt",
+            "interruptionDropsQueuedSpeechAndLateStartCannotClaimPlayback",
+            "longOfflineTextOnlyCompletesAfterFinalChunkAndLateCallbacksAfterStopAreIgnored"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SettingsBackTest",
+          "timestamp": "2026-10-16T15:51:36",
+          "report_sha256": "a68c9886783cf96d09f9d2c7ec2d9a3cb5fd239422de82fda34c38db8724e726",
+          "cases": [
+            "developerStartPassesSimulationOnlyForThatAction",
+            "idleMainSystemBackRetainsPlatformExitBehavior",
+            "systemBackFromSettingsReturnsToMainWithoutFinishingAndPageReturnStillWorks"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SettingsTest",
+          "timestamp": "2026-10-16T15:51:44",
+          "report_sha256": "78e690b8400199243a0c46094034f219c0db9e98011957ee9d1f200ee29d6cf8",
+          "cases": [
+            "settingsRoundtripKeepsKeyEncryptedAndOmitsUnsupportedEffort",
+            "lostCredentialFailsClosedAndFakeNeedsNoKey",
+            "researchConfigIsExplicitEncryptedAndIndependentFromNarrationProvider"
+          ]
+        },
+        {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SimulationCadenceTest",
+          "timestamp": "2026-10-16T15:51:47",
+          "report_sha256": "0cc7c38c37b3d050e85de5c30c40943a61cdc6c5e8b3cb0d6adec223708bb7d2",
+          "cases": [
+            "interruptionCancelsPendingRequestAndOldSpeechCannotReplayInSimulation",
+            "prepareExpiryDeviationAndOldEpochRemainProtectedWithSimulationCadence",
+            "requestSpeechAndOneShotListeningFreezeTravelWithFreshFixesThenResume",
+            "reproduceLegacy100Kmh16xDropsEveryFiveSecondAutoResponse",
+            "simulationContextSeparatesTravelFromWallTimeAndOrdinaryRestartRemovesIt",
+            "sixtyTimesSmokeModeIsNotLimitedByWallCadence",
+            "quietTenMinutesAndNaturalLanguageDurationsStayOnWallClockAt16And60Times",
+            "full100Kmh16xDelayedProviderDeliversAutomaticSpeechAndDialogue",
+            "full16xRouteHasMeaningfulProgressOpportunitiesWithDelayedSilentProvider",
+            "realGpsCadenceAndSpatialProtectionKeepTheirOriginalBoundaries"
+          ]
+        },
+        {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SimulationTest",
+          "timestamp": "2026-10-16T15:51:49",
+          "report_sha256": "07dcc691c04f5424657237d55b0df7f3dec47527a15591f046cbb5a7c07a5d88",
+          "cases": [
+            "continuous80KmhRouteCompletesAndCanAccelerate",
+            "simulationUsesSameContextAndNoImaginaryAltitude"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.SourceIsolationTest",
+          "timestamp": "2026-10-16T15:51:50",
+          "report_sha256": "cbc9e8879800b3101ffdf29a1398e958db9822514ae36991eb49c61e2dc7ef6a",
+          "cases": [
+            "serviceLossKeepsExplicitSimulationRecoveryWithoutMakingItTheDefault",
+            "stoppedSourceClearsRouteAndCompletionNotice",
+            "serviceStartDefaultsToRealAndExplicitExtraStartsSimulation",
+            "upgradeDiscardsLegacySimulationButPreservesProviderAndSpeedPreferences",
+            "allProvidersUseRealGpsNormallyAndSimulationOnlyWhenExplicitlyStarted"
+          ]
+        },
+        {
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StagedResearchTest",
+          "timestamp": "2026-10-16T15:51:54",
+          "report_sha256": "56fe3b5b92dce0c22d5a3f84dd7a1e0bf36d7558e1b4d28c7ffbad69e3d3e6c7",
+          "cases": [
+            "singleTopicAddsEvidenceAndCachesOnlyUntilTripEnd",
+            "readyOverviewImmediatelyProvidesOpportunityWithoutTopic",
+            "overviewHasSmallSchemaRequiredSearchAndNoBenchmarkInjection",
+            "emptyUnsupportedAndOversizedOverviewCannotBeReady",
+            "userQuestionPreemptsTopicButKeepsCompletedOverview",
+            "narratedObjectWinsOverUnrelatedHighSalienceLead",
+            "moreAboutCurrentTopicCarriesReadyNewFactsIntoUnchangedActiveBranch",
+            "leavingCancelsTopicAndCannotDeliverItLater",
+            "overviewReadyDispatchesDirectorWhileTopicDoesNotPauseSimulation",
+            "topicTimeoutDoesNotRemoveOverviewOrBlockDirector",
+            "topicUsesNarrowPromptWithRequiredToolAndProvenanceValidation",
+            "officialRecognitionStillRequiresGovernmentSource",
+            "overviewRequiresCompletedToolAndMatchingProvenance",
+            "overviewFailureRetainsSafeOpportunityWithoutTopics"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryInterestSelectionTest",
+          "timestamp": "2026-10-16T15:51:56",
+          "report_sha256": "00a0463e1ebce2d1f909d2943c039082996b2673fb832e516f61698d8df07883",
+          "cases": [
+            "moreOnItsOwnCategoryRaisesThatAngleWithoutRemovingTheOther",
+            "unreviewedManuscriptsStayUnplayableEvenWhenHistoryIsWantedMore",
+            "oneMainStoryStillPlaysWhenItsCategoryIsMarkedLessAndGainsNothingFromMore",
+            "balancedInterestsKeepTheExistingDeterministicAngle",
+            "locationAndPlaybackGatesOutrankAnyInterest",
+            "automaticNarrationUsesSavedInterestsWhileAnExplicitRequestStaysDeterministic"
+          ]
+        },
+        {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryInterestStoreTest",
+          "timestamp": "2026-10-16T15:51:57",
+          "report_sha256": "103e340c6bcb305917ee436c791c4577898e9bf7efe1efa26bb6643a95428db0",
+          "cases": [
+            "legacyInstallWithoutAnyInterestKeysReadsEveryCategoryAsNormal",
+            "saveWritesAllSixKeysAndSurvivesARestart",
+            "interestSaveNeverRewritesAccountProviderOrLegacySettingKeys",
+            "corruptForeignOrMissingStoredValuesFailClosedToNormalWithoutCrashing",
+            "anEmptyDraftIsSavedAsBalancedDefaultsRatherThanSilentlyKeepingStaleKeys"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryInterestUiTest",
+          "timestamp": "2026-10-16T15:52:01",
+          "report_sha256": "93f58a31f67fa696c72af637cba6f56a03fc854a53c86166eb0d56cbd39daa83",
+          "cases": [
+            "tabletLandscapeCanReachEveryCategoryAndSave",
+            "choosingTwoCategoriesSavesOnlyInterestsAndSurvivesARestart",
+            "phoneLandscapeCanReachEveryCategoryAndSave",
+            "sixCategoriesDefaultToNormalWithTruthfulStoryCountNotice",
+            "smallPhoneLargeTextCanScrollAndSave",
+            "leavingWithoutSavingNeverWritesThePreferenceFile",
+            "oneCategoryChangeNeverRewritesTheOtherFive"
+          ]
+        },
+        {
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryPacksTest",
+          "timestamp": "2026-10-16T15:52:09",
+          "report_sha256": "f54087915661d571eeb0897cb231c3a6dcacbb057e831189b30802b59ef1cefa",
+          "cases": [
+            "mainDoesNotReplayAutomaticallyAfterGeneralMemoryRotates",
+            "missingOrChangedReferencedClaimDisablesMainButUnrelatedClaimDoesNot",
+            "approvedFixtureParsesIndependentVersionsAndFullText",
+            "finalTextCandidateIsExcludedByDefaultButAuditionRetainsCompleteText",
+            "corruptedBytesLengthSchemaAndFutureCodeRejectBeforeReadingContent",
+            "textTamperingAndInvalidCategoriesDisableOnlyTheirStory",
+            "onlineOfflineAndUnconfiguredCloudAllDispatchCompleteFixtureLocally",
+            "unknownCoarseStaleAndOutOfAreaRemainSilentWithApprovedFixture",
+            "nonVerifiedClaimCannotBeUsedEvenWhenContainerIsResealed",
+            "priorExplicitCloudFailureDoesNotBlockFirstFullLocalStory",
+            "auditionStillRejectsUnreviewedDraftOrMissingFactGate",
+            "followupWithOnlyMainClaimsIsNotSelectedAsNewContent",
+            "failedFollowupKeepsCompletedMainAsReplayAndNewJourneyResetsSelection",
+            "mainCompletesThenMoreHasNewFactsAndExhaustionDoesNotOverwriteReplay",
+            "productionHasNoApprovedStoryAndKeepsEveryLegacyFact",
+            "interruptionSkipQuietAndEndNeverCompleteOrReplayPartialStory",
+            "missingCatalogFallsBackToOldFactsWithoutClaimingCompleteStory",
+            "sourceMissingDowngradedOrRightsChangedInvalidatesItsUsers"
+          ]
+        },
+        {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.StoryRankingTest",
+          "timestamp": "2026-10-16T15:52:11",
+          "report_sha256": "be624e32336185fc93e7d558eb5c6049e99f5112308a2989ef3a92fb9a6060ff",
+          "cases": [
+            "allNormalKeepsTheExistingDeterministicOrder",
+            "lessNeverBansAndMoreNeverAdmitsAnUngatedStory",
+            "moreBeatsNormalBeatsLessWithoutReorderingTies",
+            "aMissingEntryIsTreatedAsNormalAndNeverAsLess"
+          ]
+        },
+        {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.TotalSilenceHotfixTest",
+          "timestamp": "2026-10-16T15:52:11",
+          "report_sha256": "a4ac8938bb14aeda9a353e265ab06ed7625d65b06747b238ff0e4e569d7f3ce9",
+          "cases": [
+            "failureRetainsOneSafeChapterCheckWithoutForgingEvidence",
+            "groundedLandmarkRunsWithoutWaitingForChapterResearch",
+            "unresolvedGpsGapNeverRepeatsConsumedFailureOpportunity",
+            "initialAskUserRunsDuringPendingResearch",
+            "simulationMovesWhileResearchIsPending",
+            "readyAfterDepartureNeverCreatesOldChapterNarration",
+            "typedAndAsrInputCancelAutomaticRequestDuringPendingResearch"
+          ]
+        },
+        {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VisualTalkTest",
+          "timestamp": "2026-10-16T15:52:13",
+          "report_sha256": "dd68c39600b41d02d4d70358ee37541154160b5476d70b347fb492dc7603257e",
+          "cases": [
+            "latestSelectionWinsAndOptionalTypedQuestionUsesSameDirector",
+            "imageIsActiveMessageIncludesContextAndNeverLeaksIntoAutoChecks",
+            "openingVisualTalkInterruptsVoiceAndCancellationDropsSelectedImage",
+            "unsupportedPhotoIsExplainedWithoutLoadingAndTimeoutDoesNotRetry",
+            "visualRequestFailureSpeaksBrieflyThroughNormalFlow",
+            "quietSkipEndAndNewUserInputInvalidatePendingPhoto"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
+          "timestamp": "2026-10-16T15:52:14",
+          "report_sha256": "06745ea6c0071bd6bf595fc63b4a07a92da5970966f9a95e587f27afb6f5906d",
+          "cases": [
+            "listeningAndSpeakingStayVisibleWithAllLandscapeControls"
+          ]
+        },
+        {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceIndicatorUiTest",
+          "timestamp": "2026-10-16T15:52:20",
+          "report_sha256": "58f0177e216e700553f28505980d4662bcbbc560536787a1e700f6f9bd700fbe",
+          "cases": [
+            "realJourneyTransitionsReplaceAndRemoveIndicatorsWithoutMovingControls"
+          ]
+        },
+        {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceOutcomeTest",
+          "timestamp": "2026-10-16T15:52:27",
+          "report_sha256": "b8451abe89ecfd8e7140d4a1e0b6a25726ace63b06804f894ada125949a364ec",
+          "cases": [
+            "chineseVoiceOrderPreservesNamesLocalesAndNetworkMetadata",
+            "everyAndroidErrorMapsExplicitlyIncludingNewerCodes",
+            "journeyUsesStructuredFailuresAndOnlySuccessGoesToDirector",
+            "speakingVisualEndsOnCompletionFailureInterruptSkipQuietAndEnd",
+            "changedIntentCancelsWithoutFalseErrorsOrLateTranscripts",
+            "missingVoiceFallsBackToChineseSystemDefaultThenUsableChinese",
+            "rmsIsSmoothedClampedFiniteAndResetsAtEveryBoundary",
+            "failuresCannotMasqueradeAsNoMatchAndCancelledHasNoNotice"
+          ]
+        },
+        {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "name": "com.kitt.reader.VoiceTest",
+          "timestamp": "2026-10-16T15:52:28",
+          "report_sha256": "eebdcad83dc01f1c5b228b78cba18062fc80cc0abcc7551560f0cbb5c27f797e",
+          "cases": [
+            "longStoryWatchdogAllowsSavedSlowRateButRemainsBounded",
+            "duplicateRecognitionAndOldCompletionCannotRestartDialogue",
+            "paragraphChunksRespectSystemLimitAndPreserveText"
+          ]
+        }
+      ]
+    }
+  },
+  "total_tests": 1009,
+  "python_tests": 7,
+  "interest": {
+    "categories": [
+      "NATURE",
+      "ENGINEERING",
+      "CULTURE",
+      "LOCAL_LIFE",
+      "HISTORY",
+      "TRAVEL"
+    ],
+    "levels": [
+      "MORE",
+      "NORMAL",
+      "LESS"
+    ],
+    "default": "NORMAL",
+    "storage": "separate SharedPreferences file story_interests; settings.xml keys untouched",
+    "ranking": "post-gate stable soft priority; never filters, quotas or admits",
+    "automatic_only": true,
+    "explicit_request_and_explore_decoupled": true,
+    "suites": [
+      "com.kitt.reader.StoryRankingTest",
+      "com.kitt.reader.StoryInterestStoreTest",
+      "com.kitt.reader.StoryInterestSelectionTest",
+      "com.kitt.reader.StoryInterestUiTest"
+    ]
+  },
+  "content": {
+    "browsable_counties": 1,
+    "browsable_objects": 6,
+    "browsable_basic_facts": 22,
+    "loaded_legacy_sources": 6,
+    "formal_stories": 0,
+    "fixture_stories": 2,
+    "release_gate": "BLOCKED",
+    "standard_require_playable_exit": 1,
+    "candidate_without_separate_output_exit": 2,
+    "manuscripts": "candidate / fact_gate=passed / visitor_gate=pending; unchanged",
+    "fixture_scope": "in-memory TEST_ONLY multi-category candidates; no promotion in source or APK"
+  },
+  "lint": {
+    "debug": {
+      "path": "app/build/reports/lint-results-debug.xml",
+      "bytes": 5738,
+      "sha256": "52dc725b4a16421e1f8debe1f3970e87613907a599928cdf44a0ceeb4880572b",
+      "errors": 0,
+      "warnings": 6,
+      "warning_ids": [
+        "ExifInterface",
+        "GradleDependency",
+        "GradleDependency",
+        "GradleDependency",
+        "GradleDependency",
+        "ChromeOsAbiSupport"
+      ]
+    },
+    "release": {
+      "path": "app/build/reports/lint-results-release.xml",
+      "bytes": 5738,
+      "sha256": "52dc725b4a16421e1f8debe1f3970e87613907a599928cdf44a0ceeb4880572b",
+      "errors": 0,
+      "warnings": 6,
+      "warning_ids": [
+        "ExifInterface",
+        "GradleDependency",
+        "GradleDependency",
+        "GradleDependency",
+        "GradleDependency",
+        "ChromeOsAbiSupport"
+      ]
+    },
+    "runtimecheck": {
+      "path": "artifacts/runtime-smoke-workspace/app/build/reports/lint-results-debug.xml",
+      "bytes": 5942,
+      "sha256": "7c03c8425c7ccfec93e230b79257cd85756155a77211585882a0f94d031b8342",
+      "errors": 0,
+      "warnings": 6,
+      "warning_ids": [
+        "ExifInterface",
+        "GradleDependency",
+        "GradleDependency",
+        "GradleDependency",
+        "GradleDependency",
+        "ChromeOsAbiSupport"
+      ]
+    }
+  },
+  "simulations": [
+    {
+      "path": "app/build/acceptance/full-simulation.txt",
+      "bytes": 710,
+      "sha256": "8569182fe83dd66008502168967396ec916b565d58b7323c60aecb0cd9612538",
+      "summary": "            KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)\n            Fixture: 新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）\n            Speed: 80 km/h; distance: 90912 m; simulated duration: 68 min\n            Director calls: 56; TTS outputs: 2; bounded Context Card: 1510 chars\n            START → GPS → SPEAK_NOW (no destination question)\nuser interruption → local intent → one deeper response\nquiet 10min\nquiet expires / early resume\nMianyang → END → lightweight summary\n            Physical audio/recognition/GPS/background and real AI content quality remain manual acceptance boundaries.",
+      "scope": "deterministic/Fake director and fake voice; not physical GPS or human hearing"
+    },
+    {
+      "path": "app/build/acceptance/accelerated-simulation.txt",
+      "bytes": 320,
+      "sha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
+      "summary": "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS\nopportunities=21 dispatched=22 activeDispatched=1 auto=SILENT:0,SPEAK_NOW:20,PREPARE:0,ASK_USER:1,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:1,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\nVoice outputs=22; distance=90912m",
+      "scope": "deterministic/Fake director and fake voice; not physical GPS or human hearing"
+    },
+    {
+      "path": "app/build/acceptance/batch-simulation.txt",
+      "bytes": 1596,
+      "sha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b",
+      "summary": "Editorial freedom refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)\n新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）\n29 points; distance=90912m; speed=100km/h; acceleration=16x; latency=5s; TTS=20s\nchapters=13; cached=13; chapterEntryOpportunities=13; Sanxingdui eligible=true\nsubjects=23; families=[HISTORY, HISTORIC_SETTLEMENT, HERITAGE, CULTURAL_SITE, PEOPLE, CULTURAL_GEOGRAPHY, GEOGRAPHY, TRANSPORT, ECONOMY]; opportunities=23 dispatched=23 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:23,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\nSelected subjects=地方历史与建置变迁, 古镇、老街与传统聚落, 各级文物保护单位与历史建筑, 遗址、考古发现与博物馆, 三星堆 / 古蜀文明, 三星堆代表性器物与考古发现, 广汉与成都平原的古代文明背景, 寺庙、宗教场所与地方信仰, 风景名胜、观景点与自然遗产, 文学、艺术与地方文化人物, 传说、轶闻与有依据的趣闻, 非遗项目与民间工艺, 民俗、节庆与集市, 方言与地名由来, 绵竹木版年画 / 年画村, 年画印版与手工上色工艺, 本地水系、山川与地貌, 桥梁、隧道、水利与铁路工程, 地方道路与交通, 特产、饮食与物产, 农业、工业与贸易, 雎水太平桥与踩桥民俗, 沙汀故居与地方文学\nReal ChatGPT variety and physical phone gates: DEFERRED TO COMBINED PHONE ACCEPTANCE.",
+      "scope": "deterministic/Fake director and fake voice; not physical GPS or human hearing"
+    },
+    {
+      "path": "app/build/acceptance/landmark-simulation.txt",
+      "bytes": 605,
+      "sha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
+      "summary": "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)\n100km/h; 16x; latency=5s; TTS=20s; chapters=13\nSelected=sanxingdui, mianzhu-newyear-art, longmen-front, jushui-taiping-bridge; opportunities=28 dispatched=28 activeDispatched=0 auto=SILENT:24,SPEAK_NOW:4,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\nCatalog is four coarse regional references, not a nationwide POI service. Real phone/content quality: DEFERRED TO COMBINED PHONE ACCEPTANCE.",
+      "scope": "deterministic/Fake director and fake voice; not physical GPS or human hearing"
+    },
+    {
+      "path": "app/build/acceptance/dossier-simulation.txt",
+      "bytes": 45348,
+      "sha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8",
+      "summary": "Session Local Dossier route: PASS, deterministic research/director/voice; NOT real search or Xindu discovery acceptance.\n29 points; 90912m; 100km/h; 16x; chapter research latency=5s, director=4s, TTS=15s\nchapters=13; unique research=19; narrations=13; opportunities=33 dispatched=33 activeDispatched=0 auto=SILENT:20,SPEAK_NOW:13,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\narea chapter=新都区 · 新都街道 cache=1\nresearch started stage=overview identity=四川省 / 成都市 / 新都区 elapsed_ms=0 opportunity_retained=false\nresearch started stage=overview identity=四川省 / 成都市 / 新都区 / 新都街道 elapsed_ms=0 opportunity_retained=true\nresearch active=四川省 / 成都市 / 新都区 / 新都街道 opportunity_retained=true status=RESEARCHING\ndispatch active=false opportunities=1 dispatched=1 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\ndirector started active=false research_pending=true chapter=四川省/成都市/新都区/新都街道\nterminal active=false chapter=四川省/成都市/新都区/新都街道 outcome=SILENT topic= reason= opportunities=1 dispatched=1 activeDispatched=0 auto=SILENT:1,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\ndirector delayed reason=cadence research_pending=true chapter_retained=false\nresearch ready stage=overview identity=四川省 / 成都市 / 新都区 elapsed_ms=5000 objects=1 facts=1 opportunity_retained=false sources=https://example.test/evidence\ndispatch active=false opportunities=2 dispatched=2 activeDispatched=0 auto=SILENT:1,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCEL",
+      "scope": "deterministic/Fake director and fake voice; not physical GPS or human hearing"
+    },
+    {
+      "path": "app/build/acceptance/driving-area-resolution.txt",
+      "bytes": 437,
+      "sha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd",
+      "summary": "Production GeocodeThrottle with synthetic 700m chapters, fixes every 2s; not actual platform geocoding.\nspeed=80.0 reported=80.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms\nspeed=80.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms\nspeed=100.0 reported=100.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms\nspeed=100.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms\n",
+      "scope": "deterministic/Fake director and fake voice; not physical GPS or human hearing"
+    }
+  ],
+  "apks": [
+    {
+      "path": "artifacts/kitt-v0.5.2-debug.apk",
+      "bytes": 74444866,
+      "sha256": "c5e0aacccb5ff792922745c034c9ec746706362838865627a0822b09274641bf",
+      "package_header": "package: name='com.kitt.reader' versionCode='19' versionName='0.5.2' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'",
+      "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "browsable_objects": 6,
+      "browsable_basic_facts": 22,
+      "formal_stories": 0,
+      "narrative_asset_sha256": "f8d29acfe2366e67d226988889d44ebecfc91aea3c45896af3dbe5fda41c5665"
+    },
+    {
+      "path": "artifacts/kitt-v0.5.2-release.apk",
+      "bytes": 70773822,
+      "sha256": "ef4fd86b4d8e42359c3ed160e656cf3b913367dea9cf0a32338c8d516d3b4256",
+      "package_header": "package: name='com.kitt.reader' versionCode='19' versionName='0.5.2' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'",
+      "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "browsable_objects": 6,
+      "browsable_basic_facts": 22,
+      "formal_stories": 0,
+      "narrative_asset_sha256": "f8d29acfe2366e67d226988889d44ebecfc91aea3c45896af3dbe5fda41c5665"
+    },
+    {
+      "path": "artifacts/kitt-v0.5.2-runtimecheck.apk",
+      "bytes": 74444882,
+      "sha256": "3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b",
+      "package_header": "package: name='com.kitt.reader.runtimecheck' versionCode='19' versionName='0.5.2' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'",
+      "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+      "browsable_objects": 6,
+      "browsable_basic_facts": 22,
+      "formal_stories": 0,
+      "narrative_asset_sha256": "f8d29acfe2366e67d226988889d44ebecfc91aea3c45896af3dbe5fda41c5665"
+    },
+    {
+      "path": "artifacts/runtime-smoke-workspace/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk",
+      "bytes": 165302,
+      "sha256": "c5a64c795a9f2e3d4ec8aa9e99cdeae02d236d9a1dd0cf657b0ef0258418d4d7",
+      "package_header": "package: name='com.kitt.reader.runtimecheck.test' versionCode='' versionName='' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'",
+      "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba"
+    }
+  ],
+  "logs": {
+    "verify": {
+      "path": "artifacts/v052-verify.log",
+      "bytes": 5207,
+      "sha256": "327b10fe26b2f541618a8da6472dcba98de8c3fc4e70907b614023de89aa6a5c"
+    },
+    "runtime-build": {
+      "path": "artifacts/v052-runtime-build.log",
+      "bytes": 6244,
+      "sha256": "0195b014b2a476a87231889a68f36ae43772265f445a8808b33fdc91f8b32e58"
+    },
+    "signing": {
+      "path": "artifacts/v052-signing.log",
+      "bytes": 712,
+      "sha256": "553324a4d62d7727098efff0388cb234f30f82fbdf3a46fe609c49a08b31662f"
+    },
+    "content": {
+      "path": "artifacts/v052-content.log",
+      "bytes": 1086,
+      "sha256": "264497f51f6b7a773d86dc3fdfbad4e7641d60fd6a6213c6d10895bb4d941a70"
+    },
+    "gate": {
+      "path": "artifacts/v052-gate.log",
+      "bytes": 712,
+      "sha256": "f156cd33b8e0a5959ebbaed379fa4567ed0ff5f1b0d9cc6f64ef4bfe8cba66f5"
+    }
+  },
+  "console_logs": "v052-verify.log is the retained console tail of the full verify.ps1 run; the per-class Gradle XML reports above carry the complete suite evidence.",
+  "upgrade_baseline": {
+    "baseline": "artifacts/kitt-v0.5.1-runtimecheck.apk",
+    "baseline_bytes": 74976037,
+    "baseline_sha256": "8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea",
+    "baseline_version": "versionCode='18'",
+    "candidate": "artifacts/kitt-v0.5.2-runtimecheck.apk",
+    "candidate_version": "versionCode='19'",
+    "candidate_sha256": "3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b",
+    "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "result": "Same applicationId and same certificate; versionCode 18 to 19 is monotonic, so an in-place upgrade is statically permitted. The code18 APK bytes are not present on this PC, so the baseline side reuses the recorded phone read-back evidence. Installation NOT RUN."
+  },
+  "signing": {
+    "accepted_cases": 2,
+    "rejected_cases": 6,
+    "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba"
+  },
+  "source_sha256": {
+    "app/src/main/java/com/kitt/reader/ActiveResearch.kt": "9781e3b19c91a2731d2b99f6c5540e851a33c088788bb263c4cc865edb43c3de",
+    "app/src/main/java/com/kitt/reader/AndroidAreaResolver.kt": "66805e1a620532d0ac5c58117d829d48860376fbc278be387dccb8a4eb131227",
+    "app/src/main/java/com/kitt/reader/AndroidImageReader.kt": "64eb405baa7626b1a490990731cf799c4a41d43012e81401c24f6f774d05f7a3",
+    "app/src/main/java/com/kitt/reader/AndroidVoice.kt": "82c490f4fb3a221f8c866944e99010b4a2f0eb2a1bca097df3479cf755343e4c",
+    "app/src/main/java/com/kitt/reader/AreaChapter.kt": "e7b50b67606b4fba2c5fe75300867449069da20aaf8c4d453f9b0223b0aeec0d",
+    "app/src/main/java/com/kitt/reader/ChatGptAccount.kt": "d08b9abcdfd6ae3b08afed7ccdefbdd4b1773966c974b101ed4e78807f5ec1e5",
+    "app/src/main/java/com/kitt/reader/ChatGptAuthService.kt": "f1bfb87d472298814d829890eb966f492e120d1b49c074050605f99f1bfac663",
+    "app/src/main/java/com/kitt/reader/ChatGptProtocol.kt": "05b9fa24556393d0ee4656a35271b9ae263cac4d1b842a446c3e59dcd3713b23",
+    "app/src/main/java/com/kitt/reader/ChatGptTransport.kt": "3dfe3d2834f223611ff29a0fd9b2af6dc871a643450600a2a70b563b2ce98d1f",
+    "app/src/main/java/com/kitt/reader/DebugDiagnostics.kt": "cc11ab482c5dd6c50a9f7cab11f5d42897189ae9fb34e260dabfbffc8501b64c",
+    "app/src/main/java/com/kitt/reader/DirectorLoop.kt": "5cfbed77cddfcc414620ad78cbd772e784b50263c92bd5dba36a467aa585e80f",
+    "app/src/main/java/com/kitt/reader/DirectorProvider.kt": "f384be746ba4d6d28da0c044b5a0d0e802f55950c3c237d83049387ebc693845",
+    "app/src/main/java/com/kitt/reader/DrivingScreen.kt": "86d45d2025cf88aa05077b55ff441cd08bf64d91c412d222884388f31ce6d1b7",
+    "app/src/main/java/com/kitt/reader/EndScreen.kt": "1ea0eeecd4aa1128ea6258bedad483e9388eb562706f4e61c1a8ddf38a0c1f23",
+    "app/src/main/java/com/kitt/reader/ExplorePlaces.kt": "6845e8d94fc4013e87c831de17bce1725e6634447252b838d5fbb3a01cb5e49b",
+    "app/src/main/java/com/kitt/reader/ExploreScreen.kt": "bcc2010e864d3de3e57bbc5b48174569b9342af5b0dfe15729c0b939676e9fb6",
+    "app/src/main/java/com/kitt/reader/ImageInput.kt": "a45432642552bd687e7fdc81d2e5d0cbd96edaffee82970aa7a188d54fd7c554",
+    "app/src/main/java/com/kitt/reader/Journey.kt": "505b4484a714726e21568321a33a2e647bc7989602f735b044b66e9b901f2945",
+    "app/src/main/java/com/kitt/reader/JourneyService.kt": "e67478d9d84ab6370ce2862f4705cdfa307edf0555e99bb6f6480fe86c1d6f46",
+    "app/src/main/java/com/kitt/reader/KittApp.kt": "3d92e6ae985f662e8fe461abb125f13bca240e89f863038dc65ac01fc88f9b88",
+    "app/src/main/java/com/kitt/reader/KittRuntime.kt": "278ca88801fd03b23c3ae025c75214e83c16d82c842d8418a6d03ce33eb8fc7f",
+    "app/src/main/java/com/kitt/reader/KittTheme.kt": "82cc98ca117578b996c8cbc84502c6460ed1ebc19cfb748ca6d211acb133689f",
+    "app/src/main/java/com/kitt/reader/LandmarkProximity.kt": "abf3fa056eb23d3ad8676166658bdd6679994acf5e892fc18de82262fea2d4be",
+    "app/src/main/java/com/kitt/reader/LocalResearch.kt": "fa8c21f99447e12d6da4a1414798c2ba65ed02c4b9e99dd1c779f0d7a09dda30",
+    "app/src/main/java/com/kitt/reader/LocationContext.kt": "a427678ccf1219ca99c0e3e518e64c9ff9a075897e980d6147a472e528415f54",
+    "app/src/main/java/com/kitt/reader/MainActivity.kt": "bbd50b430e35a0652bf71200e7482c08a2b417911a9820e6bf84e65f166431e0",
+    "app/src/main/java/com/kitt/reader/NetworkStatus.kt": "24e06118b403a64d13cd30b3d8b2ac74b030cdea937930ef7e736936f16ed968",
+    "app/src/main/java/com/kitt/reader/OfflinePack.kt": "8a08f7a610c1202be78d784d636611134da411af5a43e212f350bba528097b89",
+    "app/src/main/java/com/kitt/reader/PhysicalLocationSelector.kt": "573886a4727992ce05b5f435a3577990992e22c30bea63600d1d71ec2b197bf1",
+    "app/src/main/java/com/kitt/reader/RealLocationSource.kt": "42e2081f20f9e2282ff184fbb063a47e02e704fedac438e38f26981c8420142b",
+    "app/src/main/java/com/kitt/reader/ResearchEvidenceStore.kt": "e2d62d32394d4b323ba201cef39df8a67c313f8c41a06e1d726972bd5f2f0978",
+    "app/src/main/java/com/kitt/reader/RouteReference.kt": "7118518430905bd5400db327c2f84273c68e242c1ef0cdfe05fe83b8ed968fe6",
+    "app/src/main/java/com/kitt/reader/RuntimeStatus.kt": "d4ab628fc6afba5b1d6cf7b2cec7e00217ea2d673e35194ab5b330b40697f3b1",
+    "app/src/main/java/com/kitt/reader/SettingsScreen.kt": "c1435f5bb9d17c4f60d9a95f838cfcf0339dfc15b969fd8e3b59cbc3c6d81bc3",
+    "app/src/main/java/com/kitt/reader/SettingsStore.kt": "c72555d9f39244ab3d32794c358d7e16126537c73299f1792f357306267714ee",
+    "app/src/main/java/com/kitt/reader/SimulatedLocationSource.kt": "265d460d32efc6d1942d5fdf838083fa74eb1ce73879de9ea49b6449f08ad3a8",
+    "app/src/main/java/com/kitt/reader/SpeechEngine.kt": "963af88afa620a36ab6aaa8067d9c6c48837666ec10a9e6700bb1740faaa6d1d",
+    "app/src/main/java/com/kitt/reader/StagedResearch.kt": "e445be2b92e7fa947b603b11a723c8954adf48a5dc2d6c7f6ae06bd3d74d4d70",
+    "app/src/main/java/com/kitt/reader/StoryInterests.kt": "854317e5fe16b45fece46eb62c42c3ae359772eb5e068c7dc428a9b352f31501",
+    "app/src/main/java/com/kitt/reader/StoryPacks.kt": "1df1ee0998d4c3fc9fcec642daf24f5388d28455dbf4cec4d95bd7b1f0ef45ec",
+    "app/src/main/java/com/kitt/reader/StoryRanking.kt": "6b99b879131bbd7191986fa447706e31f3a91e838f7e734445779836823713fc",
+    "app/src/main/java/com/kitt/reader/TripStore.kt": "d9e539db06ee0067552a1818961ff7c9071fed356565635061b7fa6245a1e933",
+    "app/src/main/java/com/kitt/reader/VisualTalk.kt": "5a9bda276d279193069e91d3e4c6f31e9192eb772960aa449b076b5e0962e562",
+    "app/src/main/java/com/kitt/reader/VisualTalkDialog.kt": "81c60e54e57916a07f6f60044aa8716b4d8e1813275c374d90dca3f99831f060",
+    "app/src/main/java/com/kitt/reader/VoiceIndicator.kt": "611c5d749bf1e42ebe085c81ec6adab76d5a8123d179384bb4bf2bd05b58c40a",
+    "app/src/main/java/com/kitt/reader/VoiceState.kt": "ea07c2ea21f667d751319dec17ef97903214918d9439d0fe9c00f3946b77d3a8",
+    "app/src/main/assets/offline/ODbL-1.0.html": "1879937103eecd9837a86d1a52132b8b2f42855e90d89409bee54103ffc5d5b6",
+    "app/src/main/assets/offline/xindu-facts.json": "289d29772d0ed375edace0e5bcfa9b70e1fb02336573b71f6dae326e9768d0cd",
+    "app/src/main/assets/offline/xindu-geometry.geojson": "c0fb7041af727b80bbaf3f7d1deebaf873a47072dfff9a236d48a95cac84b7ce",
+    "app/src/main/assets/offline/xindu-manifest.json": "40f01533cd7e60137361c72f9a7118280b0db8b267c589dd5efb811d5abf9427",
+    "app/src/main/assets/offline/ys-facts-manifest.json": "e4146afaefb9624a43ef6fd070be380b570121ef3ec0bd7721bfe25e04f5eb2f",
+    "app/src/main/assets/offline/ys-facts.json": "397a3795c4fdefe63632ae358bec2208fae8b90f25372aa3ca439802b6495a20",
+    "app/src/main/assets/offline/ys-narratives-manifest.json": "8ce845495604344a803ac37e352bfe212f29d2733c9096e70401cd9cde195e09",
+    "app/src/main/assets/offline/ys-narratives.json": "f8d29acfe2366e67d226988889d44ebecfc91aea3c45896af3dbe5fda41c5665",
+    "content/yangshen/approvals.json": "0c8b4442d6ef892a02d0ce78a15cd04a23ef9171cd04cfd61980df186c4c235e",
+    "content/yangshen/facts.json": "397a3795c4fdefe63632ae358bec2208fae8b90f25372aa3ca439802b6495a20",
+    "content/yangshen/narratives.json": "3b90d1136e7a09a5b5a64322aeefd022452f0c974c2df05f368148be89288589",
+    "content/yangshen/README.md": "951ed93303660bb86e0b3630c5cc8d87d56d0e75d051553522424d5d085a999b",
+    "content/yangshen/yangshen-followup-dianzai.md": "6e02869b6898bfa48476d4cdef2fbb33480eaca10ca784f90d926bb9678a2fd5",
+    "content/yangshen/yangshen-main.md": "9a1f010eefa16eb9b86f0acae1a7f96c88c006ad6785ed78cc3741ed2013b81b"
+  },
+  "runtime_copy_mismatches": [],
+  "source_mode": "DEFERRED: preferOffline is hard-wired to !simulation at KittRuntime.kt:88, so an instant-first toggle would move automatic narration onto live cloud/account/network paths and start per-chapter background research (DirectorLoop.kt:48,61) with no bounded local fallback for the automatic branch today (DirectorLoop.kt:80-81). Real behavior needs a live account and a device, both out of scope for this round, so the two-tier source mode is not implemented or claimed.",
+  "compatibility": "SettingsStore/TripStore and all content and asset bytes unchanged from the branch base; 20 synthetic histories and the settings.xml byte regression run in tests. No phone data accessed.",
+  "layout": "Compose/Robolectric: 411x914 portrait, 914x411 landscape, 1280x800 tablet landscape, 320x568 with fontScale 1.5. Synthetic layout, not physical screenshots.",
+  "device_actions": "NONE; no adb, install, phone access, physical hearing or real GPS tests",
+  "pending": [
+    "User engineering review of Draft PR35",
+    "Real multi-category formal stories actually re-ranked on device (0 formal stories today)",
+    "Source dual mode offline-first/instant-first",
+    "Physical GPS automatic chain and recovery (#23/#24/#27)",
+    "Formal story Visitor Gate and explicit release approval"
+  ],
+  "github": "Draft PR35 stays draft and unmerged; no release, no APK upload; Issues 23/24/27/30 keep their state"
+}
