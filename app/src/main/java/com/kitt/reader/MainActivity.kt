@@ -15,6 +15,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.app.NotificationManagerCompat
@@ -72,6 +73,7 @@ class MainActivity : ComponentActivity() {
             val r = runtime.revision.intValue
             var developer by remember { mutableStateOf(false) }; var taps by remember { mutableIntStateOf(0) }
             var settings by remember { mutableStateOf(false) }
+            var explore by rememberSaveable { mutableStateOf(false) }
             BackHandler(enabled = settings) { settings = false }
             // An open speak/ASK_USER exchange is the topmost thing on the driving screen, so Back closes it.
             BackHandler(enabled = !settings && runtime.journey.awaitingReply, onBack = ::cancelReply)
@@ -84,6 +86,7 @@ class MainActivity : ComponentActivity() {
                         startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, packageName))
                     }, { settings = false })
                     else if (summary != null) EndScreen(summary, runtime::dismissSummary)
+                    else if (explore && !runtime.journey.running) ExplorePlaces(runtime) { explore = false }
                     else DrivingScreen(runtime.journey, (if (runtime.config.kind == ProviderKind.FAKE) "离线演示 · " else "") + runtime.sourceLabel,
                         { startJourney() }, runtime.loop::speak, ::endJourney,
                         { if (runtime.journey.running) unavailableSettings = true else settings = true },
@@ -93,7 +96,8 @@ class MainActivity : ComponentActivity() {
                         routeNotice = runtime.routeReference.notice, onClearRoute = runtime.routeReference::clear,
                         onVisualTalk = runtime.visualTalk::begin,
                         transcript = (runtime.voice as? AndroidVoice)?.transcript ?: TranscriptText(),
-                        onCancelReply = ::cancelReply, runtimeStatus = runtime::statusSnapshot, statusVisible = runtime.foregroundVisible)
+                        onCancelReply = ::cancelReply, runtimeStatus = runtime::statusSnapshot, statusVisible = runtime.foregroundVisible,
+                        onExplore = { if (!runtime.journey.running) explore = true })
                     if (runtime.visualTalk.open) VisualTalkDialog(runtime)
                     if (unavailableSettings) AlertDialog(onDismissRequest = { unavailableSettings = false },
                         title = { Text("请结束旅程后调整设置") }, confirmButton = { TextButton({ unavailableSettings = false }) { Text("知道了") } })
