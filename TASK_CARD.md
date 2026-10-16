@@ -1,3 +1,37 @@
+# 2026-10-17 用户最新明确授权：Qoder 一次 code18→code19 原签名原位升级 + 有界真机验收（当前唯一任务）
+
+> **优先级最高**：用户对 [PR #35 独立工程评审](https://github.com/shimao1115/KITT/pull/35#issuecomment-6219618938) 中“是否批准 Qoder 将 vivo X200 Pro 上 code18 原签名原位升级至 code19，并执行有限真机验收”明确回复 **“批准”**。本授权**仅解除本段精确范围内**下方历史“禁止设备操作”的STOP，**不授权再次开发/修复业务代码、二次安装、改变账号、合并 PR、发布 APK、解除故事门禁或启动后续版本**。本轮仍由 Qoder 在用户办公室的 `H:/CODEX/KITT/` 本地执行；GitHub 的指令写入不代表设备已自动操作。
+
+## 0. 唯一设备和验签前置（所有项目 PASS 才准一次升级）
+
+1. 先保护电脑真实 worktree：`git status`／`git worktree list`，检查 `main` 与 `feat/v052-story-preferences`，`git fetch origin` 同步**最新**任务卡。不得 reset、clean、覆盖未提交更改或盲目重建 APK。阅读 `AGENTS.md`、本卡、`HANDOFF.md`、`docs/ACCEPTANCE_STORY_INTERESTS.md`、`docs/evidence/v052-verification.json` 和 PR #35 最新评审评论。已审业务实现 commit `d9d9b41b17961c8ed848c12218d3cfb06694ce9e`，交付 HEAD `2a331d999c4cd369ed3ae809b02031915f1a995c`，本授权之后的纯文档提交不能冒充新 APK 工程基线。若本地候选缺失/不匹配 STOP，不现场改代码、重签或重建代替。
+2. 只在用户允许使用的**唯一 USB/ADB** 目标确认是 vivo X200 Pro/V2405A、包 `com.kitt.reader.runtimecheck` 当前 **0.5.1/code18**、同原签名、**无正在运行 Journey/前台播报/待恢复状态**且非驾车环境才继续；存在 Journey 或设备不唯一则直接 STOP 报告，请用户自主处理，不强制结束或清历史。**别碰标准生产包 `com.kitt.reader`**。
+3. 安装前只读记录必要证据：code18 的包/版本/证书，20份真实旅程历史的**文件数量和本机保密逐文件哈希指纹**，当前普通设置的非敏感摘要与账号加密记录“存在/非空”布尔值；**不输出/上传**账号、邮箱、Token/API Key、密文、整份 settings.xml、旅行原文、设备序列号。可复用之前证明可靠的 `run-as` 只读通道；若无安全通道或发现敏感数据可能泄露，STOP。原 code18 APK 回读记录 SHA256 为 `8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea`（这是历史证据，若只查包信息不能把它写成此轮新测）。
+4. **仅批准的 code19 原签名本地候选**：`artifacts/kitt-v0.5.2-runtimecheck.apk`，恰好 **74444882 bytes**；SHA256 **`3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b`**；包 `com.kitt.reader.runtimecheck`；版本 `0.5.2/code19`；原证书SHA256 **`3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`**。核验 APK 实际文件大小、SHA、包头、证书与手机旧包的签名一致且版本18→19递增。任何不符立即 STOP，不重签、换包或绕过检查。
+
+## 1. 仅准的一次原位安装
+
+- 全部前置 PASS 后，在仓库根对唯一USB设备运行**恰好一次**：`adb -d install -r artifacts/kitt-v0.5.2-runtimecheck.apk`。这是保数据升级，不执行 `adb uninstall`、`pm clear`、`install -d/-g/-t`、签名替换、包名切换、标准Debug/Release安装或升级失败后重复尝试。失败只记录确切返回并 STOP。
+- 安装完成先核 `runtimecheck` 已变 **code19**、签名相同、包/数据目录未重置、20份历史仍逐文件不变、普通设置未见重置、加密账号记录仍存在。任何明显历史丢失、账号记录缺失或非敏感设置意外变化，立即 STOP，不做修复/重新授权。不要将“记录存在/界面显示登录”当做 ChatGPT token 联网可用证明。
+
+## 2. 有界真机 UI/偏好保存验收（只在升级前置及升级结果通过后）
+
+1. 不开启 Journey、不模拟 GPS、不故意触发线上 Director/研究/ChatGPT 请求；正常打开现有 App，检查首页、设置中六类“讲述兴趣”：`NATURE/ENGINEERING/CULTURE/LOCAL_LIFE/HISTORY/TRAVEL`、每类**多讲/正常/少讲**、初次全部**正常**，可滚动看见并点击，设置页同时保留原 Provider/模型/账号状态/音色/语速。检查**实机**竖屏、横屏、长页滚动/返回（若需临时改方向，记录旧状态并结束恢复）；不是平板实机，也不是物理GPS外场验收。
+2. 只做一轮**明确保存**：设置 **历史与人物=多讲、交通与工程=少讲**，其余四类正常；点**独立的「保存讲述兴趣」**，退出并重新进入 App/设置，确认两项持久保留；对独立新文件 `shared_prefs/story_interests.xml` 只记录六类键/档位，不能包含密钥。更换选项**但不再点保存**再返回，确认未保存改动不落盘（若可能造成用户误解，只记录 UX 观察）。每项只做必要次数，不反复尝试。
+3. 充分区分**保存兴趣对旧文件的隔离**与**打开原设置页可能自动刷新模型/轮换令牌**：本版独立兴趣写入设计不应修改 `settings.xml`，但 code18 曾观察到打开设置页后整份 XML 哈希漂移、根因 **UNKNOWN**。尽可能记录“打开设置页前/兴趣保存前/兴趣保存后/完成后”不同窗口的脱敏哈希对比，**不将整文件变化未经分析直接判账号损坏，也不可凭单次哈希判断已保留全部历史字段**。若观察到非预期漂移，立即 STOP 并只报告事实，不读取密文/账号原文、不主动刷新模型/点旧「保存」。
+4. 完成后核实**20份真实历史**逐文件SHA与安装前相同、普通设置六项与升级前有来源的基准一致、原用户账号仍显示原状态；手机原网络、方向/系统设置与测试前相同，没有活跃 Journey。记录每一项 PASS/FAIL/PENDING。**设备自动 UI 点击与截图辅助观察≠用户本人亲手验收**，人手交互、舒适性和账号联网可用性须由用户后续反馈或如实保持 PENDING。
+5. 现实正式故事为 **0篇**；杨慎主/延伸 `candidate / visitor_gate=pending` 正式发布仍 BLOCKED。**多类偏好“改变真实已审核故事实际播报优先级”必然 PENDING**，之前只有纯内存 TEST_ONLY 多候选测试。不得注入候选、把手机设置改为调试发布、解锁故事 Gate 或因多讲历史强制播报。
+
+## 3. 证据、权限边界、STOP
+
+- 创建**独立**本次真机证据 `docs/evidence/v052-phone-acceptance.json`，在 `HANDOFF.md` 最顶部追加实机验收结果，Draft PR #35 留下逐项事实、设备/签名/version/候选hash、20份历史/原设置的安全对照、未完成事项及重要限制；原工程1009测试仍是此前 Qoder 实跑的**工程证据**，本次未重跑不得冒称重跑。不公开原始 XML、设备截图中的邮箱、旅程原文、账号凭据、设备唯一标识或任何可用于关联个人的指纹。
+- 只允许提交真实设备**脱敏验收文档与交接**，不新增或修改生产 Kotlin、Story/Claim/approval/assets、Gradle构建/证书、原工程证据；工作树或 Git 冲突先 STOP。若有真实体验阻断，提出复现与最小修复建议，本轮不得擅自打新APK或二次安装。
+- **执行一次后 STOP**，即便全部 PASS 也不自动合并 PR #35，PR 保持 **Draft/OPEN**，不发布 APK、不修改正式故事审核、不启动 V0.5.3/V0.6.x/六县采集；#23/#24/#27/#30 原外场状态维持 OPEN/PENDING。用户下一步亲手体验、批准合并、正式故事发布分别另行决策。
+
+> 下方为旧“工程交付/尚未授权手机”的历史文本；只有本次用户明确批准的**单次原签名保数据升级+有界验收**覆盖其相关 STOP，其余限制全部保留。
+
+---
+
 # KITT V0.5.2 / code19 — 唯一施工任务卡：六类讲述偏好 + 柔性排序
 
 > **2026-10-16 工程交付 / STOP**：本卡第 1—3 节的六类×三档设置、独立持久化与门禁后柔性排序已实现（`d9d9b41`，[Draft PR #35](https://github.com/shimao1115/KITT/pull/35)）；本轮重跑 Debug511 + Release498 = 1009 项零失败/错误/跳过、Python7、六组模拟、构建/lint、原签名2接受+6拒绝，并产出原签名 code19 **本地**候选（74444882 字节，SHA256 `3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b`）。第 2C 节来源双模式按停止门槛判定 **DEFERRED**，未实现、未测试、无假开关。第 1 节黄金路径中的“真实多类正式故事被偏好改变次序”受限于**正式故事0**，如实记 PENDING。详见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v052-verification.json)、[验收说明](docs/ACCEPTANCE_STORY_INTERESTS.md)。手机未访问/未安装，PR 未合并，APK 未上传；下方原文仍是本版施工与安全的唯一依据，不因交付而放宽。
