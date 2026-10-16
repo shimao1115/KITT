@@ -1,3 +1,21 @@
+# 2026-10-16 最新授权：一次仅限当前设备状态的只读语义检查（覆盖旧设备 STOP 的狭窄范围）
+
+**新的决策**：用户提交 PC 离线调查结果 `INSUFFICIENT_BASELINE`（仅三阶段整个 XML 哈希，没有升级前 XML 或逐字段指纹；无证据断定实际更改字段），并委托决定是否补充一次设备只读语义核查。现同意**仅一次、限定范围、无写入的当前状态检查**。本条是唯一有效的下一轮授权，优先于下文“完全禁止手机操作”的旧 STOP，但**绝不重获 APK 安装许可**。当前手机已经是 `com.kitt.reader.runtimecheck` V0.5.1/code18，20/20真实历史已证实不变，PR #31 工程未合并，设置字节漂移原因未定。
+
+## 允许 Codex 做的事
+
+1. **先保护本机未提交改动**：前轮的 `docs/evidence/v051-settings-drift-analysis.md`、`HANDOFF.md` 据用户报告仅保存在办公室电脑，GitHub 尚未看到该 Markdown；先确认是否为未提交修改，不覆盖、不 reset、不 stash 丢失、不自动 rebase。读取本任务卡、现有设备证据和这些本地调查记录。
+2. **严格只读设备前置核对**：唯一明确授权的 USB/ADB vivo X200 Pro，当前已装的 `com.kitt.reader.runtimecheck` 确为 code18；如有活动 Journey、目标不唯一或手机不可访问，则 STOP。不启动或强制停止 App，不打开设置页、不导航 UI，避免触发 `SettingsStore.init` 或设置页自动刷新账号模型。无需改变 Wi-Fi、蜂窝、权限、系统字号、旋转或其他设备状态。
+3. **最多一轮有界、只读的数据核查**：仅在项目已有明确可靠的、无 root/无提权、不会写应用数据的读取方式确实可用时，读取**当前** `shared_prefs/settings.xml`，在本机内存中安全解析，不在 stdout/日志/PR/截图/提交里打印/保存原始 XML。只输出非敏感字段的**存在、类型、当前值或与真实已知基准是否一致**：`provider`、`model`、`effort`、`speech_rate`、`tts_voice`、`separate_research`、开发模拟配置以及可核对的其它普通设置。**不把默认值自动当成意外重置**，也不凭当前快照反推丢失的历史字段。
+4. **敏感账号资料限于结构/存在性判断**：`chatgpt`、`credential`、`research_credential` 等只核对键是否存在、值是否非空、是否为预期存储类型；如果现有只读途径本身可靠地返回“解密成功”这类不涉及秘密的信号，可记录此布尔结论，**不得为了证明账号有效而启动 App、引入新解密代码、使用密钥/Token、联网刷新、重新授权或向服务端发任何请求**。不要输出账号邮箱、subject、客户端 ID、凭据密文及其哈希/长度等可关联细节，不上传原始设备数据。
+5. 只与**实际存在并能确认来源**的升级前非敏感基准比较；历史基准确实没有 XML 时，应区分 `CURRENT_NON_SENSITIVE_SETTINGS_READABLE`、`ACCOUNT_ENCRYPTED_RECORD_PRESENT` 与 `PRE_UPGRADE_SEMANTIC_EQUIVALENCE_UNPROVEN`；当前账号可否成功在线使用继续标 **PENDING**。如果受工具或权限限制无法安全只读，则停止，报告“不具备无副作用核查路径”，不得自行改用 root、UI 自动化、仪器代码注入或安装测试包。
+6. 整理简洁**脱敏**结论：哪些当前普通设置存在、有没有明显异常、账户只证明到什么程度、旧哈希变化根因是否仍 UNKNOWN。引用证据范围，不宣布真实账号正常登录；可把脱敏分析存储于分支文档、`HANDOFF.md`、PR #31（注意保护原本未提交的本地修改）。**只读完成后再次 STOP**，PR #31保持 Draft/HOLD，等待用户亲手体验和是否合并的单独决策。
+
+## 继续禁止
+再安装／回滚／卸载／清数据、保存或编辑设置、App启动及设置页刷新、ADB输入点击、任何网络请求或令牌操作、账号重连/断连、修改生产 Kotlin 或审批、发布 APK、合并PR31、关闭 #23/#24/#27/#30、启动未来版本。本授权不要求重复965项工程测试，也绝不能把“只读当前快照”包装成“已找到历史 XML 漂移根因”。
+
+---
+
 # 2026-10-16 V0.5.1/code18 最新验收指令：设备 STOP；仅准本机已有证据的只读诊断
 
 **本条优先于下方“允许一次原位升级”的历史授权。** 用户于 2026-10-16 16:43 提供 Codex 的 [设备报告](docs/evidence/v051-phone-acceptance.json)：**单次 code17→18 已在手机成功完成，授权已用尽，不得再执行第二次安装。** 当前 Draft [PR #31](https://github.com/shimao1115/KITT/pull/31) HEAD 至少含设备交接 `00fb499498f9a1cf6ee55dd719fa4d53f31754bf`，**整体验收仍 HOLD/FAIL_SETTINGS_BYTE_PRESERVATION_SEMANTICS_UNDETERMINED**，但20份真实历史逐文件哈希稳定，账号加密记录存在；探索UI辅助检查均PASS，用户亲手使用反馈仍PENDING。
