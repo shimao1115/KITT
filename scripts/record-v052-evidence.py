@@ -90,7 +90,12 @@ def main():
         path = Path(f'app/build/acceptance/{name}.txt')
         text = path.read_text(encoding='utf-8-sig')
         assert datetime.fromtimestamp(path.stat().st_mtime).date().isoformat() == RUN_DATE
-        assert 'PASS' in text
+        if name == 'driving-area-resolution':
+            assert text.count('minInterval=16000ms') == 4
+            assert all(any(s['name'] == 'com.kitt.reader.DrivingAreaResolutionTest' for s in v['suites'])
+                       for v in variants.values())
+        else:
+            assert 'PASS' in text
         simulations.append({**file_info(path), 'summary': text[:1800],
                             'scope': 'deterministic/Fake director and fake voice; not physical GPS or human hearing'})
     outputs = [apk(f'artifacts/kitt-v0.5.2-{variant}.apk', package) for variant, package in
@@ -128,14 +133,15 @@ def main():
         if name == 'content':
             assert 'Ran 7 tests' in text and 'OK' in text and 'STRUCTURE PASS' in text
         if name == 'gate':
-            assert 'BLOCKED' in text
+            assert 'BLOCKED' in text and 'exit=1' in text
+            assert 'never overwrite standard assets' in text and 'exit=2' in text
     assert not command('git', 'diff', BRANCH_BASE, '--', 'content', 'app/src/main/assets/offline',
                        'app/src/main/java/com/kitt/reader/TripStore.kt',
                        'app/src/main/java/com/kitt/reader/SettingsStore.kt').strip()
     result = dict(
         date=RUN_DATE, version='0.5.2', version_code=19, status='ENGINEERING-STOP-USER-ACCEPTANCE-PENDING',
         issue=34, pull_request=35, branch='feat/v052-story-preferences', branch_base=BRANCH_BASE,
-        implementation_commit=command('git', 'rev-parse', 'HEAD').strip(),
+        implementation_commit=command('git', 'log', '-1', '--format=%H', '--', 'app/src/main', 'app/build.gradle.kts').strip(),
         build_provenance='APKs built from the working tree before its delivery commit; source_sha256 records those '
                          'production bytes and the runtime copy is compared against them.',
         recorded_at=datetime.now(timezone(timedelta(hours=8))).isoformat(),
@@ -149,10 +155,13 @@ def main():
             suites=INTEREST_SUITES),
         content=dict(browsable_counties=1, browsable_objects=6, browsable_basic_facts=22, loaded_legacy_sources=6,
                      formal_stories=0, fixture_stories=2, release_gate='BLOCKED',
-                     standard_require_playable_exit=1,
+                     standard_require_playable_exit=1, candidate_without_separate_output_exit=2,
                      manuscripts='candidate / fact_gate=passed / visitor_gate=pending; unchanged',
                      fixture_scope='in-memory TEST_ONLY multi-category candidates; no promotion in source or APK'),
-        lint=lint, simulations=simulations, apks=outputs, logs=logs, upgrade_baseline=upgrade,
+        lint=lint, simulations=simulations, apks=outputs, logs=logs,
+        console_logs='v052-verify.log is the retained console tail of the full verify.ps1 run; the per-class Gradle '
+                     'XML reports above carry the complete suite evidence.',
+        upgrade_baseline=upgrade,
         signing=dict(accepted_cases=2, rejected_cases=6, certificate_sha256=CERT),
         source_sha256=inputs, runtime_copy_mismatches=mismatches,
         source_mode='DEFERRED: preferOffline is hard-wired to !simulation at KittRuntime.kt:88, so an instant-first '

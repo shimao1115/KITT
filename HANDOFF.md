@@ -1,3 +1,60 @@
+# 2026-10-16 V0.5.2/code19 — 工程交付 / STOP 待用户工程验收
+
+**分支 `feat/v052-story-preferences`，实现提交 `d9d9b41`，交付 [Draft PR #35](https://github.com/shimao1115/KITT/pull/35)，关联 [Issue #34](https://github.com/shimao1115/KITT/issues/34)，分支基线为已含 PR #31 合并（`9319c271`）的 main。** 本版实际完成：设置页单一「讲述兴趣」区块（六类 `StoryCategory` × 三档 多讲/正常/少讲，初值全部正常）、独立 `story_interests` 偏好文件持久化，以及在**既有资格门禁全部通过之后**的类别柔性排序接线。**手机未访问/未安装，PR 未合并，APK 未上传或发布，任何故事审批未改变。**
+
+## 本版真正可用的能力
+
+| 项目 | 实际状态 |
+| --- | --- |
+| 六类兴趣设置 | 自然地理生态／交通与工程／人文文化社会／物产产业生活／历史与人物／旅行现场与常识，各三档，**初值全部正常且彼此均衡**；重启与重新进入设置页仍保留。 |
+| 独立持久化 | 新命名空间文件 `shared_prefs/story_interests.xml`，有独立的「保存讲述兴趣」动作。缺键→正常，非法/空/类型错值→正常且不崩溃；返回或离开页面不落盘。**不复用原「保存」路径**，因此 `provider/model/effort/tts_voice/speech_rate/chatgpt/credential/research_*` 任一字节都不因调兴趣而变化。 |
+| 柔性排序 | 稳定软权重 多讲 > 正常 > 少讲，只重排**已经通过**区域、审批、Fact/Visitor Gate、版权、Claim 修订、可信定位、本趟已播与节奏等既有资格的候选；全正常时结果与旧行为逐字一致。少讲不禁讲，多讲不得让候选/未过门禁内容入场，`stories.count(main) <= 1` 数据门禁保留。 |
+| 解耦范围 | 偏好只作用于**自动讲述**候选次序。探索阅读、手动点播、原文重播以及用户明确说出的「再讲一点/这里有什么」不按自动选题偏好重排；旧 `TopicFamily` 未映射到六类。 |
+| 内容真实数量 | 标准包与本版 runtimecheck 仍 **新都区1县/6对象/22基础事实/6来源，正式完整故事0**。杨慎两篇 `candidate / fact_gate=passed / visitor_gate=pending` 的正文、Claim、approval、manifest 与标准资产逐字节未改；`--require-playable` 仍如实 BLOCKED，`--acceptance-candidate` 缺独立输出目录仍被拒。设置页显示“当前没有已通过审核门禁的完整故事”。 |
+
+## 工程结果（本版真实重跑，不沿用旧计数）
+
+- **Debug 511 + Release 498 = 1009 项，0 失败 / 0 错误 / 0 跳过**（77/75 个套件，逐套计数与用例名见 [工程证据](docs/evidence/v052-verification.json)）。旧 code18 的 965 项只是历史，未计入本版。
+- 新增 22 项专项：六类×三档默认值、重启持久化、非法值回退、code18 旧设置无新键迁移、改一类不动另五类、`settings.xml` 逐字节与 20 份**合成**纪要前后哈希一致、未启动 Journey／未改定位／已播与调度计数不变、云调用为 0、排序只在合格候选内生效、已播不重播、越区静默、候选稿件不因“多讲历史”而可播。多类别竞争一律用**纯内存 TEST_ONLY 夹具**，未写入源码资产或 APK。
+- 六组确定性/Fake 模拟 PASS（成都新都→安州雎水 29 点粗粒度轨迹，Fake Provider/fake Voice，生产 Context/Journey/Director）；`driving-area-resolution` 四项节流区间记录一致。Python 内容门禁 7 项 OK 且标准 `--check` 为 STRUCTURE PASS／0 篇合格叙事。`assembleDebug/Release`、`lintDebug/Release`（6 warnings、0 error）与 runtimecheck 独立构建均成功。
+- 原签名回归 **2 接受 + 6 拒绝 PASS**；标准包与 runtimecheck 证书 SHA256 仍为 `3139a293…9502ba`。
+- 本地候选（**不入 Git，仅本机**）：`artifacts/kitt-v0.5.2-runtimecheck.apk`，`com.kitt.reader.runtimecheck` **code19 / 0.5.2**，74444882 字节，SHA256 `3af6f91a0aba318d4be58d53f0d15c7eef25632a14f2ae7caf98ecf6e08b2a4b`；标准 `kitt-v0.5.2-debug.apk` 74444866 字节 `c5e0aacccb5ff792922745c034c9ec746706362838865627a0822b09274641bf`、`kitt-v0.5.2-release.apk` 70773822 字节 `ef4fd86b4d8e42359c3ed160e656cf3b913367dea9cf0a32338c8d516d3b4256`。
+- **code18→code19 仅静态兼容**：同包名、同证书、versionCode 单调 18→19，故原位升级在签名层面被允许。本机没有 code18 APK 文件，基线一侧沿用已记录的`docs/evidence/v051-verification.json`手机回读哈希；**本轮未安装、未访问手机**。
+
+## Provider/模型配置与密钥
+
+本版全部功能不依赖任何密钥或登录：兴趣偏好与排序纯本地。应用内 `SettingsStore` 默认仍是 `FAKE / gpt-4.1-mini`，未改动读取/保存逻辑；真机现装 code18 的实际账号配置以 [V0.5.1 只读核查](docs/evidence/v051-current-settings-readonly.md) 为准，本轮没有再次读取。用户无需为本版执行任何 OAuth 或密钥步骤。
+
+## 来源双模式（离线优先／即时优先）：**DEFERRED，未实现**
+
+按任务卡的停止门槛核查后判定为超出版本边界，理由全部有源码依据：
+
+1. [KittRuntime.kt:93](app/src/main/java/com/kitt/reader/KittRuntime.kt#L93) 把 `preferOffline` 硬绑为 `{ !simulation }`，即真机自动讲述**当前总是本地**；改成两档开关会把自动主链放到真实云/账号/网络路径上，而该行为只能靠活账号联网与真机才能验收，本轮两者均未获授权。
+2. [DirectorLoop.kt:81](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L81) 之后，自动分支的云失败只会 `deliver(null)` 静默记 `FAILURE`（[DirectorLoop.kt:177](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L177)），**没有“有界退回已审本地故事”的实现**；补这段退回属于任务卡明确排除的“失败重试调度/大重构”。
+3. `!preferOffline()` 还会在连通与进入新区域章节时启动后台 `research.enter(...)`（[DirectorLoop.kt:49](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L49)、[:62](app/src/main/java/com/kitt/reader/DirectorLoop.kt#L62)），触及研究/缓存框架的云上行为，不在本版边界内。
+
+因此本版**没有做只有 UI 的假开关**，也没有声称测试过即时优先的真实网络行为；建议另立独立小版本（V0.5.3 或既定 V0.7.x）专门施工与验收。
+
+## 已知限制与保留的 PENDING
+
+- 「用户现在就能听到六类正式故事」不成立；**正式多类内容真机播报确实受偏好影响**仍 PENDING，本版只交付可靠保存 + 已接入的可复用排序基础设施。
+- Compose/Robolectric 的 411×914、914×411、1280×800、320×568+1.5 倍字体检查是合成布局证据，**不是 vivo X200 Pro / Samsung Tab S9 真实屏幕与触控**；侧滑手势、真机大字号与真实 TTS 耳听仍 PENDING。
+- code18 的 `settings.xml` 整体字节漂移根因仍是 `UNKNOWN / INSUFFICIENT_BASELINE`；本版只做“新写入隔离在独立文件”的防扩散设计，没有试图修复或重新解释它。账号在线有效性仍未单独验证。
+- [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27)、[#30](https://github.com/shimao1115/KITT/issues/30) 的原 OPEN/PENDING 状态未变；PR [#29](https://github.com/shimao1115/KITT/pull/29) 县级采集分支未触碰；V0.6.x、车机、实时导航未启动。
+
+## 用户下一次最短总验收
+
+1. 审 [Draft PR #35](https://github.com/shimao1115/KITT/pull/35) 代码、[工程证据](docs/evidence/v052-verification.json) 与 [验收说明](docs/ACCEPTANCE_STORY_INTERESTS.md)，核对上面 code19 候选的包名、版本、大小与 SHA256。
+2. 若同意升级，**另行明确授权**一次同签名原位升级；本文与验收说明都不构成安装许可。
+3. 升级后先看设置页：六类都在且初值全是「正常」，账号/Provider/模型/音色/语速与升级前相同；只改历史与人物=多讲、交通与工程=少讲并点「保存讲述兴趣」，退出重进确认仍在、其余四类未变，20 份纪要原样。
+4. 新都区旅程可正常跑且不出现异常讲述；**不应据此声称“偏好已让我多听某类正式故事”**，因为正式故事仍是 0。
+
+**完成工程交付即 STOP。** 等待用户工程验收；代码合并、真机升级、故事正式发布是三件需分别明确授权的事，本轮未执行其中任何一件。
+
+最近 milestone commits：`d9d9b41` feat 六类兴趣柔性排序（V0.5.2/code19）← `c2bf1f2` docs 归一化 Agent 说明头部 ← `f966908` docs 界定 V0.5.2 code19 任务卡 ← `9319c27` Merge PR #31（V0.5.1/code18，main）。
+
+---
+
 # 2026-10-16 最终阶段验收与合并交接：工程/探索 UI 接受，设置漂移根因 UNKNOWN
 
 **用户已接受 V0.5.1/code18 工程及探索 UI 阶段，并明确批准文档同步及 PR #31 正式合并至 main。** [人工反馈](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212597341)：用户“我没有发现什么问题，都是正常的”，记 **HUMAN_UI_ACCEPTANCE=PASS**；[最终合并授权](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212644800)及最新[TASK_CARD](TASK_CARD.md)覆盖下方旧 Draft/HOLD/禁止合并文字的工程合并限制。实际合并状态及 merge SHA 以[PR #31记录](https://github.com/shimao1115/KITT/pull/31)为准，不把人工体验改写成账号、故事或外场全链PASS。
