@@ -1,0 +1,1515 @@
+{
+  "date": "2026-10-15",
+  "version": "0.5.0",
+  "version_code": 17,
+  "status": "ACCEPTANCE_CANDIDATE_ENGINEERING_PASS_FORMAL_RELEASE_BLOCKED",
+  "implementation_commit": "87e41d1",
+  "regression_started_at": "2026-10-15T16:24:51.836926+08:00",
+  "completed_at": "2026-10-15T09:05:06.643281+00:00",
+  "variants": {
+    "Debug": {
+      "tests": 466,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.kitt.reader.ActiveResearchTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:31:26",
+          "report_sha256": "a2fa34358593912e1068469d0d746ac6cb1ec97583f06ef64041e1847ecdff88"
+        },
+        {
+          "name": "com.kitt.reader.AndroidAreaResolverTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:31:32",
+          "report_sha256": "467f52cfcb12f883803e70162426f942d950a20903b4d62abc8082180913c813"
+        },
+        {
+          "name": "com.kitt.reader.AndroidLifecycleTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:32:18",
+          "report_sha256": "bb6f42d86e7191fcc1306f4bc36f2232daeabc8a960a1efdc76a22c362d349c8"
+        },
+        {
+          "name": "com.kitt.reader.AndroidVoiceExperienceTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:32:56",
+          "report_sha256": "433a8625fdc15fbacaa5e4d7d1220f2f45ea4964d7e3eead62130ec5928129ca"
+        },
+        {
+          "name": "com.kitt.reader.AreaChapterTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:33:25",
+          "report_sha256": "ebcda5583139944f74090cf098e77fb6dfbeda8adbd0d9d41720dce0fe5c5a0c"
+        },
+        {
+          "name": "com.kitt.reader.AreaResolutionCacheTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:33:28",
+          "report_sha256": "8f5165b435fdb8b49cbbb1845ea62b5e14c63e1a7a664cfac492824dadee4d19"
+        },
+        {
+          "name": "com.kitt.reader.BatchSimulationTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:33:30",
+          "report_sha256": "483279543ac5002483217d10df82e55664668b9bacb81d19d230a2cba1568290"
+        },
+        {
+          "name": "com.kitt.reader.BootstrapTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:33:33",
+          "report_sha256": "34b991710e94bb153b4974d53a2d3b70e98b69e126c436223986bfbb142b1c5b"
+        },
+        {
+          "name": "com.kitt.reader.ChapterOpportunityTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:33:34",
+          "report_sha256": "e238c81e4742da640db94960e06194f5669d6a6082994bfb36bae71fcb44c8eb"
+        },
+        {
+          "name": "com.kitt.reader.ChatGptAccountTest",
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:33:39",
+          "report_sha256": "2803e7fde1ee79ba91efabfaca1219d2e52ab6e772059801ea8f86feb4d0d456"
+        },
+        {
+          "name": "com.kitt.reader.ChatGptImagePayloadTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:34:03",
+          "report_sha256": "8695434d8f75f10bb28bf11eca597036e1768da6160393d34162133cb750ca48"
+        },
+        {
+          "name": "com.kitt.reader.ChatGptProtocolTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:34:15",
+          "report_sha256": "b147fb3c9501ab5a934f39061dda5ac4b7f47873a4515a0108177d821b3c2e75"
+        },
+        {
+          "name": "com.kitt.reader.ContextTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:34:18",
+          "report_sha256": "09a8bf2792ea939954996a264c1adf64068e295979422ae6a6b869bd02af5608"
+        },
+        {
+          "name": "com.kitt.reader.DirectorLoopTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:34:21",
+          "report_sha256": "43f85f2f4917ab9b746ab96839395ed79b56e515f1f4f55e877258f5404dfded"
+        },
+        {
+          "name": "com.kitt.reader.DossierSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:34:25",
+          "report_sha256": "5696d6245ed3a405dd83d51a216f972d7990299fb39ddabefbeeb67ae9071636"
+        },
+        {
+          "name": "com.kitt.reader.DrivingAreaResolutionTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:34:29",
+          "report_sha256": "d4a7c8086246aa80dc2227d26cf7a05d1a74baa1265b21dbf31d3320467369c7"
+        },
+        {
+          "name": "com.kitt.reader.DrivingUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:34:33",
+          "report_sha256": "f67a4332b549a20e98ad3e00ba2e41bcd5699f7e3c90c02a25a5ac90e436ca86"
+        },
+        {
+          "name": "com.kitt.reader.EditorialFreedomTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:35:02",
+          "report_sha256": "b51ea8114eec02bd565650f8da7b2dd4e2d89c9f4eed08fa13d1c545aa1986f8"
+        },
+        {
+          "name": "com.kitt.reader.EndUiTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:35:04",
+          "report_sha256": "22d72a302919977498d630165d3ff5776d24db9bcc6b055855b043adf937cc9a"
+        },
+        {
+          "name": "com.kitt.reader.FullSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:35:22",
+          "report_sha256": "e9b28ddcc9dd675f33ad350b65d903da2f75106436f9c2c62f8c0440ebce01fe"
+        },
+        {
+          "name": "com.kitt.reader.FusedLocationTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:35:24",
+          "report_sha256": "3a15c4c62e9fee6a69089302a2e90dc713568d710916e2d68cfe9cb59fa0bc75"
+        },
+        {
+          "name": "com.kitt.reader.ImageBoundaryTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:35:27",
+          "report_sha256": "f0225614924008019f3cd26a95bc5b422c60466e5cc319d295db96c5a13c5e90"
+        },
+        {
+          "name": "com.kitt.reader.JourneyTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:35:42",
+          "report_sha256": "a363d6eb9a4ee3e79a588059ea0a8a556598f2c2d14226aad50207922da2022e"
+        },
+        {
+          "name": "com.kitt.reader.KittPolishLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:35:45",
+          "report_sha256": "d4f3ca079b46e4edb1787bd9cfe90482d44c8aae71587ad618a76928c25d3c79"
+        },
+        {
+          "name": "com.kitt.reader.KittPolishPortraitTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:36:06",
+          "report_sha256": "0fb09ee31619f59300cf91c0c07887ae4e537978c4596ed162d21fc3ca293703"
+        },
+        {
+          "name": "com.kitt.reader.LandmarkProximityTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:36:24",
+          "report_sha256": "90ecf256b3043b2b6f5e35df58e79f090b4b11962c346315f35b9288c7f9cfb8"
+        },
+        {
+          "name": "com.kitt.reader.LandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:36:27",
+          "report_sha256": "d304fbe9b2c7f860b2b4d661ad832532576c806d8f5dbc7cf33e77e634ba6267"
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstHotfixTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:36:43",
+          "report_sha256": "a23877fa8020a41fa83fc4a54d39b0dd34a35fcd6be8f2d95952ca3fb9047594"
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstRuntimeTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:36:48",
+          "report_sha256": "99936b4883df91b0d8e0c4fccaa7462a1e2af4590ea9d9536cc45e72783895be"
+        },
+        {
+          "name": "com.kitt.reader.LocalResearchTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:36:58",
+          "report_sha256": "dbb36f6d2c5d481b5898adb9724772c1c2d3333dd98c512790b3cfe48a17fd6f"
+        },
+        {
+          "name": "com.kitt.reader.LocationCompatibilityTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:37:00",
+          "report_sha256": "1e8502f51edf03d7053f847d7442f24534b32c7377fee536c25bc39799e36551"
+        },
+        {
+          "name": "com.kitt.reader.LocationFallbackTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:37:21",
+          "report_sha256": "334ef49ac60d2430fd0349ad86084a2afce445f67eada6b5c0311aadb4570f53"
+        },
+        {
+          "name": "com.kitt.reader.NarrationLoopTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:37:24",
+          "report_sha256": "fab53d5d47ffe20b96a618313ca22c11f6223f06651dce98c761aa732db39797"
+        },
+        {
+          "name": "com.kitt.reader.NarrationMemoryTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:37:26",
+          "report_sha256": "bec4e1c0de4b566281c135625fbbfd8640697bb2f9f78516d5f60cfe7e951296"
+        },
+        {
+          "name": "com.kitt.reader.NetworkStatusTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:37:29",
+          "report_sha256": "5b0771490cfc29ab344960aa93f4a7b4a7413d4be520fd0a6c46d66335e98355"
+        },
+        {
+          "name": "com.kitt.reader.OfflineLocationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:37:45",
+          "report_sha256": "7d250dfa3693288f3818032ef90e69a9b2fd776799d93db3c53ac5d834659310"
+        },
+        {
+          "name": "com.kitt.reader.OfflinePackTest",
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:37:58",
+          "report_sha256": "3fed76a77448456eb9779db7df24c4cb09144445cfae0fb9925bf17372225883"
+        },
+        {
+          "name": "com.kitt.reader.OfflineVoiceTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:38:02",
+          "report_sha256": "54dab0ef383c97a6ca1ae823bb83cd0dec48ededf30cbf9b073735c00bbcd2e9"
+        },
+        {
+          "name": "com.kitt.reader.PersistenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:38:13",
+          "report_sha256": "322788727c6d471f2d70b51277a3a3284c9a0af147bcc3ee24e29dd036235055"
+        },
+        {
+          "name": "com.kitt.reader.ProviderTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:38:28",
+          "report_sha256": "7ef6fc2e82d610fe770c64f12bd14067a4284a68dd12d8339bf7ae3564976746"
+        },
+        {
+          "name": "com.kitt.reader.QuietCountdownTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:38:31",
+          "report_sha256": "5aea14e50f5b71c1443209051b544dbc8213655bc7f9d0b32dbf9d339395fbe7"
+        },
+        {
+          "name": "com.kitt.reader.RealAreaContinuityTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:38:54",
+          "report_sha256": "96ec117f7242ebedef3ea2fd7f453a5705ada28f91aee9fcee7f7e687765bce1"
+        },
+        {
+          "name": "com.kitt.reader.RealLocationSourceTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:39:10",
+          "report_sha256": "40279e69ea3d3f74b5609afe272c7e0f67043233820177e5b8b0e1371ecd7c67"
+        },
+        {
+          "name": "com.kitt.reader.RecognizerBackendTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:39:22",
+          "report_sha256": "0e07ccb23ab2d54477f5dc4464fd9c499893b12596689650d3b39bd988e9af2e"
+        },
+        {
+          "name": "com.kitt.reader.ReplyExchangeTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:39:33",
+          "report_sha256": "9df5fcd59f28e8570ba0bb8ea4e77a01884af91fbb272d1f9315f798139c6e78"
+        },
+        {
+          "name": "com.kitt.reader.ReplySurfaceUiTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:39:35",
+          "report_sha256": "8bf41c7f8db6bb1fc1576c375e86c7e3fd2c4661ef87b7f5c40417ca89616504"
+        },
+        {
+          "name": "com.kitt.reader.ResearchEvidenceStoreTest",
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:40:36",
+          "report_sha256": "7b427e46f843b383c3d40a26d5af8934d891479f35c295f0703a1f86c96afc9e"
+        },
+        {
+          "name": "com.kitt.reader.ResearchSocketCancellationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:40:41",
+          "report_sha256": "103691cc513de0de8ee3f35814ef3c7916088c92a97473fdc936bcddf60d8f8d"
+        },
+        {
+          "name": "com.kitt.reader.ResearchTransportProbeTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:40:43",
+          "report_sha256": "bd3d7f36bfd433e7a1c33d5178fc79f6eef9362a016a762be9f17f255713dfa5"
+        },
+        {
+          "name": "com.kitt.reader.RouteReferenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:40:45",
+          "report_sha256": "6be1d22ec831a820171979c5a34999b338ae3e441e2ac0a0c1a59770f7929658"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:40:48",
+          "report_sha256": "e8ab7750d234f8e743ad38c448084d4cc5a84c7eeef89f7bb630cfd3ddc7636e"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:41:15",
+          "report_sha256": "849ed2964a1b6be1621c282c1450330f740e85af52cff9ee9179de2775587928"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:41:32",
+          "report_sha256": "a7afe1467dc883eccc5a221b78395f3e100df9871bba3f73d022410c4464e823"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:41:45",
+          "report_sha256": "f0946dbfd0d5f07108bdfad9856014ecf44ba531842fb9ff5137f5d8f81fd2e4"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeVoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:41:48",
+          "report_sha256": "5b354f8bcf2b151f612726c78b904792d47414d549c000dbaf4211b8c0850b65"
+        },
+        {
+          "name": "com.kitt.reader.SearchCapabilityProbeTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:41:54",
+          "report_sha256": "5aa5b206fb8e471b962182acff4d1155d5766216818e688f2478c93a332f17d3"
+        },
+        {
+          "name": "com.kitt.reader.SettingsBackTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:41:56",
+          "report_sha256": "fcbe525298b9d1564ec98ea6777893787ccc54bca8bfd0f67103db7cb271ce7e"
+        },
+        {
+          "name": "com.kitt.reader.SettingsTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:13",
+          "report_sha256": "224ece191f269272087adcb45a08c57cdd322d6c553c94a6939603efcd2e77c2"
+        },
+        {
+          "name": "com.kitt.reader.SimulationCadenceTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:22",
+          "report_sha256": "413a8d7301dcb749083ddf40c69d95dafdf9df50ea2f142ccc35b42206a5103e"
+        },
+        {
+          "name": "com.kitt.reader.SimulationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:26",
+          "report_sha256": "36b8583fc7dc29c74aa2524201171992399117be0a3e8874fa0e80573c6b6a77"
+        },
+        {
+          "name": "com.kitt.reader.SourceIsolationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:28",
+          "report_sha256": "ad9d54597f83bf8257925e62d71818f8456e9c740c68a8937a6b4f8d5f91e953"
+        },
+        {
+          "name": "com.kitt.reader.StagedResearchTest",
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:40",
+          "report_sha256": "efadda9dc79117268f8d1e6d86cb215be3a05a528352b07857cb9e5a615c2ded"
+        },
+        {
+          "name": "com.kitt.reader.StoryPacksTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:42",
+          "report_sha256": "d7c821cb619e70780777e87e2d5188731263559c550d5a1716df63203e5e59e0"
+        },
+        {
+          "name": "com.kitt.reader.TotalSilenceHotfixTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:45",
+          "report_sha256": "56422e49131e45bd27b2cdbe9a2e9f62d614743c7b023ef6de34d255377c159d"
+        },
+        {
+          "name": "com.kitt.reader.VisualTalkTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:48",
+          "report_sha256": "7d4235b61e0ddbae7a7d039434f4287838923dcb6c7deec11c833503bcaaeb29"
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:42:50",
+          "report_sha256": "39d9a669044b254128f2de8d3f281d12970070678c22f867429a9a1ee860678a"
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:43:16",
+          "report_sha256": "ea94bb1d1322482c55db2a90eeaa5e5c3750a81cf9a2e784847acf82043ffa79"
+        },
+        {
+          "name": "com.kitt.reader.VoiceOutcomeTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:43:36",
+          "report_sha256": "78ad4595b71d7698716846b7351eb9f07ac65c75616c4a608c60c4d990a8164a"
+        },
+        {
+          "name": "com.kitt.reader.VoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:43:39",
+          "report_sha256": "2cca3b4849f989b74e31c84e4dd66b126726c1016107175482af85c4fb4e8923"
+        }
+      ]
+    },
+    "Release": {
+      "tests": 453,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.kitt.reader.ActiveResearchTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:43:50",
+          "report_sha256": "2dc37d2c9a72980b524e1740c3b50551f90b7cd518960af271cd4d8060a67bfa"
+        },
+        {
+          "name": "com.kitt.reader.AndroidAreaResolverTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:43:53",
+          "report_sha256": "11fe5111e42701c41d63fc2cec8926c5d512e95f4585fb3c6f07f16be522b1d2"
+        },
+        {
+          "name": "com.kitt.reader.AndroidLifecycleTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:04",
+          "report_sha256": "fb8b67373048c6f227ef0a0c62c53b695c811f2e01c780e549a30965ef423ad6"
+        },
+        {
+          "name": "com.kitt.reader.AndroidVoiceExperienceTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:19",
+          "report_sha256": "c9015143e83a12f96c278f1bd417a70e97e9517ad8f38f657ceb7045aa7dff4c"
+        },
+        {
+          "name": "com.kitt.reader.AreaChapterTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:30",
+          "report_sha256": "8c92232c9c098811009b76326164245ad460e27a4453ef16fad7faeb2e43b495"
+        },
+        {
+          "name": "com.kitt.reader.AreaResolutionCacheTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:32",
+          "report_sha256": "8cdc6519db1337d881d0664f83d3e8b5c4fd1f3e2afc159f06a17afb79393a6f"
+        },
+        {
+          "name": "com.kitt.reader.BatchSimulationTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:34",
+          "report_sha256": "3e4bc7e6e932d1b2afd8d8e038817f0c6526fa98b728c658fd8d18929c4caaf8"
+        },
+        {
+          "name": "com.kitt.reader.BootstrapTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:37",
+          "report_sha256": "141d0a04d61333e9ddbeda5773094e1ddb17bab941652e3ee878d1584db9d3dc"
+        },
+        {
+          "name": "com.kitt.reader.ChapterOpportunityTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:39",
+          "report_sha256": "51706113fe314b403fc0c40e70f4205f1edbc86f9ad76ccc06b590246d6e2e62"
+        },
+        {
+          "name": "com.kitt.reader.ChatGptAccountTest",
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:41",
+          "report_sha256": "0589b910124f9569ab092ab29695ef347da332a077556018d7acdfe4d81bf024"
+        },
+        {
+          "name": "com.kitt.reader.ChatGptImagePayloadTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:50",
+          "report_sha256": "c2da094ec5aa0f332f744041b2120988cc1f8c1c82345954b656463e16945b22"
+        },
+        {
+          "name": "com.kitt.reader.ChatGptProtocolTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:44:59",
+          "report_sha256": "5d14e9468c3daf90595a2cde8b5ce74094b3e9f67818e82bff62215a3b99d79d"
+        },
+        {
+          "name": "com.kitt.reader.ContextTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:01",
+          "report_sha256": "d5ec4565779560a9823431a9dfc5a8f2c9c2c51c1bd70e8dd008f1da62f02ee8"
+        },
+        {
+          "name": "com.kitt.reader.DirectorLoopTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:03",
+          "report_sha256": "55bcaba649d92639c61afee5292a424d0c3ed33a18c0763bf0d805273388b023"
+        },
+        {
+          "name": "com.kitt.reader.DossierSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:05",
+          "report_sha256": "706873e6baa72e3d91ff0852497687ba4d0d946fe1cced5420e6c3526a5b9a7e"
+        },
+        {
+          "name": "com.kitt.reader.DrivingAreaResolutionTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:08",
+          "report_sha256": "e7ee8bf414e8986d0125e7cc5f91d24fb5ac76f2bcebb01061801f978e7396ba"
+        },
+        {
+          "name": "com.kitt.reader.DrivingUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:10",
+          "report_sha256": "a5f581622e55f0c452b3b9e032943ebfaeedba68786a1f68af612eb143492003"
+        },
+        {
+          "name": "com.kitt.reader.EditorialFreedomTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:27",
+          "report_sha256": "d6c247867dca3de451aa52f3edd1ab0e9109fa707ec7f341d4ceae9c540d372b"
+        },
+        {
+          "name": "com.kitt.reader.EndUiTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:29",
+          "report_sha256": "846af7dc1aca11fa3f3252e023dad019f43f8845e62058501a31a9a5c988d108"
+        },
+        {
+          "name": "com.kitt.reader.FullSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:46",
+          "report_sha256": "55a75cf364238d97a141d10537b6bd43d03d1f1a733d87f5873ee69514ec6f96"
+        },
+        {
+          "name": "com.kitt.reader.FusedLocationTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:48",
+          "report_sha256": "5b85d1de08696d173de5a317e58cd2bcadd69c164252b4403dbd73c13a0a0bf9"
+        },
+        {
+          "name": "com.kitt.reader.ImageBoundaryTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:50",
+          "report_sha256": "bb3ef73d04948af612c98c17949d6de7e1d46d35d8e3d3d42a4af0469c1fc395"
+        },
+        {
+          "name": "com.kitt.reader.JourneyTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:45:59",
+          "report_sha256": "57ae3517a679f853a887421594e79627def3e2a0f4b9b6295d8d9b2df167c597"
+        },
+        {
+          "name": "com.kitt.reader.KittPolishLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:46:01",
+          "report_sha256": "69e1b9e925f17f7a7cb5d6542a3b153d5de1fa99a192c5094e5c815a80ff0f87"
+        },
+        {
+          "name": "com.kitt.reader.KittPolishPortraitTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:46:15",
+          "report_sha256": "d7c7fc0b5d61c5490594cda61746fe5751aca3ff62aa735460dc7f7227f41fbf"
+        },
+        {
+          "name": "com.kitt.reader.LandmarkProximityTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:46:31",
+          "report_sha256": "4a744c5f2f40a2e313baa6b0e08dd3d7093011e47111a5052f525fa7bb27fc5a"
+        },
+        {
+          "name": "com.kitt.reader.LandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:46:34",
+          "report_sha256": "ffde7a28ac90825994aa8fdd90bfc46899a2f033c33b957ba0a39cb5d100fb3a"
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstHotfixTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:46:48",
+          "report_sha256": "855d06a13ad08139ca6399b191d4287b53eb20d01345965f9bf2b5e8d7732120"
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstRuntimeTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:46:51",
+          "report_sha256": "57eb782f7c26c41d8914df69441b10ef7e25fea45a7a77d03c1d47e42166f867"
+        },
+        {
+          "name": "com.kitt.reader.LocalResearchTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:01",
+          "report_sha256": "8b515f21852c45e19b406d5167c8cea0ab8fe8611a35b30d90c210c74a5fbc33"
+        },
+        {
+          "name": "com.kitt.reader.LocationCompatibilityTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:03",
+          "report_sha256": "3b6166064bb9db1a580719179eb69228d1139b50d7b691b411077384b5f928d2"
+        },
+        {
+          "name": "com.kitt.reader.LocationFallbackTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:21",
+          "report_sha256": "d738cbf2c292da8b30578ac6a2eadae4dddc89b10dca5754c4d4f3849f7c7ebf"
+        },
+        {
+          "name": "com.kitt.reader.NarrationLoopTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:23",
+          "report_sha256": "0089346efe0714fb04da0c3d665b8547a657ab30d318e6a455f9c2826b6f42e4"
+        },
+        {
+          "name": "com.kitt.reader.NarrationMemoryTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:25",
+          "report_sha256": "d653c7d48cb6ba82d3173265697fda30de8ef66561dbbd17751464eb766593fb"
+        },
+        {
+          "name": "com.kitt.reader.NetworkStatusTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:26",
+          "report_sha256": "f476d374946a131e1194b23241cbc53f29bc66fa29f1c7e58db24b6ffcbcfc71"
+        },
+        {
+          "name": "com.kitt.reader.OfflineLocationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:36",
+          "report_sha256": "bce86d7ff90b07297198a9eb44f1b99ded66e8ac711af11e995b7475ccc2c6dd"
+        },
+        {
+          "name": "com.kitt.reader.OfflinePackTest",
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:43",
+          "report_sha256": "3712e698ee8f88e2c3668c95ccaa4b65ac3c43a45fc046440d2767a86a2f9fbb"
+        },
+        {
+          "name": "com.kitt.reader.OfflineVoiceTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:46",
+          "report_sha256": "e76f9b280b4404506d70b201d0b66e88a563a87fb0713a675c34f394eac6777a"
+        },
+        {
+          "name": "com.kitt.reader.PersistenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:47:53",
+          "report_sha256": "6f9bb3ae96cc1860572b228234e809c87f8c292f6b0653dd408d81faaf60f61e"
+        },
+        {
+          "name": "com.kitt.reader.ProviderTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:48:01",
+          "report_sha256": "eafbf5d3a9ab0138b86bebe25c4e745d889e9c19ab79596c872b92b3a6ef1fb5"
+        },
+        {
+          "name": "com.kitt.reader.QuietCountdownTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:48:02",
+          "report_sha256": "a6f41ca30b5e39359e5ec28dfe384d74eaa30ffb1e132ea4403d1d5cd6f18c66"
+        },
+        {
+          "name": "com.kitt.reader.RealAreaContinuityTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:48:17",
+          "report_sha256": "2516757814b3291903b3c3a3b731a2238e94cbba9f3203eeb94e555fb0771a34"
+        },
+        {
+          "name": "com.kitt.reader.RealLocationSourceTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:48:25",
+          "report_sha256": "75da2f6336dce36522aeebef4dc4420d09b68f9652139796f6de2b457a9288eb"
+        },
+        {
+          "name": "com.kitt.reader.RecognizerBackendTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:48:36",
+          "report_sha256": "f33f8f619497839e6c6286baa171f24921b0fbb1e737c9214a4ff3fc5ad0fe2f"
+        },
+        {
+          "name": "com.kitt.reader.ReplyExchangeTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:48:46",
+          "report_sha256": "04eeebc0eb06a83518662dfdf2f11f54c13113d591b7f02bd8017010b37b0fbd"
+        },
+        {
+          "name": "com.kitt.reader.ReplySurfaceUiTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:48:47",
+          "report_sha256": "7f213621e6e5b45ad4ee5ab37f10759a674720db4f62fad6aa75b46ec2b51caa"
+        },
+        {
+          "name": "com.kitt.reader.ResearchEvidenceStoreTest",
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:04",
+          "report_sha256": "6259f5805c77c286e60a8f306eb8af4560952efead8c9948d14f6f5752ab5a9e"
+        },
+        {
+          "name": "com.kitt.reader.ResearchSocketCancellationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:07",
+          "report_sha256": "f5d000ce1ea044d32e6802511e36db180ea5e4a1befa6281236284d2722793d8"
+        },
+        {
+          "name": "com.kitt.reader.RouteReferenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:09",
+          "report_sha256": "6e76104b96adff2a44ae39ab62bc24c571a1e9dc5204cfcca873619a9edae5f4"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:12",
+          "report_sha256": "1bb47b1ecaa62addd7a3ff9e12e941e535d0ebe19fb950c16dbc80a65cbf9021"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:25",
+          "report_sha256": "719fc33c32fd09ed4e0dfcb97992692bce1a2157a3ddb4a17b98b27480f5243e"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:40",
+          "report_sha256": "85c17b8d48dd30f3933667be81154a548e2a14c9ca8e9bd340f2475d12c1206e"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:52",
+          "report_sha256": "cc5b551f93c19b342492b4e555eddfac977436c6f434092c500488acd7435748"
+        },
+        {
+          "name": "com.kitt.reader.RuntimeVoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:49:54",
+          "report_sha256": "77fe7b1d89dd938d2a7709290fcb10344d239b9d132688983cdc2bddb92e26c3"
+        },
+        {
+          "name": "com.kitt.reader.SettingsBackTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:00",
+          "report_sha256": "049196cac7b7f8ebcb183dce3f948b0e2c4f66e35ffc171370f59f2d4b48f0fe"
+        },
+        {
+          "name": "com.kitt.reader.SettingsTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:15",
+          "report_sha256": "83cc434f19bec2f930c976f68f6c35cbca4172409e15b6a81b926c70062e4fa9"
+        },
+        {
+          "name": "com.kitt.reader.SimulationCadenceTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:21",
+          "report_sha256": "6a506123e9c87cc31ecf1da59d71c29db881472319b8caa4ac079a27146084e6"
+        },
+        {
+          "name": "com.kitt.reader.SimulationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:23",
+          "report_sha256": "73f36faa4942012fd9b81b69d553c45ddfd0e0f6356f9fb58b26e011785317e0"
+        },
+        {
+          "name": "com.kitt.reader.SourceIsolationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:25",
+          "report_sha256": "c5ce3b244aa7e359293f0b9418cfdf1c83068e963507132dc6fd1f1cbfae6892"
+        },
+        {
+          "name": "com.kitt.reader.StagedResearchTest",
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:35",
+          "report_sha256": "22d68e5d1d3464a1b466b192ab736a35692dff58f8f286773f194f76dcc3659f"
+        },
+        {
+          "name": "com.kitt.reader.StoryPacksTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:36",
+          "report_sha256": "b249635435717bcfea0f8cfdf2403cae053b325a7a2644b367a6f23117099ac7"
+        },
+        {
+          "name": "com.kitt.reader.TotalSilenceHotfixTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:40",
+          "report_sha256": "1d9c4a3a00148fc8f078d13f111c273715278867d6d416e9120c11a2f9d06e07"
+        },
+        {
+          "name": "com.kitt.reader.VisualTalkTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:42",
+          "report_sha256": "8fb4ee3489706b6974e59a9aa5e76b0a0283829d01b5b04e32a40f979a250853"
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:44",
+          "report_sha256": "1fef931991e64b8064eed9bf9d9f52b4d049af0d3d754a59533281eeba6763eb"
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:50:56",
+          "report_sha256": "f272d4b58c103b99ef857c9eb173ad6a51fb2d656f5d3a2adfdb0f3054ac6bbb"
+        },
+        {
+          "name": "com.kitt.reader.VoiceOutcomeTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:51:09",
+          "report_sha256": "860db20c530dd29cb7195df60d4b926ce29b115121cdba04777ec18547d5de26"
+        },
+        {
+          "name": "com.kitt.reader.VoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "timestamp": "2026-10-15T08:51:10",
+          "report_sha256": "4cf85163299c92c258ba988348626a97c6a6a039bcbc03546a70b01f12aee7c8"
+        }
+      ]
+    }
+  },
+  "total_tests": 919,
+  "python_tests": 7,
+  "content_runs": [
+    {
+      "command": "python scripts/test-story-packs.py",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "output": "STRUCTURE PASS: 16 claims, 2 eligible narratives; 0 excluded; acceptance_candidate=True. Not a historical/human review.\nSTRUCTURE PASS: 16 claims, 1 eligible narratives; 1 excluded; acceptance_candidate=False. Not a historical/human review.\nSTRUCTURE PASS: 16 claims, 1 eligible narratives; 1 excluded; acceptance_candidate=False. Not a historical/human review.\nSTRUCTURE PASS: 16 claims, 0 eligible narratives; 2 excluded; acceptance_candidate=False. Not a historical/human review.\nSTRUCTURE PASS: 16 claims, 0 eligible narratives; 2 excluded; acceptance_candidate=False. Not a historical/human review.\nSTRUCTURE PASS: 16 claims, 0 eligible narratives; 2 excluded; acceptance_candidate=False. Not a historical/human review.\n.......\n----------------------------------------------------------------------\nRan 7 tests in 0.874s\n\nOK\n"
+    },
+    {
+      "command": "python scripts/build-story-packs.py --check",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "output": "STRUCTURE PASS: 16 claims, 0 eligible narratives; 2 excluded; acceptance_candidate=False. Not a historical/human review.\n"
+    },
+    {
+      "command": "python scripts/build-story-packs.py --check --require-playable",
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "output": "STRUCTURE PASS: 16 claims, 0 eligible narratives; 2 excluded; acceptance_candidate=False. Not a historical/human review.\nBLOCKED: require an eligible main + followup with new facts. Formal release still requires human listening; acceptance candidates use a separate output directory.\n"
+    },
+    {
+      "command": "python scripts/build-story-packs.py --acceptance-candidate",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "output": "usage: build-story-packs.py [-h] [--check] [--require-playable]\n                            [--acceptance-candidate] [--output-dir OUTPUT_DIR]\nbuild-story-packs.py: error: Acceptance candidates require a separate --output-dir; never overwrite standard assets.\n"
+    }
+  ],
+  "content": {
+    "fact_version": "2026.10.15-review3",
+    "narrative_version": "2026.10.15-candidate2.1",
+    "sources": 11,
+    "claims": 16,
+    "claim_statuses": {
+      "verified": 14,
+      "lead": 1,
+      "rejected": 1
+    },
+    "user_final_text_evidence": "https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143",
+    "reviewer": "Codex source review; existing independent assistant reread in PR #28 comment 6187551774; no human historian/listening approval claimed",
+    "local_pdf_reread": {
+      "sha256": "0fb25bd39fdfebf11c4b3c2e49fdf425d90ea31a317e7b6487195aa35d4f1e0d",
+      "pages": [
+        1,
+        6
+      ],
+      "printed_page": 164,
+      "remote_download_this_run": false
+    },
+    "supplemental_sources": [
+      {
+        "source_id": "people-2018-versions",
+        "title": "人民网转载文汇报：《经典咏流传》传统文化进行时 听，古诗词在歌唱",
+        "url": "https://media.people.com.cn/n1/2018/0320/c40606-29877094.html",
+        "publication": "2018-03-20；文汇报，王彦",
+        "access_status": "read",
+        "rights": "现代文章保留版权；只自行概括基本事实，不转载原文、图片或页面",
+        "limitation": "独立新闻评论旁证；只核杨慎弹词说秦汉章首及毛氏评本卷首关系，不认定最早版本或成文时地；HTTPS本机证书主机名不匹配，网页工具502；直接HTTP原文200，GB2312/GBK解码；传输不具HTTPS认证",
+        "accessed_at": "2026-10-15",
+        "evidence_grade": "C_secondary_report",
+        "retrieval_fingerprint": {
+          "raw_sha256": "89493d8e587eea865c570bce3eec9059cf949e80b6f5bbe6d4c7802027885d44",
+          "raw_bytes": 37324,
+          "final_url": "http://media.people.com.cn/n1/2018/0320/c40606-29877094.html",
+          "http_status": 200
+        },
+        "registry_revision": "ba0d629546ef3d5fbb55850a58905cbc090f29d398d0fef892f00b951be1064c"
+      },
+      {
+        "source_id": "people-2017-versions",
+        "title": "人民网转载中国新闻网：《军师联盟》不合史实？你可知三国演义改了多少历史",
+        "url": "https://culture.people.com.cn/n1/2017/0720/c172318-29416428.html",
+        "publication": "2017-07-20；中国新闻网",
+        "access_status": "read",
+        "rights": "现代文章保留版权；只自行概括基本事实，不转载原文、图片或页面",
+        "limitation": "独立报道的版本说明；只核卷首词为毛本增加，不能据此认定全部历史情节；HTTPS本机证书主机名不匹配，网页工具502；直接HTTP原文200，GB2312/GBK解码；传输不具HTTPS认证",
+        "accessed_at": "2026-10-15",
+        "evidence_grade": "C_secondary_report",
+        "retrieval_fingerprint": {
+          "raw_sha256": "e962746b45228c306a1993fa9a5797ed3152fd5a2583fe57388db7d31c2ffaad",
+          "raw_bytes": 37773,
+          "final_url": "http://culture.people.com.cn/n1/2017/0720/c172318-29416428.html",
+          "http_status": 200
+        },
+        "registry_revision": "a7bdd84a63eb974e1eb84fccaba4eac48750dd317c31710759ea58c7e50d888e"
+      }
+    ],
+    "narratives": [
+      {
+        "id": "yangshen-main",
+        "text_sha256": "f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4",
+        "review_status": "candidate",
+        "fact_gate": "passed",
+        "visitor_gate": "pending"
+      },
+      {
+        "id": "yangshen-followup-dianzai",
+        "text_sha256": "559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f",
+        "review_status": "candidate",
+        "fact_gate": "passed",
+        "visitor_gate": "pending"
+      }
+    ],
+    "body_and_original_claim_refs_unchanged": true,
+    "formal_release_gate": "BLOCKED; human listening pending"
+  },
+  "lint": {
+    "standard_debug": {
+      "severities": {
+        "Warning": 2
+      },
+      "report_sha256": "4b4f79fa3a09279bd42b1d4f62c76964a17c85827668ceda4390b12cc60b7e1e"
+    },
+    "standard_release": {
+      "severities": {
+        "Warning": 2
+      },
+      "report_sha256": "4b4f79fa3a09279bd42b1d4f62c76964a17c85827668ceda4390b12cc60b7e1e"
+    },
+    "runtimecheck": {
+      "severities": {
+        "Warning": 2
+      },
+      "report_sha256": "f0f1b644e9ad2893d5d9946b40a0adbce2bdcf17921d091420792f0f0c67b5c9"
+    }
+  },
+  "simulations": [
+    {
+      "file": "app/build/acceptance/full-simulation.txt",
+      "bytes": 710,
+      "sha256": "8569182fe83dd66008502168967396ec916b565d58b7323c60aecb0cd9612538",
+      "summary": "KITT V0 full simulation: PASS (Fake Provider / fake Voice, production Context/Director/Journey)\n            Fixture: 新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）\n            Speed: 80 km/h; distance: 90912 m; simulated duration: 68 min\n            Director calls: 56; TTS outputs: 2; bounded Context Card: 1510 chars\n            START → GPS → SPEAK_NOW (no destination question)\nuser interruption → local intent → one deeper response\nquiet 10min\nquiet expires / early resume\nMianyang → END → lightweight summary\n            Physical audio/recognition/GPS/background and real AI content quality remain manual acceptance boundaries.",
+      "scope": "deterministic/Fake Provider and Voice, not real device or hearing"
+    },
+    {
+      "file": "app/build/acceptance/accelerated-simulation.txt",
+      "bytes": 320,
+      "sha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79",
+      "summary": "M1.3 100 km/h x16, 5s provider latency, 20s TTS: PASS\nopportunities=21 dispatched=22 activeDispatched=1 auto=SILENT:0,SPEAK_NOW:20,PREPARE:0,ASK_USER:1,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:1,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\nVoice outputs=22; distance=90912m",
+      "scope": "deterministic/Fake Provider and Voice, not real device or hearing"
+    },
+    {
+      "file": "app/build/acceptance/batch-simulation.txt",
+      "bytes": 1596,
+      "sha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b",
+      "summary": "Editorial freedom refined route: PASS (deterministic Provider/fake Voice; real Context/Journey/Director)\n新都区→广汉→德阳→绵竹→安州区雎水镇 · 粗粒度测试轨迹（非导航级）\n29 points; distance=90912m; speed=100km/h; acceleration=16x; latency=5s; TTS=20s\nchapters=13; cached=13; chapterEntryOpportunities=13; Sanxingdui eligible=true\nsubjects=23; families=[HISTORY, HISTORIC_SETTLEMENT, HERITAGE, CULTURAL_SITE, PEOPLE, CULTURAL_GEOGRAPHY, GEOGRAPHY, TRANSPORT, ECONOMY]; opportunities=23 dispatched=23 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:23,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\nSelected subjects=地方历史与建置变迁, 古镇、老街与传统聚落, 各级文物保护单位与历史建筑, 遗址、考古发现与博物馆, 三星堆 / 古蜀文明, 三星堆代表性器物与考古发现, 广汉与成都平原的古代文明背景, 寺庙、宗教场所与地方信仰, 风景名胜、观景点与自然遗产, 文学、艺术与地方文化人物, 传说、轶闻与有依据的趣闻, 非遗项目与民间工艺, 民俗、节庆与集市, 方言与地名由来, 绵竹木版年画 / 年画村, 年画印版与手工上色工艺, 本地水系、山川与地貌, 桥梁、隧道、水利与铁路工程, 地方道路与交通, 特产、饮食与物产, 农业、工业与贸易, 雎水太平桥与踩桥民俗, 沙汀故居与地方文学\nReal ChatGPT variety and physical phone gates: DEFERRED TO COMBINED PHONE ACCEPTANCE.",
+      "scope": "deterministic/Fake Provider and Voice, not real device or hearing"
+    },
+    {
+      "file": "app/build/acceptance/landmark-simulation.txt",
+      "bytes": 605,
+      "sha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0",
+      "summary": "Independent proximity: PASS (production catalog/Context/Journey/Loop; deterministic Provider/fake Voice)\n100km/h; 16x; latency=5s; TTS=20s; chapters=13\nSelected=sanxingdui, mianzhu-newyear-art, longmen-front, jushui-taiping-bridge; opportunities=28 dispatched=28 activeDispatched=0 auto=SILENT:24,SPEAK_NOW:4,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\nCatalog is four coarse regional references, not a nationwide POI service. Real phone/content quality: DEFERRED TO COMBINED PHONE ACCEPTANCE.",
+      "scope": "deterministic/Fake Provider and Voice, not real device or hearing"
+    },
+    {
+      "file": "app/build/acceptance/dossier-simulation.txt",
+      "bytes": 45348,
+      "sha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8",
+      "summary": "Session Local Dossier route: PASS, deterministic research/director/voice; NOT real search or Xindu discovery acceptance.\n29 points; 90912m; 100km/h; 16x; chapter research latency=5s, director=4s, TTS=15s\nchapters=13; unique research=19; narrations=13; opportunities=33 dispatched=33 activeDispatched=0 auto=SILENT:20,SPEAK_NOW:13,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\narea chapter=新都区 · 新都街道 cache=1\nresearch started stage=overview identity=四川省 / 成都市 / 新都区 elapsed_ms=0 opportunity_retained=false\nresearch started stage=overview identity=四川省 / 成都市 / 新都区 / 新都街道 elapsed_ms=0 opportunity_retained=true\nresearch active=四川省 / 成都市 / 新都区 / 新都街道 opportunity_retained=true status=RESEARCHING\ndispatch active=false opportunities=1 dispatched=1 activeDispatched=0 auto=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\ndirector started active=false research_pending=true chapter=四川省/成都市/新都区/新都街道\nterminal active=false chapter=四川省/成都市/新都区/新都街道 outcome=SILENT topic= reason= opportunities=1 dispatched=1 activeDispatched=0 auto=SILENT:1,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0 active=SILENT:0,SPEAK_NOW:0,PREPARE:0,ASK_USER:0,STALE:0,CANCELLED:0,FAILURE:0,SUPPRESSED:0\ndirector delayed reason=cadence research_pending=true chapter_retained=false\nresearch ready stage=overview identity=四川省 / 成都市 / 新都区 elapsed_ms=5000 objects=1 fact",
+      "scope": "deterministic/Fake Provider and Voice, not real device or hearing"
+    },
+    {
+      "file": "app/build/acceptance/driving-area-resolution.txt",
+      "bytes": 437,
+      "sha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd",
+      "summary": "Production GeocodeThrottle with synthetic 700m chapters, fixes every 2s; not actual platform geocoding.\nspeed=80.0 reported=80.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms\nspeed=80.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=12; minInterval=16000ms\nspeed=100.0 reported=100.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms\nspeed=100.0 reported=0.0 chapters=[0, 1, 2, 3, 4, 5] calls=10; minInterval=16000ms",
+      "scope": "deterministic/Fake Provider and Voice, not real device or hearing"
+    }
+  ],
+  "apks": {
+    "runtimecheck": {
+      "file": "artifacts/kitt-v0.5.0-runtimecheck.apk",
+      "bytes": 74399802,
+      "sha256": "9d2d2b312c669e0469113e80a54164e3217519c77a6692c80037b4b98c776a6d",
+      "application_id": "com.kitt.reader.runtimecheck",
+      "version_code": 17,
+      "version": "0.5.0",
+      "bundled_candidate_stories": 2,
+      "formal_approved_stories": 0
+    },
+    "standard_debug": {
+      "file": "artifacts/kitt-v0.5.0-debug.apk",
+      "bytes": 74395726,
+      "sha256": "eda08e9dee59626d98f38a91301e1cf3852254bff7ce63b9a0092e0d7231985c",
+      "application_id": "com.kitt.reader",
+      "version_code": 17,
+      "version": "0.5.0",
+      "bundled_candidate_stories": 0,
+      "formal_approved_stories": 0
+    },
+    "standard_release": {
+      "file": "artifacts/kitt-v0.5.0-release.apk",
+      "bytes": 70741054,
+      "sha256": "f03f45eab0a06b82594982eb717629fdd373f9ab72b542156dd15a3f2f5d7180",
+      "application_id": "com.kitt.reader",
+      "version_code": 17,
+      "version": "0.5.0",
+      "bundled_candidate_stories": 0,
+      "formal_approved_stories": 0
+    },
+    "instrumentation": {
+      "file": "artifacts/runtime-smoke-workspace/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk",
+      "bytes": 161599,
+      "sha256": "45cd4588981c721846277635a2d70f39c198b9e1a6603c5ad27cb827dfb62b27",
+      "application_id": "com.kitt.reader.runtimecheck.test",
+      "version_code": null,
+      "version": "",
+      "target_package": "com.kitt.reader.runtimecheck",
+      "execution": "NOT RUN"
+    }
+  },
+  "signing": {
+    "certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+    "accepted_cases": 2,
+    "rejected_cases": 6,
+    "positive_runtime_apk": "new code17 candidate",
+    "instrumentation": "built and signature/package checked, NOT executed",
+    "upgrade_compatibility": "local canonical code16 APK -> same-package code17, original certificate, increasing code; phone NOT read or touched",
+    "code16_reference": {
+      "application_id": "com.kitt.reader.runtimecheck",
+      "version_code": 16,
+      "version": "0.4.2"
+    }
+  },
+  "production_input_sha256": "dba950b8e07de5cbec607fde6b2b467741d435a61f9f7df052d4347c8be71aa5",
+  "copied_production_kotlin_files": 42,
+  "copied_production_kotlin_mismatches": 0,
+  "logs": {
+    "v050-final-full-gradle.log": {
+      "file": "artifacts/v050-final-full-gradle.log",
+      "bytes": 15000,
+      "sha256": "6359d676cc3c3a50dfb7cc76df7cc7924b3eaa956c9c4b988488d7d636d70ab7"
+    },
+    "v050-final-verify.log": {
+      "file": "artifacts/v050-final-verify.log",
+      "bytes": 8069,
+      "sha256": "44441728c56b0293fe881cd25ef05c0ce0eee2cc4175af6092c827a850487ad5"
+    },
+    "v050-final-runtime.log": {
+      "file": "artifacts/v050-final-runtime.log",
+      "bytes": 6238,
+      "sha256": "91a318edc76a894b8d2c07d3c04e8bf5d6e494a8ea2271b9be8bb06be3d588bf"
+    },
+    "v050-final-signing.log": {
+      "file": "artifacts/v050-final-signing.log",
+      "bytes": 1007,
+      "sha256": "4fa038dbdcf03b4c27cb7ccdd8e26e8dad6b2839c05563a1b0a7e8ed7fb4437c"
+    }
+  },
+  "sanitized_summary": {
+    "file": "docs/evidence/v050-final-gradle-summary.txt",
+    "bytes": 11321,
+    "sha256": "257a490aee4f9fe77990a82134050b2802ef849b09278cd40147374abff1961f"
+  },
+  "device_actions": "NONE: no adb, installation, uninstall, data clear, account/settings change, instrumentation, GPS injection or live cloud request",
+  "github": "PR #28 Draft; #23/#24/#27 OPEN; no merge/closure",
+  "pending": [
+    "separately authorized original-signature in-place upgrade after current installed-state checks",
+    "human complete offline Chinese TTS audition of both stories, pronunciation/duration/understanding",
+    "real fresh GPS/NETWORK local automatic main/followup/replay, offline and cloud-failure recovery; #23/#24 field checks",
+    "formal release approval; current candidate evidence cannot authorize release"
+  ],
+  "next_content": "After V0.5.0 device acceptance: Guanghan/Sanxingdui Fact+Narrative first, then a different subject; no downloader/explore UI/platform implemented"
+}

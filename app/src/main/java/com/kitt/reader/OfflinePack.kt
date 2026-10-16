@@ -124,7 +124,7 @@ class OfflinePack private constructor(val version: String, val area: AreaIdentit
 }
 
 /** Select 2–4 new fact fragments, reuse the authoritative Journey playback lifecycle, no cloud calls. */
-class OfflineNarrator(private val pack: OfflinePack?) {
+class OfflineNarrator(private val pack: OfflinePack?, private val stories: StoryPacks? = null) {
     fun response(journey: Journey, time: Long, utterance: String? = null, image: Boolean = false): DirectorResult {
         fun message(text: String) = DirectorResult(Action.SPEAK_NOW, "离线资料", text)
         val active = utterance != null
@@ -139,12 +139,16 @@ class OfflineNarrator(private val pack: OfflinePack?) {
         val more = followUp(utterance) == FollowUp.MORE
         if (active && !more && utterance?.trim()?.trimEnd('？', '?', '。') !in setOf("这里有什么", "这里有什么好讲的", "讲讲这里"))
             return message("离线时可以问这里有什么、再讲一点或再说一遍；其他问题请联网后再问。")
+        stories?.select(journey, identity, more)?.let { return it.response() }
+        if (more && stories?.ownsAttempt(journey, identity, journey.topic) == true)
+            return message("目前没有审核通过且未讲过的延伸故事。")
         val covered = journey.narrationMemory.filter { it.area?.copy(chapter = "")?.key == identity.key }
-        val choices = pack.objects.filter { !more || it.title == journey.topic }
+        val choices = pack.objects.filter { (!more || it.title == journey.topic) && stories?.ownsAttempt(journey, identity, it.title) != true }
             .sortedBy { obj -> covered.count { it.subject == obj.title } }
         val chosen = choices.firstNotNullOfOrNull { obj ->
             val previous = covered.filter { it.subject == obj.title }.flatMap { it.coverage.split('；') }.toSet()
-            obj.facts.filter { it.coverage !in previous }.take(2).takeIf { it.size >= 2 }?.let { obj to it }
+            obj.facts.filter { it.coverage !in previous && stories?.coversLegacyFact(journey, identity, it.id) != true }
+                .take(2).takeIf { it.size >= 2 }?.let { obj to it }
         } ?: return if (active) message("目前没有可靠的新内容。") else DirectorResult(Action.SILENT)
         val (obj, facts) = chosen
         return DirectorResult(Action.SPEAK_NOW, obj.title,

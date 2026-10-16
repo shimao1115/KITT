@@ -1,4 +1,16 @@
+> **2026-10-16 最新手机验收完成 / STOP（覆盖下方安装限制与未来排序）**：用户明确授权 code17 同包同签名一次原位升级、配套 AndroidTest 安装及 `story-preview` 双篇试听；不含清数据、合并或发布。首次只读发现未结束旅程后立即停止，用户回复“已结束”，复核恢复文件消失后才执行。手机现为 `com.kitt.reader.runtimecheck` **code17**，一次 `adb install -r` 成功，回读 APK 与指定候选 SHA256 一致，配套测试 APK 已安装验签。升级及试听前后设置与20份历史逐字节哈希相同，原数据目录标识及首次安装时间未变。主篇117.149秒、延伸59.532秒均PASS_ENGINE_ONLY；用户明确反馈**“两篇都完整听完，没问题”**，HUMAN_LISTENING=PASS。**禁止重复安装code16/code17；实机自动全链未验、Visitor未提升，正式故事0、发布BLOCKED。** 见[HANDOFF](HANDOFF.md)及[手机证据](docs/evidence/v050-phone-acceptance.json)。不合并Draft PR28，不关闭23/24/27，不发布APK。后续排序按用户最新指示：**先主程序完整功能／同步UI，之后按Draft PR29六区县级独立分包及镇街全面调查**；仅记录安排，不据此提前施工。
+
+> **2026-10-15 历史交付 / CANDIDATE-STOP**：用户已确认v2.1双篇最终文字；本轮来源复核相符，原正文/哈希/Claim修订不变，Debug 466 + Release 453 = 919项零失败/错误/跳过，Python7、六组模拟、构建/lint及原签名2接受+6拒绝PASS。已生成仅供用户验收的原签名 `com.kitt.reader.runtimecheck` code17，74399802字节、SHA256 `9d2d2b312c669e0469113e80a54164e3217519c77a6692c80037b4b98c776a6d`。两篇仅candidate，Visitor/真人耳听PENDING，标准正式故事0、发布BLOCKED。详见[HANDOFF](HANDOFF.md)及[工程证据](docs/evidence/v050-final-verification.json)。当时未安装；安装状态与后续排序由上方2026-10-16记录覆盖。
+
+---
+
 # AGENTS.md — KITT Autonomous Build Contract
+
+> **2026-10-15 最新 v2 改稿交付 / REVIEW-STOP**：已按驾驶场景重写主篇580字符、延伸297字符，延伸改讲《滇载记》商旅歌谣；9来源/16核验条目。两篇仍draft，Fact人工终审/Visitor Gate均PENDING，审批空，正式故事0。仅内容改稿、追踪与专项校验；本轮Python4项、StoryPacks Debug专项16项PASS，发布门禁仍BLOCKED。下方915项为v1冻结工程历史，未在本轮重跑。**未构建任何APK，未操作手机，PR #28保持Draft、不合并；STOP等用户审阅第二稿。**
+
+> **2026-10-15 V0.5.0当前交付 / REVIEW-STOP**：杨慎主篇＋延伸全文与9来源/14核验条目已提交审阅；两篇仍draft、正式故事0。工程冻结回归 Debug 464 + Release 451 = 915 项零失败，Python4项、构建/lint及原签名回归通过；详见 [HANDOFF](HANDOFF.md)、[Draft PR](https://github.com/shimao1115/KITT/pull/28)。**内容人工/独立终审和游客试听PENDING，runtimecheck code17被门禁阻断、没有候选APK；手机未操作，不合并，不开下一版本。** 下方“目前仅任务卡/尚未实施”等为施工前记录，由本段覆盖；不能据旧授权重复安装code16。
+
+> **2026-10-15 最高优先：用户已授权启动 V0.5.0/code17 杨慎完整离线主故事+延伸篇**，唯一活动任务 [Issue #27](https://github.com/shimao1115/KITT/issues/27)，独立分支 `feat/v050-xindu-yangshen-story-packs` 的 [TASK_CARD.md](TASK_CARD.md) 为施工权威入口。V0.4.2/code16 已阶段性通过并由 [PR #26](https://github.com/shimao1115/KITT/pull/26) 合并，手机已有原签名 code16，**不可重装或在本轮直接安装 code17**。本轮先来源核实与事实/游客双 Gate、纯文字 Fact/Narrative 双包、仅杨慎完整主篇＋至少一篇延伸、最小 Story Selector 和真实全量 Android 测试，工程/内容达标才产候选 APK。**创建分支或 AI 草稿≠来源已核验/用户已经审稿/手机已经听完**；稿件审核不充分宁可留 BLOCKED，不可编造来源、卒年、写作年份或正式批准。**V0.5.1 探索地点、V0.5.2 六类偏好、V0.6.0 GitHub Releases、KITT-PACKS 仓库、登录/定位重构均未授权**。#23/#24 外场待验继续开放。下文所有“V0.5.0 尚未授权”等为历史。
 
 > **2026-10-15 最新权威交接（覆盖下方历史优先级与 STOP 文字）**：用户同意 V0.4.2/code16 阶段性通过并合并 `main`，已合并 [PR #26](https://github.com/shimao1115/KITT/pull/26)，merge `9351f17`；原版 [PR #25](https://github.com/shimao1115/KITT/pull/25) 已更早合并。手机现为 `com.kitt.reader.runtimecheck` **code16**，不得重复安装、卸载、清数据；此轮工程879项/结束页与自动纪要已通过，联网本地自动讲述零云调用为设备级观测。[#23](https://github.com/shimao1115/KITT/issues/23) OPEN，仅补旧评分实机样本兼容/真人耳听等 PENDING；[#24](https://github.com/shimao1115/KITT/issues/24) OPEN，仅补离线实地定位与恢复等 PENDING。**V0.4.2 任务卡已归档，下一候选 V0.5.0 高质量 Fact/Narrative 离线双包尚未授权**；Codex 不得按下方旧“code16 等待安装/PR Draft”任务重复执行，也不能自动启动下一版本。详见 [HANDOFF](HANDOFF.md)、[已归档 TASK_CARD](TASK_CARD.md) 和 [路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)。
 

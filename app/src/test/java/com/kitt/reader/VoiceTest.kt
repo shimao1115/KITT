@@ -2,6 +2,11 @@ package com.kitt.reader
 import org.junit.Assert.*
 import org.junit.Test
 class VoiceTest {
+    @Test fun longStoryWatchdogAllowsSavedSlowRateButRemainsBounded() {
+        assertTrue(speechTimeoutMs(1040, 0.5f) > speechTimeoutMs(1040, 1.0f))
+        assertEquals(600000L, speechTimeoutMs(12000, 0.5f))
+        assertEquals(20000L, speechTimeoutMs(0, 1.0f))
+    }
     @Test fun paragraphChunksRespectSystemLimitAndPreserveText() {
         val text = ("这是一段解释。".repeat(800))
         val chunks = speechChunks(text)

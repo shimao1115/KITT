@@ -3,3 +3,5 @@ app/src/main/assets/offline/* -text
 # Preserve vendor license and serialized manifest bytes without whitespace rewrites.
 app/src/main/assets/offline/ODbL-1.0.html -whitespace
 app/src/main/assets/offline/xindu-manifest.json -whitespace
+content/yangshen/*.json text eol=lf
+content/yangshen/*.md text eol=lf

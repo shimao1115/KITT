@@ -25,6 +25,10 @@ fun speechChunks(text: String, max: Int = 1800): List<String> {
     return chunks
 }
 
+/** Leave room for the saved slow speaking rate; still bound a stalled engine to ten minutes. */
+internal fun speechTimeoutMs(length: Int, rate: Float): Long =
+    (length * 350.0 / rate.coerceIn(0.5f, 1.5f) + 20000).toLong().coerceIn(20000, 600000)
+
 class AndroidVoice(
     private val context: Context,
     private val engineFactory: (Context, Handler) -> List<SpeechEngine> = ::defaultSpeechEngines,
@@ -143,7 +147,7 @@ class AndroidVoice(
                         finalId = "$token:${chunks.lastIndex}"
                         clearWatchdog()
                         watchdog = Runnable { if (serial == token) finishSpeech(false) }
-                        handler.postDelayed(watchdog!!, (text.length * 350L + 20000).coerceAtMost(600000))
+                        handler.postDelayed(watchdog!!, speechTimeoutMs(text.length, rate))
                         for ((index, chunk) in chunks.withIndex()) {
                             val status = tts?.speak(chunk, if (index == 0) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD, null, "$token:$index")
                             if (status != TextToSpeech.SUCCESS) { finishSpeech(false); break }

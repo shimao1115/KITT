@@ -29,7 +29,8 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     researchChanged: () -> Unit = {},
     private val online: () -> Boolean = { true },
     private val offlinePack: () -> OfflinePack? = { null },
-    private val preferOffline: () -> Boolean = { false }) {
+    private val preferOffline: () -> Boolean = { false },
+    private val storyPacks: () -> StoryPacks? = { null }) {
     private var request: Job? = null
     private var requestActive = false
     val pending get() = request?.isActive == true
@@ -87,13 +88,15 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         if (journey.requestInput(text)) {
             // Exact replay is a local user intent. No research or model call is needed, and this
             // process-only segment cannot be resurrected after Journey end/recovery.
-            if (image == null && followUp(text) == FollowUp.REPEAT && journey.replay != null) {
-                val outcome = journey.deliver(journey.ticket(true), journey.replay!!.json(),
+            if (image == null && followUp(text) == FollowUp.REPEAT) {
+                val replay = journey.replay
+                val outcome = journey.deliver(journey.ticket(true), (replay ?: DirectorResult(Action.SPEAK_NOW,
+                    "离线资料", "这趟旅程还没有完整播完、可重播的内容。")).json(),
                     narrationArea = journey.replayArea, subject = journey.replaySubject,
-                    narrationLandmarkId = journey.replayLandmarkId)
+                    narrationLandmarkId = journey.replayLandmarkId, recordNarration = replay != null,
+                    summaryLabel = journey.replaySummaryLabel)
                 counters.terminal(true, outcome)
-            } else if (!online() || (preferOffline() && image == null && supportsLocalQuestion(text) &&
-                    offlinePack()?.resolve(journey.fix, now()) != null)) localDispatch(text, image != null)
+            } else if (!online() || (preferOffline() && image == null && supportsLocalQuestion(text))) localDispatch(text, image != null)
             else dispatch(text, image)
         }
     }
@@ -102,10 +105,12 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         text.trim().trimEnd('？', '?', '。') in setOf("这里有什么", "这里有什么好讲的", "讲讲这里")
     private fun localDispatch(utterance: String?, image: Boolean = false) {
         val pack = offlinePack()
-        val response = OfflineNarrator(pack).response(journey, now(), utterance, image)
+        val response = OfflineNarrator(pack, storyPacks()).response(journey, now(), utterance, image)
         val ticket = journey.ticket(utterance != null)
+        val story = storyPacks()?.stories?.firstOrNull { it.marker == response.memoryUpdate.substringBefore('；') }
         val outcome = journey.deliver(ticket, response.json(), narrationArea = pack?.area,
-            subject = response.topic) { user(it) }
+            subject = response.topic, recordNarration = response.topic != "离线资料", localStoryId = story?.id,
+            summaryLabel = story?.title.orEmpty()) { user(it) }
         counters.terminal(ticket.active, outcome)
         diagnostic("offline_narrator active=${ticket.active} outcome=$outcome cloud_calls=0")
     }

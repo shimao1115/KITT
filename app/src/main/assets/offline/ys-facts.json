@@ -1,0 +1,623 @@
+{
+  "schema_version": 1,
+  "pack_id": "xindu-yangshen-facts",
+  "content_version": "2026.10.15-review3",
+  "area_id": "cn-510114",
+  "entities": [
+    {
+      "entity_id": "person-yang-shen",
+      "title": "杨慎（杨升庵）",
+      "entity_type": "person",
+      "aliases": [
+        "杨慎",
+        "杨升庵",
+        "升庵",
+        "用修"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "mingshi192",
+      "title": "《明史》卷一百九十二·杨慎传",
+      "url": "https://zh.wikisource.org/w/index.php?title=明史/卷192&oldid=2631979",
+      "publication": "清代修撰；本次读取在线转录 oldid=2631979",
+      "access_status": "read",
+      "rights": "古籍正文公有领域；不复制现代注释/网页编排",
+      "limitation": "已读转录，未逐字对勘影印底本；不是同时代实录",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55",
+      "retrieval_fingerprint": {
+        "raw_sha256": "14541b5d8e414023714f991ce40a08b63dcb4106fae13efa14dba96b8e13f777",
+        "raw_bytes": 133977,
+        "final_url": "https://zh.wikisource.org/w/index.php?title=%E6%98%8E%E5%8F%B2/%E5%8D%B7192&oldid=2631979"
+      },
+      "evidence_grade": "A_transcription"
+    },
+    {
+      "source_id": "palace-ritual",
+      "title": "故宫博物院：大礼议",
+      "url": "https://www.dpm.org.cn/lemmas/241433.html",
+      "publication": null,
+      "access_status": "read",
+      "rights": "现代网页保留版权；仅提取事实自行表述",
+      "limitation": "正文未标出版日期；伤亡数与史书纪年统计口径需另核，不入稿",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "6011aac81237f692e539085aaef5bebb6b6ee10fa8afd38aa9dc9ea1feca05ce",
+      "retrieval_fingerprint": {
+        "raw_sha256": "11f73580600ee53f12fa4986f4eb9a6a4569750a64105fffe8f82e034a8200e8",
+        "raw_bytes": 75408,
+        "final_url": "https://www.dpm.org.cn/lemmas/241433.html"
+      },
+      "evidence_grade": "C"
+    },
+    {
+      "source_id": "tanci3",
+      "title": "《廿一史弹词注》卷之三上·第三段说秦汉",
+      "url": "https://www.shidianguji.com/book/HY1928/chapter/1kny2g162v0vn",
+      "publication": "在线题署：明杨慎撰、清张三异增定；具体底本年代未核",
+      "access_status": "read",
+      "rights": "仅古籍事实与书名；不复制平台标点、注释或全文",
+      "limitation": "已读章首题署及正文；不是明代初刻影像，不证明最早见载/成文年份；可见“浪花淘，尽英雄”等断句问题",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "b7c4b59b4c339c564d800e6fe1ad49c4a4dc0623a1947dd6bf66078d628e1f85",
+      "retrieval_fingerprint": {
+        "raw_sha256": "6c9487237a4226a9c5053dbe73263b63be615fc54e4e0ae7565bf944c7a68e36",
+        "raw_bytes": 487848,
+        "final_url": "https://www.shidianguji.com/book/HY1928/chapter/1kny2g162v0vn"
+      },
+      "evidence_grade": "A_transcription"
+    },
+    {
+      "source_id": "zhao-three-kingdoms",
+      "title": "赵晓晖：《三国演义》与佛教，印刷页159–166",
+      "url": "https://kufs.repo.nii.ac.jp/record/138/files/ronso84159166.pdf",
+      "publication": "《研究論叢》第84号，国際言語平和研究所，2014-01-31；库公开日期2015-02-20（已读机构API record138）",
+      "access_status": "read",
+      "rights": "论文保留版权；只自行概括版本流传结论，不公开镜像PDF",
+      "limitation": "读取PDF第1、6页，目视核对印刷页164；其佛教思想阐释不作为作者心理事实",
+      "local_file_sha256": "0fb25bd39fdfebf11c4b3c2e49fdf425d90ea31a317e7b6487195aa35d4f1e0d",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "26919ebd2987aa3619a34c4183e33be83ec016dfc28749f66050794d30394736",
+      "evidence_grade": "B",
+      "bibliography_metadata_url": "https://kufs.repo.nii.ac.jp/api/records/138",
+      "bibliography_metadata_sha256": "bd2b0f49fe44b42d0048b06bda8ffead2daf010706dd9ad7c54a9b9a34b7a92a",
+      "bibliography_fingerprint_note": "本地解析后JSON的SHA256；不是原HTTP响应字节指纹"
+    },
+    {
+      "source_id": "dianzai",
+      "title": "杨慎：《滇载记》在线转录",
+      "url": "https://zh.wikisource.org/zh-hans/滇載記",
+      "publication": "明代著作；在线转录，具体刻本未核",
+      "access_status": "read",
+      "rights": "古籍正文公有领域；不复制现代注释/网页编排",
+      "limitation": "只核实书中写了什么；古代传说、族群称谓及史实不能由本书单证认定",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "8037c285aa01d625f5026b5044696e93e885411bd0fb70a6f633617b258ef591",
+      "retrieval_fingerprint": {
+        "raw_sha256": "0c7c5cec8ff57fbe1cddbdff70e3f452a1c2208a4b436cabc20d24ded6bf28de",
+        "raw_bytes": 92557,
+        "final_url": "https://zh.wikisource.org/zh-hans/%E6%BB%87%E8%BC%89%E8%A8%98"
+      },
+      "evidence_grade": "A_text_content_only"
+    },
+    {
+      "source_id": "guihu-report",
+      "title": "吴晓铃：杨升庵故里：新都桂湖才情流传（四川日报，央广网转刊）",
+      "url": "https://sc.cnr.cn/sc/2014kj/20180515/t20180515_524234225.shtml",
+      "publication": "2018-05-15",
+      "access_status": "read",
+      "rights": "现代报道保留版权；自行表述基本纪念关联，不转载原文/照片",
+      "limitation": "同一报道转刊只算一个来源；只取记者采访所见纪念关联，不据其“此后有感而作”断言词作年代",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "1ad73349616a661e5658f25898f82d952e2619961175a8373c67d8eddfd89fac",
+      "retrieval_fingerprint": {
+        "raw_sha256": "6cc0e72871b6696f4e5cdb52d4ffbafe06d6689770c9d1d7ff2b0b62bead42d1",
+        "raw_bytes": 32838,
+        "final_url": "https://sc.cnr.cn/sc/2014kj/20180515/t20180515_524234225.shtml"
+      },
+      "evidence_grade": "C"
+    },
+    {
+      "source_id": "yang",
+      "title": "旧包：中央纪委监察部·杨升庵纪念地桂湖",
+      "url": "https://m.ccdi.gov.cn/content/cb/21/7409.html",
+      "publication": null,
+      "access_status": "unavailable",
+      "rights": "旧包仅保留既有事实摘要，不新增转载",
+      "limitation": "本次打开失败。旧登记记载1559/1599内部冲突，不称本次已重读；卒年不采此页",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "7825907a1b4098694ba7ef16da63d246b4d4d0298ab0937280b341e15ce90d0d",
+      "evidence_grade": "D_this_run"
+    },
+    {
+      "source_id": "ritual-paper-lead",
+      "title": "解扬：制造“非常”：“大礼议”前杨慎的代祀危机",
+      "url": "https://xbbjb.ucass.edu.cn/__local/F/D5/F1/5D9B86405D6081A5498141A6059_E5F7AA87_103B69.pdf",
+      "publication": null,
+      "access_status": "lead",
+      "rights": "未取得全文核读；不复制",
+      "limitation": "仅见搜索结果摘要；不作为已读证据或故事依赖",
+      "accessed_at": "2026-10-15",
+      "registry_revision": "21a366a87fd6f60e916cdcc7ffc565d679b22fa86747c0953f6b8d682a498b72",
+      "evidence_grade": "D"
+    },
+    {
+      "source_id": "zhang-ming-ci",
+      "title": "张仲谋：《一代有一代之词》——谈明词的经典化问题",
+      "url": "https://www.nopss.gov.cn/n1/2026/0909/c461624-40795331.html",
+      "publication": "正文标光明日报2026-09-02；全国哲社办转刊URL为2026/0909",
+      "access_status": "read",
+      "accessed_at": "2026-10-15",
+      "rights": "现代专家文章保留版权；只自行概括作者归属与篇章关系，不复制全文",
+      "limitation": "已读“明词经典化的偶然个案与谱系流变”首段。作者本人研究阐释，转刊仍算同一来源；未替代明代初刻本校勘",
+      "evidence_grade": "B_expert_essay",
+      "retrieval_fingerprint": {
+        "raw_sha256": "1a2ca81260c1a6b1f14d016d9b684fac2596c530e77b4c5411a9033f4e4f7191",
+        "raw_bytes": 21973,
+        "final_url": "https://www.nopss.gov.cn/n1/2026/0909/c461624-40795331.html"
+      },
+      "registry_revision": "931321ed6fbc5985ad5bbecd3407a190e28ed1aa00f6b566fc9fe2662973c664"
+    },
+    {
+      "source_id": "people-2018-versions",
+      "title": "人民网转载文汇报：《经典咏流传》传统文化进行时 听，古诗词在歌唱",
+      "url": "https://media.people.com.cn/n1/2018/0320/c40606-29877094.html",
+      "publication": "2018-03-20；文汇报，王彦",
+      "access_status": "read",
+      "rights": "现代文章保留版权；只自行概括基本事实，不转载原文、图片或页面",
+      "limitation": "独立新闻评论旁证；只核杨慎弹词说秦汉章首及毛氏评本卷首关系，不认定最早版本或成文时地；HTTPS本机证书主机名不匹配，网页工具502；直接HTTP原文200，GB2312/GBK解码；传输不具HTTPS认证",
+      "accessed_at": "2026-10-15",
+      "evidence_grade": "C_secondary_report",
+      "retrieval_fingerprint": {
+        "raw_sha256": "89493d8e587eea865c570bce3eec9059cf949e80b6f5bbe6d4c7802027885d44",
+        "raw_bytes": 37324,
+        "final_url": "http://media.people.com.cn/n1/2018/0320/c40606-29877094.html",
+        "http_status": 200
+      },
+      "registry_revision": "ba0d629546ef3d5fbb55850a58905cbc090f29d398d0fef892f00b951be1064c"
+    },
+    {
+      "source_id": "people-2017-versions",
+      "title": "人民网转载中国新闻网：《军师联盟》不合史实？你可知三国演义改了多少历史",
+      "url": "https://culture.people.com.cn/n1/2017/0720/c172318-29416428.html",
+      "publication": "2017-07-20；中国新闻网",
+      "access_status": "read",
+      "rights": "现代文章保留版权；只自行概括基本事实，不转载原文、图片或页面",
+      "limitation": "独立报道的版本说明；只核卷首词为毛本增加，不能据此认定全部历史情节；HTTPS本机证书主机名不匹配，网页工具502；直接HTTP原文200，GB2312/GBK解码；传输不具HTTPS认证",
+      "accessed_at": "2026-10-15",
+      "evidence_grade": "C_secondary_report",
+      "retrieval_fingerprint": {
+        "raw_sha256": "e962746b45228c306a1993fa9a5797ed3152fd5a2583fe57388db7d31c2ffaad",
+        "raw_bytes": 37773,
+        "final_url": "http://culture.people.com.cn/n1/2017/0720/c172318-29416428.html",
+        "http_status": 200
+      },
+      "registry_revision": "a7bdd84a63eb974e1eb84fccaba4eac48750dd317c31710759ea58c7e50d888e"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "ys-identity",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "杨慎字用修，号升庵，籍贯新都；籍贯不等于出生地。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第1段，起“杨慎，字用修，新都人”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        },
+        {
+          "source_id": "guihu-report",
+          "locator": "标题及A节第2段，报道北京出生、祖籍新都",
+          "relation": "supports",
+          "accepted_source_revision": "1ad73349616a661e5658f25898f82d952e2619961175a8373c67d8eddfd89fac"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "",
+      "revision": "60bc5fd190c79b1d517ddf0edc965b08f4b84ae542cc00970dfec4bb587e1455",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-exam",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "正德六年（1511）杨慎殿试第一，授翰林修撰。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第1段，起“年二十四”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        },
+        {
+          "source_id": "guihu-report",
+          "locator": "A节第2段，含“公元1511年”",
+          "relation": "supports",
+          "accepted_source_revision": "1ad73349616a661e5658f25898f82d952e2619961175a8373c67d8eddfd89fac"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "",
+      "revision": "f512c5c6b71c4d51ea3c1286ce5f0b598e1cdad056a2f12d64e6a906ddc5a11f",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-ritual",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "大礼议涉及世宗入继帝位后父母名分及生父尊号；旧臣主张以孝宗为皇考，世宗坚持亲生父亲的名分。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "palace-ritual",
+          "locator": "正文唯一长段，起“嘉靖初年关于朱厚熜父母名分”",
+          "relation": "supports",
+          "accepted_source_revision": "6011aac81237f692e539085aaef5bebb6b6ee10fa8afd38aa9dc9ea1feca05ce"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "不把礼制/继统之争简化为忠奸二选一；无动机读心",
+      "revision": "291625a87cb846ba53ab765e9693030925f5925e7f9e71fe17e71278742ad514",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-protest",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "嘉靖三年（1524）杨慎偕廷臣伏左顺门力谏，被下狱、两次廷杖，随后谪戍云南永昌卫。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第2段，起“嘉靖三年”，含“阅十日”“乃再杖”“慎得云南永昌卫”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        },
+        {
+          "source_id": "palace-ritual",
+          "locator": "正文唯一长段，1524年七月左顺门事件",
+          "relation": "supports",
+          "accepted_source_revision": "6011aac81237f692e539085aaef5bebb6b6ee10fa8afd38aa9dc9ea1feca05ce"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "",
+      "revision": "012dca39fa30021cb0ca356e4fcfb5360997e04af37c2f8b1d5f16c643183adf",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-return",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "杨慎谪戍后曾返四川；父丧时获准归葬，葬讫复还，此后往来蜀、云南会城与戍所。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第3段，起“五年闻廷和疾”，含“八年”“获归葬”“或归蜀”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "纠正“一离乡便再未回四川”；不把返乡等同赦免",
+      "revision": "9cac19a966c5b6bff7cdacb832d210cad60dfa3cb85120dec3aabdb6728e3476",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-death",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《明史·杨慎传》载嘉靖三十八年（1559）七月卒，年七十二（旧纪龄）；旧页面1599不采。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第3段末，起“嘉靖三十八年七月卒”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "只按年号换算1559，不把虚岁当周岁；主故事不需要卒年",
+      "revision": "415ab102eb1d65945e22e990809a306089e4f3c8335be27442d41f8f13897a35",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-study",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《明史》记杨慎谪戍后广泛读书，至老仍笃学，并有诗文外百余种杂著的记述。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第4段“既投荒多暇”至“老而弥笃”；第5段“诗文外，杂著至一百余种”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "明确是史书记述，不把古代总评当现代精确作品统计",
+      "revision": "84d134b2151a2468c16e0c719c16deb3345a5d7c6f3e6a2c528374d56de7f9a9",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-tanci",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "所读《廿一史弹词注》题署杨慎编著、张三异增定；第三段“说秦汉”开头列《临江仙》，含“滚滚长江东逝水”。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "tanci3",
+          "locator": "章首题署；第三段说秦汉临江仙，首句",
+          "relation": "supports",
+          "accepted_source_revision": "b7c4b59b4c339c564d800e6fe1ad49c4a4dc0623a1947dd6bf66078d628e1f85"
+        },
+        {
+          "source_id": "zhao-three-kingdoms",
+          "locator": "印刷页164，第2段（PDF第6页）",
+          "relation": "supports",
+          "accepted_source_revision": "26919ebd2987aa3619a34c4183e33be83ec016dfc28749f66050794d30394736"
+        },
+        {
+          "source_id": "zhang-ming-ci",
+          "locator": "“明词经典化的偶然个案与谱系流变”首段，起“谈到明词”",
+          "relation": "supports",
+          "accepted_source_revision": "931321ed6fbc5985ad5bbecd3407a190e28ed1aa00f6b566fc9fe2662973c664"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "支持通行作者归属/篇章位置；不证明现存最早刻本或作者亲定标点",
+      "revision": "c9d654e2af26ef85be8e149150ecb35ba2ec77dd6bb085b7d14be3c6e7dc1821",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-mao",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "赵晓晖论文指出，毛宗岗父子评刻《三国演义》时将杨慎这首《临江仙》置于卷首。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "zhao-three-kingdoms",
+          "locator": "印刷页164，第2段，起“清人毛宗岗父子”",
+          "relation": "supports",
+          "accepted_source_revision": "26919ebd2987aa3619a34c4183e33be83ec016dfc28749f66050794d30394736"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "只陈述论文所指后世评刻关系；未对勘毛本初刊，不断言确切首刊年",
+      "revision": "1cff183ce0a3eeb1d6b337e8051c79484bce258564ccfc29d43fcb90ebecce3b",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-guihu",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "新都的杨升庵祠及桂湖承载杨慎纪念关联；2018采访报道桂湖与祠为博物馆重要组成。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "guihu-report",
+          "locator": "A节第1、4段，含“青铜雕塑”“1984年，新都杨升庵博物馆成立”",
+          "relation": "supports",
+          "accepted_source_revision": "1ad73349616a661e5658f25898f82d952e2619961175a8373c67d8eddfd89fac"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "历史报道证明地方纪念关联，不代表今天开放或车窗可见；不认定现存园林全是明代原貌",
+      "revision": "e3136a2a2c14e1dddd2ece0dab377f120f369e4b23e17f0d66691d3a28993ea6",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-dianzai",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "题署杨慎的《滇载记》叙述云南古代政权沿革，开篇含六诏名目与张氏世系；张氏一段明确说年代不可详考。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "dianzai",
+          "locator": "作者题署；正文开篇第1段末“其年系莫可推详”",
+          "relation": "supports",
+          "accepted_source_revision": "8037c285aa01d625f5026b5044696e93e885411bd0fb70a6f633617b258ef591"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "仅核实文本内容，不认可书中神话、数字或世系为考古事实",
+      "revision": "90b2d3d5777c51c1fca3de17a200244a9c323311358fbf39ba7224ba80dcfb0c",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-dianzai-reading",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《滇载记》开篇写沙壹触沉木生九男的故事；这只能证明古书收录传说，不能证明传说真发生。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "dianzai",
+          "locator": "正文第1段，起“有妇曰沙壹”",
+          "relation": "supports",
+          "accepted_source_revision": "8037c285aa01d625f5026b5044696e93e885411bd0fb70a6f633617b258ef591"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "只作古书阅读边界的例子，不将族源神话作为已证实史实",
+      "revision": "f318fb1355217f7ef9d742f68c71c44aab7766aff66c406cfeb95c9cdac1adb2",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-poem-date",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《临江仙》具体创作年月、地点及最早见载版本，本轮证据尚不足确定。",
+      "status": "lead",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "tanci3",
+          "locator": "章首未载创作年月/地点；为后出增定注本",
+          "relation": "supports",
+          "accepted_source_revision": "b7c4b59b4c339c564d800e6fe1ad49c4a4dc0623a1947dd6bf66078d628e1f85"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "仅登记研究缺口；不得作为可播肯定事实或写成1524某驿站即兴",
+      "revision": "bd6a1c5295c5eab4153aa8b27a5ce49b1b314ea526d2437d39bd14539c0bdab5",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-1599",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "采用旧页面矛盾的1599作为杨慎卒年。",
+      "status": "rejected",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第3段卒年与1599不合",
+          "relation": "contradicts",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "旧来源内部矛盾，本条为拒绝项，不能成为故事依赖",
+      "revision": "b414dc4f35e3d9719e226eda8d2ea89386567b25f561d03e2c3bae1ffd1787d1",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-ill-journey",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《明史·杨慎传》在首次谪戍永昌的叙述末记杨慎扶病远行、疲惫甚，抵戍所几不起。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "mingshi192",
+          "locator": "杨慎传第2段末，起“扶病驰万里”，至“抵戍所，几不起”",
+          "relation": "supports",
+          "accepted_source_revision": "96ed1edc6c8e958801a62d2ae00ddbf1dbfc7de99b95b0537568f6c9ac8a4a55"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "按首次赴戍时序表述；不把“万里”当精确现代里程，不补抵达日月、病名、施救者或心理。",
+      "revision": "0e3b08259fa99d625b213e69e4c04928242fb04ea15c5e4e311a6d345ec5998a",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    },
+    {
+      "claim_id": "ys-dianzai-travel-song",
+      "entity_id": "person-yang-shen",
+      "area_ids": [
+        "cn-510114"
+      ],
+      "text": "《滇载记》异牟寻一节介绍山川时，在高黎共山相关夹注收录商旅歌谣，依次写冬雪、夏秋暑热、春时资粮已绝而欲归不得。",
+      "status": "verified",
+      "temporal_class": "stable",
+      "valid_time": "历史记述，不提供当前开放/票价/路况",
+      "evidence": [
+        {
+          "source_id": "dianzai",
+          "locator": "“异牟寻以唐代宗大历十四年嗣立”一节，高黎共山夹注，“商贾愁怨，为之谣曰”至“春时欲归来，囊中资粮绝”",
+          "relation": "supports",
+          "accepted_source_revision": "8037c285aa01d625f5026b5044696e93e885411bd0fb70a6f633617b258ef591"
+        }
+      ],
+      "rights": "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+      "review_note": "只核古书收录及歌谣大意；不认定杨慎亲耳采集、歌谣确切产生年代、人物实有或现代气候路况。盘缠为资粮的口语概括，感受为歌谣解读。",
+      "revision": "b67650a311b14c716f67a887fa3d51e2da4183f94ae0488458100812a9d013cf",
+      "verified_at": "2026-10-15",
+      "verified_by": "Codex source cross-check; independent/human final review pending"
+    }
+  ],
+  "legacy_pack": "offline/xindu-facts.json",
+  "license": "CC-BY-4.0 for KITT summaries only",
+  "area": {
+    "area_id": "cn-510114",
+    "name": "四川省/成都市/新都区",
+    "scope": "历史人物关联，不证明物理可见",
+    "geometry_ref": "offline/xindu-geometry.geojson（沿用V0.4.0许可与安全门禁）"
+  }
+}

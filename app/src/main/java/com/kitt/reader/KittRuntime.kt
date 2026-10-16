@@ -15,6 +15,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         offlineListeningRequired = { !cloudAvailable() }
     }
     val offlinePack = OfflinePack.load(context)
+    val storyPacks = StoryPacks.load(context)
     val store = TripStore(context)
     val settings = SettingsStore(context)
     private val diagnostics = DebugDiagnostics(context)
@@ -84,7 +85,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             (settings.readResearch() ?: config).kind != ProviderKind.FAKE },
         researchChanged = { revision.intValue++ }, online = ::cloudAvailable,
         offlinePack = { offlinePack.takeUnless { simulation } },
-        preferOffline = { !simulation })
+        preferOffline = { !simulation }, storyPacks = { storyPacks.takeUnless { simulation } })
     val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
     var acceleration = settings.acceleration
@@ -120,6 +121,7 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             offlinePack == null -> "离线资料不可用，请更新应用。"
             (voice as? AndroidVoice)?.offlineReady == false -> "未就绪的离线中文语音；请安装语音包或选择本地 TTS 引擎。"
             offlinePack.resolve(journey.fix, wall) == null -> "离线地区不确定 / 当地无可靠资料；等待新鲜精确定位。"
+            storyPacks?.stories?.any { it.type == StoryType.main } != true -> "完整故事待审核；当前仅提供已审基础事实。"
             else -> "新都区离线资料已就绪 · 仅区县背景，镇街未知"
         }
         return DrivingRuntimeSnapshot(positionLabel(journey.currentFix, wall, elapsed), network.snapshot.label, services,

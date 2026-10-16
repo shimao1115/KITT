@@ -7,3 +7,4 @@ local.properties
 *.keystore
 .env*
 artifacts/
+__pycache__/

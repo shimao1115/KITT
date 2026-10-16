@@ -1,0 +1,86 @@
+{
+  "recorded_at": "2026-10-15T15:46:26.676108+08:00",
+  "scope": "v2.1 final candidate: two sentence replacements in main only, content consistency validation",
+  "input_commit": "b448a9ba87c87ac0b594b7517915a0288799fa9c",
+  "content_version": "2026.10.15-draft2.1",
+  "exactly_two_sentence_replacements": true,
+  "changes": [
+    {
+      "before": "皇帝坚持尊自己的生父，许多大臣却要他按皇位继承的规矩，认另一位先皇为父。",
+      "after": "皇帝坚持尊崇自己的生父，许多大臣却认为，既然继承了皇位，就该按皇家的礼制确定父子的名分。"
+    },
+    {
+      "before": "后来，毛宗岗父子评刻《三国演义》，把它放到了卷首。",
+      "after": "后来，这首词又被放到了《三国演义》卷首。"
+    }
+  ],
+  "md_json_exact_match": true,
+  "paragraph_claim_ids_unchanged": true,
+  "accepted_claim_revisions_unchanged": true,
+  "followup_entire_narrative_object_unchanged": true,
+  "unchanged_file_sha256": {
+    "content/yangshen/yangshen-followup-dianzai.md": "82fcee5ea977bc805ab450f470fd6b6cbd1ba3ec8045bec76df104c273052af4",
+    "content/yangshen/facts.json": "d52015984ea9051bf3f5bca6c24f8d99a6439d7a565024aa7794694a7fc5d3d4",
+    "content/yangshen/approvals.json": "8d2570d28c8cb9a4a245115eced9958e644897d8fffa43f679477e2a005d85c5",
+    "app/src/main/assets/offline/ys-facts.json": "d52015984ea9051bf3f5bca6c24f8d99a6439d7a565024aa7794694a7fc5d3d4",
+    "app/src/main/assets/offline/ys-facts-manifest.json": "bffb96e72ea469cf58f3b404f6d0394438e8efb2cc36902eab96a94d4e23953b"
+  },
+  "production_and_test_framework_unchanged": true,
+  "structure_check": {
+    "command": "python scripts/build-story-packs.py --check",
+    "result": "PASS"
+  },
+  "python_gate_tests": {
+    "command": "python scripts/test-story-packs.py",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "result": "PASS"
+  },
+  "candidate_gate": {
+    "command": "python scripts/build-story-packs.py --check --require-playable",
+    "exit_code": 1,
+    "result": "BLOCKED as required; no approved main/followup"
+  },
+  "approved_narratives": 0,
+  "approval_records": 0,
+  "user_feedback": "v2 content direction and overall telling accepted; v2.1 exact text awaits final confirmation",
+  "fact_final_review": "pending_human",
+  "visitor_gate": "pending",
+  "real_tts_listening": "PENDING; no real listening claimed",
+  "android_tests_run": false,
+  "historical_test_counts": "Previous 16 StoryPacks JVM and 915 full framework tests not rerun in this scope",
+  "apk_build_run": false,
+  "runtimecheck_candidate_exists": false,
+  "phone_operations": false,
+  "merge_performed": false,
+  "narratives": [
+    {
+      "narrative_id": "yangshen-main",
+      "chars": 583,
+      "text_sha256": "f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4",
+      "estimated_seconds_not_measured": [
+        109,
+        135
+      ],
+      "review_status": "draft"
+    },
+    {
+      "narrative_id": "yangshen-followup-dianzai",
+      "chars": 297,
+      "text_sha256": "559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f",
+      "estimated_seconds_not_measured": [
+        56,
+        69
+      ],
+      "review_status": "draft"
+    }
+  ],
+  "normalized_source_and_asset_sha256": {
+    "content/yangshen/narratives.json": "918e9183b2888867f1096aad8a1a4b36cf1b1db58bd2eb69bfd22d3f82ba8355",
+    "content/yangshen/yangshen-main.md": "885e614e44c46485491e294b14213141dee93611bd0ded99db0c043b73c7309a",
+    "docs/YANGSHEN_CONTENT_REVIEW.md": "49913ab4eaa1a91fc2d47623bddccaaa3a0018beaadeca736040dbd8a91ebddb",
+    "app/src/main/assets/offline/ys-narratives.json": "64b78398728b6b710d74133d5b381ce3740524127bfe7d74dfb7bea42944e676",
+    "app/src/main/assets/offline/ys-narratives-manifest.json": "384709de7d26d7edd6b3bd8cb0260f359e7a3892a55d551bfcf18b2a32f2e3c3"
+  }
+}

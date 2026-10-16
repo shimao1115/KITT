@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "pack_id": "xindu-yangshen-narratives",
+  "content_version": "2026.10.15-candidate2.1",
+  "narratives": [
+    {
+      "narrative_id": "yangshen-main",
+      "title": "从新都状元到云南远谪",
+      "story_type": "main",
+      "entity_id": "person-yang-shen",
+      "area_id": "cn-510114",
+      "primary_category": "HISTORY",
+      "secondary_categories": [],
+      "text": "说起新都的名人，杨慎是绕不开的一位。你也许更熟悉他的另一个名字，杨升庵。他在明朝考中过状元，后来却被发往云南，度过了漫长的岁月。一个考到第一名、进了朝廷的读书人，怎么走到了这一步？\n\n转折来自一场争论：在皇家礼制里，嘉靖皇帝该认谁为父亲？皇帝坚持尊崇自己的生父，许多大臣却认为，既然继承了皇位，就该按皇家的礼制确定父子的名分。看着像家事，争的却是皇位传承的规矩。朝廷为此僵持不下，这就是大礼议。\n\n杨慎站在反对皇帝的一边，和其他官员一起到宫门前力争。皇帝震怒，他被下狱，两次遭到杖打，随后被罚到云南永昌卫戍守。他带病赶了很远的路，到达时已疲惫不堪，几乎一病不起。从朝廷里的状元，到远方受罚的戍卒，人生就这样拐了一个急弯。\n\n往后，他也曾回四川探望病中的父亲，后来又获准回来安葬父亲，但贬谪的身份并没有因此解除。在云南的岁月里，他继续读书、写诗、做学问，直到年老还在用功。他也把云南的历史写进了书里。\n\n杨慎留下的文字中，有一句你多半听过：“滚滚长江东逝水。”这是他的《临江仙》。有意思的是，它在杨慎的历史弹词里，是放在讲秦汉的部分开头的。后来，这首词又被放到了《三国演义》卷首。一首词，就这样又和三国故事结下了缘分。\n\n新都的桂湖和升庵祠，是纪念杨慎的地方。以后听到“杨升庵”这个名字，也许你会想起他走过的那段远路：从状元到远谪，仕途受挫，读书和写作却一直延续下来。",
+      "supported_claim_refs": [
+        {
+          "claim_id": "ys-identity",
+          "accepted_revision": "60bc5fd190c79b1d517ddf0edc965b08f4b84ae542cc00970dfec4bb587e1455"
+        },
+        {
+          "claim_id": "ys-exam",
+          "accepted_revision": "f512c5c6b71c4d51ea3c1286ce5f0b598e1cdad056a2f12d64e6a906ddc5a11f"
+        },
+        {
+          "claim_id": "ys-protest",
+          "accepted_revision": "012dca39fa30021cb0ca356e4fcfb5360997e04af37c2f8b1d5f16c643183adf"
+        },
+        {
+          "claim_id": "ys-ritual",
+          "accepted_revision": "291625a87cb846ba53ab765e9693030925f5925e7f9e71fe17e71278742ad514"
+        },
+        {
+          "claim_id": "ys-ill-journey",
+          "accepted_revision": "0e3b08259fa99d625b213e69e4c04928242fb04ea15c5e4e311a6d345ec5998a"
+        },
+        {
+          "claim_id": "ys-return",
+          "accepted_revision": "9cac19a966c5b6bff7cdacb832d210cad60dfa3cb85120dec3aabdb6728e3476"
+        },
+        {
+          "claim_id": "ys-study",
+          "accepted_revision": "84d134b2151a2468c16e0c719c16deb3345a5d7c6f3e6a2c528374d56de7f9a9"
+        },
+        {
+          "claim_id": "ys-dianzai",
+          "accepted_revision": "90b2d3d5777c51c1fca3de17a200244a9c323311358fbf39ba7224ba80dcfb0c"
+        },
+        {
+          "claim_id": "ys-tanci",
+          "accepted_revision": "c9d654e2af26ef85be8e149150ecb35ba2ec77dd6bb085b7d14be3c6e7dc1821"
+        },
+        {
+          "claim_id": "ys-mao",
+          "accepted_revision": "1cff183ce0a3eeb1d6b337e8051c79484bce258564ccfc29d43fcb90ebecce3b"
+        },
+        {
+          "claim_id": "ys-guihu",
+          "accepted_revision": "e3136a2a2c14e1dddd2ece0dab377f120f369e4b23e17f0d66691d3a28993ea6"
+        }
+      ],
+      "review_status": "candidate",
+      "fact_gate": "passed",
+      "visitor_gate": "pending",
+      "approval_ref": "yangshen-main-v21-acceptance-20261015",
+      "license": "CC-BY-4.0",
+      "estimated_duration_seconds": [
+        109,
+        135
+      ],
+      "applicability": "仅关联新都区；不证明就在眼前；无当前开放或行车信息",
+      "paragraph_claims": [
+        {
+          "paragraph": 1,
+          "claim_ids": [
+            "ys-identity",
+            "ys-exam",
+            "ys-protest"
+          ],
+          "editorial": "身份与悬念；删字、官职和科举年号，保留新都人物背景与状元—远谪反差。"
+        },
+        {
+          "paragraph": 2,
+          "claim_ids": [
+            "ys-ritual"
+          ],
+          "editorial": "v2.1只润色礼制解释：生父尊崇与继承皇位后的父子名分之争，不把朝争说成纯粹家事；仍引用ys-ritual原修订。"
+        },
+        {
+          "paragraph": 3,
+          "claim_ids": [
+            "ys-protest",
+            "ys-ill-journey",
+            "ys-exam"
+          ],
+          "editorial": "新增赴戍病困有原文；不编场景、对白、病名及心理，万里不当精确里程。"
+        },
+        {
+          "paragraph": 4,
+          "claim_ids": [
+            "ys-return",
+            "ys-study",
+            "ys-dianzai"
+          ],
+          "editorial": "返川嵌入人生顺序；不念父病/父丧年份；云南历史以古书著述内容支持，商旅歌谣专留延伸。"
+        },
+        {
+          "paragraph": 5,
+          "claim_ids": [
+            "ys-tanci",
+            "ys-mao"
+          ],
+          "editorial": "v2.1只省去口播毛氏评刻姓名；后台ys-mao仍限定毛宗岗父子评本，非小说原版自带；不推最早文本、成文时地或江边场景。"
+        },
+        {
+          "paragraph": 6,
+          "claim_ids": [
+            "ys-guihu",
+            "ys-identity",
+            "ys-exam",
+            "ys-protest",
+            "ys-study"
+          ],
+          "editorial": "纪念地关联与编辑性收束，不声称车窗可见、今日开放或园林明代原貌。"
+        }
+      ],
+      "text_sha256": "f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4"
+    },
+    {
+      "narrative_id": "yangshen-followup-dianzai",
+      "title": "杨慎书里，赶路人的一首歌",
+      "story_type": "followup",
+      "entity_id": "person-yang-shen",
+      "area_id": "cn-510114",
+      "primary_category": "HISTORY",
+      "secondary_categories": [
+        "CULTURE"
+      ],
+      "text": "杨慎在云南度过了漫长的岁月。他留下的《滇载记》，是一部讲云南历史的书。书里还有一首商旅歌谣，说的是赶路的人想回家，却总有难处。\n\n这首歌收在介绍云南山川的地方。换成今天的话，大意是：冬天想回去，山上积着雪；夏秋想回去，路上又太热；等到春天想走，口袋里的盘缠却没了。\n\n雪、暑热、盘缠，三样东西，把归家的路一道道拦住。歌里没留下唱歌人的姓名，那份惦记着家、又为路途发愁的心情，却很容易听懂。做一趟生意，要顾着天气，也得算着手里的钱。\n\n杨慎把这样的歌谣收进了书里。今天读来，云南的往事便多了一点普通人的声音。我们认识的杨升庵，也多了一面：除了状元、诗人的名字，他的著述里，还留着这些赶路人的日子。",
+      "supported_claim_refs": [
+        {
+          "claim_id": "ys-return",
+          "accepted_revision": "9cac19a966c5b6bff7cdacb832d210cad60dfa3cb85120dec3aabdb6728e3476"
+        },
+        {
+          "claim_id": "ys-dianzai",
+          "accepted_revision": "90b2d3d5777c51c1fca3de17a200244a9c323311358fbf39ba7224ba80dcfb0c"
+        },
+        {
+          "claim_id": "ys-dianzai-travel-song",
+          "accepted_revision": "b67650a311b14c716f67a887fa3d51e2da4183f94ae0488458100812a9d013cf"
+        },
+        {
+          "claim_id": "ys-study",
+          "accepted_revision": "84d134b2151a2468c16e0c719c16deb3345a5d7c6f3e6a2c528374d56de7f9a9"
+        },
+        {
+          "claim_id": "ys-exam",
+          "accepted_revision": "f512c5c6b71c4d51ea3c1286ce5f0b598e1cdad056a2f12d64e6a906ddc5a11f"
+        }
+      ],
+      "review_status": "candidate",
+      "fact_gate": "passed",
+      "visitor_gate": "pending",
+      "approval_ref": "yangshen-followup-dianzai-v21-acceptance-20261015",
+      "license": "CC-BY-4.0",
+      "estimated_duration_seconds": [
+        56,
+        69
+      ],
+      "applicability": "仅关联新都区；不证明就在眼前；无当前开放或行车信息",
+      "paragraph_claims": [
+        {
+          "paragraph": 1,
+          "claim_ids": [
+            "ys-return",
+            "ys-dianzai",
+            "ys-dianzai-travel-song"
+          ],
+          "editorial": "以杨慎、书与赶路人为背景；不用九男/十男、六诏、世系考订。"
+        },
+        {
+          "paragraph": 2,
+          "claim_ids": [
+            "ys-dianzai-travel-song"
+          ],
+          "editorial": "口语转述书中歌谣，不虚构亲耳采风；盘缠概括资粮，无现代路况承诺。"
+        },
+        {
+          "paragraph": 3,
+          "claim_ids": [
+            "ys-dianzai-travel-song"
+          ],
+          "editorial": "对歌谣欲归/愁怨的编辑解读，不是杨慎或实有商人的内心独白；无姓名是歌谣未署人名。"
+        },
+        {
+          "paragraph": 4,
+          "claim_ids": [
+            "ys-dianzai-travel-song",
+            "ys-study",
+            "ys-exam"
+          ],
+          "editorial": "回到书写与地方普通人生活的关系；不是所有歌谣史事已获证实或真实采风证明。"
+        }
+      ],
+      "text_sha256": "559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "approvals": [
+    {
+      "approval_ref": "yangshen-main-v21-acceptance-20261015",
+      "narrative_id": "yangshen-main",
+      "text_sha256": "f9b96bb89e8da63a354148542d56e4c420db8923b363380a693281c284ebceb4",
+      "claim_refs_sha256": "5b97a8a5d4f458c8aa9b7ce5e34eac37b1df3339f7ec4ee78fb4e482dff31c9c",
+      "reviewer": "用户 shimao1115：最终文字确认；Codex：本轮来源复核（非真人听审）",
+      "evidence": "https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143",
+      "reviewed_at": "2026-10-15T16:24:32+08:00",
+      "scope": "acceptance_candidate",
+      "fact_reviewer": "Codex；既有独立助手回读记录见 PR #28 issuecomment-6187551774；本轮亲读人民网两文及本机论文PDF第164页",
+      "fact_evidence": "docs/YANGSHEN_CONTENT_REVIEW.md#2026-10-15-v21-候选审核结论",
+      "human_listening": "pending"
+    },
+    {
+      "approval_ref": "yangshen-followup-dianzai-v21-acceptance-20261015",
+      "narrative_id": "yangshen-followup-dianzai",
+      "text_sha256": "559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f",
+      "claim_refs_sha256": "aa93315c22d83fda0cc290f265421d7ee7550a54a281a326ebe174d8599f76dc",
+      "reviewer": "用户 shimao1115：最终文字确认；Codex：本轮来源复核（非真人听审）",
+      "evidence": "https://github.com/shimao1115/KITT/pull/28#issuecomment-6187491143",
+      "reviewed_at": "2026-10-15T16:24:32+08:00",
+      "scope": "acceptance_candidate",
+      "fact_reviewer": "Codex；既有独立助手回读记录见 PR #28 issuecomment-6187551774；本轮亲读人民网两文及本机论文PDF第164页",
+      "fact_evidence": "docs/YANGSHEN_CONTENT_REVIEW.md#2026-10-15-v21-候选审核结论",
+      "human_listening": "pending"
+    }
+  ],
+  "note": "仅验收候选：真实用户定稿记录绑定正文与原Claim修订集；Fact passed表示来源复核相符，非用户亲审所有史料。visitor_gate及human_listening均pending，未批准正式发布、安装或合并。"
+}

@@ -21,7 +21,8 @@ data class TripSummary(val started: Long, val ended: Long, val destination: Stri
 enum class NarrationPhase { QUEUED, STARTED, COMPLETED, FAILED, CANCELLED, INTERRUPTED }
 /** Session-only coverage, never full narration, dialogue, coordinates or persistent research evidence. */
 data class NarrationMemory(val area: AreaIdentity?, val subject: String, val coverage: String,
-    val landmarkId: String, val family: TopicFamily?, var phase: NarrationPhase = NarrationPhase.QUEUED)
+    val landmarkId: String, val family: TopicFamily?, var phase: NarrationPhase = NarrationPhase.QUEUED,
+    val summaryLabel: String = "")
 
 enum class FollowUp { MORE, REPEAT }
 fun followUp(text: String?): FollowUp? = when (text?.trim()?.trimEnd('。', '！', '!', '？', '?')) {
@@ -57,16 +58,22 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     val recentTopics = ArrayDeque<String>()
     val recentFamilies = ArrayDeque<TopicFamily>()
     private val narrations = ArrayDeque<NarrationMemory>()
+    // The bounded general history may rotate; the two local sample stories still get one attempt
+    // per Journey. Keep their first lifecycle record, without text or coordinates, until end.
+    private val localStories = mutableMapOf<String, NarrationMemory>()
+    fun localStoryPhase(id: String): NarrationPhase? = localStories[id]?.phase
+    fun hasLocalStoryAttempt() = localStories.isNotEmpty()
     val narrationMemory get() = narrations.toList()
     private var pendingNarration: NarrationMemory? = null
     private var speechSerial = 0L
     private var restoredTopics = emptyList<String>()
     val summaryTopics get() = (restoredTopics + recentTopics).takeLast(8)
-    // Only the latest segment is available for explicit replay in this process. Never checkpoint it.
+    // Only the latest successfully completed segment can be replayed. Never checkpoint its text.
     var replay: DirectorResult? = null; private set
     var replayArea: AreaIdentity? = null; private set
     var replaySubject: String? = null; private set
     var replayLandmarkId: String? = null; private set
+    var replaySummaryLabel: String = ""; private set
     private val skippedTopics = mutableMapOf<String, Long>()
     private val asked = mutableSetOf<String>()
     private var lastQuestion = Long.MIN_VALUE / 2
@@ -112,9 +119,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         invalidate(); running = true; started = now(); quietUntil = 0; destination = "未询问"
         instructions = ""; topic = ""; notice = ""; fix = null; prepared = null
         recentTopics.clear(); recentFamilies.clear(); skippedTopics.clear(); asked.clear(); skippedCount = 0
-        narrations.clear(); pendingNarration = null; restoredTopics = emptyList(); replay = null
+        narrations.clear(); localStories.clear(); pendingNarration = null; restoredTopics = emptyList(); replay = null
         replayArea = null; replaySubject = null
-        replayLandmarkId = null
+        replayLandmarkId = null; replaySummaryLabel = ""
         lastSpeech = 0; cooldownUntil = 0; autoSpeechCooldown = false; lastCheckAt = Long.MIN_VALUE / 2; lastCheckFix = null
         lastQuestion = Long.MIN_VALUE / 2; destinationQuestion = false; chapterEntry = false; changed()
     }
@@ -128,9 +135,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
         val summary = TripSummary(started, now(), destination, summaryTopics, skippedCount)
         invalidate(); running = false; prepared = null; fix = null; quietUntil = 0; instructions = ""
         destination = "未询问"; topic = ""; recentTopics.clear(); recentFamilies.clear(); asked.clear(); skippedTopics.clear(); chapterEntry = false; changed()
-        narrations.clear(); pendingNarration = null; restoredTopics = emptyList(); replay = null
+        narrations.clear(); localStories.clear(); pendingNarration = null; restoredTopics = emptyList(); replay = null
         replayArea = null; replaySubject = null
-        replayLandmarkId = null
+        replayLandmarkId = null; replaySummaryLabel = ""
         return summary
     }
     fun quiet(durationMs: Long = 600000) {
@@ -278,6 +285,9 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
     fun deliver(ticket: Ticket, raw: String?, activeFailure: String? = null, proximityBlock: DeliveryOutcome? = null,
         narrationArea: AreaIdentity? = ticket.fix?.administrative, subject: String? = null, followUp: FollowUp? = null,
         narrationLandmarkId: String? = null,
+        recordNarration: Boolean = true,
+        localStoryId: String? = null,
+        summaryLabel: String = "",
         onAnswer: (String) -> Unit = {}): DeliveryOutcome {
         if (!running || ticket.epoch != epoch) return DeliveryOutcome.CANCELLED
         // On-demand research is an explicit active request; automatic content still expires in 45s.
@@ -316,9 +326,13 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                 } else return DeliveryOutcome.SUPPRESSED
             }
             Action.SPEAK_NOW -> {
+                if (!recordNarration) {
+                    say(result.narration, false, ticket.active, onAnswer)
+                    return DeliveryOutcome.SPEAK_NOW
+                }
                 if (!ticket.active && (skippedTopics[result.topic] ?: 0) > now()) return DeliveryOutcome.SUPPRESSED
                 val memory = NarrationMemory(narrationArea, subject ?: result.topic,
-                    result.memoryUpdate, narrationLandmarkId ?: result.landmarkId, result.topicFamily)
+                    result.memoryUpdate, narrationLandmarkId ?: result.landmarkId, result.topicFamily, summaryLabel = summaryLabel)
                 if ((!ticket.active || followUp == FollowUp.MORE) && alreadyCovered(memory)) {
                     prepared = null
                     diagnostic("Narration coverage suppressed active=${ticket.active}")
@@ -326,19 +340,19 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                     changed(); return DeliveryOutcome.SUPPRESSED
                 }
                 prepared = null; topic = result.topic
-                replay = result; replayArea = narrationArea; replaySubject = memory.subject
-                replayLandmarkId = memory.landmarkId
                 // This is an attempted delivery, not evidence of completed audio. Interrupted/failed
                 // coverage also blocks automatic replay; explicit user questions/replay bypass it.
                 narrations.addLast(memory); while (narrations.size > 32) narrations.removeFirst()
+                localStoryId?.let { localStories.putIfAbsent(it, memory) }
                 pendingNarration = memory
-                say(result.narration, false, ticket.active, onAnswer, memory)
+                say(result.narration, false, ticket.active, onAnswer, memory, result)
             }
         }
         changed()
         return DeliveryOutcome.valueOf(result.action.name)
     }
-    private fun say(text: String, ask: Boolean, active: Boolean, onAnswer: (String) -> Unit, memory: NarrationMemory? = null) {
+    private fun say(text: String, ask: Boolean, active: Boolean, onAnswer: (String) -> Unit,
+        memory: NarrationMemory? = null, replayCandidate: DirectorResult? = null) {
         speaking = true; val token = epoch; val speechId = ++speechSerial; changed()
         voice.speakTracked(text, started = {
             if (epoch == token && speechSerial == speechId && running && speaking && pendingNarration === memory) {
@@ -350,7 +364,10 @@ class Journey(private val now: () -> Long, private val voice: VoicePort, private
                     it.phase = if (success) NarrationPhase.COMPLETED else NarrationPhase.FAILED
                     pendingNarration = null
                     if (success) {
-                        recentTopics.addLast(it.coverage.ifBlank { it.subject })
+                        replay = replayCandidate; replayArea = it.area; replaySubject = it.subject
+                        replayLandmarkId = it.landmarkId
+                        replaySummaryLabel = it.summaryLabel
+                        recentTopics.addLast(it.summaryLabel.ifBlank { it.coverage.ifBlank { it.subject } })
                         while (recentTopics.size > 8) recentTopics.removeFirst()
                         it.family?.let(recentFamilies::addLast)
                         while (recentFamilies.size > 8) recentFamilies.removeFirst()

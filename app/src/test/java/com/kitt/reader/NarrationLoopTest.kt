@@ -42,15 +42,17 @@ class NarrationLoopTest {
         loop.reset(); j.end()
     }
 
-    @Test fun explicitReplayStopsPendingAudioAndUsesNoProviderOrResearchCall() = runTest {
+    @Test fun explicitReplayStopsPendingAudioAndOnlyReplaysPreviouslyCompletedText() = runTest {
         val voice = TestVoice(); val j = Journey({ 1_000_000 }, voice); j.start()
         var calls = 0
         val loop = DirectorLoop(j, ContextPipeline(), this, { 1_000_000 }, { DirectorProvider { calls++; speech().json() } })
         loop.location(Fix(30.0, 104.0, 1_000_000)); runCurrent()
+        voice.finish() // Only a successfully completed segment is eligible for exact replay.
+        loop.user("再说一遍"); runCurrent()
         val late = voice.done!!; val stops = voice.stops
         loop.user("再说一遍"); runCurrent()
         assertTrue(voice.stops > stops); assertEquals(1, calls); assertEquals(voice.speech.first(), voice.speech.last())
-        late(true); assertTrue(j.recentTopics.isEmpty()); voice.finish(); assertEquals(1, j.recentTopics.size)
+        late(true); assertEquals(1, j.recentTopics.size); voice.finish(); assertEquals(2, j.recentTopics.size)
         loop.reset(); j.end()
     }
 

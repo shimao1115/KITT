@@ -5,6 +5,11 @@ $taskRoot = Split-Path -Parent $PSScriptRoot
 $taskCopy = Join-Path $taskRoot 'artifacts\runtime-smoke-workspace'
 Push-Location $taskRoot
 try {
+    $taskVersionSource = Get-Content -LiteralPath (Join-Path $taskRoot 'app\build.gradle.kts') -Raw -Encoding utf8
+    if ($taskVersionSource -match 'versionName = "0\.5\.0"') {
+        & python (Join-Path $PSScriptRoot 'build-story-packs.py') --check
+        if ($LASTEXITCODE -ne 0) { throw 'Standard content integrity check failed; runtimecheck candidate not built.' }
+    }
     # Acceptance APKs must always use the phone's existing signature, never a random local Debug key.
     & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1')
     if ($LASTEXITCODE -ne 0) { throw 'Canonical KITT signing preflight failed.' }
@@ -28,6 +33,13 @@ try {
     $taskManifest = Join-Path $taskCopy 'app\src\main\AndroidManifest.xml'
     (Get-Content -LiteralPath $taskManifest -Raw -Encoding utf8).Replace('android:label="沿途"', "android:label=`"沿途 $taskVersion 验收`"") |
         Set-Content -LiteralPath $taskManifest -Encoding utf8
+    if ($taskVersion -eq '0.5.0') {
+        $taskStoryAssets = Join-Path $taskCopy 'app\src\main\assets\offline'
+        & python (Join-Path $PSScriptRoot 'build-story-packs.py') --acceptance-candidate --require-playable --output-dir $taskStoryAssets
+        if ($LASTEXITCODE -ne 0) { throw 'Content gate BLOCKED: no fact-reviewed, user-text-approved story pair.' }
+        & python (Join-Path $PSScriptRoot 'build-story-packs.py') --acceptance-candidate --require-playable --check --output-dir $taskStoryAssets
+        if ($LASTEXITCODE -ne 0) { throw 'Acceptance content integrity check failed.' }
+    }
     $taskArguments = @('-p', $taskCopy, 'assembleDebug', 'assembleDebugAndroidTest', 'lintDebug', '--console=plain')
     if ($Offline) { $taskArguments += '--offline' }
     & .\gradlew.bat @taskArguments

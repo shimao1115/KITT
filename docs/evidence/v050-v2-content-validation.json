@@ -1,0 +1,85 @@
+{
+  "recorded_at": "2026-10-15T12:31:30.638775+08:00",
+  "scope": "v2 manuscripts, exact dependencies, draft publication gates and focused existing JVM tests only",
+  "input_commit": "1de654928153b11235c68f06941886d1294ea142",
+  "production_android_changed": false,
+  "approved_narratives": 0,
+  "approval_records": 0,
+  "md_json_exact_match": true,
+  "paragraph_maps_complete": true,
+  "followup_new_claims": [
+    "ys-dianzai-travel-song"
+  ],
+  "structure_check": "PASS: python scripts/build-story-packs.py --check",
+  "python_publishing_tests": {
+    "command": "python scripts/test-story-packs.py",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  "focused_jvm": {
+    "command": ".\\gradlew.bat testDebugUnitTest --tests com.kitt.reader.StoryPacksTest --offline --console=plain",
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "test_task_executed": true,
+    "xml_timestamp": "2026-10-15T04:30:24",
+    "xml_sha256": "4c8b51bff2a3c23c9119f2cf537d4b38f042bf0bf0bc7b60735d89364244f3f0"
+  },
+  "intermediate_failure": {
+    "tests": 16,
+    "failures": 2,
+    "cause": "Main broadly referenced the travel-song claim, leaving followup without a new claim.",
+    "fix": "Main now references the historical book only; travel-song claim remains unique to followup.",
+    "final_rerun": "16 passed"
+  },
+  "candidate_gate": {
+    "command": "python scripts/build-story-packs.py --check --require-playable",
+    "exit_code": 1,
+    "result": "BLOCKED as required; main and followup remain draft"
+  },
+  "apk_build_run": false,
+  "runtimecheck_candidate_exists": false,
+  "phone_operations": false,
+  "merge_performed": false,
+  "historical_915_tests": "Previous v1 frozen framework evidence, not rerun or recertified in v2",
+  "content_approval": "PENDING; no independent/human fact final review or visitor/TTS approval",
+  "source_versions": {
+    "facts": "2026.10.15-review2",
+    "narratives": "2026.10.15-draft2"
+  },
+  "narratives": [
+    {
+      "narrative_id": "yangshen-main",
+      "chars": 580,
+      "text_sha256": "64c579fec75b9043529837213cde18a2292645d9ddbfbd542e82c3e1a4661642",
+      "estimated_seconds_not_measured": [
+        109,
+        134
+      ],
+      "review_status": "draft"
+    },
+    {
+      "narrative_id": "yangshen-followup-dianzai",
+      "chars": 297,
+      "text_sha256": "559ff2267b73f4e64480bb21e2c114bc4cef3979db68895acfe79daea56e329f",
+      "estimated_seconds_not_measured": [
+        56,
+        69
+      ],
+      "review_status": "draft"
+    }
+  ],
+  "normalized_source_and_asset_sha256": {
+    "content/yangshen/facts.json": "d52015984ea9051bf3f5bca6c24f8d99a6439d7a565024aa7794694a7fc5d3d4",
+    "content/yangshen/narratives.json": "88381621f6b97c59ca7ac99165ad0008754de1fd03203e8608aac57c7c1af629",
+    "content/yangshen/yangshen-main.md": "1a5a6f75ab963a804cd256471e2d4bcca4954c7bb1b05df2cfe1166f53f05cf1",
+    "content/yangshen/yangshen-followup-dianzai.md": "82fcee5ea977bc805ab450f470fd6b6cbd1ba3ec8045bec76df104c273052af4",
+    "app/src/test/java/com/kitt/reader/StoryPacksTest.kt": "88168ce93e2ba17fafc2798e0d141280ff40ef8048293e9f38a80976c62cc418",
+    "app/src/main/assets/offline/ys-facts.json": "d52015984ea9051bf3f5bca6c24f8d99a6439d7a565024aa7794694a7fc5d3d4",
+    "app/src/main/assets/offline/ys-facts-manifest.json": "bffb96e72ea469cf58f3b404f6d0394438e8efb2cc36902eab96a94d4e23953b",
+    "app/src/main/assets/offline/ys-narratives.json": "8d7d26b957a9957a86cdd81607bf28b56daa9da52b6811bde2ecb9e8e384fd4f",
+    "app/src/main/assets/offline/ys-narratives-manifest.json": "e4a615f7172e558963b28bee48a349c17080d21d6e6ef8603513d3931193c1bd"
+  }
+}
