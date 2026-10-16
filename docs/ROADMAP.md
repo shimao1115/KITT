@@ -1,5 +1,7 @@
 # KITT V0 Roadmap — Destination Chain
 
+> **2026-10-16 文档地位说明**：本文件是 **V0 启动阶段的历史 Destination Chain 和早期工程验收说明**，不是当前 V0.5.x/V0.6.x 的施工排期。现行产品路线、县级独立包与下载/本地导入先后顺序，请使用 [《KITT 现行产品与工程路线图》](KITT_CURRENT_ROADMAP.md)。早期“当前/尚未授权/PR Draft/先做某功能”等句子只对各自日期有效；V0.5.0 工程 PR #28 已合并，V0.5.1 [Issue #30 / PR #31](https://github.com/shimao1115/KITT/pull/31) 已独立授权。本文件仍保留 V0 工程设计和原始验收任务用于追溯，不允许据此重做旧版本。
+
 > **2026-10-14 当前V0.4.2/code16 / #23工程PASS，STOP等真机升级确认**：评分/评语/保存按钮移除，自动纪要/旧JSON/返回保留；Debug446+Release433=879零失败/错误/跳过，六组模拟、构建/lint、原签名runtimecheck APK通过。见 [HANDOFF](../HANDOFF.md)、[证据](evidence/v042-verification.json)、[验收](ACCEPTANCE_END_SUMMARY.md)。本轮不操作手机、不合并、不关闭Issue或进入V0.5.0；本版真人PENDING，#24外场未验独立保留。PR25/code15已阶段性合并；下方旧Draft/未启动/评分要求按历史时点理解。
 
 > **同日真机阶段最新结果**：用户授权后code14→15原位升级PASS，联网真实NETWORK→新都本地讲述/0自动云/真人听清PASS，独立断网中文TTS/按钮打断/默认静音及提前退出PASS；断网120秒无新鲜位置，完整断网地方链及部分同Journey追问/恢复PENDING。已恢复手机网络、结束旅程与服务，STOP等待用户决定，Issue24 OPEN/PR25 Draft，不合并或进入下一版。见 [手机证据](evidence/v041-phone-acceptance.json) 与根HANDOFF；下方安装前状态作历史。
