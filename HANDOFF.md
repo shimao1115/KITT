@@ -1,4 +1,50 @@
-# 2026-10-16 KITT V0.5.1/code18 — 探索地点新阶段已授权，工程尚未施工
+# 2026-10-16 KITT V0.5.1/code18 — 工程交付 / STOP 待用户验收
+
+**分支 `feat/v051-explore-places`，实现提交 `327186b`，交付 [Draft PR #31](https://github.com/shimao1115/KITT/pull/31)，关联 [Issue #30](https://github.com/shimao1115/KITT/issues/30)。** 本轮实际完成首页探索入口、已安装县级区域列表、关键词搜索、独立事实与来源阅读、合格完整故事全文及手动离线中文 TTS、播放生命周期和限定范围的布局精修。按 [TASK_CARD](TASK_CARD.md) 完成工程后 STOP。**手机未访问/安装、PR 未合并、APK 未上传/发布。**
+
+## 当前真正可用的内容
+
+| 项目 | 实际数量与范围 |
+| --- | --- |
+| 标准版与本版 runtimecheck 探索页 | **新都区1县、6对象、22条基础事实、6个已加载来源**。不启动旅程、无需GPS/麦克风/网络/云账号；全文关键词可查，详情展示独立条目、来源名/网址和检索日期。 |
+| 正式完整故事 | **0篇**。杨慎两篇保持 candidate/visitor_gate=pending，正文/Claim/审批/标准资产逐字节未改。探索严格加载，不显示候选全文，也不提供伪造的完整故事播放按钮。 |
+| 完整故事测试夹具 | **内存中2篇 TEST_ONLY 批准夹具**，仅验证主篇/延伸独立阅读、正文原样点播、来源及状态；不写入真实审批或APK。 |
+
+首页保留「开始沿途」最高主动作，运行旅程时隐藏探索入口。浏览地区不会写GPS、当前区域、Journey、已播记忆、纪要或设置；旧 TopicFamily 未强行映射六类，暂无可信镇街目录/精确对象位置如实提示。合格故事按真实类别显示数量，正文可选择、可滚动；平板阅读最大宽度900dp。专用 AndroidVoice 使用已保存音色/语速并强制离线中文，复用分段和超时；无离线声音拒绝朗读。返回、切文、离页、后台和重建停止，迟到回调丢弃；不自动接播延伸。
+
+## 本轮实际工程结果
+
+- **Debug 489 + Release 476 = 965项**，两套均0失败/错误/跳过；探索相关23项在两变体均执行。完整 Gradle 构建/测试/lint 实际运行25分31秒，退出0；不是复用旧919项。
+- Python **7项PASS**；标准内容 `--check` PASS；正式 `--require-playable` 预期exit1/BLOCKED，候选未指定独立目录预期exit2/拒绝；独立目录双篇生成及复检PASS，未覆盖标准资产。
+- 六组模拟 **PASS**：完整路线、加速、批量主题、地标、Dossier、行驶区域解析；29点新都→广汉→德阳→绵竹→安州雎水粗粒度路线，确定性/Fake研究/Director/Voice，不能当真实GPS或人耳证据。
+- Debug/Release assemble、两套lint、runtimecheck与配套AndroidTest构建/验签通过；lint零错误，各保留既有2警告（ExifInterface、ChromeOsAbiSupport），未扩修非本版内容。
+- 原签名回归 **2接受+6拒绝PASS**；本地旧code17 APK与手机既有验收证据SHA256一致，同包名/同证书、17→18递增的静态兼容检查通过，**未执行设备升级**。
+- Compose/Robolectric验证手机竖屏411×914dp、横屏914×411dp、平板横屏1280×800dp、小屏320×568dp/1.5倍字体的阅读/滚动/返回/播放；保存恢复保留文章及搜索但不续播，后台停止，错误/超时可重试。20份合成旧纪要及设置前后哈希不变，旅程/定位/已播/云计数未改；实际手机数据本轮未读取。
+- runtimecheck构建副本 **44个生产Kotlin文件零差异**，Fact/Narrative源文件、标准资产、TripStore/SettingsStore相对main无差异。APK构建于实现工作树提交前，内嵌AGP VCS字段记施工基线；[证据](docs/evidence/v051-verification.json)以实现提交与实际生产文件字节哈希绑定，未冒称APK内嵌字段已变成新提交。
+
+完整逐套测试名、计数、报告哈希、六组模拟摘要、lint、APK与证书信息见 [本轮证据](docs/evidence/v051-verification.json)，[验收说明](docs/ACCEPTANCE_EXPLORE_PLACES.md)。原始日志在 `artifacts/v051-verify.log`、`v051-runtime-build.log`、`v051-signing.log`、`v051-content.log`；可用 `python scripts/record-v051-evidence.py` 重新汇总本次输出（证据日期受限于本轮，不自动跑测试或访问手机）。
+
+## 仅本地候选文件
+
+| 文件（仓库根相对路径） | 实际字节 | SHA256 |
+| --- | ---: | --- |
+| `artifacts/kitt-v0.5.1-runtimecheck.apk` | 74976037 | `8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea` |
+| `artifacts/kitt-v0.5.1-debug.apk` | 74428494 | `df96faa4604ba916c43096f1465f5c0b54b906f0b824812c44e6dadc9a8e6795` |
+| `artifacts/kitt-v0.5.1-release.apk` | 70757438 | `e6b3ea2ae8f89b721fd5f9df48dba2eab5ecd9aa2cb9db78502588c310a3b75c` |
+
+上述应用APK均0.5.1/code18；证书SHA256统一为 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。手机现有包的后续升级候选是 `com.kitt.reader.runtimecheck`，标准Debug/Release为既有 `com.kitt.reader`；本轮均未安装。配套测试APK路径 `artifacts/runtime-smoke-workspace/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`，161629字节、SHA256 `882e48d408584d03d0ab839cec69e2554a5789bcdde7441c2ba210d2233f81d4`，同证书且仅构建未运行。APK保留本机artifacts，不提交Git/不上传。
+
+## 仍需用户的最小动作与限制
+
+先审 Draft PR31、证据和候选SHA256；若同意，再**另行授权 code17→18 一次同签名原位升级及设备UI验收**。当前无需OAuth/API key，探索不使用云Provider；源码新安装默认仍FAKE、保留既有未启用的模型字段gpt-4.1-mini/空effort，旧保存配置不改，不把它当本轮在线能力验收。
+
+设备获准后按 [最短步骤](docs/ACCEPTANCE_EXPLORE_PLACES.md) 检查无网/无GPS浏览、搜索/来源、横竖屏/键盘/系统返回、设置及真实历史。标准故事0是正确门禁状态。code18真机屏幕、系统侧滑返回与真实语音行为仍 **PENDING**；code17双篇已有真人完整耳听PASS继续有效，不重复安装或重听。#23/#24/#27外场真实GPS自动全链/恢复/旧样本等保留原待验状态；正式Visitor Gate与发布仍BLOCKED。
+
+**STOP：不合并、不关Issue、不操作手机、不发布，不启动六类偏好、下载器、在线搜索或六区采集。** 最近里程碑：`327186b`探索工程；`2c149e1`V0.5.1任务入口；`465d582`V0.5.0阶段工程合并。下方均为历史交接。
+
+---
+
+# 2026-10-16 V0.5.1 施工前入口（历史，工程状态以上方为准）
 
 **现行分支 `feat/v051-explore-places`，唯一施工卡 [TASK_CARD.md](TASK_CARD.md)，Issue [#30](https://github.com/shimao1115/KITT/issues/30)。** 用户已同意开始下一小版本，目标是首页探索入口→查看真实已装新都区6对象/22基础事实→审核完备的故事才开放全文阅读和手动离线 TTS→必要 UI 精修。现有首批杨慎两篇为 `candidate`，`visitor_gate=pending`，标准版**正式故事0/发布BLOCKED**，不能借“探索地点”越权放出。
 

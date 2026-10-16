@@ -56,6 +56,9 @@ def apk(path, package):
     result = {**file_info(path), 'package_header': header, 'certificate_sha256': cert}
     if not package.endswith('.test'):
         with zipfile.ZipFile(path) as z:
+            vcs_path = 'META-INF/version-control-info.textproto'
+            if vcs_path in z.namelist():
+                result['embedded_vcs_base'] = z.read(vcs_path).decode('utf-8')
             facts = json.loads(z.read('assets/offline/xindu-facts.json'))
             narratives = json.loads(z.read('assets/offline/ys-narratives.json'))
             assert len(facts['objects']) == 6 and sum(len(o['facts']) for o in facts['objects']) == 22
@@ -84,7 +87,12 @@ def main():
         path = Path(f'app/build/acceptance/{name}.txt')
         text = path.read_text(encoding='utf-8-sig')
         assert datetime.fromtimestamp(path.stat().st_mtime).date().isoformat() == '2026-10-16'
-        assert 'PASS' in text
+        if name == 'driving-area-resolution':
+            assert text.count('minInterval=16000ms') == 4
+            assert all(any(s['name'] == 'com.kitt.reader.DrivingAreaResolutionTest' for s in v['suites'])
+                       for v in variants.values())
+        else:
+            assert 'PASS' in text
         simulations.append({**file_info(path), 'summary': text[:2200],
                             'scope': 'deterministic/Fake research/director/voice, not physical GPS or human hearing'})
     outputs = [apk(f'artifacts/kitt-v0.5.1-{variant}.apk', package) for variant, package in
@@ -125,6 +133,7 @@ def main():
     result = dict(
         date='2026-10-16', version='0.5.1', version_code=18, status='ENGINEERING-STOP-USER-ACCEPTANCE-PENDING',
         implementation_commit=command('git', 'rev-parse', 'HEAD').strip(),
+        build_provenance='APKs built from the implementation working tree before its milestone commit. source_sha256 records those actual production bytes; embedded AGP VCS metadata records the earlier branch base.',
         recorded_at=datetime.now(timezone(timedelta(hours=8))).isoformat(),
         variants=variants, total_tests=sum(v['tests'] for v in variants.values()), python_tests=7,
         content=dict(browsable_counties=1, browsable_objects=6, browsable_basic_facts=22, loaded_legacy_sources=6,

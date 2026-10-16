@@ -1,5 +1,7 @@
 # KITT V0.5.1 / code18 — 唯一施工任务卡：探索地点 + 有界 UI 精修
 
+> **2026-10-16 执行结果 / STOP**：工程实现 `327186b`，Debug489/Release476共965项零失败/错误/跳过，Python7、六组模拟、构建/lint/原签名回归PASS。实际可浏览新都6对象/22事实，正式故事0、测试夹具2篇；原审批与正文不改。本地原签名code18候选已构建，手机未访问/安装、不合并、不发布；提交Draft PR31供用户验收。详见[HANDOFF](HANDOFF.md)、[本轮证据](docs/evidence/v051-verification.json)。下方是本轮已执行的授权范围，不能因任务卡仍保留而重复施工/自动安装。
+
 > **当前唯一开发授权：2026-10-16 用户“好的，我们开始下一轮吧”。** V0.5.0 工程 [PR #28](https://github.com/shimao1115/KITT/pull/28) 已合并至 main（`465d5828f48a077a8f5b631b6a5bb8f3d0737c85`）。此卡替换 V0.5.0 的旧施工任务卡；既往验收、STOP 与历史状态保留在已合并 Git commit、[HANDOFF](HANDOFF.md)、PR #28、[Issue #27](https://github.com/shimao1115/KITT/issues/27) 中供追溯，不能继续作为最新禁令/未安装事实。此轮 Issue [#30](https://github.com/shimao1115/KITT/issues/30)，分支 `feat/v051-explore-places`，Draft PR 单独管理。
 
 ## 1. 真实代码现状与不可逾越的内容门禁
