@@ -9,6 +9,8 @@ try {
         throw 'Pass only the project canonical keystore; do not sign acceptance builds with another certificate.'
     }
     & (Join-Path $PSScriptRoot 'check-kitt-signing.ps1')
+    & python (Join-Path $PSScriptRoot 'build-story-packs.py') --check
+    if ($LASTEXITCODE -ne 0) { throw 'Standard content integrity check failed.' }
     if (-not $env:JAVA_HOME -or -not (Test-Path (Join-Path $env:JAVA_HOME 'bin\java.exe'))) {
         throw 'Set JAVA_HOME to JDK 17 before building.'
     }

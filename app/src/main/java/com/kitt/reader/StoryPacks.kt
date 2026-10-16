@@ -7,7 +7,8 @@ import kotlinx.serialization.json.*
 enum class StoryCategory { NATURE, ENGINEERING, CULTURE, LOCAL_LIFE, HISTORY, TRAVEL }
 enum class StoryType { main, followup }
 data class LocalStory(val id: String, val type: StoryType, val entityId: String, val title: String,
-    val text: String, val category: StoryCategory, val coverage: List<String>) {
+    val text: String, val category: StoryCategory, val coverage: List<String>,
+    val entityTitle: String = "杨慎（杨升庵）", val sourceLinks: List<Pair<String, String>> = emptyList()) {
     val marker get() = "story:$id"
     fun response() = DirectorResult(Action.SPEAK_NOW, "杨慎（杨升庵）", text,
         memoryUpdate = (listOf(marker) + coverage).joinToString("；"), topicFamily = TopicFamily.PEOPLE)
@@ -59,10 +60,11 @@ class StoryPacks private constructor(val stories: List<LocalStory>, val blocked:
                 require(it.string("pack_id") == expectedId && it.string("content_version") == m.string("content_version"))
             }
         }
-        fun load(context: Context): StoryPacks? = runCatching {
+        fun load(context: Context, acceptanceCandidate: Boolean = BuildConfig.DEBUG &&
+            BuildConfig.APPLICATION_ID == "com.kitt.reader.runtimecheck"): StoryPacks? = runCatching {
             fun read(name: String) = context.assets.open("offline/ys-$name.json").use { it.readBytes() }
             parse(read("facts-manifest"), read("facts"), read("narratives-manifest"), read("narratives"),
-                acceptanceCandidate = BuildConfig.DEBUG && BuildConfig.APPLICATION_ID == "com.kitt.reader.runtimecheck")
+                acceptanceCandidate = acceptanceCandidate)
         }.getOrNull()
 
         fun parse(factManifest: ByteArray, facts: ByteArray, narrativeManifest: ByteArray, narratives: ByteArray,
@@ -123,7 +125,14 @@ class StoryPacks private constructor(val stories: List<LocalStory>, val blocked:
                     }
                     require(coverage.distinct().size == coverage.size)
                     require((listOf("story:$id") + coverage).joinToString("；").length <= 240) { "coverage_limit" }
-                    LocalStory(id, StoryType.valueOf(story.string("story_type")), story.string("entity_id"), story.string("title"), text, category, coverage)
+                    val links = refs.flatMap { ref ->
+                        claims.getValue(ref.jsonObject.string("claim_id")).getValue("evidence").jsonArray.map { e ->
+                            val s = sources.getValue(e.jsonObject.string("source_id"))
+                            s.string("title") to s.string("url")
+                        }
+                    }.distinct()
+                    LocalStory(id, StoryType.valueOf(story.string("story_type")), story.string("entity_id"), story.string("title"), text, category, coverage,
+                        entities.getValue(story.string("entity_id")).string("title"), links)
                 }.onFailure { blocked[id] = it.message.orEmpty() }.getOrNull()
             }
             require(stories.count { it.type == StoryType.main } <= 1)

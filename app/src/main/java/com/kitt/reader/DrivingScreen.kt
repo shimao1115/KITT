@@ -28,13 +28,14 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail = VoiceDetail(),
     onRouteImage: () -> Unit = {}, routeNotice: String = "", onClearRoute: () -> Unit = {}, onVisualTalk: () -> Unit = {},
     transcript: TranscriptText = TranscriptText(), onCancelReply: () -> Unit = {}, runtimeStatus: ((Long) -> DrivingRuntimeSnapshot)? = null,
-    statusVisible: Boolean = true) {
+    statusVisible: Boolean = true, onExplore: () -> Unit = {}) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val availableHeight = maxHeight
         if (maxWidth > maxHeight) {
             Row(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                 Column(Modifier.weight(1f)) {
                     Row { TextButton(onDeveloper) { Text("沿途") }; TextButton(onSettings) { Text("设置") } }
+                    if (!journey.running) TextButton(onExplore, Modifier.heightIn(min = 48.dp)) { Text("探索地点") }
                     RuntimeStatusBlock(journey, sourceLabel, runtimeStatus, statusVisible, compact = availableHeight < 400.dp)
                     if (availableHeight >= 400.dp || !journey.awaitingReply) Text(placeLabel(journey), maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleMedium)
                     if (availableHeight >= 400.dp || !journey.awaitingReply)
@@ -50,7 +51,7 @@ fun DrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, on
             }
         } else PortraitDrivingScreen(journey, sourceLabel, onStart, onSpeak, onEnd, onSettings, onDeveloper, voiceDetail,
             onRouteImage, routeNotice, onClearRoute, onVisualTalk, compact = maxHeight < 700.dp,
-            transcript = transcript, onCancelReply = onCancelReply, runtimeStatus = runtimeStatus, statusVisible = statusVisible)
+            transcript = transcript, onCancelReply = onCancelReply, runtimeStatus = runtimeStatus, statusVisible = statusVisible, onExplore = onExplore)
     }
 }
 
@@ -107,12 +108,13 @@ private fun JourneyStatus(journey: Journey, primary: String = stateLabel(journey
 private fun PortraitDrivingScreen(journey: Journey, sourceLabel: String, onStart: () -> Unit, onSpeak: () -> Unit,
     onEnd: () -> Unit, onSettings: () -> Unit, onDeveloper: () -> Unit, voiceDetail: VoiceDetail,
     onRouteImage: () -> Unit, routeNotice: String, onClearRoute: () -> Unit, onVisualTalk: () -> Unit, compact: Boolean,
-    transcript: TranscriptText, onCancelReply: () -> Unit, runtimeStatus: ((Long) -> DrivingRuntimeSnapshot)?, statusVisible: Boolean) {
+    transcript: TranscriptText, onCancelReply: () -> Unit, runtimeStatus: ((Long) -> DrivingRuntimeSnapshot)?, statusVisible: Boolean, onExplore: () -> Unit) {
     Column(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(horizontal = 20.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             TextButton(onDeveloper) { Text("沿途", style = MaterialTheme.typography.titleLarge) }
             Spacer(Modifier.weight(1f)); TextButton(onSettings) { Text("设置") }
         }
+        if (!journey.running) TextButton(onExplore, Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text("探索地点") }
         RuntimeStatusBlock(journey, sourceLabel, runtimeStatus, statusVisible, compact)
         if (!compact || !journey.awaitingReply) Text(placeLabel(journey), maxLines = if (compact) 1 else 2, overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.titleMedium)

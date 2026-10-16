@@ -1,3 +1,118 @@
+# 2026-10-16 最终阶段验收与合并交接：工程/探索 UI 接受，设置漂移根因 UNKNOWN
+
+**用户已接受 V0.5.1/code18 工程及探索 UI 阶段，并明确批准文档同步及 PR #31 正式合并至 main。** [人工反馈](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212597341)：用户“我没有发现什么问题，都是正常的”，记 **HUMAN_UI_ACCEPTANCE=PASS**；[最终合并授权](https://github.com/shimao1115/KITT/pull/31#issuecomment-6212644800)及最新[TASK_CARD](TASK_CARD.md)覆盖下方旧 Draft/HOLD/禁止合并文字的工程合并限制。实际合并状态及 merge SHA 以[PR #31记录](https://github.com/shimao1115/KITT/pull/31)为准，不把人工体验改写成账号、故事或外场全链PASS。
+
+| 项目 | 最终接受范围与保留限制 |
+| --- | --- |
+| 工程 | **Debug489 + Release476 =965项，0失败/错误/跳过**，Python7、六组模拟、assemble/lint、原签名2接受+6拒绝均为既有真实工程结果；本次文档收口没有重跑或重计。 |
+| 手机升级 | 原签名code17→18唯一一次原位升级成功；许可用尽。本轮未操作手机、未重建或发布APK。 |
+| 探索 | 新都1县/6对象/22事实/6来源，搜索、来源阅读、横竖屏、键盘、返回、字号与后台恢复等已有辅助检查PASS；用户当前亲手体验PASS。侧滑手势、平板实机仍PENDING。 |
+| 历史 | 20/20真实历史三阶段逐文件哈希一致，原记录保留；本次仅复核本机已有证据。 |
+| 设置 | 最终XML整体字节漂移确实存在，原FAIL保留；字段、根因、完整升级前后语义等价仍 **UNKNOWN / INSUFFICIENT_BASELINE**。一次只读核查确认六项普通配置匹配较早code17参考，不能补成缺失的紧邻升级前基线。当前用户无可见异常，剩余风险有记录地保留，不声称已修复。 |
+| 账号 | 只证明非空加密记录存在；当前解密及在线可用性仍PENDING，人工正常显示不等于令牌刷新或真实请求成功。 |
+| 故事/发行 | **正式故事仍0**；杨慎两篇 `candidate / visitor_gate=pending`，审批仍仅acceptance_candidate，发布BLOCKED。探索正式故事实机离线TTS仍PENDING；code17双篇独立人耳历史PASS保留。 |
+| 外场 | #23/#24/#27实地GPS/恢复等原余项继续OPEN/PENDING；#30也不由本次合并自动关闭。不施工下一版本。 |
+
+两份办公室真实脱敏报告现纳入本次文档提交：[PC离线调查](docs/evidence/v051-settings-drift-analysis.md)、[一次当前设置只读核查](docs/evidence/v051-current-settings-readonly.md)。本次已先备份并保留原本未提交内容，仅将远端纯任务卡提交安全快进到本地；原始设备XML/截图/旅程/账号及本机脚本留在忽略目录，不上传。生产代码、正文、审批、Manifest、APK和原工程/手机JSON证据不修改。
+
+**收口边界：按用户授权完成GitHub门禁后合并PR31，仅接受工程与探索UI；合并结果见PR最终记录。完成核验即STOP，不再访问手机、不发APK、不提升故事Gate、不关闭旧Issue或启动V0.5.2/V0.6.x。** 下文是各阶段原始交接，保留当时PASS/FAIL/PENDING和STOP，不用后续反馈倒改历史。
+
+---
+
+# 2026-10-16 17:27 最新：一次当前设置只读核查完成 / 再次设备 STOP
+
+**`CURRENT_NON_SENSITIVE_SETTINGS_READABLE` / `ACCOUNT_ENCRYPTED_RECORD_PRESENT`；`PRE_UPGRADE_SEMANTIC_EQUIVALENCE_UNPROVEN`，原漂移根因仍 `UNKNOWN / INSUFFICIENT_BASELINE`，PR31保持Draft/HOLD。** 用户新增一次仅限当前状态的只读授权后，确认唯一USB vivo X200 Pro/V2405A、已装code18、无运行服务和Journey恢复文件；沿用已有非root run-as路径，仅一次在内存读取设置XML。未启动App/设置页、刷新模型/账号、解密、发起账号网络请求或改变任何设备设置，未保存/输出原始XML或账号敏感值。
+
+当前provider=CHATGPT、model=gpt-6.1-sol、effort=low、speech_rate=1.0、tts_voice为空/系统默认、separate_research=false，均存在且类型符合源码，与较早code17验收记录一致；simulation/acceleration/simulation_speed未存储，无基准可据此判为重置。chatgpt为非空string，credential为空string，research_credential不存在；**只证实存储结构，未验证解密或在线账号可用性**。20/20历史不变、code18探索辅助可用沿用原证据；本轮没有重测历史或UI，用户亲手体验仍PENDING。
+
+详见[当前只读脱敏报告](docs/evidence/v051-current-settings-readonly.md)。较早配置记录不能代替缺失的紧邻升级前字段快照，原设置字节FAIL及原965项工程结论不变。上轮未提交调查与HANDOFF已备份并保留；本轮只增补文档，没有提交/推送、生产代码/APK/审批改动。**一次当前状态检查已完成并用尽；再次STOP，不再访问设备，不重复安装，不合并/发布/关闭Issue或开始未来版本，等待用户亲手体验及是否合并的单独决策。**
+
+---
+
+# 2026-10-16 最新：PC本地设置漂移调查完成 / 设备 STOP
+
+**`INSUFFICIENT_BASELINE`；设置语义与根因仍 `UNKNOWN`，整体 HOLD / `FAIL_SETTINGS_BYTE_PRESERVATION_SEMANTICS_UNDETERMINED`。** 本机三阶段JSON仅保留整体设置文件哈希及账号密文存在布尔值；检查已知 `artifacts/` 目录未发现升级前/后/最终原始偏好XML，不能重建升级前字段。仅复核已有记录：升级后立即设置一致，最终仅设置文件变化；**20/20历史始终不变**。已装code18可用的结论限原探索辅助证据；账号可用性、最终密文可解密性及用户亲手UI反馈仍未验证。
+
+详见[无敏感技术判定](docs/evidence/v051-settings-drift-analysis.md)。启动移除旧 `simulation` 与设置页自动模型刷新/临期令牌加密保存均有源码依据，并已存在于code17；本次是否触发仍为hypothesis。AES-GCM密文变化不能证明账号变化或解密失败。本轮只做PC离线文件比较/源码调查，没有访问手机、刷新账号、改生产代码/设置/APK/原设备证据或提交历史，没有重跑或改写原965项结果。
+
+**唯一升级许可已用尽，禁止再次安装。完成本机诊断即STOP，等待用户决定是否新增一次独立手机只读语义检查；新增当前数据也不能补成升级前基线。** 进入设置页/构造Store本身有写入路径，不能未经新授权用这些动作补采。PR31保持Draft；不合并/发布/关闭#23/#24/#27/#30，不启动下一版本。下方为原设备交接与历史证据，原FAIL/PENDING保留。
+
+---
+
+# 2026-10-16 V0.5.1/code18 — 单次真机升级成功；设置文件漂移 / STOP 待用户复核
+
+**手机现为原签名 `com.kitt.reader.runtimecheck` 0.5.1/code18，已用完本轮唯一一次保数据升级许可，不得重复安装。整体真机验收尚未通过：最终设置文件哈希发生变化，检测后已停止手机交互。** 设备记录见 [独立手机证据](docs/evidence/v051-phone-acceptance.json)。本段覆盖下方“手机未访问/仍code17/等待安装授权”等历史状态；工程965项及其原结论保留，不能把本轮辅助观察写成用户亲手满意。
+
+- **前置与升级 PASS**：同步任务卡授权头 `9f6326f`、PR31最新评论；唯一 USB/ADB vivo X200 Pro（V2405A），原包code17、原签名、无运行 Journey/服务或恢复文件。已从手机回读旧APK核哈希/证书，候选核包名、版本、大小和原证书。16:23:06—16:23:50 仅一次 `adb -d install -r artifacts/kitt-v0.5.1-runtimecheck.apk`，exit0/Success。未安装标准包或配套测试APK。
+- **实际code18 APK**：74976037字节，SHA256 `8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea`；手机安装后回读完全相同。证书SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`，首次安装时间及原数据目录标识不变。沿用原工程候选，没有重建/重签。
+- **升级立即比对 PASS；最终设置保字节 FAIL**：升级完成、启动UI前，设置与20份真实历史的逐文件哈希全部相同。完成UI并打开设置页查看账号后，最终16:38:44快照发现仅 `shared_prefs/settings.xml` 哈希漂移，20/20历史仍逐字节相同且JSON必要字段可读。账号加密记录一直非空；设置页可见账号行/计划已启用，无未连接标签。没有点击保存/重连/断连。**未保存升级前各字段指纹，不能判断具体变更、发生时刻或是否仅序列化/加密刷新；不能声称所有设置语义相同，也不能据此断言数据丢失。** 源码中启动清理旧simulation键、设置页自动刷新模型/可能轮换加密凭据只是待查路径，尚非真机根因结论。
+- **探索辅助观察 PASS**：Wi-Fi/蜂窝均关、无Journey时可浏览新都1县/6对象/22事实/6来源、正式故事0。实际中文“杨慎”、事实正文“云南”及无命中词搜索/清除正确；逐一滚动核对事实/来源名/网址/检索日期，长按网址出现复制菜单，未打开网页或点击复制。竖屏/横屏、键盘关闭和查询保留、三按钮系统返回、大字号1.3下阅读滚动、Home→最近任务卡恢复原详情及滚动位置均未观察到阻断。没有伪造GPS、注销账号或撤销权限；保留既有账号的断网试验不冒称全新未登录/拒权限实测。
+- **系统恢复 PASS**：网络、蓝牙、飞行模式、自动旋转、方向、字号最终逐项与测试前相同；蜂窝已开、Wi-Fi原关、方向0/字号1.0。未启动Journey，最终无服务/恢复文件。发现设置漂移后未修复、回滚、重装或继续手机操作，仅完成只读核对与交接。
+
+**证据边界**：以上为 Codex/ADB 在真实手机上的点击、UI层级和截图辅助观察，用户亲手UI反馈仍PENDING。手机无历史列表入口，20份保留依据真实文件逐份哈希和JSON读取，并非逐份打开历史页面。原三按钮导航未更改，侧滑手势PENDING；Samsung平板、真实GPS自动全链/外场恢复、#23/#24/#27旧待验事项不变。正式故事0且无完整故事播放按钮是正确Gate，探索完整故事实机离线TTS仍PENDING，code17独立双篇真人耳听PASS不重算。所有原始设备截图/层级留本机忽略目录，未公开账号、旅行原文或密钥。
+
+**交接结论与最小下一步**：保留本次失败与不确定性，请用户复核现有设置/账号状态，再单独决定是否调查漂移；若授权，只需补充非敏感逐字段指纹并区分启动与进入设置触发，不需要再次安装或清数据。此轮仅新增手机证据和本交接，不改生产代码/正文/审批。先前Debug489+Release476=965、Python7、六组Fake模拟、构建/lint及原签名回归均未重跑。PR31继续Draft/OPEN，不合并、不发APK、不关闭#23/#24/#27/#30、不展开下一版本或六县采集。**STOP等待用户验收及下一轮明确指令。**
+
+---
+
+# 2026-10-16 KITT V0.5.1/code18 — 工程交付 / STOP 待用户验收
+
+**分支 `feat/v051-explore-places`，实现提交 `327186b`，交付 [Draft PR #31](https://github.com/shimao1115/KITT/pull/31)，关联 [Issue #30](https://github.com/shimao1115/KITT/issues/30)。** 本轮实际完成首页探索入口、已安装县级区域列表、关键词搜索、独立事实与来源阅读、合格完整故事全文及手动离线中文 TTS、播放生命周期和限定范围的布局精修。按 [TASK_CARD](TASK_CARD.md) 完成工程后 STOP。**手机未访问/安装、PR 未合并、APK 未上传/发布。**
+
+## 当前真正可用的内容
+
+| 项目 | 实际数量与范围 |
+| --- | --- |
+| 标准版与本版 runtimecheck 探索页 | **新都区1县、6对象、22条基础事实、6个已加载来源**。不启动旅程、无需GPS/麦克风/网络/云账号；全文关键词可查，详情展示独立条目、来源名/网址和检索日期。 |
+| 正式完整故事 | **0篇**。杨慎两篇保持 candidate/visitor_gate=pending，正文/Claim/审批/标准资产逐字节未改。探索严格加载，不显示候选全文，也不提供伪造的完整故事播放按钮。 |
+| 完整故事测试夹具 | **内存中2篇 TEST_ONLY 批准夹具**，仅验证主篇/延伸独立阅读、正文原样点播、来源及状态；不写入真实审批或APK。 |
+
+首页保留「开始沿途」最高主动作，运行旅程时隐藏探索入口。浏览地区不会写GPS、当前区域、Journey、已播记忆、纪要或设置；旧 TopicFamily 未强行映射六类，暂无可信镇街目录/精确对象位置如实提示。合格故事按真实类别显示数量，正文可选择、可滚动；平板阅读最大宽度900dp。专用 AndroidVoice 使用已保存音色/语速并强制离线中文，复用分段和超时；无离线声音拒绝朗读。返回、切文、离页、后台和重建停止，迟到回调丢弃；不自动接播延伸。
+
+## 本轮实际工程结果
+
+- **Debug 489 + Release 476 = 965项**，两套均0失败/错误/跳过；探索相关23项在两变体均执行。完整 Gradle 构建/测试/lint 实际运行25分31秒，退出0；不是复用旧919项。
+- Python **7项PASS**；标准内容 `--check` PASS；正式 `--require-playable` 预期exit1/BLOCKED，候选未指定独立目录预期exit2/拒绝；独立目录双篇生成及复检PASS，未覆盖标准资产。
+- 六组模拟 **PASS**：完整路线、加速、批量主题、地标、Dossier、行驶区域解析；29点新都→广汉→德阳→绵竹→安州雎水粗粒度路线，确定性/Fake研究/Director/Voice，不能当真实GPS或人耳证据。
+- Debug/Release assemble、两套lint、runtimecheck与配套AndroidTest构建/验签通过；lint零错误，各保留既有2警告（ExifInterface、ChromeOsAbiSupport），未扩修非本版内容。
+- 原签名回归 **2接受+6拒绝PASS**；本地旧code17 APK与手机既有验收证据SHA256一致，同包名/同证书、17→18递增的静态兼容检查通过，**未执行设备升级**。
+- Compose/Robolectric验证手机竖屏411×914dp、横屏914×411dp、平板横屏1280×800dp、小屏320×568dp/1.5倍字体的阅读/滚动/返回/播放；保存恢复保留文章及搜索但不续播，后台停止，错误/超时可重试。20份合成旧纪要及设置前后哈希不变，旅程/定位/已播/云计数未改；实际手机数据本轮未读取。
+- runtimecheck构建副本 **44个生产Kotlin文件零差异**，Fact/Narrative源文件、标准资产、TripStore/SettingsStore相对main无差异。APK构建于实现工作树提交前，内嵌AGP VCS字段记施工基线；[证据](docs/evidence/v051-verification.json)以实现提交与实际生产文件字节哈希绑定，未冒称APK内嵌字段已变成新提交。
+
+完整逐套测试名、计数、报告哈希、六组模拟摘要、lint、APK与证书信息见 [本轮证据](docs/evidence/v051-verification.json)，[验收说明](docs/ACCEPTANCE_EXPLORE_PLACES.md)。原始日志在 `artifacts/v051-verify.log`、`v051-runtime-build.log`、`v051-signing.log`、`v051-content.log`；可用 `python scripts/record-v051-evidence.py` 重新汇总本次输出（证据日期受限于本轮，不自动跑测试或访问手机）。
+
+提交前主干新增纯文档整理 `cefe010`，已同步到本施工分支并解决旧路线入口的文档冲突；保留[统一现行路线图](docs/KITT_CURRENT_ROADMAP.md)、市州默认下载/县级物理分包及本地导入的既定次序，只更新本版工程进度。没有合并GitHub PR，也没有改变已测业务代码或候选APK，不据未来规划提前施工。
+
+## 仅本地候选文件
+
+| 文件（仓库根相对路径） | 实际字节 | SHA256 |
+| --- | ---: | --- |
+| `artifacts/kitt-v0.5.1-runtimecheck.apk` | 74976037 | `8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea` |
+| `artifacts/kitt-v0.5.1-debug.apk` | 74428494 | `df96faa4604ba916c43096f1465f5c0b54b906f0b824812c44e6dadc9a8e6795` |
+| `artifacts/kitt-v0.5.1-release.apk` | 70757438 | `e6b3ea2ae8f89b721fd5f9df48dba2eab5ecd9aa2cb9db78502588c310a3b75c` |
+
+上述应用APK均0.5.1/code18；证书SHA256统一为 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。手机现有包的后续升级候选是 `com.kitt.reader.runtimecheck`，标准Debug/Release为既有 `com.kitt.reader`；本轮均未安装。配套测试APK路径 `artifacts/runtime-smoke-workspace/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`，161629字节、SHA256 `882e48d408584d03d0ab839cec69e2554a5789bcdde7441c2ba210d2233f81d4`，同证书且仅构建未运行。APK保留本机artifacts，不提交Git/不上传。
+
+## 仍需用户的最小动作与限制
+
+先审 Draft PR31、证据和候选SHA256；若同意，再**另行授权 code17→18 一次同签名原位升级及设备UI验收**。当前无需OAuth/API key，探索不使用云Provider；源码新安装默认仍FAKE、保留既有未启用的模型字段gpt-4.1-mini/空effort，旧保存配置不改，不把它当本轮在线能力验收。
+
+设备获准后按 [最短步骤](docs/ACCEPTANCE_EXPLORE_PLACES.md) 检查无网/无GPS浏览、搜索/来源、横竖屏/键盘/系统返回、设置及真实历史。标准故事0是正确门禁状态。code18真机屏幕、系统侧滑返回与真实语音行为仍 **PENDING**；code17双篇已有真人完整耳听PASS继续有效，不重复安装或重听。#23/#24/#27外场真实GPS自动全链/恢复/旧样本等保留原待验状态；正式Visitor Gate与发布仍BLOCKED。
+
+**STOP：不合并、不关Issue、不操作手机、不发布，不启动六类偏好、下载器、在线搜索或六区采集。** 最近里程碑：`327186b`探索工程；`2c149e1`V0.5.1任务入口；`465d582`V0.5.0阶段工程合并。下方均为历史交接。
+
+---
+
+# 2026-10-16 V0.5.1 施工前入口（历史，工程状态以上方为准）
+
+**现行分支 `feat/v051-explore-places`，唯一施工卡 [TASK_CARD.md](TASK_CARD.md)，Issue [#30](https://github.com/shimao1115/KITT/issues/30)。** 用户已同意开始下一小版本，目标是首页探索入口→查看真实已装新都区6对象/22基础事实→审核完备的故事才开放全文阅读和手动离线 TTS→必要 UI 精修。现有首批杨慎两篇为 `candidate`，`visitor_gate=pending`，标准版**正式故事0/发布BLOCKED**，不能借“探索地点”越权放出。
+
+**上一版最新事实（覆盖下方合并前历史）**：V0.5.0 [PR #28](https://github.com/shimao1115/KITT/pull/28) 已于 2026-10-16 工程阶段性合并 `main`，Merge SHA `465d5828f48a077a8f5b631b6a5bb8f3d0737c85`；code17 已原签名安全安装在手机，真人完整听两篇没有问题；来源审核/试播真实证据见下。#23/#24/#27 保持 OPEN，可信GPS自动讲述/追问/离线恢复等仍未实地验证。上一版919项是2026-10-15旧工程结果，不能当V0.5.1新测试。
+
+**本轮限制**：已授权 Codex 按新任务卡开发并提交独立 Draft PR，但尚未执行新代码、测试、构建、真机操作；**不自动升级手机、不合并、不正式发布、不开六类偏好/下载器/新县资料**。最终验收与安装须用户单独授权。当前页下方 V0.5.0“等待用户合并”的段落均属历史快照，不代表现状。
+
+---
+
 # V0.5.0 / code17 — 2026-10-16 最终合并候选 / STOP
 
 **工程结论：MERGE-READY-FOR-USER-REVIEW，可供用户批准阶段性合并；本轮未发现必须修代码的合并阻断。故事结论：两篇仍为验收候选，正式发布 BLOCKED。** 本轮依据任务卡 `e3d9daa` 收口；未修改 Android、制包脚本、正文、Fact/Claim、审批表或标准资产，没有重构、重建 APK、访问或操作手机。PR [#28](https://github.com/shimao1115/KITT/pull/28) 保持 Draft，等待用户最终合并批准；#23/#24/#27 保持 OPEN。

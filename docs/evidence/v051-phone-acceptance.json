@@ -1,0 +1,598 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-16T16:41:44.606263+08:00",
+  "task": "V0.5.1/code18 one original-signature physical-phone upgrade and bounded acceptance",
+  "overall_status": "STOP_SETTINGS_BYTE_DRIFT_REQUIRES_USER_REVIEW",
+  "fully_accepted": false,
+  "repository": "shimao1115/KITT",
+  "branch": "feat/v051-explore-places",
+  "pr": 31,
+  "issue": 30,
+  "authorized_task_commit": "9f6326f775f9bcfada83eeae54855fdd77656493",
+  "implementation_commit": "327186bf30ae19586dcd012e95bc72120080b9e1",
+  "engineering_handoff_commit": "d8eb8265debe518088170589e71729ac07161f81",
+  "authorization_comments": [
+    "https://github.com/shimao1115/KITT/pull/31#issuecomment-6211031076",
+    "https://github.com/shimao1115/KITT/pull/31#issuecomment-6211232424"
+  ],
+  "observer": "Codex via USB ADB, physical UI hierarchy and screenshots; no user satisfaction assertion",
+  "device": {
+    "manufacturer": "vivo",
+    "market_name": "vivo X200 Pro",
+    "model": "V2405A",
+    "unique_adb_device": true,
+    "serial": "WITHHELD",
+    "physical_portrait_px": [
+      1260,
+      2800
+    ],
+    "density_dpi": 560
+  },
+  "package": "com.kitt.reader.runtimecheck",
+  "original_certificate_sha256": "3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba",
+  "before_version": {
+    "code": 17,
+    "name": "0.5.0",
+    "pulled_installed_apk_bytes": 74399802,
+    "pulled_installed_apk_sha256": "9d2d2b312c669e0469113e80a54164e3217519c77a6692c80037b4b98c776a6d",
+    "same_certificate_verified": true
+  },
+  "after_version": {
+    "code": 18,
+    "name": "0.5.1",
+    "candidate_bytes": 74976037,
+    "candidate_sha256": "8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea",
+    "pulled_installed_apk_sha256": "8fb8b57040787ea82ffd3fb026d230698ac7ab8bde84ab29868b670b32413fea",
+    "same_certificate_verified": true,
+    "first_install_time_unchanged": true,
+    "data_directory_identity_unchanged": true
+  },
+  "install": {
+    "attempts": 1,
+    "command": "adb -d install -r artifacts/kitt-v0.5.1-runtimecheck.apk",
+    "started_at": "2026-10-16T16:23:06.562114+08:00",
+    "status": "SUCCESS",
+    "returncode": 0,
+    "stdout": "Performing Streamed Install\nSuccess",
+    "stderr": "",
+    "completed_at": "2026-10-16T16:23:50.217403+08:00"
+  },
+  "preservation": {
+    "before_at": "2026-10-16T16:22:34.352910+08:00",
+    "after_install_at": "2026-10-16T16:24:35.318839+08:00",
+    "after_ui_at": "2026-10-16T16:38:44.264160+08:00",
+    "history_count_each_stage": [
+      20,
+      20,
+      20
+    ],
+    "history_schema_valid_each_stage": [
+      20,
+      20,
+      20
+    ],
+    "history_all_file_hashes_equal": true,
+    "history_manifest_sha256_each_stage": [
+      "e596897c758685378cddeed5b81b29c3ecd246d3d0b796b65b0a0400693abb72",
+      "e596897c758685378cddeed5b81b29c3ecd246d3d0b796b65b0a0400693abb72",
+      "e596897c758685378cddeed5b81b29c3ecd246d3d0b796b65b0a0400693abb72"
+    ],
+    "settings_sha256_each_stage": [
+      "5353d5bb534a79360aa64ef2ea18ba6ca368e310578399cd2112fd4afb4c6d48",
+      "5353d5bb534a79360aa64ef2ea18ba6ca368e310578399cd2112fd4afb4c6d48",
+      "4c267ca3b08922a09b0fb7445d915e3d5330e07f01c8184b871012a7c32e25e6"
+    ],
+    "all_files_equal_immediately_after_install": true,
+    "all_files_equal_after_ui": false,
+    "final_changed_file_count": 1,
+    "final_changed_file": "shared_prefs/settings.xml",
+    "final_history_changed_count": 0,
+    "encrypted_account_record_present_each_stage": [
+      true,
+      true,
+      true
+    ],
+    "recovery_absent_each_stage": [
+      true,
+      true,
+      true
+    ],
+    "raw_trip_names_text_and_credentials_published": false,
+    "history_ui_limitation": "No history-list UI found; proof is read-only real files, per-file SHA256 and JSON schema, not UI browsing of 20 trips."
+  },
+  "settings_anomaly": {
+    "status": "FAIL_BYTE_PRESERVATION_SEMANTICS_UNDETERMINED",
+    "first_detected_at": "2026-10-16T16:38:44.264160+08:00",
+    "reproduction_context": "Successful upgrade with byte-identical data -> offline explore UI checks -> restore network/font/orientation -> open Settings for read-only account-state observation -> back -> final snapshot detects settings.xml drift.",
+    "root_cause": "UNDETERMINED; no before per-field fingerprints. Do not infer preference loss or credential failure from a whole-file hash alone.",
+    "source_only_hypotheses_not_device_proof": [
+      "SettingsStore init removes legacy simulation key; XML serialization can change on a write.",
+      "SettingsScreen auto refreshModels when plan enabled and model catalog empty; ChatGptAccount may save encrypted rotated credentials."
+    ],
+    "settings_save_reconnect_disconnect_controls_clicked": false,
+    "response": "Stopped further phone interaction on detection; only finalized read-only comparisons and documentation. No repair, rollback, new install or source edit.",
+    "next_minimal_action_requires_new_instruction": "User review of saved settings/account state; if investigation is authorized, record non-sensitive per-field fingerprints and observe startup versus Settings separately. No reinstall/clear-data is needed to inspect."
+  },
+  "content_observed": {
+    "objects": 6,
+    "facts": 22,
+    "sources": 6,
+    "source_ids": [
+      "donghu",
+      "gazette2019",
+      "palm",
+      "sc2008",
+      "scu",
+      "yang"
+    ],
+    "results": [
+      {
+        "object": "杨慎（杨升庵）",
+        "facts_observed": 4,
+        "source_ids": [
+          "yang"
+        ],
+        "formal_story_unavailable": true
+      },
+      {
+        "object": "桂湖与升庵祠",
+        "facts_observed": 4,
+        "source_ids": [
+          "yang"
+        ],
+        "formal_story_unavailable": true
+      },
+      {
+        "object": "新繁东湖",
+        "facts_observed": 4,
+        "source_ids": [
+          "donghu"
+        ],
+        "formal_story_unavailable": true
+      },
+      {
+        "object": "宝光寺与舍利塔",
+        "facts_observed": 4,
+        "source_ids": [
+          "scu"
+        ],
+        "formal_story_unavailable": true
+      },
+      {
+        "object": "新繁棕编",
+        "facts_observed": 4,
+        "source_ids": [
+          "palm",
+          "sc2008"
+        ],
+        "formal_story_unavailable": true
+      },
+      {
+        "object": "龙藏寺",
+        "facts_observed": 2,
+        "source_ids": [
+          "gazette2019"
+        ],
+        "formal_story_unavailable": true
+      }
+    ],
+    "scope": "Codex ADB UI hierarchy and screenshots, physical phone offline, not user satisfaction"
+  },
+  "checks": [
+    {
+      "id": "preflight",
+      "status": "PASS",
+      "observation": "唯一 USB/ADB vivo X200 Pro（V2405A）；旧包 code17、原签名、无 KITT 进程/服务、无 current.json 或待处理 Journey。"
+    },
+    {
+      "id": "one_in_place_upgrade",
+      "status": "PASS",
+      "observation": "仅一次 adb -d install -r；exit0/Success；手机回读 code18 APK 与指定候选逐字节 SHA256 相符，同证书。"
+    },
+    {
+      "id": "immediate_install_data_preservation",
+      "status": "PASS",
+      "observation": "升级完成后、启动 UI 前，设置和20份真实历史全部逐文件哈希相同；账号加密记录存在，首次安装时间和数据目录标识未变。"
+    },
+    {
+      "id": "final_history_preservation",
+      "status": "PASS",
+      "observation": "UI 检查后20/20真实历史逐文件哈希与升级前完全相同，JSON 必要字段均可读取，无恢复文件。应用没有历史列表入口，未声称逐份 UI 打开。"
+    },
+    {
+      "id": "final_settings_byte_preservation",
+      "status": "FAIL",
+      "observation": "最终 settings.xml SHA256 与升级前不同；仅此1个受检文件漂移，检测后停止手机交互。不能把整个验收标为 PASS，也不能据此断言设置语义丢失。"
+    },
+    {
+      "id": "saved_account_presence",
+      "status": "PASS",
+      "observation": "升级前、升级后、最终均存在非空加密 chatgpt 记录；设置页可见账号行和计划已启用、无未连接标签。未导出账号值或解密密钥。账号内容逐字段相同未证实。"
+    },
+    {
+      "id": "offline_installed_county",
+      "status": "PASS",
+      "observation": "Wi-Fi与蜂窝数据均关闭时可进入探索；只有真实已装新都区1县/6对象/22事实/6来源，正式完整故事0。既有账号和权限未注销/撤销，未开始 Journey。"
+    },
+    {
+      "id": "object_name_search",
+      "status": "PASS",
+      "observation": "现有九键中文输入法输入杨慎，命中1对象；键盘出现时搜索和结果可见，系统返回先收键盘，详情返回保留查询。"
+    },
+    {
+      "id": "fact_body_search",
+      "status": "PASS",
+      "observation": "输入云南，命中标题不含云南的杨慎对象，能读取对应事实。"
+    },
+    {
+      "id": "no_match_and_clear",
+      "status": "PASS",
+      "observation": "kitt_no_match_051 显示准确无结果；清除后恢复6对象。"
+    },
+    {
+      "id": "facts_and_sources",
+      "status": "PASS",
+      "observation": "逐一进入6对象，滚动核对22事实和6来源的名称/网址/检索日期，显示本次未联网；未打开外部网页。"
+    },
+    {
+      "id": "source_url_selection",
+      "status": "PASS",
+      "observation": "长按来源网址可见复制/全选菜单；未点击复制，未主动改剪贴板。"
+    },
+    {
+      "id": "portrait_landscape_scroll",
+      "status": "PASS",
+      "observation": "真实1260×2800竖屏及2800×1260横屏中阅读并滚动，返回控件可用，无观察到的阻断。"
+    },
+    {
+      "id": "large_font",
+      "status": "PASS",
+      "observation": "系统字号1.3下检查首页、县列表、对象列表和详情，返回可见、内容可滚动、网址换行；事后恢复1.0。非1.5实机测试。"
+    },
+    {
+      "id": "native_back",
+      "status": "PASS",
+      "observation": "三按钮导航模式保留；系统返回键及 KEYCODE_BACK 实际返回上层/首页，IME返回先关闭键盘。"
+    },
+    {
+      "id": "background_same_task_resume",
+      "status": "PASS",
+      "observation": "详情中按Home，经系统最近任务卡恢复同一 Along 任务，仍在杨慎详情且保留下部滚动位置。显式 am start 重新进入的画面不作为恢复证据。"
+    },
+    {
+      "id": "system_state_restoration",
+      "status": "PASS",
+      "observation": "Wi-Fi/蜂窝/蓝牙/飞行模式/自动旋转/方向/字号最终逐项等于测试前；无Journey服务或恢复文件。"
+    },
+    {
+      "id": "candidate_story_exclusion",
+      "status": "PASS",
+      "observation": "6对象均提示没有审核通过完整故事，无播放完整故事入口；未改审批或注入候选。"
+    },
+    {
+      "id": "human_ui_acceptance",
+      "status": "PENDING",
+      "observation": "本轮是 Codex ADB 点击、UI层级与截图辅助观察；没有用户亲手 UI 满意反馈。"
+    },
+    {
+      "id": "gesture_side_back",
+      "status": "PENDING",
+      "observation": "手机现有三按钮导航；未改为手势模式，不能声称侧滑已验。"
+    },
+    {
+      "id": "formal_story_ui_offline_tts",
+      "status": "PENDING",
+      "observation": "正式故事0，未测试探索页完整故事实机播放；code17独立双篇真人耳听历史PASS保留，不重算。"
+    },
+    {
+      "id": "tablet_and_field_journey",
+      "status": "PENDING",
+      "observation": "Samsung Tab S9、真实GPS自动全链/外场恢复与旧评分样本不在本轮；#23/#24/#27保持OPEN/PENDING。"
+    },
+    {
+      "id": "final_settings_semantic_equivalence",
+      "status": "PENDING",
+      "observation": "仅记录文件哈希，未保留升级前各偏好字段的非敏感独立指纹；无法确定漂移字段、时刻或语义。没有修复/回滚/保存设置/重新连接。"
+    }
+  ],
+  "system_settings_before": {
+    "global/wifi_on": "0",
+    "global/mobile_data": "1",
+    "global/bluetooth_on": "0",
+    "global/airplane_mode_on": "0",
+    "system/accelerometer_rotation": "0",
+    "system/user_rotation": "0",
+    "system/font_scale": "1.0"
+  },
+  "system_settings_after": {
+    "global/wifi_on": "0",
+    "global/mobile_data": "1",
+    "global/bluetooth_on": "0",
+    "global/airplane_mode_on": "0",
+    "system/accelerometer_rotation": "0",
+    "system/user_rotation": "0",
+    "system/font_scale": "1.0"
+  },
+  "local_evidence": {
+    "directory": "artifacts/v051-phone",
+    "uploaded_screenshots": false,
+    "privacy": "All raw device screenshots/XML remain ignored local files. Settings, launcher and recents-private captures excluded from public manifest; no account values, trip texts, tokens or keys published.",
+    "selected_local_capture_hashes": [
+      {
+        "path": "artifacts/v051-phone/home-portrait.xml",
+        "sha256": "db58f871cb1a58b0792bb612edd06b0e8d5d92359eb081206edf76ee024cfda2"
+      },
+      {
+        "path": "artifacts/v051-phone/home-portrait.png",
+        "sha256": "55443b58cac33f3d602a29446754a4b2916926ed4d11e52f51341d4e25e8633f"
+      },
+      {
+        "path": "artifacts/v051-phone/counties-offline-2.xml",
+        "sha256": "742cc1606c764903a47b20218160a59d5797e98f61372ead54c2be1a923a33f0"
+      },
+      {
+        "path": "artifacts/v051-phone/counties-offline-2.png",
+        "sha256": "7f5aef35b26b5d13b9a6625a029e2915b70f5f9e6ea89f5ace5b16f9deeb8b61"
+      },
+      {
+        "path": "artifacts/v051-phone/xindu-list-offline.xml",
+        "sha256": "6f790fa9211809bb9c3d1821e773c7249d4d7f0a28ac05bf15126b8754f221fd"
+      },
+      {
+        "path": "artifacts/v051-phone/xindu-list-offline.png",
+        "sha256": "450357a5a7a17d2cada2f6de886646c0a3ea0cafda59f07e3c5ba0de4fa2c439"
+      },
+      {
+        "path": "artifacts/v051-phone/search-yangshen-offline.xml",
+        "sha256": "5116bc56e0134f108576cbbdd627bc7c35e0e7f95774b100a28451c00935b4b4"
+      },
+      {
+        "path": "artifacts/v051-phone/search-yangshen-offline.png",
+        "sha256": "145e1ec5fc2deb9f0a30308854cce8cbb637e9f530a630ae11387e23525199df"
+      },
+      {
+        "path": "artifacts/v051-phone/search-yangshen-ime-dismissed.xml",
+        "sha256": "d17a5119366f388ac6a91f074b16c1e463bca25c3d16f553dc1cf90f451d270b"
+      },
+      {
+        "path": "artifacts/v051-phone/search-yangshen-ime-dismissed.png",
+        "sha256": "8a279e1467fc25e6fbba3b05adcd2267186e1f180d8ab1a4cb2da447bdcb5589"
+      },
+      {
+        "path": "artifacts/v051-phone/back-preserved-search.xml",
+        "sha256": "34b9aeb3bca54bc8be1da1901946dbb865ee75660e3beadc77695811a9653f26"
+      },
+      {
+        "path": "artifacts/v051-phone/back-preserved-search.png",
+        "sha256": "cee3a628d9d770cf1b6b498ceafacc59c129eff3239d936d6085ea5beae7fd1a"
+      },
+      {
+        "path": "artifacts/v051-phone/search-fact-yunnan-offline.xml",
+        "sha256": "a8df2badb78850b56e21ebc2e45f7ae77fe6bfadda0bc3a92fbdf41f2a52e508"
+      },
+      {
+        "path": "artifacts/v051-phone/search-fact-yunnan-offline.png",
+        "sha256": "120a7c961e64eb999666d7ba6814cecc85246794b15d4f7c84d5ba1f8c544d1d"
+      },
+      {
+        "path": "artifacts/v051-phone/search-no-result-offline.xml",
+        "sha256": "ebac5c85452eb6533c1951cafc61ac15cf8e61de03db3ed59844941ae7d4820a"
+      },
+      {
+        "path": "artifacts/v051-phone/search-no-result-offline.png",
+        "sha256": "87aed5dd710fe95a99f0470a5f1259eb8ab96ac9b8178edad279e59f7ef42a41"
+      },
+      {
+        "path": "artifacts/v051-phone/source-copy-menu.xml",
+        "sha256": "6271142184745cfa25631ae64ec1f2f1af019296aac7bcfd3dfb2b6428f64ea5"
+      },
+      {
+        "path": "artifacts/v051-phone/source-copy-menu.png",
+        "sha256": "68ce987928fe3739444230d69d76856135a5f4d1ac16825dfab3a1701a1b36aa"
+      },
+      {
+        "path": "artifacts/v051-phone/yangshen-landscape.xml",
+        "sha256": "9b0c5ec207aa806ec79d84947b4377529cdb3f435614cce0267f7d67272377a3"
+      },
+      {
+        "path": "artifacts/v051-phone/yangshen-landscape.png",
+        "sha256": "11f5b4e94027ad17d17584b10e73b9f7f310ce0cb6efcb7bea61fc3ee004bb9c"
+      },
+      {
+        "path": "artifacts/v051-phone/yangshen-landscape-bottom.xml",
+        "sha256": "252a71b1a4309f5ca3ba372711a3282d280336bb593bc479080f08738000bdf7"
+      },
+      {
+        "path": "artifacts/v051-phone/yangshen-landscape-bottom.png",
+        "sha256": "8f76fc668efc354a1e2a790b93045d2135556077ef517a584f3b038fd3dcd607"
+      },
+      {
+        "path": "artifacts/v051-phone/home-large-font.xml",
+        "sha256": "5dd10b366023561fa3819905820c8e95bac9a7c4cd874ead3e5229cc2ecb97e0"
+      },
+      {
+        "path": "artifacts/v051-phone/home-large-font.png",
+        "sha256": "cd0dc290ca87883135e0a802cbf2d6fcde371a374ea50a8c79bda0c92503e705"
+      },
+      {
+        "path": "artifacts/v051-phone/counties-large-font.xml",
+        "sha256": "83c1efb9cbbeb5b59d98124c7ebc8ec7697f431a6ff9729af37a97fb56f2cbfe"
+      },
+      {
+        "path": "artifacts/v051-phone/counties-large-font.png",
+        "sha256": "ec21628e2ea00da12303d0653b6e62619b50e4a9b80f73b4c40a17acad47676c"
+      },
+      {
+        "path": "artifacts/v051-phone/list-large-font.xml",
+        "sha256": "2bc801107067a57a16041a21cb40cc648bd3b346a646dbb985f2d2d0222b4ac8"
+      },
+      {
+        "path": "artifacts/v051-phone/list-large-font.png",
+        "sha256": "6b032fdb83a96283653b0a7883765bf17346de177d971914865b548babd70b1d"
+      },
+      {
+        "path": "artifacts/v051-phone/detail-large-font-top.xml",
+        "sha256": "44aaa30cbaedf81687db540fe2343c34042759ad4eed9b6c9302e25cb2af66ee"
+      },
+      {
+        "path": "artifacts/v051-phone/detail-large-font-top.png",
+        "sha256": "d0b3f25241a33181e2fe1ac359dc1f0a718a68d70ea0418a17aede751e0a8d91"
+      },
+      {
+        "path": "artifacts/v051-phone/detail-large-font-scroll.xml",
+        "sha256": "dded1caec4e51ebee04677c6735c154d0905cd7ac209dd4999b759be6a7440e2"
+      },
+      {
+        "path": "artifacts/v051-phone/detail-large-font-scroll.png",
+        "sha256": "eb09ff107c95026bfcdd03e6220c7e41ec0428001672ba97ca5a84775d80aba7"
+      },
+      {
+        "path": "artifacts/v051-phone/resume-from-recents-large-font.xml",
+        "sha256": "997156c44a1d7a951d2b471557069fbea742240c753ac2bbc85d66f8b0643648"
+      },
+      {
+        "path": "artifacts/v051-phone/resume-from-recents-large-font.png",
+        "sha256": "153aabb5e7c328e8fc45d3a0f0e9af4b2b7396f711a2f408db66934be20b73b0"
+      },
+      {
+        "path": "artifacts/v051-phone/native-back-home-confirmed.xml",
+        "sha256": "db58f871cb1a58b0792bb612edd06b0e8d5d92359eb081206edf76ee024cfda2"
+      },
+      {
+        "path": "artifacts/v051-phone/native-back-home-confirmed.png",
+        "sha256": "4f0088f283e097a15d1051b71995231b6b533981ab59ae3c9f333007367a88ad"
+      },
+      {
+        "path": "artifacts/v051-phone/object-1-top.xml",
+        "sha256": "a106519f3820b4f66404904254f0f3a8c9f3349fcfd9e2589131b9a5a79c5eac"
+      },
+      {
+        "path": "artifacts/v051-phone/object-1-top.png",
+        "sha256": "f86a01fd4db759a559af4c11cd7f5802fa51ef6512fa977ff9fa926f5211981d"
+      },
+      {
+        "path": "artifacts/v051-phone/object-1-bottom.xml",
+        "sha256": "db9fec9dedd6c4647a8bb5ed1ae8f87e01daf645577ab713bd9f1839ddb656cb"
+      },
+      {
+        "path": "artifacts/v051-phone/object-1-bottom.png",
+        "sha256": "7fa5094c3209ef59fbf0e5356d45f8ec894647a86f921b74bf3f7c4f57c5ce01"
+      },
+      {
+        "path": "artifacts/v051-phone/object-2-top.xml",
+        "sha256": "47ea20e3d8934b0171db9d90916b64feb01983646d9ef62e39aef4eb05543489"
+      },
+      {
+        "path": "artifacts/v051-phone/object-2-top.png",
+        "sha256": "a3b65a5850b91cd7965e7893882853aa21ce8411a3ea0eecbba8de5c6ea54587"
+      },
+      {
+        "path": "artifacts/v051-phone/object-2-bottom.xml",
+        "sha256": "b7a2ef3557c94ed35944536f908ae4792aff97910a4e9177c3a9ce4f6f2ed7aa"
+      },
+      {
+        "path": "artifacts/v051-phone/object-2-bottom.png",
+        "sha256": "b07b737bb8c7c7f51ec011c8817bdb2572d7ebeaac33c326a151d70edc41e7a9"
+      },
+      {
+        "path": "artifacts/v051-phone/object-3-top.xml",
+        "sha256": "e17b42b23d3f31cd84dbd7b4d39333df051d8a84037955496736c54110040a2c"
+      },
+      {
+        "path": "artifacts/v051-phone/object-3-top.png",
+        "sha256": "1b36edc68fbb57060d2cb099f8197274ad7d8a4a2fca30a78fa34fec50d2d573"
+      },
+      {
+        "path": "artifacts/v051-phone/object-3-bottom.xml",
+        "sha256": "6a647642294b2617b5281da4977c4d59e10c3990aa3aca8a3d7344e20374c433"
+      },
+      {
+        "path": "artifacts/v051-phone/object-3-bottom.png",
+        "sha256": "3b2da931c3af109f1078b9d11d75c72f1ed37c8caa56b471f7fef57594e79474"
+      },
+      {
+        "path": "artifacts/v051-phone/object-4-top.xml",
+        "sha256": "2e575cbac2a1911781868fa5db3449e572f760c0f99535749a5ff1009fa57290"
+      },
+      {
+        "path": "artifacts/v051-phone/object-4-top.png",
+        "sha256": "548141e4cece7625f82c7fc3f64875efd192231fcc39c5f9053216820fdd3d29"
+      },
+      {
+        "path": "artifacts/v051-phone/object-4-bottom.xml",
+        "sha256": "204274b4deaeb192f032f92cec746a0ef8766a751652686b49495eeabca11f51"
+      },
+      {
+        "path": "artifacts/v051-phone/object-4-bottom.png",
+        "sha256": "c6e8a1a4428a6fc12778397d8cba24e8ec1c9a47e06c98703c65977216f2d0e4"
+      },
+      {
+        "path": "artifacts/v051-phone/object-5-top.xml",
+        "sha256": "8d5445372c87a0d107e731f1de9f992e8e1757452a62c3d2fab356345087c24b"
+      },
+      {
+        "path": "artifacts/v051-phone/object-5-top.png",
+        "sha256": "0c0f5d5df7f4fa311531ddd7bfc3dbee388789181b925bddf20d12e1b187c2bf"
+      },
+      {
+        "path": "artifacts/v051-phone/object-5-bottom.xml",
+        "sha256": "bbdff321b223df152d85167e720fd803cff6fbeb49fc154321a2af53600b8383"
+      },
+      {
+        "path": "artifacts/v051-phone/object-5-bottom.png",
+        "sha256": "c0c351e18586c10ca1be8b20970550ed46bba2992c2b19f9b0ed450284226423"
+      },
+      {
+        "path": "artifacts/v051-phone/object-6-top.xml",
+        "sha256": "fdab02846f482909566f2a0c5771e2349b274a9d6d42ffd3ce9639b11910e82d"
+      },
+      {
+        "path": "artifacts/v051-phone/object-6-top.png",
+        "sha256": "35a67ada3960cd8212e5a8f6412272743315354e6d5298c873e90400473ca4b7"
+      },
+      {
+        "path": "artifacts/v051-phone/object-6-bottom.xml",
+        "sha256": "fdab02846f482909566f2a0c5771e2349b274a9d6d42ffd3ce9639b11910e82d"
+      },
+      {
+        "path": "artifacts/v051-phone/object-6-bottom.png",
+        "sha256": "35a67ada3960cd8212e5a8f6412272743315354e6d5298c873e90400473ca4b7"
+      }
+    ],
+    "private_snapshot_hashes": {
+      "before.json": "da8588f3e873004a4b983d35427bafebcc814a5582030e80659337c6a814273b",
+      "after-install.json": "dfdcb0f7c234c4e55085504d87b354b49eac1ffca620c6ec2ddf73ad5c46bf43",
+      "after-ui.json": "366fdef4f7ba78cf719a712d90ef50a579507c836c712de77a628141130ac69d"
+    }
+  },
+  "prior_engineering_results_not_rerun": {
+    "reference": "docs/evidence/v051-verification.json",
+    "debug": 489,
+    "release": 476,
+    "total": 965,
+    "failures_errors_skips": 0,
+    "python": 7,
+    "fake_simulations": 6,
+    "build_lint": "PASS",
+    "signing_accept_reject": [
+      2,
+      6
+    ]
+  },
+  "scope_controls": {
+    "new_build": false,
+    "production_source_changed": false,
+    "new_journey_started": false,
+    "uninstall_or_clear_data": false,
+    "additional_test_apk_installed": false,
+    "candidate_approval_changed": false,
+    "formal_stories": 0,
+    "release_status": "BLOCKED",
+    "pr_draft_open": true,
+    "pr_merged": false,
+    "apk_uploaded_or_published": false,
+    "issues_closed": [],
+    "next_version_started": false
+  },
+  "stop": "Do not repeat install or repair data. Await user acceptance and separate next-step decision."
+}

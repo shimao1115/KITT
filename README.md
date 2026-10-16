@@ -4,7 +4,7 @@
 >
 > **实际状态**：V0.5.0/code17 工程 [PR #28](https://github.com/shimao1115/KITT/pull/28) 已合并 `main`，手机 code17 原签名升级与杨慎两篇真人完整试听成功；**正式批准故事仍 0，杨慎候选未获正式发布许可**，真实 GPS/断网等 [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27) 余项仍 PENDING。
 >
-> **当前施工**：V0.5.1/code18「探索地点」＋有限 UI 优化，[Issue #30](https://github.com/shimao1115/KITT/issues/30) / [Draft PR #31](https://github.com/shimao1115/KITT/pull/31)；Codex 的唯一施工卡在**活动分支** `feat/v051-explore-places/TASK_CARD.md`，不是 `main` 上的历史 V0.5.0 任务卡。下一步才是六类兴趣、**县级独立知识包及可在线下载/本地导入**、更新与本地知识优先 AI，再按镇街全面采集六个县级地区。
+> **当前工程交付／STOP**：V0.5.1/code18「探索地点」＋有限 UI 优化已提交 [Draft PR #31](https://github.com/shimao1115/KITT/pull/31)；实际新都6对象/22基础事实、正式故事0，Debug489+Release476共965项及Python7/六组模拟/构建/lint/原签名通过，见[交接](HANDOFF.md)。本地候选未安装，PR未合并、APK未发布，等用户验收；唯一任务卡在活动分支 `feat/v051-explore-places/TASK_CARD.md`。下一步才是六类兴趣、**县级独立知识包及可在线下载/本地导入**、更新与本地知识优先 AI，再按镇街全面采集六个县级地区。
 >
 > **内容与知识包原则**：**游客按市／州默认一键下载、也可选区县；系统按县级独立 Fact/Narrative 制作发布和更新，镇街是知识普查与讲述组织单位**。第一份详细样板先做**新都区**，同时用“成都市”市州目录汇总当前真正已发布的县包，不假装成都已完整覆盖。办公室/家庭电脑生产，GitHub Git 保存合法文字源、GitHub Releases 发布批准后的文字包；设备离线中文 TTS，无音频包与 NAS。县级采集设计见仍待合并的 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)。**路线图不是新施工、真机安装或内容发布授权。**
 
