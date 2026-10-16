@@ -1,18 +1,12 @@
 # KITT
 
-> **最新代码检查与候选修订（2026-10-14）**：现有 code14 在有网时自动讲述仍可能等 ChatGPT，Fake/旧提示词仍可能主动问目的地。为落实“离线是主路径、目的地是自愿信息”，先做 [Hotfix #24](https://github.com/shimao1115/KITT/issues/24)，候选代码已放 [Draft PR #25](https://github.com/shimao1115/KITT/pull/25)；**尚未运行 Android 回归、未合并、未生成新 APK，不代表手机已经修复**。此项优先于 #23 删除结束页评分，再继续双层故事包与探索地点。详情见 [下阶段路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)。
-
-> **下阶段研发排序已确认（2026-10-14）**：[本地知识优先路线图](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)。先简化旅程结束页，再完善新都成品故事、探索地点/本地 TTS、六类偏好，随后做 GitHub 一键更新与在线 AI 增强。当前用户决定**暂不专项排查 ChatGPT 账号无回应、模型连接或 VPN 不稳定**；云端不可靠不能妨碍离线知识的阅读与播报。此为规划，未改 V0.4.0 APK。
-
-> **2026-10-14 当前事实与未来产品方向**：V0.4.0/code14 已交付新都离线事实/确定性讲述试点，用户已在无网络时听到杨升庵介绍，但反馈故事太浅；**真正的双层事实包+讲述包尚未实装**。最终产品定位是**无需配置云端 API 就可通过本地中文 TTS 听完整沿途故事**，接入大模型后再获得灵活问答、搜证和图片理解。正式设计：[内容标准 V2.4](docs/KITT_KNOWLEDGE_STANDARD.md)、[跨 AI 知识工厂 V2.4](docs/KITT_KNOWLEDGE_FACTORY.md)、[离线包与分发蓝图 V2.4](docs/FUTURE_OFFLINE_KNOWLEDGE_PACKS.md)、[离线内容管理 V1.0](docs/KITT_OFFLINE_PACK_MANAGEMENT.md)；当前研发与真机验收以 [#20](https://github.com/shimao1115/KITT/issues/20) 和 [HANDOFF](HANDOFF.md) 为准，**不自动开启下一版本**。下文早期 V0.3.5.1 状态为历史里程碑。
-
-> **最终生产/分发路线**：办公室电脑和家庭电脑负责 AI 调研、事实与讲述包整理及打包；**GitHub Git 保存可公开的文字源，GitHub Releases 分发压缩文字知识包**。NAS 全面退出。讲述模式默认**离线优先**，按临时需求单次请教 AI；用户可选**即时优先**由在线模型灵活组织，但**两种模式下 AI 均可优先查询本地 Fact/Narrative**，不足或需要最新信息再联网研究，失败则明确回退本地故事。该模式 UI 尚未在 code14 中实现。
-
-> **离线包管理已确定的产品规则**：像成熟离线地图一样，用户按地区下载完整文字知识，事实/讲述由程序自动匹配；默认在 Wi-Fi 更新已装地区（可关闭），更新失败保留旧版本，明确展示实际故事覆盖与更新说明；行前提示、本地文件导入为后续功能，复杂差分更新暂缓。详细见 [离线知识包管理 V1.0](docs/KITT_OFFLINE_PACK_MANAGEMENT.md)。**这只是规划，尚无实际下载器。**
-
-> **未来第三种交互“探索地点”**：主动查看当前位置或异地（如马尔康），点主题打开审核后的**完整讲述稿文字**，底部“播放”按钮才用设备本地 TTS 朗读**同篇文字**；没有云 API 也能查看/播放已安装包。没安装地区包时才按条件临时在线探查，结果必须标明未正式入库。**这一界面尚未实现。**
-
-> **未来内容兴趣与界面简化**：首版只有六类题材；每篇讲述稿一主类、可多副类；设置为“多讲/正常/少讲”且默认均衡，用于选题，不强制比例。**取消目前旅程结束时的五项评分、意见框与“保存评分”按钮**，保留旅程纪要与返回。**这项 UI 删除需要后续 App 版本，现有 code14 APK 尚未改变。**
+> **2026-10-16 当前产品路线唯一入口**：[《KITT 现行产品与工程路线图》](docs/KITT_CURRENT_ROADMAP.md)。2026-10-14—15 多轮互相覆盖的旧进度与开发顺序已[完整归档](docs/archive/ROADMAP_OFFLINE_FIRST_20261014_15.md)，原[下阶段路线图旧链接](docs/ROADMAP_OFFLINE_FIRST_NEXT.md)仅作跳转。
+>
+> **实际状态**：V0.5.0/code17 工程 [PR #28](https://github.com/shimao1115/KITT/pull/28) 已合并 `main`，手机 code17 原签名升级与杨慎两篇真人完整试听成功；**正式批准故事仍 0，杨慎候选未获正式发布许可**，真实 GPS/断网等 [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27) 余项仍 PENDING。
+>
+> **当前施工**：V0.5.1/code18「探索地点」＋有限 UI 优化，[Issue #30](https://github.com/shimao1115/KITT/issues/30) / [Draft PR #31](https://github.com/shimao1115/KITT/pull/31)；Codex 的唯一施工卡在**活动分支** `feat/v051-explore-places/TASK_CARD.md`，不是 `main` 上的历史 V0.5.0 任务卡。下一步才是六类兴趣、**县级独立知识包及可在线下载/本地导入**、更新与本地知识优先 AI，再按镇街全面采集六个县级地区。
+>
+> **内容与知识包原则**：**游客按市／州默认一键下载、也可选区县；系统按县级独立 Fact/Narrative 制作发布和更新，镇街是知识普查与讲述组织单位**。第一份详细样板先做**新都区**，同时用“成都市”市州目录汇总当前真正已发布的县包，不假装成都已完整覆盖。办公室/家庭电脑生产，GitHub Git 保存合法文字源、GitHub Releases 发布批准后的文字包；设备离线中文 TTS，无音频包与 NAS。县级采集设计见仍待合并的 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)。**路线图不是新施工、真机安装或内容发布授权。**
 
 > 产品名：**沿途**
 > Slogan：**读懂沿途的世界**
@@ -25,7 +19,7 @@ KITT 是一个 AI Native 的 Android 项目。它不是导航软件，也不是�
 
 用户开始一趟旅程后，KITT 根据手机 GPS、用户给出的旅程意图和必要的联网查证，在真正值得打破安静的时候主动讲解正在经过的自然地理、道路工程、聚落、人文和历史。用户随时可以打断、追问、让它深入、让它安静，或者直接告诉它计划发生了变化。
 
-## V0 成功标准
+## V0 成功标准（历史原始目标，非当前版本 Gate）
 
 V0 只需要证明一个“魔法瞬间”：
 
@@ -63,10 +57,11 @@ Fake 通过闭环验收不代表真实 AI 内容质量通过；手机语音/GPS/
 
 Codex 或其他开发 Agent 开工前必须按顺序阅读：
 
-1. [AGENTS.md](AGENTS.md) — 自主施工规则与边界
-2. [docs/PRODUCT_SPEC.md](docs/PRODUCT_SPEC.md) — 完整 V0 产品规格
-3. [docs/AI_CONTRACT.md](docs/AI_CONTRACT.md) — AI Director 输入、输出、Prompt 与事实规则
-4. [docs/ROADMAP.md](docs/ROADMAP.md) — Destination Chain 路线图与验收门
+1. [AGENTS.md](AGENTS.md) — 开发安全边界、版本与真机签名契约
+2. **当前开发分支的** `TASK_CARD.md`、对应 Issue/Draft PR 和 `HANDOFF.md` — 唯一有效的本轮施工范围与实际验收状态
+3. [KITT 现行路线图](docs/KITT_CURRENT_ROADMAP.md) — 以后版本的已决定方向（仅规划）
+4. [docs/PRODUCT_SPEC.md](docs/PRODUCT_SPEC.md) 与 [docs/AI_CONTRACT.md](docs/AI_CONTRACT.md) — V0 功能、AI 契约；与新知识标准冲突处以正式新版规范及任务卡为准
+5. [docs/ROADMAP.md](docs/ROADMAP.md) — V0 历史 Destination Chain（非现行版本排序）
 
 ## 最高优先级原则
 
