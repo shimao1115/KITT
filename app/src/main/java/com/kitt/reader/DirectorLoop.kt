@@ -30,7 +30,8 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
     private val online: () -> Boolean = { true },
     private val offlinePack: () -> OfflinePack? = { null },
     private val preferOffline: () -> Boolean = { false },
-    private val storyPacks: () -> StoryPacks? = { null }) {
+    private val storyPacks: () -> StoryPacks? = { null },
+    private val storyInterests: () -> Map<StoryCategory, StoryInterest> = { emptyMap() }) {
     private var request: Job? = null
     private var requestActive = false
     val pending get() = request?.isActive == true
@@ -105,7 +106,9 @@ class DirectorLoop(private val journey: Journey, private val context: ContextPip
         text.trim().trimEnd('？', '?', '。') in setOf("这里有什么", "这里有什么好讲的", "讲讲这里")
     private fun localDispatch(utterance: String?, image: Boolean = false) {
         val pack = offlinePack()
-        val response = OfflineNarrator(pack, storyPacks()).response(journey, now(), utterance, image)
+        // Interests bias automatic narration only; an explicit spoken request keeps the deterministic pick.
+        val interests = if (utterance == null) storyInterests() else emptyMap()
+        val response = OfflineNarrator(pack, storyPacks(), interests).response(journey, now(), utterance, image)
         val ticket = journey.ticket(utterance != null)
         val story = storyPacks()?.stories?.firstOrNull { it.marker == response.memoryUpdate.substringBefore('；') }
         val outcome = journey.deliver(ticket, response.json(), narrationArea = pack?.area,

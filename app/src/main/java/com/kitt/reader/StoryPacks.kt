@@ -17,14 +17,15 @@ data class LocalStory(val id: String, val type: StoryType, val entityId: String,
 /** Independent manifests and claim revisions. A rejected dependency only disables its users.
  * No network, downloader, coordinates, accounts or persistent playback state. */
 class StoryPacks private constructor(val stories: List<LocalStory>, val blocked: Map<String, String>) {
-    fun select(journey: Journey, area: AreaIdentity, more: Boolean): LocalStory? {
+    fun select(journey: Journey, area: AreaIdentity, more: Boolean,
+        interests: Map<StoryCategory, StoryInterest> = emptyMap()): LocalStory? {
         if (area.copy(chapter = "").key != XINDU_KEY) return null
         fun attempted(story: LocalStory) = journey.localStoryPhase(story.id) != null
         val main = stories.firstOrNull { it.type == StoryType.main } ?: return null
-        if (!more) return main.takeUnless(::attempted)
+        if (!more) return StoryRanking.first(stories.filter { it.type == StoryType.main && !attempted(it) }, interests)
         if (journey.topic != "杨慎（杨升庵）" || journey.localStoryPhase(main.id) != NarrationPhase.COMPLETED) return null
-        return stories.firstOrNull { it.entityId == main.entityId && it.type == StoryType.followup && !attempted(it) &&
-            it.coverage.any { fact -> fact !in main.coverage } }
+        return StoryRanking.first(stories.filter { it.entityId == main.entityId && it.type == StoryType.followup &&
+            !attempted(it) && it.coverage.any { fact -> fact !in main.coverage } }, interests)
     }
 
     /** Keep old short fragments of this entity from immediately retelling the same main story. */
@@ -36,6 +37,11 @@ class StoryPacks private constructor(val stories: List<LocalStory>, val blocked:
      * (planting/name, later layout, buildings) remain eligible; no second complete story is built. */
     fun coversLegacyFact(journey: Journey, area: AreaIdentity, factId: String): Boolean =
         area.copy(chapter = "").key == XINDU_KEY && journey.hasLocalStoryAttempt() && factId == "guihu-memory"
+
+    /** Truthful settings copy: interests reorder gate-admitted automatic stories, nothing more. */
+    val interestNotice get() = if (stories.isEmpty())
+        "当前没有已通过审核门禁的完整故事；兴趣将在有合格故事时影响自动讲述的相对优先级。" else
+        "兴趣只在已通过门禁、可自动讲述的完整故事之间调整相对优先级，不设配额、不屏蔽任何类别。"
 
     companion object {
         private const val XINDU_KEY = "四川省/成都市/新都区/"

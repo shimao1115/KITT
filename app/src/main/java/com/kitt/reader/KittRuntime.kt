@@ -18,6 +18,11 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
     val storyPacks = StoryPacks.load(context)
     val store = TripStore(context)
     val settings = SettingsStore(context)
+    val storyInterestStore = StoryInterestStore(context)
+    var storyInterest: Map<StoryCategory, StoryInterest> = storyInterestStore.read(); private set
+    /** Explicit save only. Never touches the account, Provider, Journey, GPS or voice lifecycle. */
+    fun saveStoryInterest(interests: Map<StoryCategory, StoryInterest>): Result<Unit> =
+        storyInterestStore.save(interests).onSuccess { storyInterest = storyInterestStore.read() }
     private val diagnostics = DebugDiagnostics(context)
     val chatGpt = ChatGptAccount(settings, transport = ChatGptHttpsTransport { diagnostics.log("KITTAuth", it) },
         diagnostic = { diagnostics.log("KITTAuth", it) }, keepAlive = { active ->
@@ -85,7 +90,8 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
             (settings.readResearch() ?: config).kind != ProviderKind.FAKE },
         researchChanged = { revision.intValue++ }, online = ::cloudAvailable,
         offlinePack = { offlinePack.takeUnless { simulation } },
-        preferOffline = { !simulation }, storyPacks = { storyPacks.takeUnless { simulation } })
+        preferOffline = { !simulation }, storyPacks = { storyPacks.takeUnless { simulation } },
+        storyInterests = { storyInterest })
     val visualTalk = VisualTalk(journey, loop, scope, ::provider)
     var simulation = false; private set
     var acceleration = settings.acceleration

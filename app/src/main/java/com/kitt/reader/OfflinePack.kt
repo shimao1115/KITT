@@ -124,7 +124,8 @@ class OfflinePack private constructor(val version: String, val area: AreaIdentit
 }
 
 /** Select 2–4 new fact fragments, reuse the authoritative Journey playback lifecycle, no cloud calls. */
-class OfflineNarrator(private val pack: OfflinePack?, private val stories: StoryPacks? = null) {
+class OfflineNarrator(private val pack: OfflinePack?, private val stories: StoryPacks? = null,
+    private val interests: Map<StoryCategory, StoryInterest> = emptyMap()) {
     fun response(journey: Journey, time: Long, utterance: String? = null, image: Boolean = false): DirectorResult {
         fun message(text: String) = DirectorResult(Action.SPEAK_NOW, "离线资料", text)
         val active = utterance != null
@@ -139,7 +140,7 @@ class OfflineNarrator(private val pack: OfflinePack?, private val stories: Story
         val more = followUp(utterance) == FollowUp.MORE
         if (active && !more && utterance?.trim()?.trimEnd('？', '?', '。') !in setOf("这里有什么", "这里有什么好讲的", "讲讲这里"))
             return message("离线时可以问这里有什么、再讲一点或再说一遍；其他问题请联网后再问。")
-        stories?.select(journey, identity, more)?.let { return it.response() }
+        stories?.select(journey, identity, more, interests)?.let { return it.response() }
         if (more && stories?.ownsAttempt(journey, identity, journey.topic) == true)
             return message("目前没有审核通过且未讲过的延伸故事。")
         val covered = journey.narrationMemory.filter { it.area?.copy(chapter = "")?.key == identity.key }

@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -28,6 +29,8 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
     var previewing by remember { mutableStateOf(false) }
     DisposableEffect(androidVoice) { onDispose { androidVoice?.stop() } }
     var message by remember { mutableStateOf("") }
+    var interestDraft by remember { mutableStateOf(runtime.storyInterest) }
+    var interestMessage by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val account = runtime.chatGpt
@@ -190,6 +193,29 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
             else previewMessage = "请在系统设置中启用支持中文的语音识别服务。"
         }) { Text("系统语音识别设置") }
         TextButton(onNotification) { Text("通知：${if (notificationEnabled) "已允许" else "未允许"} · 系统设置") }
+        Spacer(Modifier.height(12.dp))
+        Text("讲述兴趣", style = MaterialTheme.typography.titleMedium)
+        Text(runtime.storyPacks?.interestNotice ?: "完整故事资料缺失或校验失败；目前没有可排位的完整故事。")
+        Text("六类初始均为均衡档；档位只调整已合格故事之间的相对优先级，不设配额、不屏蔽任何类别，也不越过审核与现场门禁。本区块单独保存，不改动账号、模型或语音设置。")
+        StoryCategory.entries.forEach { category ->
+            Column(Modifier.padding(top = 8.dp)) {
+                Text(storyCategoryLabel(category), style = MaterialTheme.typography.bodyLarge)
+                Row {
+                    StoryInterest.entries.forEach { interest ->
+                        FilterChip(interestDraft[category] == interest,
+                            { interestDraft = interestDraft + (category to interest) },
+                            { Text(storyInterestLabel(interest)) },
+                            Modifier.testTag("interest-$category-$interest").padding(end = 6.dp))
+                    }
+                }
+            }
+        }
+        Button({
+            val saved = runtime.saveStoryInterest(interestDraft)
+            interestMessage = if (saved.isSuccess) "已保存讲述兴趣"
+            else saved.exceptionOrNull()?.message ?: "暂时无法保存讲述兴趣"
+        }, Modifier.fillMaxWidth().height(56.dp)) { Text("保存讲述兴趣") }
+        if (interestMessage.isNotBlank()) Text(interestMessage)
         Button({
             val selected = account.models.find { it.slug == model }
             val researchDraft = if (separateResearch) ProviderConfig(ProviderKind.OPENAI, researchEndpoint.trim(), researchModel.trim(), apiKey = researchKey.trim()) else null
@@ -215,4 +241,19 @@ fun SettingsScreen(runtime: KittRuntime, notificationEnabled: Boolean, onNotific
         TextButton({ runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.openstreetmap.org/copyright"))) }
             .onFailure { message = "请用浏览器查看 openstreetmap.org/copyright；完整许可也随应用内置。" } }) { Text("边界数据来源与许可") }
     }
+}
+
+private fun storyCategoryLabel(category: StoryCategory) = when (category) {
+    StoryCategory.NATURE -> "自然地理生态"
+    StoryCategory.ENGINEERING -> "交通与工程"
+    StoryCategory.CULTURE -> "人文文化社会"
+    StoryCategory.LOCAL_LIFE -> "物产产业生活"
+    StoryCategory.HISTORY -> "历史与人物"
+    StoryCategory.TRAVEL -> "旅行现场与常识"
+}
+
+private fun storyInterestLabel(interest: StoryInterest) = when (interest) {
+    StoryInterest.MORE -> "多讲"
+    StoryInterest.NORMAL -> "正常"
+    StoryInterest.LESS -> "少讲"
 }
