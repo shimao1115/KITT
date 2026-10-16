@@ -6,7 +6,7 @@
 >
 > **当前施工**：V0.5.1/code18「探索地点」＋有限 UI 优化，[Issue #30](https://github.com/shimao1115/KITT/issues/30) / [Draft PR #31](https://github.com/shimao1115/KITT/pull/31)；Codex 的唯一施工卡在**活动分支** `feat/v051-explore-places/TASK_CARD.md`，不是 `main` 上的历史 V0.5.0 任务卡。下一步才是六类兴趣、**县级独立知识包及可在线下载/本地导入**、更新与本地知识优先 AI，再按镇街全面采集六个县级地区。
 >
-> **内容与知识包原则**：县级独立 Fact/Narrative，市州目录聚合；办公室/家庭电脑生产，GitHub Git 保存合法文字源、GitHub Releases 发布经批准的文字包；设备离线中文 TTS，无音频包与 NAS。全国区县采集的设计见仍待合并的 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)。**路线图和规范不是新的施工、真机安装或合并授权。**
+> **内容与知识包原则**：**游客按市／州默认一键下载、也可选区县；系统按县级独立 Fact/Narrative 制作发布和更新，镇街是知识普查与讲述组织单位**。第一份详细样板先做**新都区**，同时用“成都市”市州目录汇总当前真正已发布的县包，不假装成都已完整覆盖。办公室/家庭电脑生产，GitHub Git 保存合法文字源、GitHub Releases 发布批准后的文字包；设备离线中文 TTS，无音频包与 NAS。县级采集设计见仍待合并的 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)。**路线图不是新施工、真机安装或内容发布授权。**
 
 > 产品名：**沿途**
 > Slogan：**读懂沿途的世界**
