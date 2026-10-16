@@ -24,6 +24,8 @@
 
 完整逐套测试名、计数、报告哈希、六组模拟摘要、lint、APK与证书信息见 [本轮证据](docs/evidence/v051-verification.json)，[验收说明](docs/ACCEPTANCE_EXPLORE_PLACES.md)。原始日志在 `artifacts/v051-verify.log`、`v051-runtime-build.log`、`v051-signing.log`、`v051-content.log`；可用 `python scripts/record-v051-evidence.py` 重新汇总本次输出（证据日期受限于本轮，不自动跑测试或访问手机）。
 
+提交前主干新增纯文档整理 `cefe010`，已同步到本施工分支并解决旧路线入口的文档冲突；保留[统一现行路线图](docs/KITT_CURRENT_ROADMAP.md)、市州默认下载/县级物理分包及本地导入的既定次序，只更新本版工程进度。没有合并GitHub PR，也没有改变已测业务代码或候选APK，不据未来规划提前施工。
+
 ## 仅本地候选文件
 
 | 文件（仓库根相对路径） | 实际字节 | SHA256 |

@@ -5,7 +5,7 @@
   "status": "ENGINEERING-STOP-USER-ACCEPTANCE-PENDING",
   "implementation_commit": "327186bf30ae19586dcd012e95bc72120080b9e1",
   "build_provenance": "APKs built from the implementation working tree before its milestone commit. source_sha256 records those actual production bytes; embedded AGP VCS metadata records the earlier branch base.",
-  "recorded_at": "2026-10-16T14:28:22.360870+08:00",
+  "recorded_at": "2026-10-16T14:32:30.357124+08:00",
   "variants": {
     "Debug": {
       "tests": 489,
@@ -2810,6 +2810,10 @@
   "layout": "Compose/Robolectric: 411x914 portrait, 914x411 landscape, 1280x800 tablet landscape, 320x568 + fontScale1.5. Not physical screenshots.",
   "device_actions": "NONE; no adb, install, phone access or physical hearing tests",
   "github": "Draft PR31 remains draft/unmerged; no release or APK upload; Issues23/24/27 remain open",
+  "documentation_sync": {
+    "main_commit": "cefe01000c721a7ab3fe665243aa3b8e746da96d",
+    "scope": "Merged documentation-only main updates into feature branch; preserved unified roadmap/city grouping/county packages. No GitHub PR merge or production code change."
+  },
   "pending": [
     "User engineering review",
     "Separately authorized code17 to code18 in-place phone upgrade and device UI verification",

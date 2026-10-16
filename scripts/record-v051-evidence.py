@@ -132,7 +132,7 @@ def main():
                        'app/src/main/java/com/kitt/reader/SettingsStore.kt').strip()
     result = dict(
         date='2026-10-16', version='0.5.1', version_code=18, status='ENGINEERING-STOP-USER-ACCEPTANCE-PENDING',
-        implementation_commit=command('git', 'rev-parse', 'HEAD').strip(),
+        implementation_commit=command('git', 'log', '-1', '--format=%H', '--', 'app/src/main', 'app/build.gradle.kts').strip(),
         build_provenance='APKs built from the implementation working tree before its milestone commit. source_sha256 records those actual production bytes; embedded AGP VCS metadata records the earlier branch base.',
         recorded_at=datetime.now(timezone(timedelta(hours=8))).isoformat(),
         variants=variants, total_tests=sum(v['tests'] for v in variants.values()), python_tests=7,
@@ -148,6 +148,8 @@ def main():
         layout='Compose/Robolectric: 411x914 portrait, 914x411 landscape, 1280x800 tablet landscape, 320x568 + fontScale1.5. Not physical screenshots.',
         device_actions='NONE; no adb, install, phone access or physical hearing tests',
         github='Draft PR31 remains draft/unmerged; no release or APK upload; Issues23/24/27 remain open',
+        documentation_sync=dict(main_commit=command('git', 'rev-parse', 'origin/main').strip(),
+                                scope='Merged documentation-only main updates into feature branch; preserved unified roadmap/city grouping/county packages. No GitHub PR merge or production code change.'),
         pending=['User engineering review', 'Separately authorized code17 to code18 in-place phone upgrade and device UI verification',
                  'Physical GPS automatic chain and recovery (#23/#24/#27)', 'Formal story Visitor Gate and explicit release approval'])
     Path('docs/evidence/v051-verification.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
