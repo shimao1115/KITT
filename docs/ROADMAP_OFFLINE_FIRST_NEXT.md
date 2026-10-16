@@ -1,3 +1,11 @@
+## 2026-10-16 最新执行顺序：V0.5.1 探索地点施工已授权（此前内容优先排序被覆盖）
+
+V0.5.0 工程 [PR #28](https://github.com/shimao1115/KITT/pull/28) 已合并 main（`465d5828`），手机已 code17，杨慎两篇真人试听通过，但两篇正式 Gate 仍 `candidate / visitor_gate=pending`，正式故事0/发布 BLOCKED；#23/#24/#27 外场未验仍 OPEN。用户已正式批准开始 V0.5.1/code18 **“探索地点”＋有界 UI 精修**，[Issue #30](https://github.com/shimao1115/KITT/issues/30)，`feat/v051-explore-places` 分支 [TASK_CARD](../TASK_CARD.md) 为唯一开发入口：可离线不启程浏览真实已装区县基础事实；未来已审核成品全文点击手动本地TTS；只有合法来源、真审批才显示可播放故事。**本版不为演示篡改门禁，不开发六县内容采集、知识下载器或六类偏好。** 开发可提交 Draft PR，设备安装/PR合并/正式故事批准另外授权。此前“先广汉三星堆内容”的排序属于历史。
+
+下一阶段依次考虑六类兴趣和主程序剩余功能、县级离线包管理/更新及本地知识优先问AI，然后按 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29) 的“区县分包、镇街普查、对象建档、事实入库、精选成篇”六区方案全面开展采集。每阶段独立小任务。下文旧阶段状态和施工顺序仅作历史。
+
+---
+
 ## 2026-10-15 当前交付：code17验收候选已就绪，尚未上机
 
 v2.1固定文字的来源复核、Debug 466 + Release 453 = 919项工程全回归、六组模拟、构建/lint与原签名通过，code17仅验收候选已产出；见[交接](../HANDOFF.md)与[本轮证据](evidence/v050-final-verification.json)。真人TTS/实机全链PENDING，正式发布BLOCKED，Draft PR28不合并、#23/#24/#27不关闭，等待用户另行授权原位升级与验收。
