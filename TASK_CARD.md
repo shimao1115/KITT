@@ -1,3 +1,20 @@
+# 2026-10-16 用户已批准 V0.5.1 文档收口及 PR #31 正式合并（现行最终任务）
+
+**用户最新明确回复“批准”**，即批准将办公室电脑已有两份脱敏诊断报告及最新 HANDOFF 同步到 GitHub，在复核全部先决条件后**正式合并 PR #31 至 main**。此前的一次 code17→18 原位安装、一次当前设置只读检查均已结束；**不得再次操作手机**。本段仅覆盖下方旧 STOP 的“禁止合并/记录未收口”限制，不解除内容正式审核、APK 发布、下版本施工、旧外场 Gate 的限制。
+
+## 唯一执行范围：保护本机内容 → 证据同步 → 最后复核 → PR 合并 → STOP
+
+1. **先保护办公室真实工作树**：仓库 `H:/CODEX/KITT`，分支 `feat/v051-explore-places`。先读 `AGENTS.md`、本卡、`HANDOFF.md`、PR #31 最新评论、`docs/evidence/v051-phone-acceptance.json`；检查 `git status` / 本地提交，并 `git fetch origin`。GitHub 远端目前**没有** `docs/evidence/v051-settings-drift-analysis.md` 与 `docs/evidence/v051-current-settings-readonly.md`，但用户报告两份都在本地；若它们确实存在，**先审阅脱敏情况并完整保留**，绝不能 reset/clean/rebase 覆盖本地。若任一报告不存在或包含不宜公开的账号/密文/设备隐私，STOP，报告问题；不要凭摘要伪造原报告。
+2. 检查两份技术报告与已存在手机证据的**数据及审核边界**：六项普通配置与旧 code17 可比记录一致、20/20 真实历史哈希不变、ChatGPT 加密记录存在不等于可解密或可在线使用；`shared_prefs/settings.xml` 整文件哈希变化确实存在，**变化字段、根因和完整语义等价依然 `UNKNOWN / INSUFFICIENT_BASELINE`**。不修辞性改写成“漂移已解决”“字节无变化”“账号网络已通过”。
+3. 在**本地**将 `HANDOFF.md` 最顶部更新为最终阶段验收摘要：工程 Debug489 + Release476 =965 零失败/错误/跳过（旧工程结果、不是今天重跑）；唯一一次原签名 code18 原位升级成功；设备探索、搜索、来源、横竖屏、键盘、返回辅助检查 PASS；用户明确回复 **“我没有发现什么问题，都是正常的”**，作为**人工体验PASS**（非帐号在线登录/TTS正式故事/外场 GPS PASS）；20份历史原样；设置 byte drift / UNKNOWN 仍存在。PR 合并仅接受工程和探索 UI，**正式故事仍0、杨慎两篇 `candidate / visitor_gate=pending`、发布 BLOCKED**；#23/#24/#27 实地余项继续 OPEN/PENDING。保留 HANDOFF 原有历史证据，不删改。
+4. 只提交这两份**真实脱敏报告**、HANDOFF 以及必要的小范围证据/文档交接，`git diff --check`；不修改 Android Kotlin、审批/正文、Manifest、签名私钥、APK 或原测试 JSON，不再执行 adb/scrcpy/手机登录与设置操作。推送到 **同一 PR #31 分支**，确认 GitHub 远端报告能打开，敏感资料没有进入 Git。
+5. **最终合并 Gate**：核对 PR #31 的 HEAD、base=main、最新 main 同步、GitHub `mergeable=true`、无未解决 review threads、PR diff 只有原 code18 探索工程及此次经授权的脱敏文档，不夹带新功能；必要 CI/check 如果存在则依实际状态判定，不能凭空称 PASS。此前真实工程965项已记录，若本轮仅文档无业务代码变化无需冒称重跑。若安全检查出现异常/冲突/新代码变动，STOP 等用户裁决。
+6. Gate 满足后，本轮**已经拥有用户对 PR #31 正式合并的明确许可**：可将其转 Ready 并合并到 `main`，随后复核 PR 已 merged、main 含新 Explore 功能及正确 HANDOFF/两份报告。把最终 merge SHA、验收 PASS/PENDING/UNKNOWN 的边界清晰报告用户并 STOP。**不得把工程合并变成 APK 正式发布、杨慎正文审批或任何旧外场 Issue 关闭；不开始 V0.5.2 或 V0.6.x。**
+
+**重点**：这不是新的设备测试任务。本机若已有用户未提交修改优先保护。任何关键文件缺失、隐私问题或合并门禁失败时宁可 STOP，也不要因为已有合并授权就强行推进。
+
+---
+
 # 2026-10-16 最新授权：一次仅限当前设备状态的只读语义检查（覆盖旧设备 STOP 的狭窄范围）
 
 **新的决策**：用户提交 PC 离线调查结果 `INSUFFICIENT_BASELINE`（仅三阶段整个 XML 哈希，没有升级前 XML 或逐字段指纹；无证据断定实际更改字段），并委托决定是否补充一次设备只读语义核查。现同意**仅一次、限定范围、无写入的当前状态检查**。本条是唯一有效的下一轮授权，优先于下文“完全禁止手机操作”的旧 STOP，但**绝不重获 APK 安装许可**。当前手机已经是 `com.kitt.reader.runtimecheck` V0.5.1/code18，20/20真实历史已证实不变，PR #31 工程未合并，设置字节漂移原因未定。
