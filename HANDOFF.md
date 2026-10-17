@@ -1,3 +1,24 @@
+# 2026-10-18 办公室正式发行身份初始化 + 公钥登记 / DONE（本机），PENDING（家庭）
+
+依据 [Issue #44](https://github.com/shimao1115/KITT/issues/44) 阶段 B 的用户批准评论执行。本轮只做两件事：办公室电脑一次性正式发行身份初始化、唯一公钥登记。**未发布任何知识包**，未运行 publish / production-prepare / release-dry-run，未建 Tag/Release，未上传附件。
+
+## 结果
+
+- **身份**：`kitt-9a5e596c-45bd-422b-a53c-b17a15de98a7`，`scope=PRODUCTION`，`test_identity=false`，RSA-3072；公钥 SHA-256 指纹 `79b5403d949681dd9f95d2d436f3d0fac3ecd5682a3bdeca11f91ea0a9aef73e`。公钥与私钥导出比对一致。
+- **位置**：`H:\KITT-identity`，工作树外。默认 `%LOCALAPPDATA%\KITT\pack-publisher` 被工具以 `keydir_inside_worktree` 拒绝——该用户配置目录本身是一个 Git 工作树；拒绝时尚未生成任何密钥，经用户当场选择改到 H 盘后成功。
+- **ACL**：目录与四个文件各仅一条 Allow，主体为所有者 `BUILTIN\Administrators`（初始化在提权会话执行）。非提权普通会话无法读写；日常签名/发布需在同一提权上下文运行。`registration.json` 仅四个公开字段，无私钥。
+- **登记**：`config/pack-publishers.json` 由 `[]` 变为唯一一条记录，提交 `3c42897`（父 `9ad557e0`），仅该文件变更，直接推送 main。按 `3c42897` 回读远端，`key_id`/`public_key` 与本机逐字节一致、`test_identity=false`、无私有材料；仓库无任何 `.pem` 跟踪文件。
+- **环境**：Git 2.55.0、JDK17 Temurin 17.0.19、Python 3.13.14、PowerShell 5.1（无 PS7）、Android SDK 在位；**`gh` 仍未安装**，日常 publish 依赖它，待另行许可。
+- **main 保护**：protection API 返回 `404 Branch not protected`，rulesets 为 `[]`，**不能声称 main 已受保护**。本次直接推送是用户预先批准的登记提交，未绕过任何保护。
+
+## 未做与待办
+
+未改动 `app/src/main`、内容、杨慎/来源审核状态，未碰手机/ADB/APK，未生成第二把密钥，未把私钥写入 Git、聊天或日志。家庭电脑阶段 C、`gh` 安装、main 保护策略、私钥离线加密备份均 PENDING；新都全量仍 BLOCKED、正式故事 0。
+
+[证据](docs/evidence/v060-d2-office-identity-init.json)
+
+---
+
 # 2026-10-18 PR43 最小复审修复交付 / STOP 待再次复审
 
 [Draft PR #43](https://github.com/shimao1115/KITT/pull/43) 保持 Draft、未合并。用户授权“执行修复”，本轮仅处理[独立复审](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)指出的可信登记来源缺口；没有扩大 Issue #42 范围。

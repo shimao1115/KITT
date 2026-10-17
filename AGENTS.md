@@ -1,3 +1,7 @@
+> **2026-10-18 办公室正式发行身份初始化 + 公钥登记 DONE（家庭 PENDING）**：按 [Issue #44](https://github.com/shimao1115/KITT/issues/44) 阶段 B 用户批准执行。办公室电脑生成本机唯一正式身份 `kitt-9a5e596c-45bd-422b-a53c-b17a15de98a7`（RSA-3072、`scope=PRODUCTION`、`test_identity=false`，公钥 SHA-256 `79b5403d…aef73e`），私钥仅存工作树外 `H:\KITT-identity`，ACL 仅所有者；默认 `%LOCALAPPDATA%` 目录因位于 Git 工作树内被 `keydir_inside_worktree` 拒绝，未生成任何密钥，经用户当场选择改到 H 盘。唯一公钥条目已写入 `main:config/pack-publishers.json`（提交 `3c42897`，父 `9ad557e0`，仅该文件），回读远端 `key_id`/`public_key` 与本机逐字节一致、无私钥。**main 未受保护（protection 404、rulesets 空），`gh` 仍未安装；本轮零 publish、零 Tag/Release、零上传、未碰内容/手机/App。** 家庭电脑阶段 C 与 gh 安装、main 保护、私钥离线备份仍 PENDING；新都 BLOCKED、正式故事 0。见[证据](docs/evidence/v060-d2-office-identity-init.json)。
+
+---
+
 > **2026-10-18 PR #43 最小复审修复交付 / STOP 待再次复审**：用户明确授权执行[复审要求](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)。发行者登记改由固定 GitHub 主机/仓库的远端 main 提供，gh api 先取 main SHA 再按 SHA 读名单；候选 commit、工作区、本地 main/origin/main 均不能自登记，确认后重查授权，无额外人工 Gate。新增8例，生产专项66例双 Variant；本轮新鲜 **Debug652 + Release639 + packtool13 = 1304项**零失败/错误/跳过，Python7、六组Fake、assemble/lint（103任务）、原签名2+6 PASS。旧1288项仅代表被复审的旧 head，不继承/相加。见[新证据](docs/evidence/v060-d2-production-review-fix.json)与[HANDOFF](HANDOFF.md)。84个保护文件哈希不变，正式清单仍空、无真实钥/根/Tag/Release/上传/手机/合并；新都BLOCKED、正式故事0，两实体机PENDING。保持 Draft，首次真实身份/发行另行授权，不启动V0.6.1。
 
 ---

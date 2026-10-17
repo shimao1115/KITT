@@ -1,0 +1,101 @@
+{
+  "issue": "https://github.com/shimao1115/KITT/issues/44",
+  "stage": "B",
+  "device": "office",
+  "scope": "一次性正式发行身份初始化 + 唯一公钥登记；不发布任何知识包",
+  "authorization": "Issue #44 用户批准评论（2026-10-18，办公室电脑阶段 B）",
+  "started_at": "2026-10-18T01:46:16+08:00",
+  "recorded_at": "2026-10-18T02:00:00+08:00",
+  "source_commit": "9ad557e077a0a66b8bc176a4002d93feacac67b0",
+  "source_commit_note": "PR #43 合并提交，已确认 origin/main 与其相等且为本地 main 快进目标",
+  "main_before": "9ad557e077a0a66b8bc176a4002d93feacac67b0",
+  "registration_commit": "3c428973b880e0532a924644971de9cf3585c050",
+  "registration_commit_parent": "9ad557e077a0a66b8bc176a4002d93feacac67b0",
+  "registration_commit_files": ["config/pack-publishers.json"],
+  "environment": {
+    "git": "2.55.0.windows.3",
+    "jdk": "Temurin 17.0.19",
+    "python": "3.13.14",
+    "powershell": "5.1.26100.9711",
+    "powershell_7": "ABSENT",
+    "android_sdk": "PRESENT",
+    "github_cli_gh": "ABSENT"
+  },
+  "github": {
+    "credential_source": "Windows 凭据管理器（git credential fill 探测到令牌，未打印）",
+    "permissions": {"admin": true, "maintain": true, "push": true, "triage": true, "pull": true},
+    "branch_protection_api": "404 Branch not protected",
+    "rulesets_api": "[]",
+    "main_protected": false,
+    "note": "main 当前未受保护；本次登记为经用户预先批准的直接提交，未绕过任何保护"
+  },
+  "key_directory": {
+    "path": "H:\\KITT-identity",
+    "this_worktree": "H:\\CODEX\\KITT",
+    "inside_worktree": false,
+    "default_path_status": "REJECTED keydir_inside_worktree",
+    "default_path_reason": "默认 %LOCALAPPDATA%\\KITT\\pack-publisher 位于一个 Git 工作树内（用户配置目录本身是 Git 仓库），工具按设计拒绝在 Git 树内保存私钥",
+    "user_decision": "用户在本次执行中选择 H:\\KITT-identity"
+  },
+  "identity": {
+    "key_id": "kitt-9a5e596c-45bd-422b-a53c-b17a15de98a7",
+    "scope": "PRODUCTION",
+    "test_identity": false,
+    "algorithm": "RSA",
+    "bits": 3072,
+    "public_key_fingerprint_sha256": "79b5403d949681dd9f95d2d436f3d0fac3ecd5682a3bdeca11f91ea0a9aef73e",
+    "public_pem_sha256": "8bec1a96a71eb174bd0de525d28ae5539b3a17163e04c931dee82898614bdced",
+    "registration_json_sha256": "c6689144435b45be0dffd2c39a29f23b19b0ad1ad53b021177ca2d8a50a68767",
+    "created_at": "2026-10-18T01:56:38+08:00",
+    "files": ["key.json", "public.pem", "private.pem", "registration.json"],
+    "acl_owner": "BUILTIN\\Administrators",
+    "acl_summary": "目录及四个文件仅一条 Allow 条目，主体为所有者 BUILTIN\\Administrators；无继承的组或用户授权",
+    "acl_note": "初始化在提权会话中执行，故所有者是 BUILTIN\\Administrators 而非用户账户；同组管理账户可读，非提权普通会话读写会被拒绝。工具后续身份检查要求全部 Allow 主体等于所有者，当前状态可通过",
+    "registration_has_private_material": false,
+    "private_key_exported": false
+  },
+  "verification": {
+    "command": "& .\\scripts\\d2-pack.ps1 -Command identity-init -KeyDirectory 'H:\\KITT-identity'",
+    "command_exit": 0,
+    "status": "LOCAL_IDENTITY_INITIALIZED",
+    "public_private_match": true,
+    "public_private_match_method": "openssl pkey -pubout -outform DER | sha256，两侧均为 79b5403d949681dd9f95d2d436f3d0fac3ecd5682a3bdeca11f91ea0a9aef73e",
+    "registration_fields": ["key_id", "scope", "test_identity", "public_key"],
+    "remote_entries": 1,
+    "remote_key_id_matches": true,
+    "remote_public_key_matches_local": true,
+    "remote_scope_production": true,
+    "remote_test_identity_false": true,
+    "remote_no_private_material": true,
+    "tracked_pem_files_in_repo": 0,
+    "worktree_clean_after_commit": true
+  },
+  "obstacles": [
+    {
+      "code": "gradle_plugin_offline_missing",
+      "detail": "脚本固定 --offline，缓存缺少 org.jetbrains.kotlin.jvm 插件标记；先联网执行 gradlew help 补齐用户缓存后以原命令重试，未修改仓库文件",
+      "resolved": true
+    },
+    {
+      "code": "keydir_inside_worktree",
+      "detail": "默认身份目录位于 Git 工作树内被拒；未生成任何密钥，经用户选择改到 H:\\KITT-identity 后成功",
+      "resolved": true
+    }
+  ],
+  "not_performed": [
+    "未执行任何 publish / production-prepare / release-dry-run",
+    "未创建 GitHub Tag 或 Release，未上传任何附件",
+    "未发布或改动任何知识包，新都与杨慎内容保持不变",
+    "未修改 app/src/main、未碰手机/ADB/APK",
+    "未生成第二把密钥，未把私钥写入 Git/聊天/日志/附件",
+    "未安装 gh，未创建或修改 GitHub 凭据",
+    "未开启 V0.6.1，未改动分支保护设置"
+  ],
+  "pending": [
+    "家庭电脑的独立身份初始化与公钥登记（Issue #44 阶段 C）",
+    "GitHub CLI gh 未安装；日常 publish 依赖 gh，需另行许可后安装",
+    "main 目前未受保护（protection 404、rulesets 空），是否启用保护待用户决定",
+    "建议用户对 H:\\KITT-identity 做离线加密备份",
+    "两机从同一固定 commit 制备合成合规包并比对未签名内容摘要（阶段 C）"
+  ]
+}
