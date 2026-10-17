@@ -16,7 +16,7 @@
 | 工程与语音 | V0.5.2/code19 实跑 **Debug511+Release498=1009项**，零失败/错误/跳过，Fake模拟/签名回归PASS；20/20真实历史在升级前、升级后、真机辅助UI后哈希相同。杨慎双篇历史独立试听PASS不代表Visitor Gate获批；`settings.xml` 首进设置页整体字节漂移根因仍UNKNOWN、账号在线有效性未独立测试 |
 | 标准已发布故事 | **0篇**。杨慎主篇、延伸仍 `candidate / fact_gate=passed / visitor_gate=pending`，批准范围只是 acceptance_candidate；正式发布 **BLOCKED**，不能把试播成功等同正式发行 |
 | 外场测试 | [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27) 保持 OPEN：可信物理 GPS 自动讲述/重播/延伸、断网新鲜定位/云故障恢复、旧历史样本等继续 PENDING |
-| 当前工程交付 | **V0.5.1探索地点、V0.5.2六类讲述偏好均已合并并有用户人工体验PASS**；实际新都1县6对象/22基础事实/6来源，正式可播故事0。**下一施工只有 V0.6.0 D0**：[Issue #36](https://github.com/shimao1115/KITT/issues/36)，通用县级双包读取与旧路径保护，尚无本版工程验收；[交接](../HANDOFF.md) |
+| 当前工程交付 | **V0.5.1探索地点、V0.5.2六类讲述偏好均已合并并有用户人工体验PASS**；实际新都1县6对象/22基础事实/6来源，正式可播故事0。**当前独立交付为 V0.6.0 D0**：[Issue #36](https://github.com/shimao1115/KITT/issues/36)，通用县级双包读取与旧路径保护，已工程交付 [Draft PR #37](https://github.com/shimao1115/KITT/pull/37)：本轮Debug534+Release521=1055项PASS、第二县TEST_ONLY；尚待用户工程验收，未合并/安装/发布；[交接](../HANDOFF.md) |
 | 全国采集规范 | “**区县分包、镇街普查、对象建档、事实入库、精选成篇；全国复用、市州聚合**”已由用户确认。详细设计在 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)，**尚未合并、尚未实施全国分发** |
 
 **三种 PASS 严格分开**：工程测试通过 ≠ 真人听完整篇 ≠ 真实道路全链/正式发布已通过。所有证据要对应实际代码、内容哈希、设备及测试日期。

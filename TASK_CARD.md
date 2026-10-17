@@ -1,3 +1,7 @@
+> **2026-10-17 D0/code20 已工程交付 / STOP 等用户验收**：实现 `91b96a8`，交付 [Draft PR #37](https://github.com/shimao1115/KITT/pull/37)。本轮真实 **Debug534 + Release521 = 1055项**，0失败/错误/跳过；Python7、六组Fake模拟、assemble/lint、原签名2接受+6拒绝PASS。新都1县6对象22事实6来源及原自动/探索兼容，第二县仅TEST_ONLY；APK检验正式故事0/无夹具。详见[HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d0-verification.json)、[协议草案](docs/COUNTY_PACK_D0_CONTRACT.md)。本地code20 runtimecheck74461274字节，SHA256 `2762d6ffc623f80261f14ac0ea0ea78e56611c39817fa56f63ca255308462821`，未安装/上传/发布。无手机、无合并、无故事审批变化；真实发行/下载/导入未实现。以下为本阶段原任务与验收标准，不能用其施工文字重复启动已交付工程或下一阶段。
+
+---
+
 # KITT V0.6.0 · D0 / code20 — 唯一工程任务：县级双包通用加载器的第一条黄金路径
 
 > **授权日期：2026-10-17**。用户在 [V0.5.2 PR #35](https://github.com/shimao1115/KITT/pull/35) 已合并 main `53c0e0fab4ebd5ce45556b8677337664293c0a87` 后，明确同意按既定路线审 [PR #29](https://github.com/shimao1115/KITT/pull/29) 和现行规范，进入**下一步的最小 V0.6.0 工程**。**唯一 Issue [#36](https://github.com/shimao1115/KITT/issues/36)**；**唯一分支 `feat/v060-county-pack-loader-d0`**；验收终点为独立 **Draft PR**，工程交付后 **STOP**。这是 V0.6.0 的**第一小步 D0**，不代表整个 V0.6.0/正式 Release 完成。

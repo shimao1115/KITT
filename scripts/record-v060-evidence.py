@@ -126,6 +126,11 @@ def main():
                 assert p.stat().st_mtime <= START_EPOCH, f'Build input changed after verification started: {p}'
                 source[p.as_posix()] = sha(p.read_bytes())
     mismatches = [p for p, digest in source.items() if sha((Path('artifacts/runtime-smoke-workspace') / p).read_bytes()) != digest]
+    manifest = 'app/src/main/AndroidManifest.xml'
+    expected_manifest = Path(manifest).read_text(encoding='utf-8-sig').replace('android:label="沿途"', 'android:label="沿途 0.6.0 验收"').strip()
+    actual_manifest = (Path('artifacts/runtime-smoke-workspace') / manifest).read_text(encoding='utf-8-sig').strip()
+    assert actual_manifest == expected_manifest, 'Unexpected runtime manifest change'
+    mismatches = [p for p in mismatches if p != manifest]
     assert not mismatches
     protected = ['content', 'app/src/main/assets', 'app/src/main/AndroidManifest.xml',
                  'app/src/main/java/com/kitt/reader/TripStore.kt', 'app/src/main/java/com/kitt/reader/SettingsStore.kt',
@@ -166,6 +171,7 @@ def main():
                   content=dict(manuscripts='Unchanged: candidate / fact_gate=passed / visitor_gate=pending', release_gate='BLOCKED',
                                standard_require_playable_exit=1, candidate_without_output_dir_exit=2),
                   protected_paths_unchanged=protected, source_sha256=source, runtime_copy_mismatches=mismatches,
+                  intentional_runtime_copy_changes=['applicationId com.kitt.reader.runtimecheck', 'App label 沿途 0.6.0 验收; normalized manifest compared explicitly'],
                   workspace_preflight=dict(initial_branch='feat/v052-story-preferences', initial_worktree='clean',
                                            worktrees=1, fetched_and_switched_to=BASE, preexisting_build_workspaces='Preserved under ignored artifacts; no deletion or overwrite'),
                   device_actions='NONE: no adb, phone access, installation, credential or historical device-data access',
