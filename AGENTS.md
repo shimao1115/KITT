@@ -1,3 +1,7 @@
+> **D1 最终工程复审通过 / 用户批准合并范围**：2026-10-17 D1 第二轮独立工程复审 PASS（PR #39 head 15894f5；评审 https://github.com/shimao1115/KITT/pull/39#issuecomment-6233819737）。用户已明确批准仅做最终文档收口及 PR #39 合并 main；此段是合并前授权与审查状态，不预先宣称合并成功。测试依据提交的工程证据1134项零失败，ChatGPT未实跑Gradle；生产代码 app/src/main 零改动。仍无生产密钥、Release、正式新都可发行故事、手机JCA验收、D2授权；sequence只是调用方下限，非持久防回滚。旧本机路径留在Git历史，未授权不得重写。实际合并状态以GitHub PR merged及merge commit为准。
+
+---
+
 > **2026-10-17 V0.6.0 D1 评审修复轮 / STOP 待再次复审（覆盖下方“首轮交付”文字）**：[PR #39 首轮独立评审](https://github.com/shimao1115/KITT/pull/39#issuecomment-6233095568) 的三项要求已修：①`InnerBinding` 在签名后逐字段比对签名外层与内层四块的 `area_id/parent_id/两个版本/minimum_code/pack_id`，同块重签成别县现在返回 `inner_binding`；②证据生成脚本内置 `scrub()`，本机家目录/临时目录/复现工作树在运行时即替换为 `<HOME>`/`<TEMP>`/`<REPRO_WORKTREE_n>`（旧 JSON 的路径只留在 Git 历史，未授权不改写历史）；③`d1-reproduce.ps1` 改随机目录、已存在即 STOP、只清理本轮登记的工作树，并有哨兵测试。另按评审要求把防回滚做成**最薄**实现：manifest 增加单调 `sequence`，调用方给 `minimumSequence`，低于即 `sequence_rollback`；**持久安装序号/撤销中心仍属 V0.6.1/D2，不宣称完整防回滚**。本轮真实重跑 **Debug 567 + Release 554 + packtool 13 = 1134 项**零失败，D1 专项 27 例双 Variant；两干净 worktree unsigned `6d9e0f9c…`、整包 `cf283c6f…`、10,468 B 一致；CLI 新增 `sequence_rollback`/`inner_binding` 拒绝；签名回归 2+6、Python 7 项 PASS；`app/src/main` 仍零改动。**无生产密钥/Release/手机/合并/D2；真机 JCA 与真实新都对外发行仍 PENDING，正式故事 0。** 见 [HANDOFF](HANDOFF.md)、[契约](docs/COUNTY_PACK_D1_SIGNING_CONTRACT.md)、[验收](docs/ACCEPTANCE_COUNTY_PACK_D1.md)、[证据](docs/evidence/v060-d1-verification.json)。
 
 ---
