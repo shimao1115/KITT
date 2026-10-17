@@ -180,6 +180,20 @@ class ProductionD2Test {
             put("private_material_exported", false); put("real_human_approval", false)
         }.toString())
     }
+    @Test fun defaultStdinReaderConsumesTheSingleSimulatedHumanLine() {
+        val f = Fixture(); f.prepare()
+        val previous = System.`in`
+        val input = object : ByteArrayInputStream("可以发布 ${f.hash}\n".encodeToByteArray()) {
+            override fun read(): Int { f.decisions = 1; return super.read() }
+            override fun read(b: ByteArray, off: Int, len: Int): Int { f.decisions = 1; return super.read(b, off, len) }
+        }
+        try {
+            System.setIn(input)
+            assertEquals(0, D2Production.publish(f.options("publish"),
+                D2Production.Runtime(command = f.runtime.command, simulated = true)))
+            assertEquals(0, input.available()); assertEquals(1, f.uploads)
+        } finally { System.setIn(previous) }
+    }
     @Test fun factOnlyProductionFlowKeepsZeroStories() {
         val f = Fixture(content(false)); f.prepare(); assertEquals(0, f.publish())
         val pack = File(f.output, "cn-420502-s1.kcpk").readBytes()
