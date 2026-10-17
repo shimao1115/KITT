@@ -97,11 +97,11 @@ def main():
     packtool = suites('packtool/build/test-results/test', ('com.kitt.packtool.ReleaseFormatTest',))
     d1 = next(s for s in debug['suites'] if s['name'] == 'com.kitt.reader.d1.ReleaseD1Test')
 
-    reproducibility = json.loads(Path('artifacts/d1/reproducibility.json').read_text(encoding='utf-8'))
+    reproducibility = json.loads(Path('artifacts/d1/reproducibility.json').read_text(encoding='utf-8-sig'))
     assert reproducibility['unsigned_bytes_identical'] and reproducibility['container_bytes_identical']
     assert len({d['container_sha256'] for d in reproducibility['clean_directories']}) == 1
 
-    signing = json.loads(Path('artifacts/d1/signing.json').read_text(encoding='utf-8'))
+    signing = json.loads(Path('artifacts/d1/signing.json').read_text(encoding='utf-8-sig'))
     assert signing['passed'] == signing['accepted'] + signing['rejected'] == 8
 
     cli = cli_logs()
