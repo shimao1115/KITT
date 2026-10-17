@@ -1,4 +1,4 @@
-> **2026-10-17 最新 D2 施工授权（覆盖下方 D1 的历史 STOP）**：用户已批准**最小 D2 工程准备**，要求办公室和家庭两台 Windows 电脑都能参与离线知识包制作、相同 Git commit 可各自预制并校验；最终生产签名仅单机、实际生产密钥生成与发布另行批准，拒绝过度设计。唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，唯一分支 `feat/v060-d2-dual-workstation-release`，施工前首先阅读该分支 [TASK_CARD.md](TASK_CARD.md)。D1 [PR #39](https://github.com/shimao1115/KITT/pull/39) 已合并 main；本阶段只做流程、工具、测试和 Draft PR，保持手机 code19、真实新都发行 BLOCKED，**不建 KITT-PACKS、不生成生产密钥、不发 Tag/Release、不装机/合并、不启动 V0.6.1**。
+> **2026-10-17 最新 D2 施工授权（覆盖下方 D1 的历史 STOP）**：用户已批准**最小 D2 工程准备**，要求办公室和家庭两台 Windows 电脑都能参与离线知识包制作、相同 Git commit 可各自预制并校验；办公室和家里均可独立完成最终发布（用户只需一次内容终审；程序负责自动内容门禁、验签、签名和上传）；建议两机各自本地持有独立发行私钥，复用现有TrustStore，不将私钥通过GitHub同步；实际生产密钥生成与第一次正式发布仍须另行授权，拒绝过度设计。唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，唯一分支 `feat/v060-d2-dual-workstation-release`，施工前首先阅读该分支 [TASK_CARD.md](TASK_CARD.md)。D1 [PR #39](https://github.com/shimao1115/KITT/pull/39) 已合并 main；本阶段只做流程、工具、测试和 Draft PR，保持手机 code19、真实新都发行 BLOCKED，**不建 KITT-PACKS、不生成生产密钥、不发 Tag/Release、不装机/合并、不启动 V0.6.1**。
 
 ---
 
