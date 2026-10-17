@@ -85,10 +85,11 @@ def main():
     forbidden = [p for p in tracked if p.endswith(('.pem', '.jks', '.keystore', '.p12'))]
     assert not forbidden, f'key material must never be tracked: {forbidden}'
     assert not any(p.startswith('artifacts/') for p in tracked), 'artifacts must stay out of git'
+    marker = 'BEGIN ' + 'PRIVATE KEY'
     for path in tracked:
         if Path(path).suffix in ('.kt', '.json', '.md', '.txt', '.py', '.ps1', '.kts'):
             text = Path(path).read_text(encoding='utf-8', errors='ignore')
-            assert 'BEGIN PRIVATE KEY' not in text, f'private key material in {path}'
+            assert marker not in text, f'private key material in {path}'
 
     debug = suites('app/build/test-results/testDebugUnitTest', REQUIRED_APP_SUITES)
     release = suites('app/build/test-results/testReleaseUnitTest', REQUIRED_APP_SUITES)
