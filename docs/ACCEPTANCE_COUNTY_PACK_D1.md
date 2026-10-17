@@ -18,20 +18,24 @@
 
 ## 2. 判据与结果
 
-| 判据 | 要求 | 结果 |
-| --- | --- | --- |
-| 全量单元测试（Debug） | 0 失败/错误/跳过，本轮重跑 | 见证据 `tests.debug` |
-| 全量单元测试（Release） | 同上 | 见证据 `tests.release` |
-| 格式层单元测试 | 全通过 | 见证据 `tests.packtool` |
-| D1 专项用例 | 正例接受、负例按码拒绝 | 见证据 `tests.d1` |
-| 两干净目录字节复现 | unsigned 与整包 SHA256 相同 | 见证据 `reproducibility` |
-| CLI 正例 | `ACCEPTED_TEST_ONLY` + 计数 | 见证据 `cli` |
-| CLI 负例 | `REJECTED` + 精确 code | 见证据 `cli` |
-| 真实新都发行审计 | 权利不明即 BLOCKED | 见证据 `real_content` |
-| 内容门禁 Python | 7 项通过 | 见证据 `content_gates` |
-| 构建与 lint | Debug/Release 构建 + lint 通过 | 见证据 `build` |
-| 签名回归 | 2 接受 + 6 拒绝 | 见证据 `signing_regression` |
-| 受保护内容不变 | 资产/审批/故事哈希不变 | 见证据 `protected_files` |
+本轮实测（实现提交 `a69ccfe4`，证据生成于 `dad8282e`）：
+
+| 项 | 实测 |
+| --- | --- |
+| 应用单元测试 Debug | **563 项 / 80 套件**，0 失败/错误/跳过 |
+| 应用单元测试 Release | **550 项 / 78 套件**，0 失败/错误/跳过 |
+| packtool 单元测试 | **11 项**，全通过 |
+| 合计 | **1124 项** |
+| D1 专项 `ReleaseD1Test` | **23 例**，Debug/Release 两个 Variant 均执行 |
+| 两干净 worktree | unsigned `6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2`、整包 `5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2`、10 455 B，两次相同 |
+| CLI 正例 | `ACCEPTED_TEST_ONLY`：4 事实 / 2 来源 / 7 Claim / **0 故事**；含故事样例 2 篇 |
+| CLI 负例 | `bad_signature`（篡改 1 字节）、`minimum_code`（App code 19） |
+| 真实新都审计 | `BLOCKED`：11 来源中 9 明确、2 不明（`yang`、`ritual-paper-lead`），正式故事 0 |
+| 签名回归 | 2 接受 + 6 拒绝，全部 PASS |
+| Python 内容门禁 | 7 项 OK；`--check` 报 16 Claim / 0 可发布故事 / 2 排除 |
+| 生产代码 | `git diff 1330574 -- app/src/main` 为空 |
+
+逐项字段见证据文件。
 
 ## 3. 复核步骤
 

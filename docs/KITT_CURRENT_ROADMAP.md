@@ -16,7 +16,7 @@
 | 工程与语音 | V0.5.2/code19 实跑 **Debug511+Release498=1009项**，零失败/错误/跳过，Fake模拟/签名回归PASS；20/20真实历史在升级前、升级后、真机辅助UI后哈希相同。杨慎双篇历史独立试听PASS不代表Visitor Gate获批；`settings.xml` 首进设置页整体字节漂移根因仍UNKNOWN、账号在线有效性未独立测试 |
 | 标准已发布故事 | **0篇**。杨慎主篇、延伸仍 `candidate / fact_gate=passed / visitor_gate=pending`，批准范围只是 acceptance_candidate；正式发布 **BLOCKED**，不能把试播成功等同正式发行 |
 | 外场测试 | [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27) 保持 OPEN：可信物理 GPS 自动讲述/重播/延伸、断网新鲜定位/云故障恢复、旧历史样本等继续 PENDING |
-| 当前工程交付 | **D0/code20 已正式合并 main**，PR #37 merge `1330574d`，工程1067项旧阶段回归和独立复审PASS，未升级手机。**当前获准的是D1的首个独立工程**：[Issue #38](https://github.com/shimao1115/KITT/issues/38) 用TEST_ONLY临时签名密钥验证可复现县级Fact/Narrative成品与默认生产拒绝，待本轮施工与新全量回归；正式发行仍BLOCKED |
+| 当前工程交付 | **D0/code20 已正式合并 main**，PR #37 merge `1330574d`，工程1067项旧阶段回归和独立复审PASS，未升级手机。**D1首轮工程已交付、Draft PR #39 未合并**：[Issue #38](https://github.com/shimao1115/KITT/issues/38) 的TEST_ONLY可复现打包与离线验签完成，本轮 Debug563+Release550+packtool11=**1124项**零失败、两干净目录字节一致、签名回归2接受+6拒绝；**无生产密钥/Release/手机路径**，真实新都对外发行与真机JCA仍PENDING，正式故事仍0 |
 | 全国采集规范 | “**区县分包、镇街普查、对象建档、事实入库、精选成篇；全国复用、市州聚合**”已由用户确认。详细设计在 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)，**尚未合并、尚未实施全国分发** |
 
 **三种 PASS 严格分开**：工程测试通过 ≠ 真人听完整篇 ≠ 真实道路全链/正式发布已通过。所有证据要对应实际代码、内容哈希、设备及测试日期。

@@ -1,3 +1,34 @@
+# 2026-10-17 V0.6.0 D1 首轮工程交付 — Draft PR #39 待独立复审（STOP）
+
+**唯一任务**：[Issue #38](https://github.com/shimao1115/KITT/issues/38)；分支 `feat/v060-d1-signed-county-packs`；交付 [Draft PR #39](https://github.com/shimao1115/KITT/pull/39)（**未合并**）。基线为已合并 D0（[PR #37](https://github.com/shimao1115/KITT/pull/37)，merge `1330574d15deb55bc8881783c55e889ddf77ddf0`）。实现提交 `a69ccfe4`，证据在 `dad8282e` 之后生成；本轮**不操作手机、不安装/发布 APK、不创建 Release 或第二仓库、不审批故事、不合并 PR、不启动 D2**。
+
+## 交付了什么
+
+- 新增纯 JVM 模块 `:packtool`（**不进 APK**）：KCPK v1 固定字节帧容器（非 ZIP）、canonical manifest、分块与整包摘要、`SHA256withRSA`(PKCS#1 v1.5) 签名、调用方预置 `key_id→公钥+scope` 可信锚、以及“先签名后 D0 内容门禁”的验签器。
+- CLI（`app/src/test` + `:app:d1Pack` Gradle JavaExec，跑在单测 classpath 上，因此签名代码零进入生产包）：`keygen / sample / build / verify / tamper / audit-newdu`。
+- D0 门禁适配 `D0CountyGate`：在 D0 阅读路径之上更严格——发行候选里任何被 blocked 的事实或故事都拒绝整包，`fact_only` 必须如实报 0 篇。
+- 确定性 TEST_ONLY 样例 `tools/d1/sample/{fact-only,with-story}`（湖北宜昌西陵行政标签，内容全部合成）；`.gitattributes` 对 `tools/d1/**` 加 `-text`，防止 Windows 检出把 LF 改 CRLF 而改哈希。
+- 契约与验收：[COUNTY_PACK_D1_SIGNING_CONTRACT.md](docs/COUNTY_PACK_D1_SIGNING_CONTRACT.md)、[ACCEPTANCE_COUNTY_PACK_D1.md](docs/ACCEPTANCE_COUNTY_PACK_D1.md)、[证据](docs/evidence/v060-d1-verification.json)、`scripts/d1-reproduce.ps1`、`scripts/record-v060-d1-evidence.py`。
+
+## 本轮真实验证（旧 D0 的 1067 项不作本轮成绩）
+
+- **Debug 563 + Release 550 = 1113** 项应用单元测试，加 **packtool 11** 项 = **1124 项**，0 失败/错误/跳过；XML 全部为本轮重跑且经 mtime 新鲜度断言。D1 专项 `ReleaseD1Test` **23 例在 Debug/Release 两个 Variant 都执行**。
+- **两干净目录字节复现**：从同一提交建两个 `git worktree`，各自用同一 TEST_ONLY 密钥构建 fact-only 包——unsigned `6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2`、整包 `5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2`、10,455 B，两次完全相同（PKCS#1 v1.5 对固定密钥确定性）。
+- **CLI 真实返回**：`ACCEPTED_TEST_ONLY`（4 事实/2 来源/7 Claim/**0 故事**）、含故事样例 `2 故事`；篡改一字节 → `REJECTED bad_signature`；旧 App code 19 → `REJECTED minimum_code`；真实新都审计 → `BLOCKED external_redistribution_rights_unverified`（11 来源中 9 许可明确、2 不明：`yang`、`ritual-paper-lead`，正式故事 0）。
+- **签名回归** 2 接受 + 6 拒绝 PASS（真实 keytool/apksigner 门禁，含“只有公钥证书的 keystore”拒绝）；Python 内容门禁 7 项 OK，`--check` 报 16 Claim / 0 可发布故事 / 2 排除 / acceptance_candidate=False。
+- **生产代码零改动**：`git diff 1330574 -- app/src/main` 为空，未重建/未安装 APK；`app/src/main/assets/offline` 与 `content/yangshen` 14 个受保护文件哈希入证据。
+
+## 边界与未完成
+
+- **没有生产私钥/官方公钥/信任根**；TEST_ONLY 密钥只存在于工作树之外的临时目录，未入 Git、未打印；**未复用 Android APK 签名证书**。生产密钥仪式、锚固化、轮换与撤销执行属 D2。
+- 验签库**未接入 APK**（D1 无手机侧路径），下载/导入/原子启用/回滚属 V0.6.1；真机 JCA 可用性 **PENDING**（本轮只有 JDK 17 的 JCA 与 JVM 单测，未上设备）。
+- 真实新都对外发行仍 **BLOCKED**（2 个来源权利不明），D1 只产出 TEST_ONLY 合成样板；杨慎两篇仍 `candidate / fact_gate=passed / visitor_gate=pending`，正式完整故事 **0**；PR #29、#23/#24/#27/#30、`settings.xml` 漂移根因 UNKNOWN 均不变。
+- 首次 Gradle/IPC 异常、`settings.xml` 字节漂移等旧 UNKNOWN 不随 D1 消失；D1 未发布 Tag/Release/附件，未创建 KITT-PACKS。
+
+**STOP**：Draft PR #39 保持未合并，等待独立工程复审与用户验收；不擅自合并、不上手机、不开 D2。
+
+---
+
 # 2026-10-17 V0.6.0 D0/code20 最终工程复审 PASS — 用户已批准文档收口与 PR #37 合并
 
 **最新授权**：用户对“D0 工程复审通过后，文档收口并将 [PR #37](https://github.com/shimao1115/KITT/pull/37) 合并 main，暂不升级手机”的方案明确回复**批准**。本任务仅执行去敏文档整理与合并操作，不重跑测试、不访问/安装手机、不创建Release或KITT-PACKS仓库、不审批故事、不启动D1/D2或V0.6.1。**合并是否已执行请查询PR #37 的 GitHub merged 状态和实际merge commit；本段记录的是授权及门禁，不预先宣称成功。**
