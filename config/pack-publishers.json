@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "key_id": "kitt-9a5e596c-45bd-422b-a53c-b17a15de98a7",
+    "scope": "PRODUCTION",
+    "test_identity": false,
+    "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAm1/5W1dXKbPI3nXJXYLK\n1bQrVrjizMrL9j0PVG9vajGP0vyr0Hx80JjA78zhzrbUSb0H9f9S7AloACaCH09L\n10Ya9w7zFURx72VqENmm+xIDJswXHc8pv18bK5EjuVyQm7QSyXvmsx3ZtX/0U3bK\nur95acONMSeDWY0bFpyy+hB0nKmshPx9cFAMWbRzMSHoMUB2HvFuFPTCtxrdN78a\nqb5vRlHv8r4LfeRnczQ4Bv8uuU/Sxbus57aGvkFbBOnmnV/XSx3x2Lc3i/SarY0M\nPv1n343f9pCBkeIJWN7oWXrR+WdfzJm5RiMELTKAk/eInru9E3leU9r43fQ+Omw3\nIPZXqbwhXZECGTHZwfWS99tCaYsTq1qiM+OOItCVTPD2E5NfhQBuiQhlE+jOWGDX\nP6b//07/oTR5L9ImRbzkU6IdzJAbvNBZdI9F+gehv2FIOLemPq3MwTutRN4l1gmf\nNGjNRwRo8KGiKvy4ox2yMcbcBKQyHk5i1aaOA50yCLerAgMBAAE=\n-----END PUBLIC KEY-----\n"
+  }
+]
