@@ -1,6 +1,6 @@
 # KITT V0.6.0 D1：县级Fact/Narrative可复现打包与可信签名验证（本轮唯一工程任务）
 
-> **2026-10-17 用户批准进入“下一阶段”**，接续已合并的 [D0 PR #37](https://github.com/shimao1115/KITT/pull/37)，merge `1330574d15deb55bc8881783c55e889ddf77ddf0`。唯一需求 [Issue #38](https://github.com/shimao1115/KITT/issues/38)，唯一分支 `feat/v060-d1-signed-county-packs`。本阶段定义为 **D1：电脑端可复现县级双包候选、固定签名字节协议、用显式预置公钥离线验证**，不实施真实发行、GitHub Release、第二仓库、手机下载/导入/激活。目标为独立 Draft PR＋真实验证证据，交付STOP等待用户验收；**D2**才处理真实发行密钥的人工治理与受控发布。
+> **2026-10-17 用户批准进入“下一阶段”**，接续已合并的 [D0 PR #37](https://github.com/shimao1115/KITT/pull/37)，merge `1330574d15deb55bc8881783c55e889ddf77ddf0`。唯一需求 [Issue #38](https://github.com/shimao1115/KITT/issues/38)，唯一分支 `feat/v060-d1-signed-county-packs`，唯一交付 [Draft PR #39](https://github.com/shimao1115/KITT/pull/39)。本阶段定义为 **D1：电脑端可复现县级双包候选、固定签名字节协议、用显式预置公钥离线验证**，不实施真实发行、GitHub Release、第二仓库、手机下载/导入/激活。目标为独立 Draft PR＋真实验证证据，交付STOP等待用户验收；**D2**才处理真实发行密钥的人工治理与受控发布。
 >
 > **现行基线**：main含 code20 D0县级通用内存Loader，Debug540 + Release527 = 1067项工程PASS（历史记录，D1必须重跑）；手机 vivo 上仍是 code19，code20只静态验证同签名兼容，尚未装机。新都**1县/6对象/22基础事实/6基础来源**，标准正式完整故事 **0**，杨慎两篇仍 `candidate/fact_gate=passed/visitor_gate=pending`，不准让任何候选正文进入可发行知识包。用户延期的设置页两个保存按钮间距小留到之后UI优化；`settings.xml` 首进旧设置页字节漂移根因 UNKNOWN、旧外场 #23/#24/#27/#30仍PENDING。
 
