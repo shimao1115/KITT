@@ -13,6 +13,14 @@ ROOT = Path(__file__).resolve().parents[1]
 os.chdir(ROOT)
 CERT = '3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba'
 BASE = 'edab16f18afc2e23009616bd090fbabd00d4acb3'
+REVIEW_BASE = '9f3ada22d7bf5cd3f5929e9804898f6f2b75c6b0'
+REVIEW_URL = 'https://github.com/shimao1115/KITT/pull/37#issuecomment-6229804921'
+FIX_CASES = ['resealedCountyCannotBeIndexedUnderAnotherPrefectureOrProvince',
+             'specialAdministrativeLevelsNeedExplicitRulesRatherThanAnInventedPrefecture',
+             'restrictedSourceRightsOverrideAllowedPermissionAndFreshAcceptedRevisions',
+             'restrictedClaimRightsOverrideAllowedPermissionAndFreshAcceptedRevision',
+             'explicitLicenseRemainsUsableWithFreshDependencyFingerprints',
+             'existingCuratedSummaryScopesRemainDistinctFromUnclearedSourceRights']
 START = json.loads(Path('artifacts/v060-run-start.json').read_text(encoding='utf-8'))
 START_EPOCH = datetime.fromisoformat(START['started_at']).timestamp()
 
@@ -83,6 +91,11 @@ def apk(path, package, test=False):
 
 def main():
     variants = {v: suites(v) for v in ('Debug', 'Release')}
+    previous = json.loads(command('git', 'show', f'{REVIEW_BASE}:docs/evidence/v060-d0-verification.json'))
+    for v, results in variants.items():
+        cases = next(s['cases'] for s in results['suites'] if s['name'] == 'com.kitt.reader.CountyPacksTest')
+        assert set(FIX_CASES).issubset(cases), f'{v} missing review regression cases'
+        assert results['tests'] == previous['variants'][v]['tests'] + len(FIX_CASES)
     verification = json.loads(Path('artifacts/verification.json').read_text(encoding='utf-8-sig'))
     assert verification['version'] == '0.6.0'
     for v in variants:
@@ -136,6 +149,8 @@ def main():
                  'app/src/main/java/com/kitt/reader/TripStore.kt', 'app/src/main/java/com/kitt/reader/SettingsStore.kt',
                  'app/src/main/java/com/kitt/reader/StoryInterestStore.kt', 'app/src/main/java/com/kitt/reader/DirectorLoop.kt']
     assert not command('git', 'diff', BASE, '--', *protected).strip()
+    revision_changes = command('git', 'diff', '--name-only', REVIEW_BASE, '--', 'app/src/main', 'app/build.gradle.kts').splitlines()
+    assert revision_changes == ['app/src/main/java/com/kitt/reader/CountyPacks.kt'], 'Revision expanded production scope'
     baseline = json.loads(Path('docs/evidence/v052-verification.json').read_text(encoding='utf-8'))
     old = next(a for a in baseline['apks'] if a['path'].endswith('runtimecheck.apk'))
     candidate = next(a for a in apks if a['path'].endswith('runtimecheck.apk'))
@@ -152,6 +167,15 @@ def main():
     result = dict(date='2026-10-17', recorded_at=datetime.now(timezone(timedelta(hours=8))).isoformat(),
                   version='0.6.0', version_code=20, milestone='D0 only', issue=36, pull_request=37,
                   branch='feat/v060-county-pack-loader-d0', branch_base=BASE,
+                  review_base=REVIEW_BASE, review_url=REVIEW_URL,
+                  previous_round=dict(commit=REVIEW_BASE, tests=previous['total_tests'],
+                                      variants={v: previous['variants'][v]['tests'] for v in variants},
+                                      candidate=next(a for a in previous['apks'] if a['path'].endswith('runtimecheck.apk')),
+                                      scope='Historical initial D0 evidence only; never added to this rerun count'),
+                  validation_fixes=dict(parent='Exact county first-four-digit prefecture prefix + 00; unsupported 00/90 prefecture groups rejected',
+                                        rights='Finite full-string license/facts-only scope allowlist; unknown/restricted/mixed notices rejected even with allowed permission and fresh revisions',
+                                        new_tests_per_variant=len(FIX_CASES), cases=FIX_CASES,
+                                        production_paths_changed=revision_changes),
                   implementation_commit=command('git', 'log', '-1', '--format=%H', '--', 'app/src/main', 'app/build.gradle.kts').strip(),
                   status='ENGINEERING-STOP-USER-REVIEW-PENDING', run_start=START, variants=variants,
                   total_tests=sum(v['tests'] for v in variants.values()), python_tests=7,
@@ -172,10 +196,10 @@ def main():
                                standard_require_playable_exit=1, candidate_without_output_dir_exit=2),
                   protected_paths_unchanged=protected, source_sha256=source, runtime_copy_mismatches=mismatches,
                   intentional_runtime_copy_changes=['applicationId com.kitt.reader.runtimecheck', 'App label 沿途 0.6.0 验收; normalized manifest compared explicitly'],
-                  workspace_preflight=dict(initial_branch='feat/v052-story-preferences', initial_worktree='clean',
-                                           worktrees=1, fetched_and_switched_to=BASE, preexisting_build_workspaces='Preserved under ignored artifacts; no deletion or overwrite'),
+                  workspace_preflight=dict(initial_branch='feat/v060-county-pack-loader-d0', initial_worktree='clean',
+                                           worktrees=1, fetched_head=REVIEW_BASE, preexisting_build_workspaces='Preserved under ignored artifacts; no deletion or overwrite'),
                   device_actions='NONE: no adb, phone access, installation, credential or historical device-data access',
-                  pending=['User engineering review', 'Real device GPS/TTS and field gates #23/#24/#27/#30 unchanged',
+                  pending=['Independent engineering re-review after the two validation fixes', 'Real device GPS/TTS and field gates #23/#24/#27/#30 unchanged',
                            'Formal story approval', 'Real publisher trust/signing/Release, downloads/import/atomic installation',
                            'settings.xml first-entry drift remains UNKNOWN; source dual mode DEFERRED'],
                   github='PR37 remains Draft/unmerged; PR29 untouched; no Release, APK upload or KITT-PACKS repository')

@@ -71,6 +71,9 @@ internal class CountyPackLoader(private val verifier: (CountyBytes) -> CountyPro
         require(id.matches(Regex("cn-[0-9]{6}")) && !id.endsWith("00")) { "area_id" }
         val parent = a.text("parent_id")
         require(parent.matches(Regex("cn-[0-9]{4}00")) && parent != id) { "parent_id" }
+        // D0 supports the ordinary county -> prefecture code hierarchy only. Province-direct
+        // groupings (90) and missing prefecture levels (00) need separately reviewed rules.
+        require(parent == id.dropLast(2) + "00" && id.substring(5, 7) !in setOf("00", "90")) { "parent_relationship" }
         val identity = AreaIdentity(a.bounded("city", 80), a.bounded("district", 80), province = a.bounded("province", 80))
         require(listOf(fm, nm, f, n).all { it.text("area_id") == id }) { "area_mismatch" }
         require(fm.text("pack_id") == "$id-fact" && nm.text("pack_id") == "$id-narrative") { "pack_id" }
@@ -140,8 +143,21 @@ internal class CountyPackLoader(private val verifier: (CountyBytes) -> CountyPro
 }
 
 internal fun JsonObject.text(key: String) = getValue(key).jsonPrimitive.content
-internal fun countyRights(value: String) = value.isNotBlank() && value.lowercase() !in
-    setOf("unknown", "disputed", "withdrawn", "missing", "uncleared")
+/** Exact supported licenses / existing curated facts-only scopes; never permission to copy a
+ * copyrighted source's expression. Unknown or mixed/restricted statements fail closed. */
+private val countyAllowedRights = setOf(
+    "CC-BY-4.0",
+    "KITT summaries CC-BY-4.0; source text excluded",
+    "KITT自行概括事实，CC-BY-4.0；来源表达不在许可内",
+    "仅古籍事实与书名；不复制平台标点、注释或全文",
+    "古籍正文公有领域；不复制现代注释/网页编排",
+    "现代专家文章保留版权；只自行概括作者归属与篇章关系，不复制全文",
+    "现代报道保留版权；自行表述基本纪念关联，不转载原文/照片",
+    "现代文章保留版权；只自行概括基本事实，不转载原文、图片或页面",
+    "现代网页保留版权；仅提取事实自行表述",
+    "论文保留版权；只自行概括版本流传结论，不公开镜像PDF"
+).map { it.lowercase() }.toSet()
+internal fun countyRights(value: String) = value.trim().lowercase() in countyAllowedRights
 private fun JsonObject.bounded(key: String, max: Int) = text(key).also { require(it.isNotBlank() && it.length <= max) { "field_size" } }
 private fun JsonObject.identifier(key: String) = text(key).also { require(it.matches(Regex("[a-z0-9][a-z0-9_-]{0,63}"))) { "identifier" } }
 internal fun countyRevision(value: JsonObject, field: String): String {

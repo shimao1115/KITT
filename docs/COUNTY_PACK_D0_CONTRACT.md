@@ -16,13 +16,15 @@
 | --- | --- |
 | 每份 manifest | `schema_version=2`、`minimum_code`（20～当前App code）、`kind=fact/narrative`、`area_id`、`pack_id`（县ID加 `-fact/-narrative`）、独立 `content_version`、`bytes`、`sha256`；不超过16KB |
 | 每份正文 | `schema_version=2`、相符的 `pack_id/content_version/area_id`；每份1～500000 bytes，严格 UTF-8 |
-| Fact 区域 | `area.area_id` 为 `cn-六位县级码`，不以00结尾；`parent_id` 为市州码，省/市/县名非空且每字段≤80字符；不推导镇街或坐标 |
+| Fact 区域 | `area.area_id` 为 `cn-六位县级码`，不以00结尾；`parent_id` 必须等于县码前四位加00；地级码00/90等特殊层级当前拒绝，留后续独立规则。省/市/县名非空且每字段≤80字符；不推导镇街或坐标 |
 | Fact 索引 | `entities/sources/claims` 各≤200条，ID为1～64字符 ASCII 小写字母、数字、下划线、连字符；县内唯一，不以中文名称为主键 |
 | Entity | `entity_id/title/family/basic_facts`；family 是既有 TopicFamily，与六类兴趣无自动映射；县内标题不能有歧义 |
 | 基础事实 | `fact_id/summary/coverage/source_ids`，每对象≤100条；正文≤250字符，coverage≤65字符；源丢失/撤回/权限或修订错误只隐藏引用它的事实 |
 | Source | `source_id/title/url/kind/access_status/accessed_at/rights/registry_revision`；可引用原始资料，不分发其全文；`source_permissions[id]=allowed` 是可信生产方对摘要使用权限的机器判定，不能由哈希冒充人工许可 |
 | Claim | `claim_id/entity_id/area_ids/text/status/temporal_class/rights/revision/evidence`；可播放引用必须 verified、stable、本县关联、权限allowed；evidence 逐项绑定source ID、accepted source revision、locator及supports关系 |
 | Narrative | `narrative_id/story_type/entity_id/area_id/title/text/text_sha256`、`review_status/fact_gate/visitor_gate/approval_ref/license`、六类主/辅标签、`supported_claim_refs`；每篇100～6000字符、1～100 Claim引用；最终Journey marker总长度≤240字符 |
+
+权利判断采用完整字符串的显式允许表（只规范首尾空白及大小写），不再采用否定列表。支持 `CC-BY-4.0`、内置KITT自产摘要许可，以及源码列明的既有古籍公有领域/仅自行表述事实范围；这不授权转载来源表达。未核读、笼统旧包说明、未知或受限声明不获放行；`restricted`、`all rights reserved`、与许可名混合的受限声明即使permissions=allowed、签名/修订/哈希都有效也拒绝。真实发行许可治理仍留D1独立审查。
 
 `registry_revision/revision` 是去掉自身字段后，对递归按键排序的紧凑 JSON UTF-8 SHA256，与既有杨慎契约一致。只有 `approved + fact_gate=passed + visitor_gate=passed + 非空approval_ref + CC-BY-4.0` 故事才能入通用合格集合。单个 source/Claim 的权限、撤回或修订失配只阻断实际引用它的篇章，不能因重新封装整个县包而放行旧故事。缺少未引用的 source/Claim 不影响其它篇章。跨县/共享Claim尚无解析器：缺依赖准确阻断，绝不去别县按同名ID补齐。
 

@@ -16,7 +16,7 @@ internal object CountyFixture {
     fun source(id: String) = buildJsonObject {
         put("source_id", id); put("title", "TEST_ONLY 合成来源 $id"); put("url", "https://example.invalid/$id")
         put("kind", "OTHER"); put("access_status", "read"); put("accessed_at", "2026-10-17")
-        put("rights", "TEST_ONLY synthetic text CC-BY-4.0")
+        put("rights", "CC-BY-4.0")
     }.revised("registry_revision")
     fun facts(id: String = "cn-420502"): JsonObject {
         val xindu = id == "cn-510114"
@@ -38,7 +38,7 @@ internal object CountyFixture {
             put("claims", JsonArray((0..6).map { i -> buildJsonObject {
                 put("claim_id", "c$i"); put("entity_id", "e${i % 2}"); put("area_ids", JsonArray(listOf(JsonPrimitive(id))))
                 put("text", "TEST_ONLY 合成Claim $i，不是已核实地方知识。")
-                put("status", "verified"); put("temporal_class", "stable"); put("rights", "TEST_ONLY synthetic CC-BY-4.0")
+                put("status", "verified"); put("temporal_class", "stable"); put("rights", "CC-BY-4.0")
                 put("evidence", JsonArray(listOf(buildJsonObject { put("source_id", "s${i % 2}"); put("locator", "TEST_ONLY paragraph $i")
                     put("relation", "supports"); put("accepted_source_revision", source("s${i % 2}").text("registry_revision")) })))
             }.revised("revision") }))
@@ -160,6 +160,20 @@ class CountyPacksTest {
         val wrong = JsonObject(f + ("area" to f.getValue("area").jsonObject.changed("area_id", "cn-420500")))
         rejected(CountyFixture.input(wrong, n), "area_id")
     }
+    @Test fun resealedCountyCannotBeIndexedUnderAnotherPrefectureOrProvince() {
+        val f = CountyFixture.facts()
+        for (parent in listOf("cn-420100", "cn-510100")) {
+            val wrong = JsonObject(f + ("area" to f.getValue("area").jsonObject.changed("parent_id", parent)))
+            rejected(CountyFixture.input(wrong), "parent_relationship")
+        }
+    }
+    @Test fun specialAdministrativeLevelsNeedExplicitRulesRatherThanAnInventedPrefecture() {
+        for (id in listOf("cn-429004", "cn-420002")) {
+            val f = CountyFixture.facts(id)
+            val special = JsonObject(f + ("area" to f.getValue("area").jsonObject.changed("parent_id", id.dropLast(2) + "00")))
+            rejected(CountyFixture.input(special), "parent_relationship")
+        }
+    }
     @Test fun duplicateEntitySourceClaimStoryAndBasicFactIdsAreFatal() {
         val f = CountyFixture.facts(); val n = CountyFixture.narratives(f)
         for (array in listOf("entities", "sources", "claims")) {
@@ -221,6 +235,55 @@ class CountyPacksTest {
         assertEquals(3, CountyFixture.read(denied, n).stories.stories.size)
         val deniedClaim = JsonObject(f + ("claim_permissions" to f.getValue("claim_permissions").jsonObject.changed("c0", "unknown")))
         assertEquals(6, CountyFixture.read(deniedClaim, n).stories.stories.size)
+    }
+    private val restrictedRights = listOf("restricted", "all rights reserved", "ALL RIGHTS RESERVED",
+        "  Restricted  ", "CC-BY-4.0; restricted", "不允许转载", "custom permission")
+
+    /** Refresh source, evidence, Claim and Story references so rejection cannot be a stale-hash side effect. */
+    private fun sourceRights(rights: String): JsonObject {
+        val sourceChanged = CountyFixture.facts().mutate("sources") { it.changed("rights", rights).revised("registry_revision") }
+        val revision = sourceChanged.getValue("sources").jsonArray[0].jsonObject.text("registry_revision")
+        return JsonObject(sourceChanged + ("claims" to JsonArray(sourceChanged.getValue("claims").jsonArray.map { value ->
+            val claim = value.jsonObject
+            JsonObject(claim + ("evidence" to JsonArray(claim.getValue("evidence").jsonArray.map { entry ->
+                val e = entry.jsonObject
+                if (e.text("source_id") == "s0") e.changed("accepted_source_revision", revision) else e
+            }))).revised("revision")
+        })))
+    }
+    @Test fun restrictedSourceRightsOverrideAllowedPermissionAndFreshAcceptedRevisions() {
+        for (rights in restrictedRights) {
+            val f = sourceRights(rights)
+            assertEquals("allowed", f.getValue("source_permissions").jsonObject.text("s0"))
+            val p = CountyFixture.read(f)
+            assertEquals(rights, listOf("cn-420502/story-1", "cn-420502/story-3", "cn-420502/story-5"), p.stories.stories.map { it.id })
+            assertEquals(rights, "source_rights", p.stories.blocked["story-0"])
+            assertEquals(rights, 2, p.factCount); assertEquals(rights, 2, p.blockedFacts.size)
+        }
+    }
+    @Test fun restrictedClaimRightsOverrideAllowedPermissionAndFreshAcceptedRevision() {
+        for (rights in restrictedRights) {
+            val f = CountyFixture.facts().mutate("claims") { it.changed("rights", rights).revised("revision") }
+            assertEquals("allowed", f.getValue("claim_permissions").jsonObject.text("c0"))
+            val p = CountyFixture.read(f)
+            assertEquals(rights, 6, p.stories.stories.size)
+            assertEquals(rights, mapOf("story-0" to "claim_rights"), p.stories.blocked)
+            assertEquals(rights, 4, p.factCount)
+        }
+    }
+    @Test fun explicitLicenseRemainsUsableWithFreshDependencyFingerprints() {
+        val p = CountyFixture.read(sourceRights(" cc-by-4.0 "))
+        assertEquals(7, p.stories.stories.size); assertEquals(4, p.factCount)
+        assertTrue(p.stories.blocked.isEmpty()); assertTrue(p.blockedFacts.isEmpty())
+    }
+    @Test fun existingCuratedSummaryScopesRemainDistinctFromUnclearedSourceRights() {
+        val f = Json.parseToJsonElement(File("src/main/assets/offline/ys-facts.json").readText()).jsonObject
+        val unreviewed = setOf("旧包仅保留既有事实摘要，不新增转载", "未取得全文核读；不复制")
+        f.getValue("sources").jsonArray.forEach { source ->
+            val rights = source.jsonObject.text("rights")
+            assertEquals(rights, rights !in unreviewed, countyRights(rights))
+        }
+        f.getValue("claims").jsonArray.forEach { assertTrue(countyRights(it.jsonObject.text("rights"))) }
     }
     @Test fun basicFactsRemainReadableWhenAllNarrativesArePending() {
         val f = CountyFixture.facts(); val n = CountyFixture.narratives(f)
