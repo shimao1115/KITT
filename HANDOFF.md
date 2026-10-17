@@ -1,3 +1,32 @@
+# 2026-10-17 V0.6.0 D1 评审修复轮 — Draft PR #39 仍待复审（STOP）
+
+**触发**：[PR #39 首轮独立评审](https://github.com/shimao1115/KITT/pull/39#issuecomment-6233095568) 要求三项最小修复并对防回滚边界作明确交代。本轮只做这些修复与对应验证，**未合并、未操作手机、未发布、未生成生产密钥、未开 D2**。
+
+## 三项修复
+
+1. **外层/内层绑定**（评审第 1 项，`InnerBinding.kt`）：签名与分块摘要通过后，逐字段比对签名外层 `area_id / parent_id / fact_version / narrative_version / minimum_code / pack_id` 与内层两份 manifest 及两份正文，不一致即 `inner_binding`（detail 指出具体字段）。此前“用 420502 的合法块重签成外层 510114”会整体 `Accepted`；现在被拒。新增 4 个负例（别县、改 fact 版本、改最低 App 版本、别县 Narrative 拼接改为由内层绑定先拒）。
+2. **证据脱敏**（评审第 2 项）：`scripts/record-v060-d1-evidence.py` 内置 `scrub()`，运行时把家目录/临时目录/复现工作树替换为 `<HOME>`、`<TEMP>`、`<REPRO_WORKTREE_n>`，并对成品断言不含盘符路径或 `AppData`。本轮 JSON 已重新生成，旧 JSON 中的本机路径仅存在于 Git 历史（**未获授权，不改写历史、不 force-push**）。
+3. **复现脚本安全**（评审第 3 项）：`scripts/d1-reproduce.ps1` 改为每次随机目录名；目标目录已存在即 STOP、绝不删除；`finally` 只清理本轮创建且 `git worktree list` 仍登记的工作树。新增哨兵测试：预置 `kitt-d1-repro-guard-1/sentinel.txt` 后运行，脚本 STOP 且哨兵文件完好（证据 `reproducibility_guard`）。
+
+## 防回滚边界（评审“另一个必须如实界定的后续门禁”）
+
+manifest 增加单调 `sequence`；验签器接收调用方 `minimumSequence`，低于即 `sequence_rollback`。这是任务卡要求的**最薄**检查，**不等于**完整防回滚：D1 没有持久安装序号、没有版本库、没有撤销中心；伪造更高序号仍需可信锚保护。持久序列与撤销明确留在 V0.6.1/D2，契约与验收文档均已按此修订，不再宣称“序列回放已完整实现”。
+
+## 本轮真实测试（旧 1124 项不继承）
+
+- **Debug 567 + Release 554 + packtool 13 = 1134 项**，0 失败/错误/跳过；D1 专项 `ReleaseD1Test` **27 例**在两 Variant 均执行。
+- **两干净 worktree**（随机目录、各自构建）：unsigned `6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2`、整包 `cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263`、10,468 B，两次相同。
+- **CLI**：fact-only `ACCEPTED_TEST_ONLY`（4 事实/2 来源/7 Claim/0 故事，`sequence=1`）、含故事 2 篇；篡改→`bad_signature`；App code 19→`minimum_code`；序号 3 对下限 4→`sequence_rollback`；同块重签别县→`inner_binding`；真实新都审计仍 `BLOCKED`（2 来源权利不明）。
+- **签名回归** 2 接受 + 6 拒绝 PASS；**Python 内容门禁** 7 项 OK，`--check` 仍 16 Claim / 0 可发布故事 / 2 排除；构建与 lint 通过；`app/src/main` 自 D0 起零改动。
+
+## 未变
+
+无生产私钥/官方公钥/Release/第二仓库；验签库仍只在 JVM 与单测，未进 APK；真机 JCA PENDING；真实新都对外发行 BLOCKED；杨慎两篇仍 `candidate / visitor_gate=pending`，正式完整故事 0。
+
+**STOP**：Draft PR #39 保持未合并，等待再次复审与用户验收。
+
+---
+
 # 2026-10-17 V0.6.0 D1 首轮工程交付 — Draft PR #39 待独立复审（STOP）
 
 **唯一任务**：[Issue #38](https://github.com/shimao1115/KITT/issues/38)；分支 `feat/v060-d1-signed-county-packs`；交付 [Draft PR #39](https://github.com/shimao1115/KITT/pull/39)（**未合并**）。基线为已合并 D0（[PR #37](https://github.com/shimao1115/KITT/pull/37)，merge `1330574d15deb55bc8881783c55e889ddf77ddf0`）。实现提交 `a69ccfe4`，证据在 `dad8282e` 之后生成；本轮**不操作手机、不安装/发布 APK、不创建 Release 或第二仓库、不审批故事、不合并 PR、不启动 D2**。

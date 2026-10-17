@@ -2,9 +2,10 @@
   "milestone": "V0.6.0 D1",
   "issue": 38,
   "pr": 39,
-  "recorded_at": "2026-10-17T10:51:19Z",
-  "run_started_at": "2026-10-17T10:36:18+00:00",
-  "commit": "dad8282e18de111bd3b7ac183b8427b778c68fd0",
+  "recorded_at": "2026-10-17T11:27:04Z",
+  "run_started_at": "2026-10-17T11:09:12+00:00",
+  "commit": "b2d11beabd28c8c1e2ab66b4f5d6e7c5675f1904",
+  "implementation_commit": "5c803e4d3a63ac588234f71a8d5ada902737a1e5",
   "base_commit_d0": "1330574d15deb55bc8881783c55e889ddf77ddf0",
   "scope": {
     "delivered": [
@@ -29,7 +30,7 @@
     "scope": "TEST_ONLY",
     "algorithm": "SHA256withRSA",
     "bits": 3072,
-    "public_sha256": "20d0f6bbeb8b39973db7d183e0965522745a495f52d0f8534a84c192fafabe88",
+    "public_sha256": "82aa8552c57a343a2cba3de57427f390a5abf15652fed80339098c174891d41f",
     "storage": "one-off TEST_ONLY key in a temporary directory outside the work tree",
     "in_repository": false,
     "android_apk_certificate_reused": false
@@ -39,28 +40,29 @@
       "status": "KEY_CREATED",
       "key_id": "test-only-d1-local",
       "scope": "TEST_ONLY",
-      "public_sha256": "20d0f6bbeb8b39973db7d183e0965522745a495f52d0f8534a84c192fafabe88",
-      "keydir": "C:\\Users\\Church\\AppData\\Local\\Temp\\kitt-d1-keys",
+      "public_sha256": "82aa8552c57a343a2cba3de57427f390a5abf15652fed80339098c174891d41f",
+      "keydir": "<TEMP>/kitt-d1-keys",
       "exit_code": "0",
       "log": {
         "path": "artifacts/d1/cli/01-keygen.txt",
         "bytes": 213,
-        "sha256": "7cb976fda40387a242d4f69097b913d66e1f1338948f68f8a510bb110828ec7b"
+        "sha256": "1d2a3bedb95613c62a53a9d1d0dded64c1dbb070c6d2e03788ff298ad81d5e27"
       }
     },
     "02-build-fact-only": {
       "status": "BUILT_TEST_ONLY",
       "area_id": "cn-420502",
       "content_kind": "fact_only",
+      "sequence": "1",
       "unsigned_sha256": "6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2",
-      "container_sha256": "5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2",
-      "container_bytes": "10455",
-      "pack_file": "C:\\Users\\Church\\AppData\\Local\\Temp\\kitt-d1-out\\fact-only\\pack.kcpk",
+      "container_sha256": "cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263",
+      "container_bytes": "10468",
+      "pack_file": "<TEMP>/kitt-d1-out/fact-only/pack.kcpk",
       "exit_code": "0",
       "log": {
         "path": "artifacts/d1/cli/02-build-fact-only.txt",
-        "bytes": 346,
-        "sha256": "b71e8b877a059d70f700f7d79ca071b98853b5d13c23c049cfcceaeddf002912"
+        "bytes": 358,
+        "sha256": "ccebf7704db624df4f07dfef141c1cf5cfa849f66955277eb23bd300087196f4"
       }
     },
     "03-verify-fact-only": {
@@ -70,7 +72,9 @@
       "content_kind": "fact_only",
       "publisher_scope": "TEST_ONLY",
       "key_id": "test-only-d1-local",
-      "source_commit": "a69ccfe4eae66315891620bf24d738eb07d17f05",
+      "source_commit": "5c803e4d3a63ac588234f71a8d5ada902737a1e5",
+      "sequence": "1",
+      "minimum_sequence": "1",
       "fact_version": "TEST_ONLY-d1-fact-1",
       "narrative_version": "TEST_ONLY-d1-narrative-empty-1",
       "facts": "4",
@@ -78,27 +82,28 @@
       "claims": "7",
       "stories": "0",
       "blocked": "0",
-      "container_sha256": "5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2",
+      "container_sha256": "cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263",
       "exit_code": "0",
       "log": {
         "path": "artifacts/d1/cli/03-verify-fact-only.txt",
-        "bytes": 433,
-        "sha256": "e9fb86a3279996c531a0cc2ed4538c7d248fa23d6e01befedc3658e0302de764"
+        "bytes": 465,
+        "sha256": "6370989cbfd3b508f9315711640235fed2a5c2ef657d7c10a9195125fe251e61"
       }
     },
     "04-build-with-story": {
       "status": "BUILT_TEST_ONLY",
       "area_id": "cn-420502",
       "content_kind": "fact_and_narrative",
+      "sequence": "1",
       "unsigned_sha256": "09000975636704abe3b90999b9c26a277dce21627f51ef0c8ed83905b09f1b15",
-      "container_sha256": "1003c01703f8b2aa2e9445356c77c542b0b4439c5a9333a948b4bd8fc9c7bc87",
-      "container_bytes": "12813",
-      "pack_file": "C:\\Users\\Church\\AppData\\Local\\Temp\\kitt-d1-out\\with-story\\pack.kcpk",
+      "container_sha256": "aac704d42b9db6a676105ab7b2d251bb1ce983ec830e1ceae7c057937d8bcded",
+      "container_bytes": "12826",
+      "pack_file": "<TEMP>/kitt-d1-out/with-story/pack.kcpk",
       "exit_code": "0",
       "log": {
         "path": "artifacts/d1/cli/04-build-with-story.txt",
-        "bytes": 356,
-        "sha256": "ba5ab1d7f8e351e71e01dfc26efdee81cbb9f996ad0cdbe34a42028eea35d727"
+        "bytes": 368,
+        "sha256": "93c1d35fd7d8a84a8778b0c1e8023366acfa55de471fdd706c44ab70e6ca59fc"
       }
     },
     "05-verify-with-story": {
@@ -108,7 +113,9 @@
       "content_kind": "fact_and_narrative",
       "publisher_scope": "TEST_ONLY",
       "key_id": "test-only-d1-local",
-      "source_commit": "a69ccfe4eae66315891620bf24d738eb07d17f05",
+      "source_commit": "5c803e4d3a63ac588234f71a8d5ada902737a1e5",
+      "sequence": "1",
+      "minimum_sequence": "1",
       "fact_version": "TEST_ONLY-d1-fact-1",
       "narrative_version": "TEST_ONLY-d1-narrative-1",
       "facts": "4",
@@ -116,47 +123,49 @@
       "claims": "7",
       "stories": "2",
       "blocked": "0",
-      "container_sha256": "1003c01703f8b2aa2e9445356c77c542b0b4439c5a9333a948b4bd8fc9c7bc87",
+      "container_sha256": "aac704d42b9db6a676105ab7b2d251bb1ce983ec830e1ceae7c057937d8bcded",
       "exit_code": "0",
       "log": {
         "path": "artifacts/d1/cli/05-verify-with-story.txt",
-        "bytes": 436,
-        "sha256": "4e686c9454e98c1728b1eb5e70fc5e660788ec51b755f58aa1f1d5055f8a762f"
+        "bytes": 468,
+        "sha256": "a8b178edec143ac8f3fbbf968d0fc414155e5ccc49880a10e5cad51fe0b1693d"
       }
     },
     "06-tamper": {
       "status": "TAMPERED",
       "offset": "4000",
-      "container_sha256": "82d00171667b066861e9f0d9cd540dcc95f4e10c6beb08b074130f29dab0b430",
+      "container_sha256": "c00a67a3f6dc2ae37b48c673851fe933218248e194eb549fc5a73b51494c7b11",
       "exit_code": "0",
       "log": {
         "path": "artifacts/d1/cli/06-tamper.txt",
         "bytes": 126,
-        "sha256": "877062cc4be3f4660fc7c9f9ade6decab677beb64cf7a2b5610189e183b1b868"
+        "sha256": "27979f5cddfe5a0b0497e7f58cbd9543d5f75de94fc1d9b039919cef229c20b7"
       }
     },
     "07-verify-tampered": {
       "status": "REJECTED",
       "code": "bad_signature",
+      "minimum_sequence": "1",
       "detail": "",
-      "container_sha256": "82d00171667b066861e9f0d9cd540dcc95f4e10c6beb08b074130f29dab0b430",
+      "container_sha256": "c00a67a3f6dc2ae37b48c673851fe933218248e194eb549fc5a73b51494c7b11",
       "exit_code": "3",
       "log": {
         "path": "artifacts/d1/cli/07-verify-tampered.txt",
-        "bytes": 142,
-        "sha256": "4c5a7aa2d2cddb04cda31cf2f70e586e5f0b2c13c96368a29602f2f425f6db23"
+        "bytes": 162,
+        "sha256": "c65fec4bcae94c77c8bf354ec476982d1921bc538e90fd49c36be1ecf36250b7"
       }
     },
     "08-verify-old-app-code": {
       "status": "REJECTED",
       "code": "minimum_code",
+      "minimum_sequence": "1",
       "detail": "20",
-      "container_sha256": "5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2",
+      "container_sha256": "cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263",
       "exit_code": "3",
       "log": {
         "path": "artifacts/d1/cli/08-verify-old-app-code.txt",
-        "bytes": 143,
-        "sha256": "4f5aac8ec254bf1b7002e22d8fa60129103df036e601c81195673932a918d92e"
+        "bytes": 163,
+        "sha256": "971b14acc9a08f74987d77c1226ef38fe3906c7a7c69920e1bba95a2db686a9a"
       }
     },
     "09-audit-newdu": {
@@ -175,38 +184,103 @@
         "bytes": 245,
         "sha256": "aedc803075bc1aee03bf57564405e0577999b5a2f6d89a46b3a022912d1fe1a1"
       }
+    },
+    "10-build-sequence-3": {
+      "status": "BUILT_TEST_ONLY",
+      "area_id": "cn-420502",
+      "content_kind": "fact_only",
+      "sequence": "3",
+      "unsigned_sha256": "6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2",
+      "container_sha256": "40dd0e06e93f8ba54a59a79c0e9f0dd1a5e02c66015031c030d28c0017dad90b",
+      "container_bytes": "10468",
+      "pack_file": "<TEMP>/kitt-d1-out/seq3/pack.kcpk",
+      "exit_code": "0",
+      "log": {
+        "path": "artifacts/d1/cli/10-build-sequence-3.txt",
+        "bytes": 353,
+        "sha256": "ad061206835171d898100b5a8e09a14b9f57a078d883ef3aef38770a7313c664"
+      }
+    },
+    "10-verify-sequence-rollback": {
+      "status": "REJECTED",
+      "code": "sequence_rollback",
+      "minimum_sequence": "4",
+      "detail": "3<4",
+      "container_sha256": "40dd0e06e93f8ba54a59a79c0e9f0dd1a5e02c66015031c030d28c0017dad90b",
+      "exit_code": "3",
+      "log": {
+        "path": "artifacts/d1/cli/10-verify-sequence-rollback.txt",
+        "bytes": 169,
+        "sha256": "6b9197e2daa66922b091e1b9a3666730d7e54391f95573f3af4399bdbf0f5ea1"
+      }
+    },
+    "11-relabel": {
+      "status": "RELABELLED",
+      "area_id": "cn-510114",
+      "container_sha256": "3ad77e28dceb7f9fb476635aaa01cec0be552fa80acf250dbb2acad8c64dbde2",
+      "exit_code": "0",
+      "log": {
+        "path": "artifacts/d1/cli/11-relabel.txt",
+        "bytes": 134,
+        "sha256": "6412eaaa3261065e8308edd77b0c9fc7a5272b049a4ed28837fd1f4b70502f91"
+      }
+    },
+    "11-verify-relabelled-county": {
+      "status": "REJECTED",
+      "code": "inner_binding",
+      "minimum_sequence": "1",
+      "detail": "fact_manifest.area_id",
+      "container_sha256": "3ad77e28dceb7f9fb476635aaa01cec0be552fa80acf250dbb2acad8c64dbde2",
+      "exit_code": "3",
+      "log": {
+        "path": "artifacts/d1/cli/11-verify-relabelled-county.txt",
+        "bytes": 183,
+        "sha256": "a9253d90f44a2858938ff0df81698d673ceae2863fcdc5d3950029154dc3ae90"
+      }
     }
   },
   "reproducibility": {
-    "generated_at": "2026-10-17T10:35:15Z",
-    "commit": "a69ccfe4eae66315891620bf24d738eb07d17f05",
+    "generated_at": "2026-10-17T11:25:33Z",
+    "commit": "5c803e4d3a63ac588234f71a8d5ada902737a1e5",
     "sample": "fact-only",
     "key_id": "test-only-d1-local",
+    "token": "84638d5706db",
     "clean_directories": [
       {
-        "tree": "C:\\Users\\Church\\AppData\\Local\\Temp\\kitt-d1-repro-a69ccfe4-1",
-        "commit": "a69ccfe4eae66315891620bf24d738eb07d17f05",
+        "tree": "<REPRO_WORKTREE_1>",
+        "commit": "5c803e4d3a63ac588234f71a8d5ada902737a1e5",
         "status": "BUILT_TEST_ONLY",
+        "sequence": 1,
         "unsigned_sha256": "6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2",
-        "container_sha256": "5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2",
-        "container_bytes": 10455,
-        "pack_sha256": "5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2"
+        "container_sha256": "cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263",
+        "container_bytes": 10468,
+        "pack_sha256": "cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263"
       },
       {
-        "tree": "C:\\Users\\Church\\AppData\\Local\\Temp\\kitt-d1-repro-a69ccfe4-2",
-        "commit": "a69ccfe4eae66315891620bf24d738eb07d17f05",
+        "tree": "<REPRO_WORKTREE_2>",
+        "commit": "5c803e4d3a63ac588234f71a8d5ada902737a1e5",
         "status": "BUILT_TEST_ONLY",
+        "sequence": 1,
         "unsigned_sha256": "6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2",
-        "container_sha256": "5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2",
-        "container_bytes": 10455,
-        "pack_sha256": "5046cd93c395df34c7181689078dcb086561ac0478301e8e57f41ea5ed3491b2"
+        "container_sha256": "cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263",
+        "container_bytes": 10468,
+        "pack_sha256": "cf283c6f28ef7a16ac8868c89894450aee2f649b6a09e9a67a104ccb9020a263"
       }
     ],
     "unsigned_bytes_identical": true,
     "container_bytes_identical": true,
     "note": "RSA PKCS#1 v1.5 is deterministic, so with the same TEST_ONLY key the whole container repeats."
   },
+  "reproducibility_guard": {
+    "generated_at": "2026-10-17T11:23:41Z",
+    "stopped": true,
+    "message": "Refusing to reuse or delete an existing directory: <REPRO_WORKTREE_1>",
+    "sentinel_intact": true,
+    "sentinel_content": "do-not-delete",
+    "created_directory_deleted": false
+  },
   "signing_regression": {
+    "generated_at": "2026-10-17T11:26:05Z",
     "cases": [
       {
         "case": "canonical keystore",
@@ -230,7 +304,7 @@
         "case": "missing APK",
         "expected": "reject",
         "passed": true,
-        "message": "APK file does not exist: C:\\Users\\Church\\AppData\\Local\\Temp\\59ffaf02-99aa-417b-86b1-dd9f3bb7c590.missing"
+        "message": "APK file does not exist: <TEMP>/43f3205d-b7b9-4406-b4b8-894e94b11687.missing"
       },
       {
         "case": "package constraint without APK",
@@ -263,7 +337,7 @@
   },
   "tests": {
     "debug": {
-      "tests": 563,
+      "tests": 567,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
@@ -274,11 +348,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ActiveResearchTest",
-          "timestamp": "2026-10-17T10:36:40",
+          "timestamp": "2026-10-17T11:09:17",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ActiveResearchTest.xml",
-            "bytes": 2128,
-            "sha256": "ee8de2e2e547fc8764dd6f05f314b1512f85c5246b06e388cde6099b2c797032"
+            "bytes": 2132,
+            "sha256": "f00112f0ef72951a43173b7aa23aa7b8a02ecf60dbcf30f47a57fabf493f162f"
           },
           "cases": [
             "realtimeResearchUsesChinaDateRatherThanHostOrUtcDate",
@@ -302,11 +376,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AndroidAreaResolverTest",
-          "timestamp": "2026-10-17T10:36:42",
+          "timestamp": "2026-10-17T11:09:19",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AndroidAreaResolverTest.xml",
             "bytes": 1058,
-            "sha256": "de54f10922262bdbea5825310892054adc4d9884391e3cd11433fc82db8bec43"
+            "sha256": "f2163e504b5e4b5d1f6b73c6e4d201e6864a357f009595f6d1eb49f68006a704"
           },
           "cases": [
             "absentPlatformGeocoderCompletesUnresolvedWithoutCrash[26]",
@@ -322,11 +396,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AndroidLifecycleTest",
-          "timestamp": "2026-10-17T10:36:48",
+          "timestamp": "2026-10-17T11:09:27",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AndroidLifecycleTest.xml",
             "bytes": 459,
-            "sha256": "67a74da7659582df48addfbcda63a0c02cb5e8a0bbfe11d18b5cf18bc2ad0b9f"
+            "sha256": "3f168960f39cca273a2c84825ff8b379c66f66a8c44f4ad73ece9373c2fc34ca"
           },
           "cases": [
             "activityLaunchesAndServiceQuietEndControlsWork"
@@ -338,11 +412,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AndroidVoiceExperienceTest",
-          "timestamp": "2026-10-17T10:36:55",
+          "timestamp": "2026-10-17T11:09:35",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AndroidVoiceExperienceTest.xml",
             "bytes": 1936,
-            "sha256": "3264d57a39314503231d2a12a91e1c46389520d512444c05c49d6e94bb32e0b7"
+            "sha256": "0830b06969f377f45fd7abfb273f38adbf8a88e5ed9b97905da196442bd9de5c"
           },
           "cases": [
             "androidErrorResetsLevelAndPreservesCode",
@@ -364,11 +438,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AreaChapterTest",
-          "timestamp": "2026-10-17T10:37:00",
+          "timestamp": "2026-10-17T11:09:40",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AreaChapterTest.xml",
-            "bytes": 1386,
-            "sha256": "97863feb8e36d01391b7791d72e1fe31ef9d7daf7370d7e2c0867fb16e3017dc"
+            "bytes": 1384,
+            "sha256": "ab1c72a174f6fee9a217a4e4a89cadd56a40670c663c4ed5590aa90a6d0e6e6f"
           },
           "cases": [
             "familyHistoryIsBoundedAndUnknownFamilyFailsValidation",
@@ -387,11 +461,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AreaResolutionCacheTest",
-          "timestamp": "2026-10-17T10:37:01",
+          "timestamp": "2026-10-17T11:09:41",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AreaResolutionCacheTest.xml",
-            "bytes": 1667,
-            "sha256": "96dedc9cf04dac33e86cee35c4c2da51a2575924875977cc69aad071d70a9081"
+            "bytes": 1664,
+            "sha256": "f0c4344d781da292f1afddca485d271910ce8998515221a0698e04d7a35c20b4"
           },
           "cases": [
             "unobservedGapAlsoBreaksContinuityWithFreshReturningFix",
@@ -411,11 +485,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.BatchSimulationTest",
-          "timestamp": "2026-10-17T10:37:02",
+          "timestamp": "2026-10-17T11:09:42",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.BatchSimulationTest.xml",
-            "bytes": 2512,
-            "sha256": "505ba9e8ccec368d262ace2e51730de36b0d6c340c40e2e892c83d3210eb1119"
+            "bytes": 2514,
+            "sha256": "363d1f5074b6e374041bb621ec0becc49f819a393a115b35f857d4a05d32e042"
           },
           "cases": [
             "complete100Kmh16xDossierPipelineSpeaksThroughChaptersWithoutStaleReplay",
@@ -430,11 +504,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.BootstrapTest",
-          "timestamp": "2026-10-17T10:37:04",
+          "timestamp": "2026-10-17T11:09:43",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.BootstrapTest.xml",
             "bytes": 418,
-            "sha256": "830ece77fe15c789e9dbd5a9f9a8b4b87ee4d6ee6f1220013453a36a93e2faad"
+            "sha256": "62338ee98d571d7340e90186063b1c46fe1d8be8ba1a248b96a2afe69a3b0a43"
           },
           "cases": [
             "applicationIdentity"
@@ -446,11 +520,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.BundledCountyPacksTest",
-          "timestamp": "2026-10-17T10:37:05",
+          "timestamp": "2026-10-17T11:09:44",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.BundledCountyPacksTest.xml",
-            "bytes": 775,
-            "sha256": "2670d37cee4617f6a703ccebb137997c5e13c945e94434e3f221495521c06983"
+            "bytes": 776,
+            "sha256": "ce353d1c514e2c48227e58d87b04c33787830d391d6fc0f82a1020b755c2a0d9"
           },
           "cases": [
             "readOnlyRegistryAndExploreNeverWriteSyntheticSettingsOrTwentyHistories",
@@ -464,11 +538,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChapterOpportunityTest",
-          "timestamp": "2026-10-17T10:37:10",
+          "timestamp": "2026-10-17T11:09:49",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChapterOpportunityTest.xml",
-            "bytes": 1345,
-            "sha256": "7fa72433d781d8e33da4bf45a1d1c1e924781031e3dfa4acb4fb603b99dedec8"
+            "bytes": 1344,
+            "sha256": "b617968de59955db6019d25f70aa6bb08ae41a6ee0520a7aab6612dba818692f"
           },
           "cases": [
             "unresolvedGapDoesNotCreateRepeatedVisitOfCheckedChapter",
@@ -486,11 +560,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChatGptAccountTest",
-          "timestamp": "2026-10-17T10:37:11",
+          "timestamp": "2026-10-17T11:09:50",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChatGptAccountTest.xml",
-            "bytes": 2121,
-            "sha256": "89b8bef93343f433aca36b55021e8e93b307c1183ca5cc765033766267ed54e0"
+            "bytes": 2120,
+            "sha256": "d761a4053b49a54a1657272276c50f464cadb48f8a3fd24867afeb1db34057b1"
           },
           "cases": [
             "encryptedRecordKeepsAllIdentityAndTokenValuesOutOfPreferencesAndDiagnostics",
@@ -513,11 +587,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChatGptImagePayloadTest",
-          "timestamp": "2026-10-17T10:37:16",
+          "timestamp": "2026-10-17T11:09:55",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChatGptImagePayloadTest.xml",
             "bytes": 484,
-            "sha256": "0832278400e73da9b5ef716a85314af0efaa59c9da534e7eb32acfc9efe0666b"
+            "sha256": "00a05d3636a1dba79194bea42b930f199cecb5e2fb465ae014943c374b6b4f17"
           },
           "cases": [
             "chatGptUsesExistingAuthorizationAdapterWithImagePartsAndNoStorage"
@@ -529,11 +603,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChatGptProtocolTest",
-          "timestamp": "2026-10-17T10:37:20",
+          "timestamp": "2026-10-17T11:09:59",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChatGptProtocolTest.xml",
             "bytes": 1602,
-            "sha256": "c165547382adf1f4f5722f090490097354e72d9ac290a1929a1c25c72634b85c"
+            "sha256": "d28e9a56868787a88df45050ae029640f7b6a6ab4484fbe84cbad545e656a11e"
           },
           "cases": [
             "realLoopbackListenerBindsBeforeCallbackAndDoesNotEchoCredentials",
@@ -553,11 +627,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ContextTest",
-          "timestamp": "2026-10-17T10:37:21",
+          "timestamp": "2026-10-17T11:10:01",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ContextTest.xml",
             "bytes": 438,
-            "sha256": "deb5045cebcc887f21d9e4ac30cef3184f6daf84942832699a5a81d8fd88ae83"
+            "sha256": "e90e639c289f7f919282f6ac8c4fc0c3c44a5c8365816d34f2045d388c2d0261"
           },
           "cases": [
             "sourceIndependentPipelineAndAltitudeSummary"
@@ -569,11 +643,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.CountyPacksTest",
-          "timestamp": "2026-10-17T10:37:22",
+          "timestamp": "2026-10-17T11:10:02",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.CountyPacksTest.xml",
-            "bytes": 3930,
-            "sha256": "cf60191f78ae2ea7ebb06dfb79b131a971ed87cbe8fff3a080a1993db4c46e89"
+            "bytes": 3931,
+            "sha256": "34d5c4647192a697a6b58332281d1caab0791db34025fe886f641f04c798c766"
           },
           "cases": [
             "specialAdministrativeLevelsNeedExplicitRulesRatherThanAnInventedPrefecture",
@@ -605,16 +679,16 @@
           ]
         },
         {
-          "tests": 23,
+          "tests": 27,
           "failures": 0,
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.d1.ReleaseD1Test",
-          "timestamp": "2026-10-17T10:42:15",
+          "timestamp": "2026-10-17T11:14:12",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.d1.ReleaseD1Test.xml",
-            "bytes": 3081,
-            "sha256": "06ac7856e970204e54d5ed6d0fd8abfcf6ee979f9a4b449b5b87fac5ffc8f1f9"
+            "bytes": 3602,
+            "sha256": "2f6d22dd0d395620774c29e049833b9901f80c183601863e2d215051c8406852"
           },
           "cases": [
             "containerCarriesNoMachineIdentity",
@@ -629,17 +703,21 @@
             "wrongAppCodeIsRejected",
             "factOnlyPackIsAcceptedAndReportsZeroStories",
             "oversizedContainerIsRejectedBeforeParsing",
+            "aSignedOuterManifestCannotRelabelTheFactVersion",
             "oneChangedByteBreaksTheSignature",
             "anOldSignatureCannotCoverANewManifest",
+            "anOlderSignedPackIsRefusedOnceTheCallerRaisesTheFloor",
             "unsignedBytesAndTheWholeContainerRepeatForTheSameKey",
             "aPayloadCannotNominateItsOwnPublicKey",
             "unregisteredKeyIdIsRejected",
             "candidateReviewStatusIsRejected",
+            "aSignedOuterManifestCannotRelabelAnotherCounty",
             "trailingBytesAndTruncationAreRejected",
             "duplicateUnknownAndMissingBlocksAreRejected",
             "reviewedSyntheticStoriesAreCountedWhenTheNarrativeBlockShipsThem",
             "manifestEncodingIsCanonicalAndRoundTrips",
-            "restrictedSourceRightsRejectThePackEvenWithAValidSignature"
+            "restrictedSourceRightsRejectThePackEvenWithAValidSignature",
+            "aSignedOuterManifestCannotRelabelTheAppRequirement"
           ]
         },
         {
@@ -648,11 +726,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DirectorLoopTest",
-          "timestamp": "2026-10-17T10:37:24",
+          "timestamp": "2026-10-17T11:10:04",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DirectorLoopTest.xml",
-            "bytes": 710,
-            "sha256": "f1c330020631a40a9123feba3aa85e6511f0c1dc9bc74fe43bd917f196736efe"
+            "bytes": 709,
+            "sha256": "4a76e59ea7695c4a3222bc7803e14c1dc8d240cb66fe8107c0faaf87dd88d8a2"
           },
           "cases": [
             "prepareIsOnlyRevalidationContextAndCannotBecomeAudioByItself",
@@ -666,11 +744,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DossierSimulationTest",
-          "timestamp": "2026-10-17T10:37:26",
+          "timestamp": "2026-10-17T11:10:05",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DossierSimulationTest.xml",
             "bytes": 481,
-            "sha256": "ea039117003401605ca0a6e9e19ab700236253d03c634b3703ab76ac9163a1c9"
+            "sha256": "ceff0290567e05e5fb85541be0545b7efe6fdeac3e7e6be6354a23ec42b9e702"
           },
           "cases": [
             "existingRouteResearchesEachChapterAndNarratesOnlyDeliveredEvidence"
@@ -682,11 +760,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DrivingAreaResolutionTest",
-          "timestamp": "2026-10-17T10:37:27",
+          "timestamp": "2026-10-17T11:10:06",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DrivingAreaResolutionTest.xml",
-            "bytes": 918,
-            "sha256": "f244e3ea5ac8f53060e1e122d7b64e1e374f338266e84878e318c0b607bd5401"
+            "bytes": 919,
+            "sha256": "21277cb8b30efc2285ec2594c805a8f208f5e492d0398ba9a8f797accbef1007"
           },
           "cases": [
             "stationaryFailuresAreBoundedAndPendingLookupsNeverMultiply",
@@ -701,11 +779,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DrivingUiTest",
-          "timestamp": "2026-10-17T10:37:28",
+          "timestamp": "2026-10-17T11:10:07",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DrivingUiTest.xml",
             "bytes": 447,
-            "sha256": "73c81fc75624435bef4fbbde2d768cd786e78edb2a8b7950267546068765fabd"
+            "sha256": "9934f84ec0791757450cdca1323367969fcd501198d1c75d93115057def676ea"
           },
           "cases": [
             "drivingButtonsAreVisibleAndOneTapQuietAndEndWork"
@@ -717,11 +795,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.EditorialFreedomTest",
-          "timestamp": "2026-10-17T10:37:35",
+          "timestamp": "2026-10-17T11:10:15",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.EditorialFreedomTest.xml",
-            "bytes": 1383,
-            "sha256": "d8ab2b5b9e6b12e3b08502a814620373cd2312c4b1d6d12cd01239abe9c2eabe"
+            "bytes": 1386,
+            "sha256": "edfc9e84be1cb08981f395a2a810aa5d3593d7c2f8151140fb54d6ecaf2f1333"
           },
           "cases": [
             "constitutionForbidsTheFixedRhetoricalTemplateAndLandThesis",
@@ -740,11 +818,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.EndUiTest",
-          "timestamp": "2026-10-17T10:37:36",
+          "timestamp": "2026-10-17T11:10:16",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.EndUiTest.xml",
             "bytes": 948,
-            "sha256": "e1620b37e5aae938c76d7c3ece6e3d95a6401eeadb5f7a827111b6329240eff1"
+            "sha256": "86bdea25dac779f59b6690cb4efb9b4ee55ae3f3aef8c2f3a0f776eeec964ddd"
           },
           "cases": [
             "endScreenShowsSavedSummaryWithoutRatingsAndReturns",
@@ -760,11 +838,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExplorePlacesTest",
-          "timestamp": "2026-10-17T10:37:46",
+          "timestamp": "2026-10-17T11:10:24",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExplorePlacesTest.xml",
             "bytes": 1544,
-            "sha256": "2d674594d9d75016e8ade315dd6028c84949fc1a5b03dc898a375239d39df72e"
+            "sha256": "d10c7f7d863cfe022fc0edeb174fe5e639191cc92088a564364588501c421cd5"
           },
           "cases": [
             "missingPackNeverInventsInstalledRegions",
@@ -784,11 +862,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExploreRestoreUiTest",
-          "timestamp": "2026-10-17T10:37:47",
+          "timestamp": "2026-10-17T11:10:25",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExploreRestoreUiTest.xml",
             "bytes": 468,
-            "sha256": "230532e5618e3b8aa6486b4fe67a844c692ffa19cf36aa7660ef0e5547027588"
+            "sha256": "3b3a30938878fdb47da6efdf79636d8275a7738bb63d9a9ed21d09aca06a4a0c"
           },
           "cases": [
             "restoredArticleRetainsTextAndNavigationButStopsPlayback"
@@ -800,11 +878,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExploreUiTest",
-          "timestamp": "2026-10-17T10:37:59",
+          "timestamp": "2026-10-17T11:10:33",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExploreUiTest.xml",
-            "bytes": 1695,
-            "sha256": "96e5f1c46aec2d4a049adb7425da06659a3d095fcc14492891251dd6d8797a7b"
+            "bytes": 1694,
+            "sha256": "e89f41178aa9788c0ac0b50260e8d9238559850c044a05aae3adec4c7133dab1"
           },
           "cases": [
             "unavailableCatalogHasTruthfulEmptyState",
@@ -826,11 +904,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExploreVoiceTest",
-          "timestamp": "2026-10-17T10:38:14",
+          "timestamp": "2026-10-17T11:10:44",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExploreVoiceTest.xml",
             "bytes": 613,
-            "sha256": "1b74893a07b9e77aa53a63daa28c8b52ad3534bb797ee7ca2612f6e4b97d1aec"
+            "sha256": "c048206e2f422f25799bf1740ec195c404fcf7e85fdcd5a3ef734ef9217b50d1"
           },
           "cases": [
             "engineWatchdogMakesStalledManualPlaybackRetryable",
@@ -843,11 +921,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.FullSimulationTest",
-          "timestamp": "2026-10-17T10:38:19",
+          "timestamp": "2026-10-17T11:10:49",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.FullSimulationTest.xml",
             "bytes": 1152,
-            "sha256": "7eed3f7977bd8da729d31adbac2a9e21e3ce3c34cd756673d128fbbbfb63078e"
+            "sha256": "574d1e2b3d1f20ae89e1ced9e49fc4bd9a5528f16cfd030fd0caf2b1b25d98bc"
           },
           "cases": [
             "chengduToMianyangFullGoldenPath"
@@ -859,11 +937,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.FusedLocationTest",
-          "timestamp": "2026-10-17T10:38:21",
+          "timestamp": "2026-10-17T11:10:50",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.FusedLocationTest.xml",
             "bytes": 1238,
-            "sha256": "ad39c33eef21a86444465b2112a9c71743234d493f8f4e368b7b1e270e9c93fa"
+            "sha256": "95c89ebb54c09445b611cf928cbd6743e666bb9abb853647163c204efe0390da"
           },
           "cases": [
             "fusedUsesThirtySecondWindowThenOriginalClockBridgeThenUnknown",
@@ -881,11 +959,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ImageBoundaryTest",
-          "timestamp": "2026-10-17T10:38:22",
+          "timestamp": "2026-10-17T11:10:51",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ImageBoundaryTest.xml",
-            "bytes": 880,
-            "sha256": "bcf1236ed925d734b54d42300eb56210f9893d419534cabb4a062f9490ba722c"
+            "bytes": 879,
+            "sha256": "c21a6034ac0624a4bde363b37fb7f930ee135df244a5b6a7b76e2ccbd2b6a83c"
           },
           "cases": [
             "cameraProviderDeclaresOnlyCaptureCacheWithoutCameraOrStoragePermission",
@@ -900,11 +978,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.JourneyTest",
-          "timestamp": "2026-10-17T10:38:28",
+          "timestamp": "2026-10-17T11:10:56",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.JourneyTest.xml",
-            "bytes": 1905,
-            "sha256": "ab41d4833405892cc11a404191b707ea341dfd3bf17f2f719b0774d572ecee23"
+            "bytes": 1904,
+            "sha256": "fdf374c4d7a5436db17eac8029cab4e624c7d733a18b8ff97c59000d5aabfbb1"
           },
           "cases": [
             "activeQuestionCanTemporarilyTakeOverQuietWithoutCancellingTimer",
@@ -928,11 +1006,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.KittPolishLandscapeTest",
-          "timestamp": "2026-10-17T10:38:30",
+          "timestamp": "2026-10-17T11:10:57",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.KittPolishLandscapeTest.xml",
             "bytes": 490,
-            "sha256": "0274645e6a798c77652e254a7aa5ed170505cf3edcf6e528de9e154a870169c2"
+            "sha256": "e528f900ee21901a6293079313e68f7176313f10e62f69e071bd4d0a4c26822e"
           },
           "cases": [
             "daylightLandscapeKeepsPlaceQuietAndImageControlsVisibleWithoutScrolling"
@@ -944,11 +1022,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.KittPolishPortraitTest",
-          "timestamp": "2026-10-17T10:38:38",
+          "timestamp": "2026-10-17T11:11:04",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.KittPolishPortraitTest.xml",
-            "bytes": 492,
-            "sha256": "e2b7991e2b23b709849e52b844b41dce411b250af4f5e11c0ea539870a8ee330"
+            "bytes": 490,
+            "sha256": "881d033c7a0959945f48a188330b6745362ac48b672e022e2ba867724601a299"
           },
           "cases": [
             "compactDarkPortraitShowsEveryStatePlaceAndSecondaryControlsWithoutScrolling"
@@ -960,11 +1038,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LandmarkProximityTest",
-          "timestamp": "2026-10-17T10:38:46",
+          "timestamp": "2026-10-17T11:11:12",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LandmarkProximityTest.xml",
-            "bytes": 2414,
-            "sha256": "0088042165234509c55982b9c8b118d7d83f8d7e662d38dec708574f38d86a5f"
+            "bytes": 2411,
+            "sha256": "c95984e368f36431ee9748fb8616697289bce4c5bc9b08c047fb77d051b31f8f"
           },
           "cases": [
             "silentIsValidAndStationaryNodeDoesNotCreateRetryStorm",
@@ -985,11 +1063,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LandscapeUiTest",
-          "timestamp": "2026-10-17T10:38:48",
+          "timestamp": "2026-10-17T11:11:14",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LandscapeUiTest.xml",
             "bytes": 449,
-            "sha256": "ca30f3a5d8dcecfada72399e6588e009ef2964789eb0ab6781333d9ac9ac0198"
+            "sha256": "ac75c0702418e51bfe2de2bb069a88baa8dfb62f8ea5c84a797b50dc40a66ce7"
           },
           "cases": [
             "landscapeControlsRemainVisibleWithoutScrolling"
@@ -1001,11 +1079,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocalFirstHotfixTest",
-          "timestamp": "2026-10-17T10:38:57",
+          "timestamp": "2026-10-17T11:11:20",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocalFirstHotfixTest.xml",
-            "bytes": 1930,
-            "sha256": "6c1d50bcd52709c64406fb79970ed9a38abc178ec79ebada887f9a5d91fdced4"
+            "bytes": 1932,
+            "sha256": "3e013d81bc5f7d6324a9ed36b757814285a0496d652275d2f7b330cfff7278b8"
           },
           "cases": [
             "disconnectCancelsExplicitCloudWithoutRestartingItOnReconnect",
@@ -1027,11 +1105,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocalFirstRuntimeTest",
-          "timestamp": "2026-10-17T10:38:59",
+          "timestamp": "2026-10-17T11:11:22",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocalFirstRuntimeTest.xml",
             "bytes": 732,
-            "sha256": "5d46669edaf104a37a74fd00ef8ef4697a3fef3484afcedfbe25ead8201cc37f"
+            "sha256": "5d1082ddd39f105cd28b2b366f010b7cd301a6b9b1c8328753d34d104a58f927"
           },
           "cases": [
             "onlineRuntimeUsesOfflineChineseTtsWhileRecognitionRemainsOnlineCapable",
@@ -1044,11 +1122,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocalResearchTest",
-          "timestamp": "2026-10-17T10:39:05",
+          "timestamp": "2026-10-17T11:11:26",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocalResearchTest.xml",
-            "bytes": 2664,
-            "sha256": "eb0aeb2c7fe060b061ea281fbd0bf096304efe00d1ad3f2ade5099d5ee21ecbd"
+            "bytes": 2663,
+            "sha256": "9236ef675cfadbd260620458f34785e65a0b019ccbf5f65231487c529341824c"
           },
           "cases": [
             "compatibleEndpointCannotPretendToSearchOrCallNetwork",
@@ -1076,11 +1154,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocationCompatibilityTest",
-          "timestamp": "2026-10-17T10:39:06",
+          "timestamp": "2026-10-17T11:11:28",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocationCompatibilityTest.xml",
-            "bytes": 1575,
-            "sha256": "013e356402d297a31c7496c1b362a70278fb3b070b869cfac8e349ee49cffa77"
+            "bytes": 1578,
+            "sha256": "2f15d9132e00bb36d44673232bf26ca321d45f5f87004bb7ef4b116bbc467180"
           },
           "cases": [
             "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[26]",
@@ -1099,11 +1177,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocationFallbackTest",
-          "timestamp": "2026-10-17T10:39:17",
+          "timestamp": "2026-10-17T11:11:39",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocationFallbackTest.xml",
-            "bytes": 2616,
-            "sha256": "2bbd406b94c222db7a4dfe7bdbe7eef626b83858adb98e4eb027810e3e46a86f"
+            "bytes": 2607,
+            "sha256": "6374157e32d0438c28fc6b502623776804c505c1bd77476fbf4a466d2a92caa3"
           },
           "cases": [
             "cachedCoordinatesNeverBecomeFreshGpsAndExpireWithoutRenewingTimestamp",
@@ -1131,11 +1209,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.NarrationLoopTest",
-          "timestamp": "2026-10-17T10:39:19",
+          "timestamp": "2026-10-17T11:11:40",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.NarrationLoopTest.xml",
-            "bytes": 1347,
-            "sha256": "876dae51ed284aacd6d107ad220292c8f8a89a681521080d9d153cabbb140d6f"
+            "bytes": 1348,
+            "sha256": "e1d48e9aaa0d484f69204c4cb1ff96e57770ce3ca474a17e4f41515c19ad961b"
           },
           "cases": [
             "replayAfterMovingRetainsOriginalSubjectArea",
@@ -1153,11 +1231,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.NarrationMemoryTest",
-          "timestamp": "2026-10-17T10:39:20",
+          "timestamp": "2026-10-17T11:11:41",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.NarrationMemoryTest.xml",
-            "bytes": 2929,
-            "sha256": "b8fa2bf88697207995fae71117302c937d222e3896dfa0a0337b4ceaafe6ba5f"
+            "bytes": 2930,
+            "sha256": "414e72f86a6a4bb78c123ba4cf1fc32e2fb2e41217604f74a6e7ab752c7d165c"
           },
           "cases": [
             "restartAndLegacyRecoveryDoNotImportCompletedClaimsOrReplayText",
@@ -1187,11 +1265,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.NetworkStatusTest",
-          "timestamp": "2026-10-17T10:39:22",
+          "timestamp": "2026-10-17T11:11:42",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.NetworkStatusTest.xml",
             "bytes": 1279,
-            "sha256": "a349e4b1aa3d1b573d80d9be4fa80fc3441450cf82a46f606075dd10743b2da1"
+            "sha256": "c1470dce9b38b51cf33fe317ad19c3929fd68c4919a6d81ce0716bef682af2ea"
           },
           "cases": [
             "validatedGhostVpnAndImsWithoutInternetCannotEnableCloud",
@@ -1209,11 +1287,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.OfflineLocationTest",
-          "timestamp": "2026-10-17T10:39:29",
+          "timestamp": "2026-10-17T11:11:48",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.OfflineLocationTest.xml",
-            "bytes": 2037,
-            "sha256": "9aebb34fdbe4165abed44b6b379ace9d2c9ba882ea9f5f99f1466e718cfb2e91"
+            "bytes": 2039,
+            "sha256": "3910fc0c0b5510c079068f77e5393de57deea5ab60f1493bbda9fc97b0251c54"
           },
           "cases": [
             "leavingInstalledCountyOnlineDoesNotRetainItsLabelOrOldStreet",
@@ -1229,11 +1307,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.OfflinePackTest",
-          "timestamp": "2026-10-17T10:39:34",
+          "timestamp": "2026-10-17T11:11:52",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.OfflinePackTest.xml",
-            "bytes": 3088,
-            "sha256": "3114166345f3af6cee006016e6bfada79c3cfaf8244062ef75b003ebbb8ccd57"
+            "bytes": 3090,
+            "sha256": "470fd9dff8e77962f447f6cf4f0679431311f637afad3ecfd5caa1950bdfc404"
           },
           "cases": [
             "onlinePhoneWithoutLocalCoverageDoesNotMakeAutomaticCloudRequest",
@@ -1265,11 +1343,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.OfflineVoiceTest",
-          "timestamp": "2026-10-17T10:39:36",
+          "timestamp": "2026-10-17T11:11:53",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.OfflineVoiceTest.xml",
             "bytes": 884,
-            "sha256": "437cf7fbd92dbcd3f3cff0423101ab41a5929314a942427920b9e9b18887a6e2"
+            "sha256": "05838938387e0afca7db15682805c2450dcbd4ff9948126f4d5d2de7f4b613c6"
           },
           "cases": [
             "missingOfflineDataFailsWithoutQueuingNetworkSpeech",
@@ -1284,11 +1362,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.PersistenceTest",
-          "timestamp": "2026-10-17T10:39:40",
+          "timestamp": "2026-10-17T11:11:58",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.PersistenceTest.xml",
-            "bytes": 1024,
-            "sha256": "b6ec6c2f92d32ac82fa087177a1ab97f4036cdb6b3fce667efc1881694497bc5"
+            "bytes": 1026,
+            "sha256": "238b3b23ae48d9d82411597b2e80b79399e8b32c1731b46616295d50e68ddb22"
           },
           "cases": [
             "finishSavesSummaryAndClearsCheckpointWithoutRatingInput",
@@ -1304,11 +1382,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ProviderTest",
-          "timestamp": "2026-10-17T10:39:46",
+          "timestamp": "2026-10-17T11:12:02",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ProviderTest.xml",
             "bytes": 646,
-            "sha256": "78ca63aec2d415bfdc12e76f4da3863d9ff70416f5796364a7061534a2961d90"
+            "sha256": "6315a67e123667c809c088bcf4640566ff61842506a6020fd74e65d3905ae9a2"
           },
           "cases": [
             "fakeHonorsContract",
@@ -1322,11 +1400,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.QuietCountdownTest",
-          "timestamp": "2026-10-17T10:39:47",
+          "timestamp": "2026-10-17T11:12:03",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.QuietCountdownTest.xml",
             "bytes": 702,
-            "sha256": "1045cf1379b4171447a36aca2064a16670f726d45fdf5e44d81789165706a8c8"
+            "sha256": "0fa7594c1b41f2af55dd420942359f66c0a4c64bfd823365e4575bee00152615"
           },
           "cases": [
             "quietCountdownKeepsCountingWhenNothingElseChanges",
@@ -1340,11 +1418,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RealAreaContinuityTest",
-          "timestamp": "2026-10-17T10:39:56",
+          "timestamp": "2026-10-17T11:12:11",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RealAreaContinuityTest.xml",
-            "bytes": 2468,
-            "sha256": "cfb4399696f864f673bcaae216f79189c474a93f322a2d919212a3936bcf5a8e"
+            "bytes": 2467,
+            "sha256": "af62c204a139fb0bf54d89874f7ba275ae1e32f4c9587a36d3f2c289edc756bb"
           },
           "cases": [
             "tenMinutePublicationSurvivesEmptyErrorTimeoutAndRefreshWithoutFalseChapterChange",
@@ -1361,11 +1439,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RealLocationSourceTest",
-          "timestamp": "2026-10-17T10:40:01",
+          "timestamp": "2026-10-17T11:12:16",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RealLocationSourceTest.xml",
             "bytes": 3097,
-            "sha256": "610c242e479a0b910e8ed4fa720554f9828bce0cdbe9fad1ccabc3c8274902d7"
+            "sha256": "ecb802a68dd02727849843ccd2d564d2fdec65e18011b2dc5a1138e6f86fd168"
           },
           "cases": [
             "timerBridgesAndExpiresWithoutFurtherLocationCallbacks",
@@ -1385,11 +1463,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RecognizerBackendTest",
-          "timestamp": "2026-10-17T10:40:07",
+          "timestamp": "2026-10-17T11:12:20",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RecognizerBackendTest.xml",
             "bytes": 3019,
-            "sha256": "31b0b7598af3bd795cdd0d724e24b38f7b427736ff6b9bdcac0368da545f2d86"
+            "sha256": "ca30d3bdd063fbe0dddfa28f0305447f61b33eebe871d036ab389e2042fde895"
           },
           "cases": [
             "aBusyRecogniserIsRetriedNextTimeInsteadOfBeingWrittenOff",
@@ -1419,11 +1497,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ReplyExchangeTest",
-          "timestamp": "2026-10-17T10:40:12",
+          "timestamp": "2026-10-17T11:12:24",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ReplyExchangeTest.xml",
-            "bytes": 2059,
-            "sha256": "d57316c075647d84b931334df4927b3873301c8f8963294234eeeee67c4e0421"
+            "bytes": 2055,
+            "sha256": "fe69cd325c72e487cc71bacba29e1ba2ae1166efe50984413777c0584e5379c1"
           },
           "cases": [
             "speechAnswerSubmitsOnceAndRejectsASecondTranscript",
@@ -1447,11 +1525,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ReplySurfaceUiTest",
-          "timestamp": "2026-10-17T10:40:14",
+          "timestamp": "2026-10-17T11:12:25",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ReplySurfaceUiTest.xml",
-            "bytes": 1134,
-            "sha256": "35f53addb1c56bec5e39d0c95d13f0224a73d45748ea67c98f182d3852e3530d"
+            "bytes": 1131,
+            "sha256": "a29e3c0fe813507640c25417c3433f4aa142568ca6fbda6c61c7093894856583"
           },
           "cases": [
             "theOpenExchangeOffersTypingAlongsideTheMicrophone",
@@ -1468,11 +1546,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ResearchEvidenceStoreTest",
-          "timestamp": "2026-10-17T10:40:25",
+          "timestamp": "2026-10-17T11:12:34",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ResearchEvidenceStoreTest.xml",
-            "bytes": 2670,
-            "sha256": "1b3dbc28325d19c1b8dfd6d252c20765d87e65f6e53fb924cb7f54ce1ee9a67c"
+            "bytes": 2668,
+            "sha256": "f63224e252818c75f5d18db950e5d1826d9321e2343aedaeaf91282c8cb11857"
           },
           "cases": [
             "topicNormalizationAndFullIdentityNeverCollide",
@@ -1499,11 +1577,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ResearchSocketCancellationTest",
-          "timestamp": "2026-10-17T10:40:27",
+          "timestamp": "2026-10-17T11:12:36",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ResearchSocketCancellationTest.xml",
             "bytes": 644,
-            "sha256": "ccacad3e69cc3201aa71052d65d8acad41f7b605665e8eb5acfbd0476b5b0c14"
+            "sha256": "6d5ad6278d38c14199da8b5b174eed03959e4e0be711d8c7b14c1194f2c4fd5e"
           },
           "cases": [
             "nativeCallTimeoutBoundsARealSocketWaitingForResponseHeaders",
@@ -1516,11 +1594,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ResearchTransportProbeTest",
-          "timestamp": "2026-10-17T10:40:29",
+          "timestamp": "2026-10-17T11:12:37",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ResearchTransportProbeTest.xml",
             "bytes": 1409,
-            "sha256": "56fe27d67cf267a455e85c1df1e3d9d090ba4ff0a327244cfede1b07f5f211f1"
+            "sha256": "fde2a8e35d2a12b4acef0749592737470a868b4412c6d6cc755d5cb4d0f3e68b"
           },
           "cases": [
             "cancellationReleasesCallerAndCancelsNativeCallWhileBodyIsBlocked",
@@ -1538,11 +1616,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RouteReferenceTest",
-          "timestamp": "2026-10-17T10:40:30",
+          "timestamp": "2026-10-17T11:12:38",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RouteReferenceTest.xml",
-            "bytes": 1006,
-            "sha256": "1bf4c66d0bc381373c51bff737e3cb2a629f59a8b9a9b99874e6ee2429856b74"
+            "bytes": 1005,
+            "sha256": "2ae9d36708038be5440e4f74c2a369690a6d28e87b1a3392c70a4cf0298636e0"
           },
           "cases": [
             "unsupportedNeverLoadsOrSilentlyDropsImage",
@@ -1558,11 +1636,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
-          "timestamp": "2026-10-17T10:40:32",
+          "timestamp": "2026-10-17T11:12:40",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusLandscapeUiTest.xml",
             "bytes": 476,
-            "sha256": "6193230c8a347c468a8d16d8a1f93d8fa398d8771683d33592ea6d043b56e09a"
+            "sha256": "db713e5e1d345ac357fdbe66d7479f576151b96666b5afca6a7a2065281f72dd"
           },
           "cases": [
             "phoneLandscapeStatusAndReplyKeepControlsVisible"
@@ -1574,11 +1652,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
-          "timestamp": "2026-10-17T10:40:40",
+          "timestamp": "2026-10-17T11:12:47",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusPortraitUiTest.xml",
             "bytes": 642,
-            "sha256": "d210e1cdd1f4524f1092032a8c54d5cceee26d5eeaf5a3ffc354636e2f8ec384"
+            "sha256": "6f2dd67aca5f29d7023d7d23ae68dd678f51f26a4de0c20581520ad359fcc739"
           },
           "cases": [
             "compactPortraitReplyKeepsInputCancelAndDrivingControlsVisible",
@@ -1591,11 +1669,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
-          "timestamp": "2026-10-17T10:40:48",
+          "timestamp": "2026-10-17T11:12:55",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusTabletUiTest.xml",
             "bytes": 461,
-            "sha256": "71591b55b12e6be59488c146f1ca7c0002c13f8eb8ca7c2cc9573b0a9999a721"
+            "sha256": "0c2334b33902e677d244f38d8dd4ce92275b98021a15cb7d88f501073e698a13"
           },
           "cases": [
             "tabletSixteenToTenStatusAndControlsFit"
@@ -1607,11 +1685,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusTest",
-          "timestamp": "2026-10-17T10:40:56",
+          "timestamp": "2026-10-17T11:13:02",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusTest.xml",
             "bytes": 2774,
-            "sha256": "5056b0bf1f8c067cb1be9285edd2e23cf258f867bd018edb01879e2f217ace38"
+            "sha256": "a4ece849d26df63654e5ad0e69985ddf00ada832d69cbc5b4b3c9661e8f47a35"
           },
           "cases": [
             "successfulCallAndInvalidReplyAreObservedSeparately",
@@ -1640,11 +1718,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeVoiceTest",
-          "timestamp": "2026-10-17T10:40:57",
+          "timestamp": "2026-10-17T11:13:03",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeVoiceTest.xml",
             "bytes": 749,
-            "sha256": "61ddf8579b7eeacf593019ec4db8748a57acb567ef28307560ab687f000a1608"
+            "sha256": "a6b8af505ae8ab842be3e6e1a1105a64088956079757c030572e53257dde5b0b"
           },
           "cases": [
             "coldTtsIsPreparingAndStartupWatchdogClearsIt",
@@ -1658,11 +1736,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SearchCapabilityProbeTest",
-          "timestamp": "2026-10-17T10:41:01",
+          "timestamp": "2026-10-17T11:13:07",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SearchCapabilityProbeTest.xml",
-            "bytes": 1276,
-            "sha256": "e22cf777bb78ba303d50c8579779e461767783616cd4152194571aed46be3a2a"
+            "bytes": 1275,
+            "sha256": "3217f1059e1eb36ea6a8d0ed426dd1253239d67b7bd94bcecc68341c8390c1d6"
           },
           "cases": [
             "completedToolWithoutResponseCompletedIsBAndDoneMarkerCannotFakeA",
@@ -1679,11 +1757,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SettingsBackTest",
-          "timestamp": "2026-10-17T10:41:03",
+          "timestamp": "2026-10-17T11:13:08",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SettingsBackTest.xml",
             "bytes": 733,
-            "sha256": "345fb00e4bf33287c36a87be82afe034c258808b071cd7f9f5f023c3904e5a5f"
+            "sha256": "86bfe574dcfcf13081137f1601875d089f53088220a507f7c3aaea77bf6ab91b"
           },
           "cases": [
             "developerStartPassesSimulationOnlyForThatAction",
@@ -1697,11 +1775,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SettingsTest",
-          "timestamp": "2026-10-17T10:41:14",
+          "timestamp": "2026-10-17T11:13:16",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SettingsTest.xml",
-            "bytes": 719,
-            "sha256": "2b678e61c5ba66f18de1447b6f1229212838e54829dd795847a7acb950112ef7"
+            "bytes": 720,
+            "sha256": "0c07659f734c430e6c02891e9eb2a04eae4f60a01a26ab3c19d93925a92a8354"
           },
           "cases": [
             "settingsRoundtripKeepsKeyEncryptedAndOmitsUnsupportedEffort",
@@ -1715,11 +1793,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SimulationCadenceTest",
-          "timestamp": "2026-10-17T10:41:19",
+          "timestamp": "2026-10-17T11:13:20",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SimulationCadenceTest.xml",
-            "bytes": 2335,
-            "sha256": "1148a8bb9dff3a5c477fa00c5221a193db788e5cda4dea9aeb7e3be60feb2c31"
+            "bytes": 2332,
+            "sha256": "6fb7a1f71c7236962f60b4c4114bffd0c6a8569da4594d78d291817aa3ef773d"
           },
           "cases": [
             "interruptionCancelsPendingRequestAndOldSpeechCannotReplayInSimulation",
@@ -1740,11 +1818,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SimulationTest",
-          "timestamp": "2026-10-17T10:41:21",
+          "timestamp": "2026-10-17T11:13:22",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SimulationTest.xml",
-            "bytes": 570,
-            "sha256": "39dcf38984f3962dac9db11a7128d4d8b8fa3caa68e508cecc54c4255091407f"
+            "bytes": 572,
+            "sha256": "033c07940e3af0d90a6d5bc38e430fe5ddb9c8338b5b2e0bedfc577b33802892"
           },
           "cases": [
             "continuous80KmhRouteCompletesAndCanAccelerate",
@@ -1757,11 +1835,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SourceIsolationTest",
-          "timestamp": "2026-10-17T10:41:22",
+          "timestamp": "2026-10-17T11:13:23",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SourceIsolationTest.xml",
             "bytes": 1053,
-            "sha256": "df8294b6a674a069486c4851a6c3c7f5cb3f13991a3fec7f00ad0fd4d2698560"
+            "sha256": "6d6eb93a20f996d8fbe2bcef42ef6981a833d83c2bea07db5f27f5ca36830956"
           },
           "cases": [
             "serviceLossKeepsExplicitSimulationRecoveryWithoutMakingItTheDefault",
@@ -1777,11 +1855,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StagedResearchTest",
-          "timestamp": "2026-10-17T10:41:28",
+          "timestamp": "2026-10-17T11:13:28",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StagedResearchTest.xml",
             "bytes": 2223,
-            "sha256": "dd61ddf3c4639c454acf64f23ad52db067b4ff39c0ddbe651e6c8f994905d811"
+            "sha256": "fccdd34d7aae6e93bfc5950f8d889930ac9b3b664538c19fd941bc9858af668c"
           },
           "cases": [
             "singleTopicAddsEvidenceAndCachesOnlyUntilTripEnd",
@@ -1806,11 +1884,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryInterestSelectionTest",
-          "timestamp": "2026-10-17T10:41:30",
+          "timestamp": "2026-10-17T11:13:29",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryInterestSelectionTest.xml",
-            "bytes": 1238,
-            "sha256": "c83affa896cc5fcf1dd25b7fa1506c77063320b277bc4927df781ba8c593779f"
+            "bytes": 1240,
+            "sha256": "80bcf97e5c7b1066203356b040fd8024635cb08bcdff082f5c7a2f2dd4e1437e"
           },
           "cases": [
             "moreOnItsOwnCategoryRaisesThatAngleWithoutRemovingTheOther",
@@ -1827,11 +1905,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryInterestStoreTest",
-          "timestamp": "2026-10-17T10:41:32",
+          "timestamp": "2026-10-17T11:13:31",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryInterestStoreTest.xml",
-            "bytes": 1062,
-            "sha256": "de55b59b56667ff988f729f2c69821a52fbb420036f37041ad1d78403423b627"
+            "bytes": 1063,
+            "sha256": "a262c43c4125b2d26f9073e8b0c70a431cde5c82af6ce96c96bfc60e66d76346"
           },
           "cases": [
             "legacyInstallWithoutAnyInterestKeysReadsEveryCategoryAsNormal",
@@ -1847,11 +1925,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryInterestUiTest",
-          "timestamp": "2026-10-17T10:41:36",
+          "timestamp": "2026-10-17T11:13:35",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryInterestUiTest.xml",
-            "bytes": 1240,
-            "sha256": "750963be500232d31941bd5d68fbd0eab8414bd7c315ad41bc9043b0a7158ab9"
+            "bytes": 1238,
+            "sha256": "cc5963167150b053528455f6974c139a7a879a141838b7ae3a321de9c8525f03"
           },
           "cases": [
             "tabletLandscapeCanReachEveryCategoryAndSave",
@@ -1869,11 +1947,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryPacksTest",
-          "timestamp": "2026-10-17T10:41:50",
+          "timestamp": "2026-10-17T11:13:45",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryPacksTest.xml",
             "bytes": 2808,
-            "sha256": "05270ce53f30f89b51d1b7f8d4d6ce9808d34236efcd61e125108c994d4551a0"
+            "sha256": "11669d862358cc791358b82d3956103d7964a27ffe08227073943cb4438e93c5"
           },
           "cases": [
             "mainDoesNotReplayAutomaticallyAfterGeneralMemoryRotates",
@@ -1902,11 +1980,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryRankingTest",
-          "timestamp": "2026-10-17T10:41:52",
+          "timestamp": "2026-10-17T11:13:47",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryRankingTest.xml",
-            "bytes": 823,
-            "sha256": "3b58aa86404bec690d7f7def48a45e4b3546f74655742115a35adfb070852d62"
+            "bytes": 821,
+            "sha256": "aa0152662d53a980306bdad7feba4b3f6f95e2f22c18f5658fd1e1c309f87737"
           },
           "cases": [
             "allNormalKeepsTheExistingDeterministicOrder",
@@ -1921,11 +1999,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.TotalSilenceHotfixTest",
-          "timestamp": "2026-10-17T10:41:53",
+          "timestamp": "2026-10-17T11:13:48",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.TotalSilenceHotfixTest.xml",
-            "bytes": 3966,
-            "sha256": "225269dca8f69d1d57ccf1d91b24ee101a217b9b6316b7c09e636cbeebc94aa6"
+            "bytes": 3969,
+            "sha256": "ccfb11002ed755a4f67d0c95aeff12849d17490daef238d7b19b083c36d541f0"
           },
           "cases": [
             "failureRetainsOneSafeChapterCheckWithoutForgingEvidence",
@@ -1943,11 +2021,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VisualTalkTest",
-          "timestamp": "2026-10-17T10:41:55",
+          "timestamp": "2026-10-17T11:13:49",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VisualTalkTest.xml",
             "bytes": 1142,
-            "sha256": "6bc0c38565642390b484b72f28648403fd13b9ce2000d7a40a92ebff764789c6"
+            "sha256": "db99a7c0886df0784d71549ab8e87dfebc81e672e67c301f91a8aa4153334363"
           },
           "cases": [
             "latestSelectionWinsAndOptionalTypedQuestionUsesSameDirector",
@@ -1964,11 +2042,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
-          "timestamp": "2026-10-17T10:41:56",
+          "timestamp": "2026-10-17T11:13:50",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceIndicatorLandscapeTest.xml",
             "bytes": 482,
-            "sha256": "f72ff22aad8a55cc9db6da1a3a0634c34eb2d720bee9cff81b1f7ab2d1ad3252"
+            "sha256": "15423e24b06645453b03a3df418294ba22d21497d504ff850e204e6787b3face"
           },
           "cases": [
             "listeningAndSpeakingStayVisibleWithAllLandscapeControls"
@@ -1980,11 +2058,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceIndicatorUiTest",
-          "timestamp": "2026-10-17T10:42:05",
+          "timestamp": "2026-10-17T11:13:58",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceIndicatorUiTest.xml",
-            "bytes": 480,
-            "sha256": "ee9ff1fa6fbe174527f3afebd3121cc98928019a3870dbf08fe0fc2925416111"
+            "bytes": 484,
+            "sha256": "833e5417aa5e519441a8d733f674c2d0498164f6793407a7eb1377dddffc1bdb"
           },
           "cases": [
             "realJourneyTransitionsReplaceAndRemoveIndicatorsWithoutMovingControls"
@@ -1996,11 +2074,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceOutcomeTest",
-          "timestamp": "2026-10-17T10:42:13",
+          "timestamp": "2026-10-17T11:14:09",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceOutcomeTest.xml",
-            "bytes": 1411,
-            "sha256": "257448832f37e8126ff1dd93fc5d04bd2d0aa414c4b5eb48cc3584418ddf1993"
+            "bytes": 1415,
+            "sha256": "c9e4461c532b40fd5ccf1912b41af722d0274137210795b914e007f06b9bdd9e"
           },
           "cases": [
             "chineseVoiceOrderPreservesNamesLocalesAndNetworkMetadata",
@@ -2019,11 +2097,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceTest",
-          "timestamp": "2026-10-17T10:42:14",
+          "timestamp": "2026-10-17T11:14:11",
           "report": {
             "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceTest.xml",
             "bytes": 697,
-            "sha256": "8a413db2a5b6018043be2c17d3906a6ae0e8be8d8faaaf60ebef90de30e230ff"
+            "sha256": "23e1f7fe0133546d95ec5dc12f4b89ec996382020787ddc4eef8cd4917218041"
           },
           "cases": [
             "longStoryWatchdogAllowsSavedSlowRateButRemainsBounded",
@@ -2034,7 +2112,7 @@
       ]
     },
     "release": {
-      "tests": 550,
+      "tests": 554,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
@@ -2045,11 +2123,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ActiveResearchTest",
-          "timestamp": "2026-10-17T10:42:44",
+          "timestamp": "2026-10-17T11:14:35",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ActiveResearchTest.xml",
-            "bytes": 2130,
-            "sha256": "1251ea6a4740f71fa1775985efc1d6449e472e1316e37444449ee07fb445536a"
+            "bytes": 2132,
+            "sha256": "8f35d5fde7dd1ed3611d34cc8a6504446b0ad90069730254c42b2aee8f43d673"
           },
           "cases": [
             "realtimeResearchUsesChinaDateRatherThanHostOrUtcDate",
@@ -2073,11 +2151,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AndroidAreaResolverTest",
-          "timestamp": "2026-10-17T10:42:47",
+          "timestamp": "2026-10-17T11:14:37",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AndroidAreaResolverTest.xml",
-            "bytes": 1058,
-            "sha256": "fd9f6a5ac56ca935cdd7aa06c9692ccb387b80cc8e96c6d8d56afad83b1b668a"
+            "bytes": 1056,
+            "sha256": "657fce98f7b7252c28164864eeee0ba31fe96a6e49f7c5b8298f9a450815e295"
           },
           "cases": [
             "absentPlatformGeocoderCompletesUnresolvedWithoutCrash[26]",
@@ -2093,11 +2171,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AndroidLifecycleTest",
-          "timestamp": "2026-10-17T10:42:55",
+          "timestamp": "2026-10-17T11:14:45",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AndroidLifecycleTest.xml",
             "bytes": 461,
-            "sha256": "8f04ae5d058db99f31b5f865e9dc45e3411217a61e5835d22efae8192ca2b788"
+            "sha256": "18ca37a914e7e3ba5b0c38768e90b559b481fb9b144653ba0d604693451d6a69"
           },
           "cases": [
             "activityLaunchesAndServiceQuietEndControlsWork"
@@ -2109,11 +2187,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AndroidVoiceExperienceTest",
-          "timestamp": "2026-10-17T10:43:14",
+          "timestamp": "2026-10-17T11:14:59",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AndroidVoiceExperienceTest.xml",
-            "bytes": 1937,
-            "sha256": "5ecbf05535f9e7a3fbde5bbf3f474d32ba79c25bef26af753bd9787e48f5ca65"
+            "bytes": 1934,
+            "sha256": "dbf2e0a887786077a831735649b6a13382707d4863bd655c9597be03140b322c"
           },
           "cases": [
             "androidErrorResetsLevelAndPreservesCode",
@@ -2135,11 +2213,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AreaChapterTest",
-          "timestamp": "2026-10-17T10:43:31",
+          "timestamp": "2026-10-17T11:15:07",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AreaChapterTest.xml",
             "bytes": 1386,
-            "sha256": "fe4f44b4ba78d306a6e2ee564e918a9c9846949dee4a0c6a01d4a346a8551202"
+            "sha256": "9fa13f885e3811b75c7c6dac7695b98b2406d1a9ee545b60defe6c0d4632fa73"
           },
           "cases": [
             "familyHistoryIsBoundedAndUnknownFamilyFailsValidation",
@@ -2158,11 +2236,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.AreaResolutionCacheTest",
-          "timestamp": "2026-10-17T10:43:35",
+          "timestamp": "2026-10-17T11:15:09",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AreaResolutionCacheTest.xml",
-            "bytes": 1666,
-            "sha256": "d8a007055de5cb7747de2a59914f7c8af71bdd573dd5c6c6655eb4d13af1c64b"
+            "bytes": 1669,
+            "sha256": "2c357913cd8a42b78fe51446f98c40744e4c604089e420c3474e2c79f4a95c90"
           },
           "cases": [
             "unobservedGapAlsoBreaksContinuityWithFreshReturningFix",
@@ -2182,11 +2260,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.BatchSimulationTest",
-          "timestamp": "2026-10-17T10:43:39",
+          "timestamp": "2026-10-17T11:15:11",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.BatchSimulationTest.xml",
-            "bytes": 2514,
-            "sha256": "9cb2a9898a82acb64aae81823664df1d0d6d2f58c3a5defe5bf6ae32b2d2b211"
+            "bytes": 2513,
+            "sha256": "ba379a32bb0f491fcaf6dd3ac1525c5e008d6d22b1a92315ee969c13852b181b"
           },
           "cases": [
             "complete100Kmh16xDossierPipelineSpeaksThroughChaptersWithoutStaleReplay",
@@ -2201,11 +2279,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.BootstrapTest",
-          "timestamp": "2026-10-17T10:43:43",
+          "timestamp": "2026-10-17T11:15:13",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.BootstrapTest.xml",
             "bytes": 418,
-            "sha256": "0aef8dbcacab269b5a2777fefa0b8cf65b66e67f623f977a3f7ab1747a5e2866"
+            "sha256": "96b326ccdaea8e65b42aa04775512dcd43e0001b168e95008a50408040e45429"
           },
           "cases": [
             "applicationIdentity"
@@ -2217,11 +2295,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.BundledCountyPacksTest",
-          "timestamp": "2026-10-17T10:43:46",
+          "timestamp": "2026-10-17T11:15:14",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.BundledCountyPacksTest.xml",
-            "bytes": 777,
-            "sha256": "33e0814ae344c8c06561043042572b9c9ec28101bbf68ce0b818e43e37f81399"
+            "bytes": 776,
+            "sha256": "b6eb56450a47faca08f9fcad1501cc2769ad7acf87187092a25ee1bdbe4380e5"
           },
           "cases": [
             "readOnlyRegistryAndExploreNeverWriteSyntheticSettingsOrTwentyHistories",
@@ -2235,11 +2313,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChapterOpportunityTest",
-          "timestamp": "2026-10-17T10:43:59",
+          "timestamp": "2026-10-17T11:15:19",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChapterOpportunityTest.xml",
-            "bytes": 1345,
-            "sha256": "095b9865088902706d23541a4a2f7d2238f907de0a6e9cdddcfbb8c377071907"
+            "bytes": 1344,
+            "sha256": "bbeab01d854c38b11a12a8679688f223939107b27e0159a3556e0fa232b07af0"
           },
           "cases": [
             "unresolvedGapDoesNotCreateRepeatedVisitOfCheckedChapter",
@@ -2257,11 +2335,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChatGptAccountTest",
-          "timestamp": "2026-10-17T10:44:02",
+          "timestamp": "2026-10-17T11:15:20",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChatGptAccountTest.xml",
-            "bytes": 2120,
-            "sha256": "d5872712033345cc327ad19531426c8f2b6dcb15bd65ef3d01c7f52ead8040ab"
+            "bytes": 2117,
+            "sha256": "5dfa549c547fadfc2a095cad9b846cc7502a16fcd04d4b4ae44be4727505e312"
           },
           "cases": [
             "encryptedRecordKeepsAllIdentityAndTokenValuesOutOfPreferencesAndDiagnostics",
@@ -2284,11 +2362,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChatGptImagePayloadTest",
-          "timestamp": "2026-10-17T10:44:14",
+          "timestamp": "2026-10-17T11:15:26",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChatGptImagePayloadTest.xml",
             "bytes": 484,
-            "sha256": "1b4a41387040aa3cd2d258b007c57efd6ceecca90f3a9c959a0085e5532f4531"
+            "sha256": "51d1857babf2949d09f8f93c43a8daae35f1bd93d6eb18032450744d9f9520aa"
           },
           "cases": [
             "chatGptUsesExistingAuthorizationAdapterWithImagePartsAndNoStorage"
@@ -2300,11 +2378,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ChatGptProtocolTest",
-          "timestamp": "2026-10-17T10:44:24",
+          "timestamp": "2026-10-17T11:15:29",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChatGptProtocolTest.xml",
             "bytes": 1602,
-            "sha256": "036fbfc0d7780de2358faa071737649f56614eda93249d9480982420170881c0"
+            "sha256": "81452804d6eb937728ee3574da11c6896af8fd4611669d25e6389f0fe86ca288"
           },
           "cases": [
             "realLoopbackListenerBindsBeforeCallbackAndDoesNotEchoCredentials",
@@ -2324,11 +2402,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ContextTest",
-          "timestamp": "2026-10-17T10:44:26",
+          "timestamp": "2026-10-17T11:15:30",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ContextTest.xml",
             "bytes": 438,
-            "sha256": "3d7812d30109c6af6d04b489572b76b42a3b7589921d36da884401b47b52fa23"
+            "sha256": "4de6f0f41bbd2fb78bbfe63500904707b801345c4fc4243d0eddb27cac7b4f20"
           },
           "cases": [
             "sourceIndependentPipelineAndAltitudeSummary"
@@ -2340,11 +2418,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.CountyPacksTest",
-          "timestamp": "2026-10-17T10:44:28",
+          "timestamp": "2026-10-17T11:15:31",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.CountyPacksTest.xml",
-            "bytes": 3929,
-            "sha256": "bd038c9bbf376dd256e0fcb401d149854e6b67deff1da5a3c59def0e8518f174"
+            "bytes": 3930,
+            "sha256": "8e8d56d4cb04fc347e8dfbc10f37f6dfe5e9adb2deb712ce1830185d2137d5aa"
           },
           "cases": [
             "specialAdministrativeLevelsNeedExplicitRulesRatherThanAnInventedPrefecture",
@@ -2376,16 +2454,16 @@
           ]
         },
         {
-          "tests": 23,
+          "tests": 27,
           "failures": 0,
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.d1.ReleaseD1Test",
-          "timestamp": "2026-10-17T10:49:17",
+          "timestamp": "2026-10-17T11:19:31",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.d1.ReleaseD1Test.xml",
-            "bytes": 3081,
-            "sha256": "3b82fd32febd329065db97a883c46e8958ac53130d5eeeefb80b9e6d45c583e2"
+            "bytes": 3599,
+            "sha256": "64cd14d7ebc3033e8278290884ff3fe9e5c05d7539e83f2850d741c77b6ac0e8"
           },
           "cases": [
             "containerCarriesNoMachineIdentity",
@@ -2400,17 +2478,21 @@
             "wrongAppCodeIsRejected",
             "factOnlyPackIsAcceptedAndReportsZeroStories",
             "oversizedContainerIsRejectedBeforeParsing",
+            "aSignedOuterManifestCannotRelabelTheFactVersion",
             "oneChangedByteBreaksTheSignature",
             "anOldSignatureCannotCoverANewManifest",
+            "anOlderSignedPackIsRefusedOnceTheCallerRaisesTheFloor",
             "unsignedBytesAndTheWholeContainerRepeatForTheSameKey",
             "aPayloadCannotNominateItsOwnPublicKey",
             "unregisteredKeyIdIsRejected",
             "candidateReviewStatusIsRejected",
+            "aSignedOuterManifestCannotRelabelAnotherCounty",
             "trailingBytesAndTruncationAreRejected",
             "duplicateUnknownAndMissingBlocksAreRejected",
             "reviewedSyntheticStoriesAreCountedWhenTheNarrativeBlockShipsThem",
             "manifestEncodingIsCanonicalAndRoundTrips",
-            "restrictedSourceRightsRejectThePackEvenWithAValidSignature"
+            "restrictedSourceRightsRejectThePackEvenWithAValidSignature",
+            "aSignedOuterManifestCannotRelabelTheAppRequirement"
           ]
         },
         {
@@ -2419,11 +2501,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DirectorLoopTest",
-          "timestamp": "2026-10-17T10:44:31",
+          "timestamp": "2026-10-17T11:15:34",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DirectorLoopTest.xml",
             "bytes": 710,
-            "sha256": "67a7072c4975e7a6a1e81bec748c95a732547c6d209e7f236755b55bdac291f3"
+            "sha256": "f037158afa17212853587881c037c9bf70a5621ef4ede9c9056b7c64d3acf1cb"
           },
           "cases": [
             "prepareIsOnlyRevalidationContextAndCannotBecomeAudioByItself",
@@ -2437,11 +2519,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DossierSimulationTest",
-          "timestamp": "2026-10-17T10:44:32",
+          "timestamp": "2026-10-17T11:15:35",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DossierSimulationTest.xml",
             "bytes": 481,
-            "sha256": "bf0e5a4b93983eb42ecd5adac83959c4349f28af1bf9bfe408f35b7cc1742be2"
+            "sha256": "eac99f8ffa41c5b71945b663b92d49fde81911d0001f6b625ab793e73d0c3a94"
           },
           "cases": [
             "existingRouteResearchesEachChapterAndNarratesOnlyDeliveredEvidence"
@@ -2453,11 +2535,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DrivingAreaResolutionTest",
-          "timestamp": "2026-10-17T10:44:34",
+          "timestamp": "2026-10-17T11:15:36",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DrivingAreaResolutionTest.xml",
             "bytes": 919,
-            "sha256": "c3b99125af630bc8302272a2bfd784f3dd1e725a94fff32fe4f1f61066f8289c"
+            "sha256": "f80fd9b06ca0a2ed0a28779ec01321c09efd6f252298f3309a930ea1301a2b84"
           },
           "cases": [
             "stationaryFailuresAreBoundedAndPendingLookupsNeverMultiply",
@@ -2472,11 +2554,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.DrivingUiTest",
-          "timestamp": "2026-10-17T10:44:35",
+          "timestamp": "2026-10-17T11:15:37",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DrivingUiTest.xml",
             "bytes": 447,
-            "sha256": "4d1d43bf4ee7d384f2a891361ff49825ecd26efc3d933337f7f468e31795f264"
+            "sha256": "3649236e56883a47530926329f885d97e8b25b6dd14159a2b13ec232966b0ebd"
           },
           "cases": [
             "drivingButtonsAreVisibleAndOneTapQuietAndEndWork"
@@ -2488,11 +2570,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.EditorialFreedomTest",
-          "timestamp": "2026-10-17T10:44:43",
+          "timestamp": "2026-10-17T11:15:45",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.EditorialFreedomTest.xml",
-            "bytes": 1384,
-            "sha256": "11d6ddbf2487b842be198d2d6888899faae87b3dd99fb30894f87482f93a24e5"
+            "bytes": 1385,
+            "sha256": "d4baf152aa16aaa9f2c797c8b28d641fc7bad302ba35f991f049214305c1a515"
           },
           "cases": [
             "constitutionForbidsTheFixedRhetoricalTemplateAndLandThesis",
@@ -2511,11 +2593,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.EndUiTest",
-          "timestamp": "2026-10-17T10:44:44",
+          "timestamp": "2026-10-17T11:15:46",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.EndUiTest.xml",
-            "bytes": 946,
-            "sha256": "564a0ae8419cf443fdc82ea8aaac607e659f3de38b6e1989c7ec45ddcc84f4dd"
+            "bytes": 948,
+            "sha256": "acb8972394478720a6f18d61a838499313d4d691668c6b13ac28aab12cba7993"
           },
           "cases": [
             "endScreenShowsSavedSummaryWithoutRatingsAndReturns",
@@ -2531,11 +2613,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExplorePlacesTest",
-          "timestamp": "2026-10-17T10:44:54",
+          "timestamp": "2026-10-17T11:15:54",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExplorePlacesTest.xml",
-            "bytes": 1544,
-            "sha256": "bcd3e7c1130ecda951e236302afa352b31da887329e4b8a79d3e09a5f4703a6e"
+            "bytes": 1545,
+            "sha256": "2fe143f570a1c99a35fe679885e51c65698bbce384812168ab49fa76aa65ce53"
           },
           "cases": [
             "missingPackNeverInventsInstalledRegions",
@@ -2555,11 +2637,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExploreRestoreUiTest",
-          "timestamp": "2026-10-17T10:44:56",
+          "timestamp": "2026-10-17T11:15:55",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExploreRestoreUiTest.xml",
             "bytes": 468,
-            "sha256": "bdba9baa2d867de33291b8b80029a1e8c8f4dc7e0b5d09d2f0fd21abf71f695f"
+            "sha256": "787c8c3c26ebf44d9fc1f7d09208266cedaaa14caa38d34c5b913cb423a3f896"
           },
           "cases": [
             "restoredArticleRetainsTextAndNavigationButStopsPlayback"
@@ -2571,11 +2653,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExploreUiTest",
-          "timestamp": "2026-10-17T10:45:05",
+          "timestamp": "2026-10-17T11:16:03",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExploreUiTest.xml",
-            "bytes": 1694,
-            "sha256": "544c58343bc951583907067915694c050d9a24b369e61eda93251014e20ae294"
+            "bytes": 1695,
+            "sha256": "c8684bb55e79792357d1d4515e0502622f5b5d1a50b66cea2bfbc0f3dcda9821"
           },
           "cases": [
             "unavailableCatalogHasTruthfulEmptyState",
@@ -2597,11 +2679,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ExploreVoiceTest",
-          "timestamp": "2026-10-17T10:45:18",
+          "timestamp": "2026-10-17T11:16:15",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExploreVoiceTest.xml",
             "bytes": 613,
-            "sha256": "999223561267b150bc4728f8cc2f4eaf4a9017d3bca434e458d253b5dba499fe"
+            "sha256": "fe0ecbf4a900eaba78b6a087291ea4ebc3eb8314284f8e1ce0bbff0949a8516c"
           },
           "cases": [
             "engineWatchdogMakesStalledManualPlaybackRetryable",
@@ -2614,11 +2696,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.FullSimulationTest",
-          "timestamp": "2026-10-17T10:45:22",
+          "timestamp": "2026-10-17T11:16:19",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.FullSimulationTest.xml",
-            "bytes": 1150,
-            "sha256": "fc09f7d93c14daa29edbd1690dc891926c989794b908e2f40c8894d43f45ece9"
+            "bytes": 1152,
+            "sha256": "95b59099d969f5afd08db0691b8961fed80af41612e87e64509f8f6cb8da4ce5"
           },
           "cases": [
             "chengduToMianyangFullGoldenPath"
@@ -2630,11 +2712,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.FusedLocationTest",
-          "timestamp": "2026-10-17T10:45:24",
+          "timestamp": "2026-10-17T11:16:20",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.FusedLocationTest.xml",
-            "bytes": 1239,
-            "sha256": "0d7a57b16d6926152bc272b14ed7795b6782554885508038c07fa316df100748"
+            "bytes": 1237,
+            "sha256": "1abd639db91479edf62f21ef9b7eb92a7abd3358aa55edec7ac1fda8d74966a9"
           },
           "cases": [
             "fusedUsesThirtySecondWindowThenOriginalClockBridgeThenUnknown",
@@ -2652,11 +2734,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ImageBoundaryTest",
-          "timestamp": "2026-10-17T10:45:25",
+          "timestamp": "2026-10-17T11:16:21",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ImageBoundaryTest.xml",
-            "bytes": 879,
-            "sha256": "b4885feaf7d34b18bcbf6f13c67929dbaf5fa51eab5bb1656cf4614a542adae3"
+            "bytes": 880,
+            "sha256": "7603ef897afb4726ba16f2c02605fa99ba101340f6df3ed8d94865e16e610a2e"
           },
           "cases": [
             "cameraProviderDeclaresOnlyCaptureCacheWithoutCameraOrStoragePermission",
@@ -2671,11 +2753,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.JourneyTest",
-          "timestamp": "2026-10-17T10:45:32",
+          "timestamp": "2026-10-17T11:16:26",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.JourneyTest.xml",
-            "bytes": 1907,
-            "sha256": "86ffbdf98c3bdc4f62881d1622b88cb124025af339760c8a55b2a7317922a011"
+            "bytes": 1904,
+            "sha256": "3ac4d4d5e8340d050c572f92940619f9e156434bfb82229a90f68ec67dace6b2"
           },
           "cases": [
             "activeQuestionCanTemporarilyTakeOverQuietWithoutCancellingTimer",
@@ -2699,11 +2781,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.KittPolishLandscapeTest",
-          "timestamp": "2026-10-17T10:45:33",
+          "timestamp": "2026-10-17T11:16:27",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.KittPolishLandscapeTest.xml",
             "bytes": 490,
-            "sha256": "5894db35b059cd41be11c0e79b4dbb944f1b574f794942a52cce548454b46bf9"
+            "sha256": "82e187e0092f991dad2ea6eef1bd74c28248ada9e3896472bb0a2f4527739ae3"
           },
           "cases": [
             "daylightLandscapeKeepsPlaceQuietAndImageControlsVisibleWithoutScrolling"
@@ -2715,11 +2797,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.KittPolishPortraitTest",
-          "timestamp": "2026-10-17T10:45:41",
+          "timestamp": "2026-10-17T11:16:35",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.KittPolishPortraitTest.xml",
             "bytes": 492,
-            "sha256": "cf7afd27090c9fb0ec9c3d87af90e4ceadf4d4b3b2935f11d435f9335ab380d2"
+            "sha256": "c3c37c9ec855b0804080b33579d60ec7a7138aef95e629ad3d898d4428925792"
           },
           "cases": [
             "compactDarkPortraitShowsEveryStatePlaceAndSecondaryControlsWithoutScrolling"
@@ -2731,11 +2813,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LandmarkProximityTest",
-          "timestamp": "2026-10-17T10:45:49",
+          "timestamp": "2026-10-17T11:16:41",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LandmarkProximityTest.xml",
-            "bytes": 2410,
-            "sha256": "4861462ef3c492dbc9613837ddc180baf8e45b725d2ca4842c3ef60545faf72b"
+            "bytes": 2411,
+            "sha256": "3a8e0f30259f5c56dea4a3553d644e577a0de387796a395867b806e517eafc5f"
           },
           "cases": [
             "silentIsValidAndStationaryNodeDoesNotCreateRetryStorm",
@@ -2756,11 +2838,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LandscapeUiTest",
-          "timestamp": "2026-10-17T10:45:51",
+          "timestamp": "2026-10-17T11:16:43",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LandscapeUiTest.xml",
             "bytes": 449,
-            "sha256": "7e3050716adcd93040b262e8c8d7d01e261ad0ef33612786bb9ee68b8f6c5fc2"
+            "sha256": "8d5c26d5ec6807849b4527ee263982168bb440604bdabd77ec0d9389743d1302"
           },
           "cases": [
             "landscapeControlsRemainVisibleWithoutScrolling"
@@ -2772,11 +2854,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocalFirstHotfixTest",
-          "timestamp": "2026-10-17T10:45:59",
+          "timestamp": "2026-10-17T11:16:50",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocalFirstHotfixTest.xml",
-            "bytes": 1928,
-            "sha256": "f8e83e0e40688372224c61f76b7d197a2553defd907a3d6fb1f2012120bd2644"
+            "bytes": 1933,
+            "sha256": "cc4c872830d93c5be082926d547eaf8aaf2b9df4c824127c8a8f49e10d4886cf"
           },
           "cases": [
             "disconnectCancelsExplicitCloudWithoutRestartingItOnReconnect",
@@ -2798,11 +2880,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocalFirstRuntimeTest",
-          "timestamp": "2026-10-17T10:46:00",
+          "timestamp": "2026-10-17T11:16:51",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocalFirstRuntimeTest.xml",
-            "bytes": 732,
-            "sha256": "9d9e522a018be05709366609d5e6fdba22b1db6d5796996c38d607bde6972b74"
+            "bytes": 731,
+            "sha256": "61cd04f13c33cc2476732dd66e537731322161c4141a3b452ea32ff336001f0c"
           },
           "cases": [
             "onlineRuntimeUsesOfflineChineseTtsWhileRecognitionRemainsOnlineCapable",
@@ -2815,11 +2897,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocalResearchTest",
-          "timestamp": "2026-10-17T10:46:05",
+          "timestamp": "2026-10-17T11:16:56",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocalResearchTest.xml",
             "bytes": 2665,
-            "sha256": "78e113de8fb732ae3db68c1c7052795a423f1e3161cf2f1327f56ca0efbcf03d"
+            "sha256": "300446ba2ee22003d7d36b60465ae288c8df44d1708186be85fcecd68f40406c"
           },
           "cases": [
             "compatibleEndpointCannotPretendToSearchOrCallNetwork",
@@ -2847,11 +2929,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocationCompatibilityTest",
-          "timestamp": "2026-10-17T10:46:07",
+          "timestamp": "2026-10-17T11:16:57",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocationCompatibilityTest.xml",
             "bytes": 1575,
-            "sha256": "0b699e7c19bc9a726c319673bc91a8caaa808d04679b65ba54872cd5b4a696ae"
+            "sha256": "b2afbaa01a6889a20fa5142b3ef625acf2fe8c4469413a566dad9c582ed4f29e"
           },
           "cases": [
             "productionStillRegistersIndependentGpsAndNetworkAndRemovesBoth[26]",
@@ -2870,11 +2952,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.LocationFallbackTest",
-          "timestamp": "2026-10-17T10:46:16",
+          "timestamp": "2026-10-17T11:17:05",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocationFallbackTest.xml",
             "bytes": 2608,
-            "sha256": "dd53282d58b5f815322582d20503994dd338d26fa8da1c5c02f4ae2e4c148b4b"
+            "sha256": "414e4e5564ff4ad2a84ce20ad5f357f45c7537c56d125473f82b60f9f9fdcc9b"
           },
           "cases": [
             "cachedCoordinatesNeverBecomeFreshGpsAndExpireWithoutRenewingTimestamp",
@@ -2902,11 +2984,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.NarrationLoopTest",
-          "timestamp": "2026-10-17T10:46:17",
+          "timestamp": "2026-10-17T11:17:07",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.NarrationLoopTest.xml",
-            "bytes": 1348,
-            "sha256": "c7e76d4e23e03abd888daef96559447f8b6fe5f68ef7567007fa57661d06c318"
+            "bytes": 1346,
+            "sha256": "6b26a766eebad9d0c9b45b46cf7065580980420aee412bcf3a10a625f4794361"
           },
           "cases": [
             "replayAfterMovingRetainsOriginalSubjectArea",
@@ -2924,11 +3006,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.NarrationMemoryTest",
-          "timestamp": "2026-10-17T10:46:19",
+          "timestamp": "2026-10-17T11:17:08",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.NarrationMemoryTest.xml",
-            "bytes": 2932,
-            "sha256": "6f51f3ac2f0a739d4717ad7bb234f20b6b8615c5d467bf9a5e0c40ff2d52ef6e"
+            "bytes": 2934,
+            "sha256": "d6f91810f6c3067ccd597ab07a04e7de4b5767c96e08caaa69e2ed165071685f"
           },
           "cases": [
             "restartAndLegacyRecoveryDoNotImportCompletedClaimsOrReplayText",
@@ -2958,11 +3040,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.NetworkStatusTest",
-          "timestamp": "2026-10-17T10:46:20",
+          "timestamp": "2026-10-17T11:17:09",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.NetworkStatusTest.xml",
-            "bytes": 1277,
-            "sha256": "e7b12fd9eecfcd03fabfecff89efb49a674b643ebec34a108dfdffe8383a1a06"
+            "bytes": 1278,
+            "sha256": "0af0eb1e441249fa6073c33378a058a0c7d9fc272ced86e191c54c6203629470"
           },
           "cases": [
             "validatedGhostVpnAndImsWithoutInternetCannotEnableCloud",
@@ -2980,11 +3062,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.OfflineLocationTest",
-          "timestamp": "2026-10-17T10:46:26",
+          "timestamp": "2026-10-17T11:17:15",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.OfflineLocationTest.xml",
-            "bytes": 2035,
-            "sha256": "8a725ff89b83a9da3f3e6292758e0f9cfa3da1d59e383b564fe0ef8ee2f92ac0"
+            "bytes": 2037,
+            "sha256": "8bae94ab728661a9135ee294f50fd7a5e33f46c718e4afbaddfd36c588781630"
           },
           "cases": [
             "leavingInstalledCountyOnlineDoesNotRetainItsLabelOrOldStreet",
@@ -3000,11 +3082,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.OfflinePackTest",
-          "timestamp": "2026-10-17T10:46:32",
+          "timestamp": "2026-10-17T11:17:19",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.OfflinePackTest.xml",
-            "bytes": 3092,
-            "sha256": "c261006b93dbd028f31d60a9f5f46a4901b0bb7955f50af38b030579f50f766e"
+            "bytes": 3093,
+            "sha256": "5b2575792383cfb42641819598488256203995e8a13dfdc715304d05e89eb36d"
           },
           "cases": [
             "onlinePhoneWithoutLocalCoverageDoesNotMakeAutomaticCloudRequest",
@@ -3036,11 +3118,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.OfflineVoiceTest",
-          "timestamp": "2026-10-17T10:46:34",
+          "timestamp": "2026-10-17T11:17:21",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.OfflineVoiceTest.xml",
-            "bytes": 883,
-            "sha256": "42c51f6f3cdc80b8f4a624f6bc3d5962d3f57e61895a744e25e443ae80d716e0"
+            "bytes": 884,
+            "sha256": "22fce6327f6ace03fd63ff60735f22071fa5b3a6c69ad466e8b90aaa0b838c55"
           },
           "cases": [
             "missingOfflineDataFailsWithoutQueuingNetworkSpeech",
@@ -3055,11 +3137,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.PersistenceTest",
-          "timestamp": "2026-10-17T10:46:40",
+          "timestamp": "2026-10-17T11:17:24",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.PersistenceTest.xml",
-            "bytes": 1026,
-            "sha256": "868271a9508b82b9024ee41a6789b1c6090d53651fefce3eba195fa2077d1c9b"
+            "bytes": 1025,
+            "sha256": "5d9748eaee94b10dfc96ae01352fcfd8d7515d9f2a5b9732f7733ddcf51bbb0d"
           },
           "cases": [
             "finishSavesSummaryAndClearsCheckpointWithoutRatingInput",
@@ -3075,11 +3157,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ProviderTest",
-          "timestamp": "2026-10-17T10:46:48",
+          "timestamp": "2026-10-17T11:17:29",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ProviderTest.xml",
-            "bytes": 646,
-            "sha256": "33f22c2ea29036e3e2181e9e6fbfeee474d2416a6da36981633fdfb2d4a3776d"
+            "bytes": 647,
+            "sha256": "7a1a7349393dd20afe714f0e35d5c8e84f7a057fb239caebeb6888be449ba97d"
           },
           "cases": [
             "fakeHonorsContract",
@@ -3093,11 +3175,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.QuietCountdownTest",
-          "timestamp": "2026-10-17T10:46:51",
+          "timestamp": "2026-10-17T11:17:30",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.QuietCountdownTest.xml",
             "bytes": 701,
-            "sha256": "0992842a16e8c91909621d064b920301802b4bf335081ee2067aac3e5c3a6257"
+            "sha256": "765a0c03dcb4c388bb1b8461811d112560c814462fb146fce86bed2d53b1af7d"
           },
           "cases": [
             "quietCountdownKeepsCountingWhenNothingElseChanges",
@@ -3111,11 +3193,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RealAreaContinuityTest",
-          "timestamp": "2026-10-17T10:47:01",
+          "timestamp": "2026-10-17T11:17:38",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RealAreaContinuityTest.xml",
-            "bytes": 2466,
-            "sha256": "2f84e4ae230539b67e4bf02babf8cbb2532a695a4b5a70df9bb69778345fab97"
+            "bytes": 2469,
+            "sha256": "a7ab0d070d21a8ca136fb52bb36862290f0a38435a14fd6cdcfc75b3c8d4bce2"
           },
           "cases": [
             "tenMinutePublicationSurvivesEmptyErrorTimeoutAndRefreshWithoutFalseChapterChange",
@@ -3132,11 +3214,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RealLocationSourceTest",
-          "timestamp": "2026-10-17T10:47:07",
+          "timestamp": "2026-10-17T11:17:42",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RealLocationSourceTest.xml",
-            "bytes": 3096,
-            "sha256": "49771acfbb7708149c8499527057eeccf085ecefe53f3cbb6d336e6ff35244fa"
+            "bytes": 3095,
+            "sha256": "305790b171f1f2525631d0803701e3f4e362bf0b6b8093a25dc4b80cda633105"
           },
           "cases": [
             "timerBridgesAndExpiresWithoutFurtherLocationCallbacks",
@@ -3156,11 +3238,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RecognizerBackendTest",
-          "timestamp": "2026-10-17T10:47:12",
+          "timestamp": "2026-10-17T11:17:47",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RecognizerBackendTest.xml",
-            "bytes": 3020,
-            "sha256": "50b365cad70fb992bdd030cb0233662d531269dd1d58663c7d050610b14c7de9"
+            "bytes": 3019,
+            "sha256": "64e8063c6b6b4b20953b96a6091fee5cf53cde8e7124eb799f52b1c8292602cb"
           },
           "cases": [
             "aBusyRecogniserIsRetriedNextTimeInsteadOfBeingWrittenOff",
@@ -3190,11 +3272,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ReplyExchangeTest",
-          "timestamp": "2026-10-17T10:47:17",
+          "timestamp": "2026-10-17T11:17:51",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ReplyExchangeTest.xml",
-            "bytes": 2054,
-            "sha256": "111aa7e92bfd07e5badc4c0f341ed17c01ceccbcacce706874efd831dfccdc15"
+            "bytes": 2057,
+            "sha256": "1091cf3c76b9e9f4b4212b861ffe0a34e89aa7d35aabcdbf9dd9ecb99e224590"
           },
           "cases": [
             "speechAnswerSubmitsOnceAndRejectsASecondTranscript",
@@ -3218,11 +3300,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ReplySurfaceUiTest",
-          "timestamp": "2026-10-17T10:47:19",
+          "timestamp": "2026-10-17T11:17:52",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ReplySurfaceUiTest.xml",
             "bytes": 1133,
-            "sha256": "d23d9234cc0eb440bbad0bce0464e5fa9ac2203fba0d7ebd9241ed71a1ed09bd"
+            "sha256": "91fac76f38d4e4f92be989f697bcc332595e79f21ca8e86037678ae593a100a2"
           },
           "cases": [
             "theOpenExchangeOffersTypingAlongsideTheMicrophone",
@@ -3239,11 +3321,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ResearchEvidenceStoreTest",
-          "timestamp": "2026-10-17T10:47:29",
+          "timestamp": "2026-10-17T11:18:00",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ResearchEvidenceStoreTest.xml",
-            "bytes": 2671,
-            "sha256": "b9d477c10f9bd542dfa3c0b1f205cb6d3a2e8fd66e9c75406b57be9c67c7a8f3"
+            "bytes": 2670,
+            "sha256": "3795faa82d2f4b4b9d247febb95f8bfc8d413fc863a9b44ec30787e4bcd4cae9"
           },
           "cases": [
             "topicNormalizationAndFullIdentityNeverCollide",
@@ -3270,11 +3352,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.ResearchSocketCancellationTest",
-          "timestamp": "2026-10-17T10:47:32",
+          "timestamp": "2026-10-17T11:18:02",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ResearchSocketCancellationTest.xml",
             "bytes": 644,
-            "sha256": "970d66e4e29995765a99aed433662bb6c3524c73906191f913a28ee8a9bf3831"
+            "sha256": "e138e8ccc3521204bcc3d51b0df966e7967e882fd597f21f4de894d286f7c12a"
           },
           "cases": [
             "nativeCallTimeoutBoundsARealSocketWaitingForResponseHeaders",
@@ -3287,11 +3369,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RouteReferenceTest",
-          "timestamp": "2026-10-17T10:47:34",
+          "timestamp": "2026-10-17T11:18:03",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RouteReferenceTest.xml",
-            "bytes": 1004,
-            "sha256": "4fa5e18c16e234ce3149f7d47aeb0d01266062c5efc01a2e1f943f885dfa2c58"
+            "bytes": 1006,
+            "sha256": "232a27e23d8120a2694229b91aa4e9c1fe99b76b9f3316546bf43710ecd2d670"
           },
           "cases": [
             "unsupportedNeverLoadsOrSilentlyDropsImage",
@@ -3307,11 +3389,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
-          "timestamp": "2026-10-17T10:47:35",
+          "timestamp": "2026-10-17T11:18:05",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusLandscapeUiTest.xml",
             "bytes": 476,
-            "sha256": "67dac88deef0f57c56d73ef58e10c1a1446554e0ba9727e5a9409283ff657856"
+            "sha256": "5b62bcb75f8f91747f2d42368f73dc35ad8971bb20d0ee611b098ab5878211cb"
           },
           "cases": [
             "phoneLandscapeStatusAndReplyKeepControlsVisible"
@@ -3323,11 +3405,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
-          "timestamp": "2026-10-17T10:47:43",
+          "timestamp": "2026-10-17T11:18:12",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusPortraitUiTest.xml",
-            "bytes": 642,
-            "sha256": "d5ebb8546ec5da98eef89d470163ec86baf4f8782e6a32173e5cb25a37bb7125"
+            "bytes": 641,
+            "sha256": "84db6e4bcc36c1b99fbaa6e1882b1e2e4e3259ac94b4061bdebcc2da01589104"
           },
           "cases": [
             "compactPortraitReplyKeepsInputCancelAndDrivingControlsVisible",
@@ -3340,11 +3422,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
-          "timestamp": "2026-10-17T10:47:50",
+          "timestamp": "2026-10-17T11:18:20",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusTabletUiTest.xml",
             "bytes": 461,
-            "sha256": "e966ed2f063bdbfefafd60a3e44c5717572044aeea7b5e564efd846cee6b66e3"
+            "sha256": "17b13ef4be34e705d69b533717767c0df1dbfc65135ffd67c9a04a7a564b29b8"
           },
           "cases": [
             "tabletSixteenToTenStatusAndControlsFit"
@@ -3356,11 +3438,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeStatusTest",
-          "timestamp": "2026-10-17T10:47:57",
+          "timestamp": "2026-10-17T11:18:27",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusTest.xml",
-            "bytes": 2775,
-            "sha256": "4cf5d1d41a12fb033a48a04110d36081eba27accecc3a21f434b88a68f9f35af"
+            "bytes": 2772,
+            "sha256": "499c7f341c60869547ddf894850c41b69be1ef032cddd929e3f03db0d77454a2"
           },
           "cases": [
             "successfulCallAndInvalidReplyAreObservedSeparately",
@@ -3389,11 +3471,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.RuntimeVoiceTest",
-          "timestamp": "2026-10-17T10:47:58",
+          "timestamp": "2026-10-17T11:18:28",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeVoiceTest.xml",
-            "bytes": 749,
-            "sha256": "f05727a3a0661cb715720fada8a0df877e18c98f8fccdf5396d3d1a646dc6146"
+            "bytes": 748,
+            "sha256": "8b69a8f9373ee0c2e03255cf6435942838d26ac691575f08f313d8e200cf025c"
           },
           "cases": [
             "coldTtsIsPreparingAndStartupWatchdogClearsIt",
@@ -3407,11 +3489,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SettingsBackTest",
-          "timestamp": "2026-10-17T10:48:03",
+          "timestamp": "2026-10-17T11:18:32",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SettingsBackTest.xml",
             "bytes": 732,
-            "sha256": "92be899f34154fc53a86a11a2af39e966a9979280a0498e45c86ac39c34edb89"
+            "sha256": "0395f1ab3d3879348090c48de6fa7831b23bf594880bb744cedadfa0bf0f9e7a"
           },
           "cases": [
             "developerStartPassesSimulationOnlyForThatAction",
@@ -3425,11 +3507,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SettingsTest",
-          "timestamp": "2026-10-17T10:48:11",
+          "timestamp": "2026-10-17T11:18:40",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SettingsTest.xml",
             "bytes": 719,
-            "sha256": "8f36587f7e36b0d91ea19710fe2c2f40c6a0e845392249d46e3e28fc2b50faeb"
+            "sha256": "982e0419a7a05bf6a6a09a0c2c7667d269605a6b4f0a706ca046bb089aee02a0"
           },
           "cases": [
             "settingsRoundtripKeepsKeyEncryptedAndOmitsUnsupportedEffort",
@@ -3443,11 +3525,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SimulationCadenceTest",
-          "timestamp": "2026-10-17T10:48:15",
+          "timestamp": "2026-10-17T11:18:44",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SimulationCadenceTest.xml",
-            "bytes": 2334,
-            "sha256": "6e58028f76d60207f2ae4745e3c074c69506cfe0236da7b999fabb9d0d45df6d"
+            "bytes": 2333,
+            "sha256": "302164ea82be49b63b468ee59d261fe8ca1f4f0e8a5be87a4d2aa68ea34ef713"
           },
           "cases": [
             "interruptionCancelsPendingRequestAndOldSpeechCannotReplayInSimulation",
@@ -3468,11 +3550,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SimulationTest",
-          "timestamp": "2026-10-17T10:48:17",
+          "timestamp": "2026-10-17T11:18:45",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SimulationTest.xml",
             "bytes": 572,
-            "sha256": "e240ff25a1d99886d44d14b33159c77f7893f64ab909c79c4e6773158791fa53"
+            "sha256": "456d07f1840e21a824a253e4f898ad7b190c160717a00646940237faa7cb20a2"
           },
           "cases": [
             "continuous80KmhRouteCompletesAndCanAccelerate",
@@ -3485,11 +3567,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.SourceIsolationTest",
-          "timestamp": "2026-10-17T10:48:18",
+          "timestamp": "2026-10-17T11:18:47",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SourceIsolationTest.xml",
-            "bytes": 1053,
-            "sha256": "2695f5ca15388761f0aedbebe3cf24b6fc705ae1c684d1818407a12b0c233a2c"
+            "bytes": 1050,
+            "sha256": "533ac4c2b80146740fa2e0d58448f291906f0ab0dd13b0de512d686fff676bbd"
           },
           "cases": [
             "serviceLossKeepsExplicitSimulationRecoveryWithoutMakingItTheDefault",
@@ -3505,11 +3587,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StagedResearchTest",
-          "timestamp": "2026-10-17T10:48:24",
+          "timestamp": "2026-10-17T11:18:52",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StagedResearchTest.xml",
-            "bytes": 2224,
-            "sha256": "33cabd7c595ab70bb2356845659d6d3fb430e7a96de2d28f675c0ff74c43539e"
+            "bytes": 2222,
+            "sha256": "db7cbbfd8bccaec1bbffc42cbba4ed9f9be965eeb16490a547f709a7b1b560be"
           },
           "cases": [
             "singleTopicAddsEvidenceAndCachesOnlyUntilTripEnd",
@@ -3534,11 +3616,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryInterestSelectionTest",
-          "timestamp": "2026-10-17T10:48:25",
+          "timestamp": "2026-10-17T11:18:53",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryInterestSelectionTest.xml",
-            "bytes": 1240,
-            "sha256": "77c97fbc87629a0382fc1401880fdff5e79b94ff68a560f88f59d0e3272070a2"
+            "bytes": 1239,
+            "sha256": "f511d1cedc26d756e0f2c7f0f348d6b222419e7d89321e0266d955f934bf687c"
           },
           "cases": [
             "moreOnItsOwnCategoryRaisesThatAngleWithoutRemovingTheOther",
@@ -3555,11 +3637,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryInterestStoreTest",
-          "timestamp": "2026-10-17T10:48:27",
+          "timestamp": "2026-10-17T11:18:55",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryInterestStoreTest.xml",
             "bytes": 1063,
-            "sha256": "edc75377a35c4dc1daf701542643223bfb7146ca96aad19d9b3770884e466a58"
+            "sha256": "70bc0a906528e144ac4b45544521f10ba52a0654491b8e3c19b3d436d49ac086"
           },
           "cases": [
             "legacyInstallWithoutAnyInterestKeysReadsEveryCategoryAsNormal",
@@ -3575,11 +3657,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryInterestUiTest",
-          "timestamp": "2026-10-17T10:48:33",
+          "timestamp": "2026-10-17T11:18:59",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryInterestUiTest.xml",
-            "bytes": 1239,
-            "sha256": "a92dcd3c934bd9f50dd64b9d2c595607a441f6202725a7af0e229f682be72e12"
+            "bytes": 1238,
+            "sha256": "8447b45993d8186e3559a955d8ce2cf7b113381115d1391ac6306c4142d99265"
           },
           "cases": [
             "tabletLandscapeCanReachEveryCategoryAndSave",
@@ -3597,11 +3679,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryPacksTest",
-          "timestamp": "2026-10-17T10:48:46",
+          "timestamp": "2026-10-17T11:19:09",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryPacksTest.xml",
-            "bytes": 2807,
-            "sha256": "681ce21d95ec7e176d1e220a272e6d02c72b870a8f70cf39a381520ea5c62482"
+            "bytes": 2808,
+            "sha256": "eefbb971720c5df07c23e6fee9a821ff0fa0c536a0b101ddc9af893894c40012"
           },
           "cases": [
             "mainDoesNotReplayAutomaticallyAfterGeneralMemoryRotates",
@@ -3630,11 +3712,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.StoryRankingTest",
-          "timestamp": "2026-10-17T10:48:48",
+          "timestamp": "2026-10-17T11:19:11",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryRankingTest.xml",
-            "bytes": 825,
-            "sha256": "23aa1d5743c8abfb88d6960737963b02319f6e3817e99d14d4c21628614ae395"
+            "bytes": 823,
+            "sha256": "4cb3cb3e9e01a33bfba86ec806407b7447992dcf9ca70351afc2311c5105e2ac"
           },
           "cases": [
             "allNormalKeepsTheExistingDeterministicOrder",
@@ -3649,11 +3731,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.TotalSilenceHotfixTest",
-          "timestamp": "2026-10-17T10:48:50",
+          "timestamp": "2026-10-17T11:19:12",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.TotalSilenceHotfixTest.xml",
-            "bytes": 3969,
-            "sha256": "008280aa067a392ff66547909baf644a0c932a0ffdbbb6255d8040bcb7ad3408"
+            "bytes": 3968,
+            "sha256": "9749019b4ec54d932e2a525cf4bb786e3f2356073f405c44903d02dceb1bc525"
           },
           "cases": [
             "failureRetainsOneSafeChapterCheckWithoutForgingEvidence",
@@ -3671,11 +3753,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VisualTalkTest",
-          "timestamp": "2026-10-17T10:48:52",
+          "timestamp": "2026-10-17T11:19:13",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VisualTalkTest.xml",
-            "bytes": 1141,
-            "sha256": "e97d527a372d79f77f9b7c26bbc5f155d84320048dc88d63d926a2593fa6d90b"
+            "bytes": 1142,
+            "sha256": "4703ae254055fb79f45bcb01a57b25861151f03cec05a35b5cfcffa8adae767a"
           },
           "cases": [
             "latestSelectionWinsAndOptionalTypedQuestionUsesSameDirector",
@@ -3692,11 +3774,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
-          "timestamp": "2026-10-17T10:48:54",
+          "timestamp": "2026-10-17T11:19:14",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceIndicatorLandscapeTest.xml",
             "bytes": 482,
-            "sha256": "f8c415736f939c1ef040cd93da98d509358d69f001eb4e42b91099080dd85337"
+            "sha256": "68a2f23b1cb002fbd1860c73875ceaaf9e375830f4006ecc956a16ec5c2bd9bf"
           },
           "cases": [
             "listeningAndSpeakingStayVisibleWithAllLandscapeControls"
@@ -3708,11 +3790,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceIndicatorUiTest",
-          "timestamp": "2026-10-17T10:49:04",
+          "timestamp": "2026-10-17T11:19:22",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceIndicatorUiTest.xml",
-            "bytes": 482,
-            "sha256": "7ab10d5d0207a3a7be2d35a3c090e071bbc15e8c50b5bb1ab4e285ea7a55b340"
+            "bytes": 480,
+            "sha256": "44057fc49dd1421db73438411f26ac88dbeb7a0bdfde08a5587adb9ddf9d2034"
           },
           "cases": [
             "realJourneyTransitionsReplaceAndRemoveIndicatorsWithoutMovingControls"
@@ -3724,11 +3806,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceOutcomeTest",
-          "timestamp": "2026-10-17T10:49:15",
+          "timestamp": "2026-10-17T11:19:29",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceOutcomeTest.xml",
-            "bytes": 1415,
-            "sha256": "244f33902e2060f78d03994903df07a3444e4e3c15b976c98c9241058b93121c"
+            "bytes": 1416,
+            "sha256": "c48d604a6e481508ea13b2ae9c42e58ff3540c7ccd743f9eee7b7641c797a609"
           },
           "cases": [
             "chineseVoiceOrderPreservesNamesLocalesAndNetworkMetadata",
@@ -3747,11 +3829,11 @@
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.reader.VoiceTest",
-          "timestamp": "2026-10-17T10:49:16",
+          "timestamp": "2026-10-17T11:19:30",
           "report": {
             "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceTest.xml",
-            "bytes": 696,
-            "sha256": "32a23c8a62bfc789f692e3f856588f7752063c22c17ef45ebb0548dc560d8b3c"
+            "bytes": 697,
+            "sha256": "3d99a6d89e9a1943582dd09f17cc8758d1adb5bea50ba90db985867b8c247896"
           },
           "cases": [
             "longStoryWatchdogAllowsSavedSlowRateButRemainsBounded",
@@ -3762,22 +3844,22 @@
       ]
     },
     "packtool": {
-      "tests": 11,
+      "tests": 13,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
       "suites": [
         {
-          "tests": 11,
+          "tests": 13,
           "failures": 0,
           "errors": 0,
           "skipped": 0,
           "name": "com.kitt.packtool.ReleaseFormatTest",
-          "timestamp": "2026-10-17T10:50:57",
+          "timestamp": "2026-10-17T11:27:00",
           "report": {
             "path": "packtool/build/test-results/test/TEST-com.kitt.packtool.ReleaseFormatTest.xml",
-            "bytes": 1673,
-            "sha256": "4ffa53351cb9df21bcebdc4f743e9cf861766852feec2ee8855245d7fc17cf16"
+            "bytes": 1924,
+            "sha256": "3d40ff336f17420e19e151be3f338463b5099af3ec6b362bd9f5ffe0b0f4288e"
           },
           "cases": [
             "containerRoundTripsAndKeepsBlockOrder",
@@ -3790,22 +3872,24 @@
             "aMissingContentGateIsNeverTreatedAsApproval",
             "blockIntegrityIsCheckedAgainstTheManifestEvenWhenTheSignatureVerifies",
             "manifestRejectsUnknownFieldsAndSelfAssertedTrust",
+            "anOlderSequenceIsOnlyARollbackWhenTheCallerSaysSo",
+            "outerManifestMustDescribeTheInnerPack",
             "sizeLimitsFailClosed"
           ]
         }
       ]
     },
     "d1": {
-      "tests": 23,
+      "tests": 27,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
       "name": "com.kitt.reader.d1.ReleaseD1Test",
-      "timestamp": "2026-10-17T10:42:15",
+      "timestamp": "2026-10-17T11:14:12",
       "report": {
         "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.d1.ReleaseD1Test.xml",
-        "bytes": 3081,
-        "sha256": "06ac7856e970204e54d5ed6d0fd8abfcf6ee979f9a4b449b5b87fac5ffc8f1f9"
+        "bytes": 3602,
+        "sha256": "2f6d22dd0d395620774c29e049833b9901f80c183601863e2d215051c8406852"
       },
       "cases": [
         "containerCarriesNoMachineIdentity",
@@ -3820,26 +3904,30 @@
         "wrongAppCodeIsRejected",
         "factOnlyPackIsAcceptedAndReportsZeroStories",
         "oversizedContainerIsRejectedBeforeParsing",
+        "aSignedOuterManifestCannotRelabelTheFactVersion",
         "oneChangedByteBreaksTheSignature",
         "anOldSignatureCannotCoverANewManifest",
+        "anOlderSignedPackIsRefusedOnceTheCallerRaisesTheFloor",
         "unsignedBytesAndTheWholeContainerRepeatForTheSameKey",
         "aPayloadCannotNominateItsOwnPublicKey",
         "unregisteredKeyIdIsRejected",
         "candidateReviewStatusIsRejected",
+        "aSignedOuterManifestCannotRelabelAnotherCounty",
         "trailingBytesAndTruncationAreRejected",
         "duplicateUnknownAndMissingBlocksAreRejected",
         "reviewedSyntheticStoriesAreCountedWhenTheNarrativeBlockShipsThem",
         "manifestEncodingIsCanonicalAndRoundTrips",
-        "restrictedSourceRightsRejectThePackEvenWithAValidSignature"
+        "restrictedSourceRightsRejectThePackEvenWithAValidSignature",
+        "aSignedOuterManifestCannotRelabelTheAppRequirement"
       ]
     }
   },
   "totals": {
-    "debug": 563,
-    "release": 550,
-    "packtool": 11,
-    "d1_cases": 23,
-    "all": 1124
+    "debug": 567,
+    "release": 554,
+    "packtool": 13,
+    "d1_cases": 27,
+    "all": 1134
   },
   "production_app_unchanged_since_d0": true,
   "protected_files": [
@@ -3925,12 +4013,14 @@
     "content_kind",
     "content_rejected",
     "duplicate_block",
+    "inner_binding",
     "manifest_schema",
     "manifest_size",
     "minimum_code",
     "missing_block",
     "no_trusted_publisher",
     "payload_trust_claim",
+    "sequence_rollback",
     "trailing_bytes",
     "unknown_block",
     "unknown_field",
