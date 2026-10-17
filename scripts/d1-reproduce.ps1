@@ -45,7 +45,7 @@ try {
         $taskOut = Join-Path $taskDirectory 'artifacts/d1/build'
         $taskOutput = & (Join-Path $taskDirectory 'gradlew.bat') ':app:d1Pack' "-Pd1.command=$taskCommand" `
             "-Pd1.root=$taskDirectory" '-Pd1.sample=fact-only' "-Pd1.keydir=$taskKeyDir" "-Pd1.out=$taskOut" `
-            "-Pd1.commit=$taskCommit" '--offline' '--console=plain' 2>&1
+            "-Pd1.commit=$taskCommit" '--project-dir' $taskDirectory '--offline' '--console=plain' 2>&1
         if ($LASTEXITCODE -ne 0) { throw "Clean build $taskIndex failed: $($taskOutput | Select-Object -Last 20)" }
         $taskFields = @{}
         foreach ($taskLine in $taskOutput) {
@@ -92,6 +92,7 @@ try {
         container_bytes_identical = ($taskCommand -eq 'build')
         command = $taskCommand
         signed_region_bytes_identical = ($taskCommand -eq 'prepare')
+        builder_project_is_worktree = $true
         physical_two_computers = 'PENDING'
         note = 'Two clean worktrees on one Windows computer. Prepare compares all four raw blocks and the KCPK signed region byte for byte, without keys. Build compares signed container hashes with the same TEST_ONLY key.'
     }
