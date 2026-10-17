@@ -95,8 +95,10 @@ internal object D2Production {
 
     private data class Identity(val directory: File, val id: String, val public: PublicKey)
     private fun identity(o: D1Cli.Options, r: Runtime): Identity {
-        val directory = keyDirectory(o)
-        external(directory, File(o.required("root")))
+        val requested = keyDirectory(o)
+        external(requested, File(o.required("root")))
+        // Check the target directory's ACL, not the ACL on a possible symlink/junction itself.
+        val directory = requested.toPath().toRealPath().toFile()
         val path = directory.toPath()
         protect(path, false)
         listOf("key.json", "public.pem", "private.pem").forEach {
