@@ -1,3 +1,11 @@
+# 2026-10-17 下一施工阶段：D2 正式发布能力最小工程（仅模拟授权）
+
+D2 的 TEST_ONLY [PR #41](https://github.com/shimao1115/KITT/pull/41) 已合并到 main（merge `baea614ba02f1aad7776e65ed6766833ee451b3f`，工程 1172 项系上一轮证据，非本轮测试成绩）。现有的 D2 演练确认、预览、内容门禁与多测试身份均已实现，但真实生产身份和 GitHub Release 上传仍未启用。
+
+**最新施工许可**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)，分支 `feat/v060-d2-production-release` 的最新 [TASK_CARD.md](TASK_CARD.md) 是唯一任务卡：**只开发和模拟**“Agent 在任一电脑制作 → 用户一次审核确认 → 程序自动校验/签名/验签/上传”所缺失的最薄正式发布能力。**本轮不生成真实生产密钥、不建真实生产根、不创建或修改 Tag/Release、不实际上传、不开手机/V0.6.1、不中途合并**；使用 fake gh 和临时模拟密钥覆盖正反例，交付 Draft PR、证据、独立工程复审后 STOP。真实新都来源权利与杨慎 Visitor 仍 BLOCKED，正式故事 0；下方旧“PR41 Draft/未合并”是当时历史，不代表现状。
+
+---
+
 # 2026-10-17 D2 最新任务：任一电脑制作、一次确认、当前电脑发布准备 — 工程完成 / 待独立复审
 
 唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，分支 `feat/v060-d2-dual-workstation-release`。已合入用户更新的任务卡（远端 `037d13b`）：取消专用签名机、重复 Visitor 人工签字、PR 内容二审和第二次上传确认。**日常出版是用户看一次正文及来源说明，然后当前电脑自动检查/签名/验签/上传；本轮仅 TEST_ONLY 模拟，不是真实出版。** D1 已合并 main（`7637755`）；下方旧 D1 STOP/未合并文字仅属历史。
