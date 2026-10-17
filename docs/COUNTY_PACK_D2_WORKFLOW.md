@@ -51,3 +51,5 @@ $preview = Join-Path $env:TEMP ('kitt-test-preview-' + [guid]::NewGuid().ToStrin
 ## 5. 本轮验收边界
 
 新测试、两干净 worktree 无密钥字节对照、CLI 真实成功/拒绝、Debug/Release/packtool、Python、Fake模拟、assemble/lint、APK原签名保护回归见 `docs/evidence/v060-d2-verification.json` 和 `HANDOFF.md`。单机两个路径不能证明两台实体电脑：**办公室↔家庭实测 PENDING**。真实新都版权/杨慎 Visitor仍 BLOCKED/PENDING；手机 code19、正式故事 0、旧设置漂移根因 UNKNOWN 不变。只交付 Draft PR，停止等待独立复审。
+
+复现沿用 `scripts/d1-reproduce.ps1`，设置 `KITT_D1_COMMAND=prepare`、`KITT_D1_REF=<固定commit>` 和 `KITT_D1_OUT=artifacts/d2/reproducibility.json` 即可无密钥运行。D2 新增明确的 `--project-dir`，保证两次 Gradle 编译分别使用新工作树；随机目录、已存在即停止、只清理本轮登记且位于指定临时根目录下的工作树。

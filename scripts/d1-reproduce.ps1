@@ -20,6 +20,7 @@ $taskOutFile = if ($env:KITT_D1_OUT) { $env:KITT_D1_OUT } else { 'artifacts/d1/r
 $taskToken = if ($env:KITT_D1_REPRO_TOKEN) { $env:KITT_D1_REPRO_TOKEN } else { [guid]::NewGuid().ToString('N').Substring(0, 12) }
 if ($taskToken -notmatch '^[a-zA-Z0-9_-]{1,64}$') { throw 'Invalid reproduction token.' }
 $taskRoot = if ($PSScriptRoot) { Split-Path -Parent $PSScriptRoot } else { (Get-Location).Path }
+$taskTempRoot = [IO.Path]::GetFullPath($env:TEMP).TrimEnd([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)
 Push-Location $taskRoot
 $taskCreated = @()
 try {
@@ -112,6 +113,10 @@ try {
     }
     foreach ($taskDirectory in $taskCreated) {
         $taskFull = [IO.Path]::GetFullPath($taskDirectory)
+        if ([IO.Path]::GetDirectoryName($taskFull) -ne $taskTempRoot) {
+            Write-Warning 'Left a worktree outside this run temporary root in place.'
+            continue
+        }
         $taskIsOurs = @($taskRegistered | Where-Object { [IO.Path]::GetFullPath($_) -eq $taskFull }).Count -eq 1
         if (-not $taskIsOurs) {
             Write-Warning "Left an unregistered directory in place: $taskDirectory"
