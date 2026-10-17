@@ -86,11 +86,13 @@ def main():
     assert signing['accepted'] == 2 and signing['rejected'] == 6 and signing['exit'] == 0
     repro = load(OUT / 'reproducibility.json')
     assert repro['command'] == 'prepare' and repro['unsigned_bytes_identical'] and repro['signed_region_bytes_identical']
+    assert repro['builder_project_is_worktree']
     assert len({row['unsigned_sha256'] for row in repro['clean_directories']}) == 1
     assert len({row['pack_sha256'] for row in repro['clean_directories']}) == 1
     assert all(row['container_sha256'] == row['pack_sha256'] for row in repro['clean_directories'])
     guard = load(OUT / 'repro-guard.json')
     assert guard['stopped'] and guard['sentinel_intact'] and not guard['created_directory_deleted']
+    assert guard['original_worktrees_unchanged']
     cli = {}
     for path in sorted((OUT / 'cli').glob('*.log')):
         fields = {}
@@ -125,6 +127,8 @@ def main():
                                                content_log=info(OUT / 'content-check.log')),
                     simulations=simulations, cli=cli, reproducibility=repro, reproducibility_guard=guard,
                     signing_regression=signing, wrapper_checks=load(OUT / 'wrapper-checks.json'),
+                    supporting_logs=[info(OUT / name) for name in ('signing.log', 'reproducibility.log',
+                        'repro-guard.log', 'wrapper-success.log', 'wrapper-refusal.log')],
                     protected_files=[info(p, False) for parent in ('app/src/main/assets/offline', 'content/yangshen')
                                      for p in sorted(Path(parent).iterdir()) if p.is_file()],
                     production_app_and_content_unchanged=True, published_stories=0,
