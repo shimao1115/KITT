@@ -115,6 +115,9 @@ def main():
     assert cli['dry-run']['upload_performed'] == 'false' and cli['dry-run']['ready_to_publish'] == 'false'
     assert cli['dry-run']['signature_verified'] == 'true' and cli['dry-run']['real_human_approval_recorded'] == 'false'
     assert '<VERIFIED_PRODUCTION_FILE>' in json.loads(cli['dry-run']['upload_argv_template'])
+    assert cli['dry-run']['source_commit'] == repro['commit']
+    assert cli['dry-run']['unsigned_sha256'] == repro['clean_directories'][0]['unsigned_sha256']
+    assert cli['prepare']['signed_region_sha256'] == repro['clean_directories'][0]['signed_region_sha256']
     for name, code in {'tamper-verify': 'bad_signature', 'wrong-county': 'expected_area',
                        'wrong-version': 'expected_factversion', 'rollback': 'sequence_rollback',
                        'unknown-key': 'unknown_key_id', 'production': 'production_not_authorized',
