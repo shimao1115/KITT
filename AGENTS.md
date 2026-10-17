@@ -1,3 +1,10 @@
+> **2026-10-17 D2 工程交付 / STOP 待独立工程复审**：按更新后的 [Issue #40](https://github.com/shimao1115/KITT/issues/40) 实现“任一电脑制作 → 用户一次确认 → 当前电脑自动检查/签名/验签/发布准备”的 TEST_ONLY 演练，取消专用签名机和额外人工 Gate。最终 **Debug586 + Release573 + packtool13 = 1172 项**零失败/错误/跳过；D2 19 例双 Variant，两干净工作树真实独立编译/无密钥字节复现、CLI 正反例、Python7、六组 Fake、构建/lint、原签名2+6均 PASS。显式合法子集测试通过且原全量继续拒绝，未修改真实审批。见 [HANDOFF](HANDOFF.md)、[任务卡](TASK_CARD.md)、[证据](docs/evidence/v060-d2-verification.json)。**两实体电脑 PENDING；没有生产私钥/正式根/Release/真实人工出版确认，没有手机/ADB/安装/合并，app/src/main 和真实杨慎内容零差异；新都全量仍 BLOCKED、正式故事0。** Draft PR 交付后 STOP，不擅自开 V0.6.1；首次真实身份/出版另行授权，此后的合规内容只需用户看一次，不恢复旧“专用签名机/多重人工审批”设想。
+
+---
+> **2026-10-17 最新 D2 施工授权（覆盖下方 D1 的历史 STOP）**：用户已批准**最小 D2 工程准备**，要求办公室和家庭两台 Windows 电脑都能参与离线知识包制作、相同 Git commit 可各自预制并校验；办公室和家里均可独立完成最终发布（用户只需一次内容终审；程序负责自动内容门禁、验签、签名和上传）；建议两机各自本地持有独立发行私钥，复用现有TrustStore，不将私钥通过GitHub同步；实际生产密钥生成与第一次正式发布仍须另行授权，拒绝过度设计。唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，唯一分支 `feat/v060-d2-dual-workstation-release`，施工前首先阅读该分支 [TASK_CARD.md](TASK_CARD.md)。D1 [PR #39](https://github.com/shimao1115/KITT/pull/39) 已合并 main；本阶段只做流程、工具、测试和 Draft PR，保持手机 code19、真实新都发行 BLOCKED，**不建 KITT-PACKS、不生成生产密钥、不发 Tag/Release、不装机/合并、不启动 V0.6.1**。
+
+---
+
 > **D1 最终工程复审通过 / 用户批准合并范围**：2026-10-17 D1 第二轮独立工程复审 PASS（PR #39 head 15894f5；评审 https://github.com/shimao1115/KITT/pull/39#issuecomment-6233819737）。用户已明确批准仅做最终文档收口及 PR #39 合并 main；此段是合并前授权与审查状态，不预先宣称合并成功。测试依据提交的工程证据1134项零失败，ChatGPT未实跑Gradle；生产代码 app/src/main 零改动。仍无生产密钥、Release、正式新都可发行故事、手机JCA验收、D2授权；sequence只是调用方下限，非持久防回滚。旧本机路径留在Git历史，未授权不得重写。实际合并状态以GitHub PR merged及merge commit为准。
 
 ---

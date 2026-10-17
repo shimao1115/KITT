@@ -14,6 +14,8 @@ object PackBuilder {
         val unsignedDigest: String
     )
 
+    data class Prepared(val manifest: ReleaseManifest, val blocks: CountyBlocks, val region: ByteArray)
+
     fun seal(kind: String, payload: ByteArray, minimumCode: Int): Sealed {
         if (kind !in setOf("fact", "narrative")) throw PackRejection("block_kind", kind)
         if (payload.size !in 1..ReleaseFormat.MAX_BLOCK) throw PackRejection("block_size", kind)
@@ -54,6 +56,21 @@ object PackBuilder {
         sequence: Int = 1,
         builder: String = ReleaseFormat.BUILDER_ID
     ): Built {
+        val prepared = prepare(areaId, factPayload, narrativePayload, keyId, scope, sourceCommit,
+            minimumCode, sequence, builder)
+        val signature = ReleaseSignature.sign(prepared.region, privateKey)
+        val container = ReleaseContainer.assemble(SignedRegion(prepared.region,
+            prepared.manifest.canonicalBytes(), prepared.blocks.list()),
+            ReleaseFormat.SIGNATURE_ALGORITHM, keyId, signature)
+        return Built(container, prepared.manifest, prepared.blocks, prepared.blocks.digest())
+    }
+
+    /** The same KCPK signed region, before a key is needed. No alternate format or verifier. */
+    fun prepare(
+        areaId: String, factPayload: ByteArray, narrativePayload: ByteArray, keyId: String,
+        scope: String, sourceCommit: String, minimumCode: Int, sequence: Int = 1,
+        builder: String = ReleaseFormat.BUILDER_ID
+    ): Prepared {
         val fact = seal("fact", factPayload, minimumCode)
         val narrative = seal("narrative", narrativePayload, minimumCode)
         val factBody = Json.parseToJsonElement(fact.payload.decodeToString()).jsonObject
@@ -83,10 +100,7 @@ object PackBuilder {
         ManifestRules.checkManifest(manifest, minimumCode)
         val manifestBytes = manifest.canonicalBytes()
         val region = ReleaseContainer.unsignedRegion(manifestBytes, blocks.list())
-        val signature = ReleaseSignature.sign(region, privateKey)
-        val container = ReleaseContainer.assemble(SignedRegion(region, manifestBytes, blocks.list()),
-            ReleaseFormat.SIGNATURE_ALGORITHM, keyId, signature)
-        return Built(container, manifest, blocks, ContentDigest.of(blocks.list()))
+        return Prepared(manifest, blocks, region)
     }
 
     /** Low-level assembly from already sealed blocks. Only hostile-input tests use it: it lets them
