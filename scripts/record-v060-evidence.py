@@ -23,6 +23,7 @@ FIX_CASES = ['resealedCountyCannotBeIndexedUnderAnotherPrefectureOrProvince',
              'existingCuratedSummaryScopesRemainDistinctFromUnclearedSourceRights']
 START = json.loads(Path('artifacts/v060-run-start.json').read_text(encoding='utf-8'))
 START_EPOCH = datetime.fromisoformat(START['started_at']).timestamp()
+TEST_EPOCH = datetime.fromisoformat(START.get('final_full_retry_at', START['started_at'])).timestamp()
 
 
 def sha(data):
@@ -45,6 +46,7 @@ def command(*args):
 def suites(variant):
     results = []
     for path in sorted(Path(f'app/build/test-results/test{variant}UnitTest').glob('TEST-*.xml')):
+        assert path.stat().st_mtime >= TEST_EPOCH, f'{variant} report predates the final complete rerun'
         root = ET.parse(path).getroot()
         counts = {k: int(root.attrib[k]) for k in ('tests', 'failures', 'errors', 'skipped')}
         assert counts['tests'] > 0 and not any(counts[k] for k in ('failures', 'errors', 'skipped'))
@@ -176,6 +178,11 @@ def main():
                                         rights='Finite full-string license/facts-only scope allowlist; unknown/restricted/mixed notices rejected even with allowed permission and fresh revisions',
                                         new_tests_per_variant=len(FIX_CASES), cases=FIX_CASES,
                                         production_paths_changed=revision_changes),
+                  build_retry=dict(reason=START.get('retry_reason'), final_full_retry_at=START.get('final_full_retry_at'),
+                                   mode=START.get('retry_mode'),
+                                   excluded_attempt_logs=[info(p) for p in sorted(Path('artifacts').glob('v060-r1-failed-worker-*/v060-verify.log'))
+                                                          if p.stat().st_mtime >= START_EPOCH],
+                                   result='Final complete rerun and verification succeeded; failed initial attempt excluded from all current counts'),
                   implementation_commit=command('git', 'log', '-1', '--format=%H', '--', 'app/src/main', 'app/build.gradle.kts').strip(),
                   status='ENGINEERING-STOP-USER-REVIEW-PENDING', run_start=START, variants=variants,
                   total_tests=sum(v['tests'] for v in variants.values()), python_tests=7,

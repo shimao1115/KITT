@@ -10,4 +10,6 @@
 
 本轮可复核结果见 [D0工程证据](evidence/v060-d0-verification.json) 与根 [HANDOFF](../HANDOFF.md)。证据脚本 `scripts/record-v060-evidence.py` 校验本轮开始标记、XML新鲜度、真实测试任务执行、APK内容、签名、原资产和受保护路径不变，并比对独立构建源码摘要。
 
+R1复核中曾遇Gradle本机IPC/测试进程退出，失败日志另存且不计通过。恢复方式为串行独立进程完整执行 `assembleDebug assembleRelease testDebugUnitTest testReleaseUnitTest lintDebug lintRelease --offline --rerun-tasks --max-workers=1 --no-daemon`，成功后再用verify脚本检查/签名归档。最终两个Variant的全部XML必须晚于隔离重跑开始时间；不能以第一次不完整尝试或缓存日志代替。
+
 D0不包含真实发行者信任根、外部县包正常启用、GitHub Release、下载/本地导入/原子安装、多县真实GPS几何、真实六区调查或设备验收。`settings.xml` 首进设置页漂移根因UNKNOWN、双来源模式DEFERRED、#23/#24/#27/#30原PENDING均保留。验收后仍需用户分别授权合并、手机升级、故事正式发布和下一阶段。

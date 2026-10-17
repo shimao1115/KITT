@@ -1,3 +1,7 @@
+> **2026-10-17 D0/code20 两处评审修正 / STOP 待再次验收**：已按 [PR #37 独立评审](https://github.com/shimao1115/KITT/pull/37#issuecomment-6229804921) 完成县级码/父级码归属校验与来源/Claim显式权利允许表，修正提交 `dc76465`；生产差异仅 `CountyPacks.kt`，新都正文、杨慎审批、账号设置及Android UI不变。**本轮完整重跑 Debug540 + Release527 = 1067项，0失败/错误/跳过**；六项新增用例两Variant均执行，Python7、六组Fake模拟、构建/lint、原签名2接受+6拒绝PASS。首轮Gradle本机IPC失败尝试已保留且排除，最终串行独立进程全量重跑通过。code20 runtimecheck本地候选 **74461274字节 / SHA256 `2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60`**，旧1055项及旧候选仅为历史。详见[HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d0-verification.json)。**Draft PR #37 保持未合并；无手机/ADB/安装、无发布、未启动后续里程碑；正式故事0、杨慎candidate/visitor_gate=pending不变。独立工程复审与用户验收仍PENDING。**
+
+---
+
 > **2026-10-17 V0.6.0 D0/code20 工程交付 / STOP 待用户验收**：[Issue #36](https://github.com/shimao1115/KITT/issues/36) 已由实现 `91b96a8` 完成县级 Fact/Narrative 独立读取、manifest/整体哈希/来源验证、县与市州索引及精确Claim修订门禁，交付 [Draft PR #37](https://github.com/shimao1115/KITT/pull/37)。真实新都保持1县6对象22基础事实6来源、正式故事0；西陵仅非相邻 TEST_ONLY 合成夹具，未入APK，无生产GPS几何。**本轮重跑 Debug534 + Release521 = 1055项，0失败/错误/跳过**，Python7、六组Fake模拟、构建/lint、原签名2接受+6拒绝PASS；全新目录runtimecheck75/75任务执行。code20本地候选74461274字节、SHA256 `2762d6ffc623f80261f14ac0ea0ea78e56611c39817fa56f63ca255308462821`；与本地code19重新核签后仅静态兼容、权限不变。见[HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d0-verification.json)、[契约](docs/COUNTY_PACK_D0_CONTRACT.md)。**无手机/ADB/安装，无合并、APK上传或GitHub Release；PR29未动，杨慎candidate/visitor_gate=pending不变，外部发行者根及下载/导入/安装器未实现。** 旧设置漂移UNKNOWN、来源双模式DEFERRED、#23/#24/#27/#30原状态保留。只等待本D0工程验收，不启动D1/D2或后续里程碑；下方开发授权按历史时点解释。
 
 ---
