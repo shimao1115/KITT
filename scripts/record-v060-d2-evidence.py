@@ -113,6 +113,8 @@ def main():
                        'relabel-verify': 'inner_binding'}.items():
         assert cli[name]['code'] == code and cli[name]['exit_code'] == '3'
     assert cli['audit-newdu']['sources_unclear'] == '2' and cli['audit-newdu']['published_stories'] == '0'
+    key_metadata = load(OUT / 'key-public.json')
+    assert key_metadata['scope'] == 'TEST_ONLY'
     simulations = [info(Path('app/build/acceptance', name)) for name in
                    ('full-simulation.txt', 'accelerated-simulation.txt', 'batch-simulation.txt',
                     'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt')]
@@ -125,6 +127,8 @@ def main():
                                 all=debug['tests'] + release['tests'] + packtool['tests']),
                     checks=checks, python=dict(tests=7, test_log=info(OUT / 'python-tests.log'),
                                                content_log=info(OUT / 'content-check.log')),
+                    key_material=dict(public_metadata=key_metadata, storage='temporary directory outside all Git worktrees',
+                                      private_key_in_git=False, apk_key_reused_for_knowledge_packs=False),
                     simulations=simulations, cli=cli, reproducibility=repro, reproducibility_guard=guard,
                     signing_regression=signing, wrapper_checks=load(OUT / 'wrapper-checks.json'),
                     supporting_logs=[info(OUT / name) for name in ('signing.log', 'reproducibility.log',
