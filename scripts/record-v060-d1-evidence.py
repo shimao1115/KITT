@@ -21,9 +21,10 @@ PR = 39
 START = datetime.fromisoformat(Path('artifacts/d1-run-start.txt').read_text(encoding='utf-8').strip())
 START_EPOCH = START.timestamp()
 
-REQUIRED_APP_SUITES = ('CountyPacksTest', 'BundledCountyPacksTest', 'StoryPacksTest', 'OfflinePackTest',
-                       'ExplorePlacesTest', 'StoryInterestSelectionTest', 'StoryInterestStoreTest',
-                       'ReleaseD1Test')
+REQUIRED_APP_SUITES = ('com.kitt.reader.CountyPacksTest', 'com.kitt.reader.BundledCountyPacksTest',
+                       'com.kitt.reader.StoryPacksTest', 'com.kitt.reader.OfflinePackTest',
+                       'com.kitt.reader.ExplorePlacesTest', 'com.kitt.reader.StoryInterestSelectionTest',
+                       'com.kitt.reader.StoryInterestStoreTest', 'com.kitt.reader.d1.ReleaseD1Test')
 
 
 def sha(data):
@@ -54,7 +55,7 @@ def suites(directory, required):
                             report=info(path, True), cases=[c.attrib['name'] for c in root.findall('testcase')]))
     names = {s['name'] for s in results}
     for name in required:
-        assert f'com.kitt.reader.{name}' in names, f'missing suite {name}'
+        assert name in names, f'missing suite {name}'
     return dict(tests=sum(s['tests'] for s in results), failures=0, errors=0, skipped=0, suites=results)
 
 
@@ -93,7 +94,7 @@ def main():
 
     debug = suites('app/build/test-results/testDebugUnitTest', REQUIRED_APP_SUITES)
     release = suites('app/build/test-results/testReleaseUnitTest', REQUIRED_APP_SUITES)
-    packtool = suites('packtool/build/test-results/test', ('ReleaseFormatTest',))
+    packtool = suites('packtool/build/test-results/test', ('com.kitt.packtool.ReleaseFormatTest',))
     d1 = next(s for s in debug['suites'] if s['name'] == 'com.kitt.reader.d1.ReleaseD1Test')
 
     reproducibility = json.loads(Path('artifacts/d1/reproducibility.json').read_text(encoding='utf-8'))
