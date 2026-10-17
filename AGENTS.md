@@ -1,3 +1,19 @@
+> **2026-10-18 PR #43 最小复审修复交付 / STOP 待再次复审**：用户明确授权执行[复审要求](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)。发行者登记改由固定 GitHub 主机/仓库的远端 main 提供，gh api 先取 main SHA 再按 SHA 读名单；候选 commit、工作区、本地 main/origin/main 均不能自登记，确认后重查授权，无额外人工 Gate。新增8例，生产专项66例双 Variant；本轮新鲜 **Debug652 + Release639 + packtool13 = 1304项**零失败/错误/跳过，Python7、六组Fake、assemble/lint（103任务）、原签名2+6 PASS。旧1288项仅代表被复审的旧 head，不继承/相加。见[新证据](docs/evidence/v060-d2-production-review-fix.json)与[HANDOFF](HANDOFF.md)。84个保护文件哈希不变，正式清单仍空、无真实钥/根/Tag/Release/上传/手机/合并；新都BLOCKED、正式故事0，两实体机PENDING。保持 Draft，首次真实身份/发行另行授权，不启动V0.6.1。
+
+---
+
+> **以下1288项为首轮交付历史；当前修复结果以上段及新证据为准。**
+
+> **实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，OPEN / DRAFT / 未合并。STOP 等独立工程复审与用户合并授权。**
+
+> **2026-10-18 D2 正式发布能力工程验证完成 / Draft PR 交付后 STOP**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)，唯一分支 `feat/v060-d2-production-release`。复用固定 Git blob、reviewhash、D0 Gate 和 Builder/Verifier，补齐所有者 ACL 保护的独立本机身份、空公开登记表、一次 stdin 决定后的签名/验签及 gh Release 创建与回读；PowerShell 5/7 中文决定管道均验证。**最终 Debug644 + Release631 + packtool13 = 1288 项**零失败/错误/跳过，生产专项58例双 Variant；Python7、六组 Fake、assemble/lint、原签名2+6 PASS。旧1172及本轮前置运行不计入。全部发行演练仅用临时虚拟身份与 fake gh；真实登记表为空，默认生产身份未创建，gh 不在本机 PATH。**没有真实生产私钥/根、Tag/Release/附件上传、手机/ADB/安装/合并；app/src/main 与杨慎原始内容/审批零差异；新都仍 BLOCKED、正式故事0、两实体机 PENDING。** 首次真实设置/发行另行授权，此后每份合规内容只看一次。见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d2-production-verification.json)、[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。交付后等待独立工程复审/用户授权合并，不启动 V0.6.1。
+
+---
+
+> **2026-10-17 当前新任务：D2 正式发布能力最小工程（仅代码和模拟，不真实发布）**：用户明确“下一步”，已建立 [Issue #42](https://github.com/shimao1115/KITT/issues/42) 与分支 `feat/v060-d2-production-release`；**唯一施工依据为此分支 [TASK_CARD.md](TASK_CARD.md)**。PR #41 已于 merge `baea614ba02f1aad7776e65ed6766833ee451b3f` 合并 main，旧“D2 待复审/禁止继续施工”属于历史。目标仅让办公室/家里任一电脑未来能在用户**一次内容确认**后自动完成安全校验、独立本机签名、验签并由 gh 发布；不增审批/服务器/仓库/架构。本次**只做实现、模拟和 Draft PR**，不生成真正生产身份/密钥、公钥信任根，不创建 Tag/Release，不上传文件，不更改 app/src/main/杨慎审批/手机 code19，不启动 V0.6.1，STOP 等独立复审。
+
+---
+
 > **2026-10-17 D2 工程交付 / STOP 待独立工程复审**：按更新后的 [Issue #40](https://github.com/shimao1115/KITT/issues/40) 实现“任一电脑制作 → 用户一次确认 → 当前电脑自动检查/签名/验签/发布准备”的 TEST_ONLY 演练，取消专用签名机和额外人工 Gate。最终 **Debug586 + Release573 + packtool13 = 1172 项**零失败/错误/跳过；D2 19 例双 Variant，两干净工作树真实独立编译/无密钥字节复现、CLI 正反例、Python7、六组 Fake、构建/lint、原签名2+6均 PASS。显式合法子集测试通过且原全量继续拒绝，未修改真实审批。见 [HANDOFF](HANDOFF.md)、[任务卡](TASK_CARD.md)、[证据](docs/evidence/v060-d2-verification.json)。**两实体电脑 PENDING；没有生产私钥/正式根/Release/真实人工出版确认，没有手机/ADB/安装/合并，app/src/main 和真实杨慎内容零差异；新都全量仍 BLOCKED、正式故事0。** Draft PR 交付后 STOP，不擅自开 V0.6.1；首次真实身份/出版另行授权，此后的合规内容只需用户看一次，不恢复旧“专用签名机/多重人工审批”设想。
 
 ---

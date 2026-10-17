@@ -1,3 +1,78 @@
+# 2026-10-18 PR43 最小复审修复交付 / STOP 待再次复审
+
+[Draft PR #43](https://github.com/shimao1115/KITT/pull/43) 保持 Draft、未合并。用户授权“执行修复”，本轮仅处理[独立复审](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)指出的可信登记来源缺口；没有扩大 Issue #42 范围。
+
+## 修复后的信任边界
+
+`D2Production.registered()` 不再接收候选 Options。它只通过 `gh api --hostname github.com --method GET` 读取固定仓库 `shimao1115/KITT` 的 `refs/heads/main`，校验40位提交SHA，再按该SHA读取 `config/pack-publishers.json` 原文。名单不再来自候选 `--commit`，也不回退到工作区、本地 main/origin/main 或钥匙旁的登记文件。main 的授权依赖仓库访问/合并管理；首次真实身份及公钥进入 main 仍须单独授权，本轮没有执行。
+
+预览、发布预检及一次决定之后均检查当前登记；若已撤销或无法读取即停止。原 Git blob/reviewhash、D0 Gate、Builder/Verifier、历史检查、一次 gh create 和回读均保留。日常内容可留在固定的候选分支提交，无须新增内容 PR 审批，不要求第二次签名/上传确认。正式预览需要联网读取登记，原 TEST_ONLY 离线 prepare 不变。代码实现提交 `6f9732a`。
+
+## 本轮实际验证
+
+**Debug652 + Release639 + packtool13 = 1304项**，0失败/错误/跳过；三组均强制重新执行。生产专项66例、原D1 27例、原D2 19例在两个Variant各执行。assembleDebug/Release、lintDebug/Release共103任务执行成功；Python7、六组Fake、APK原签名2接受+6拒绝PASS。原1288项仅是被复审旧head `4911a485` 的历史；首轮65例专项亦不加入最终计数。PS5/PS7包装脚本未改，本轮不冒称重新运行其旧专项。
+
+新增8例覆盖：候选分支提交陌生公钥→拒绝且零create；伪造本地main/origin/main→拒绝；正式登记的虚拟钥在候选名单为空时一次确认成功；确认后撤销→拒绝；登记无网/确认后无网→拒绝；非法main引用→拒绝；真实CLI拒绝虚拟/TEST_ONLY身份。原两把独立虚拟办公室/家庭钥的成功流程改用明确独立的 fake main 授权，仍无私钥互传。实际远端gh认证/Release操作没有执行，本机gh仍不在PATH。
+
+[新证据](docs/evidence/v060-d2-production-review-fix.json) 单独记录本轮源码、每组命令/时间、全部新鲜JUnit计数与专项名称、fake登记请求及上传调用、保护文件哈希和日志摘要；[旧1288项证据](docs/evidence/v060-d2-production-verification.json) 保留不改。原签名回归仍仅读取已有code20 runtimecheck静态夹具，没有重新生成该runtimecheck包，更没有安装或访问手机。
+
+84个 `app/src/main` / `content/yangshen` 保护文件前后SHA256一致，且自PR41基线零差异；公开清单仍为`[]`，默认生产身份不存在。公开Release清单前后只读对照，认证草稿清单未验证；本轮没有真实Tag/Release/上传调用。新都全量仍BLOCKED（11来源2项权利不明、杨慎Visitor pending、正式故事0），两实体电脑仍PENDING。手机只沿用已验收code19基线，未操作/安装。
+
+**STOP：等待本次最小修复复审及用户合并授权。** 没有真实生产钥/根、首次身份设置、真实人工出版批准、真实发行、手机/ADB/安装或V0.6.1。原stdin不认证真人、同县发布须串行、gh异常结果须只读核查且不自动重试的限制继续有效。普通中文流程见[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。
+
+---
+
+以下为首轮1288项交付历史，可信登记来源已由上述修复替代：
+
+# 2026-10-18 D2 正式发布能力工程交付 / Draft PR #43 / STOP 待独立复审
+
+**实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，保持 OPEN / DRAFT / 未合并。工程证据与交接已提交，STOP 等独立复审，不继续真实设置/出版或 V0.6.1。**
+
+唯一任务 [Issue #42](https://github.com/shimao1115/KITT/issues/42)，分支 `feat/v060-d2-production-release`；基线为已合并 [PR #41](https://github.com/shimao1115/KITT/pull/41)，merge `baea614ba02f1aad7776e65ed6766833ee451b3f`。本轮只完成可审查实现和隔离模拟，首次真实身份设置/首次正式发行仍未授权。
+
+## 现在具备的工程能力
+
+复用原 KCPK v1、固定 Git blob、D0 内容/版权/Visitor Gate、D1 Builder/Verifier 和 D2 `prepare/review.md/reviewhash`。原 TEST_ONLY 演练保留；生产入口为 `identity-init / production-prepare / publish`，没有新内容 Schema、服务、数据库、额外人工审批或专用签名机。
+
+- 本机一次初始化能力：工作树外独立 RSA-3072 身份，先限制所有者 ACL 再写私钥；每次检查目录/文件权限，解析联接后检查实际位置及目标 ACL，拒绝 Git 目录和已有初始化覆盖。默认自动发现本机身份，与 APK 密钥分离。**本轮从未执行真实初始化**。
+- 公开登记格式只包含 key_id、scope、虚拟标记和 SPKI 公钥；从固定源码 commit 的 `config/pack-publishers.json` 读登记，拒绝未知/不匹配公钥、TEST_ONLY 与虚拟身份进入真实 CLI。当前该表是**空数组**，没有正式可信根；手机接入留 V0.6.1。
+- 预览展示基础事实、**全部 Claim 正文及依据**、完整故事和来源/权利，并绑定县、源码、两个版本、sequence、完整待签名区域 SHA256。唯一 stdin 决定之后重新读取同一 Git blob，核对摘要，自动检查/签名/验签。用户在聊天中已经作出的决定可由宿主转录；PowerShell 5/7 均能原样传递一行 UTF-8 中文，无需用户再在终端确认。Agent 不能自己编造决定；工具不独立认证输入者身份。
+- 发布仓库固定 `github.com/shimao1115/KITT`；Tag `kitt-pack-cn-县码-s序号`、附件 `cn-县码-s序号.kcpk`。两侧生产版本用可比较的 `vN.N.N`，不改变 D0 Schema。读取现有 Release/Tag，检查同县序号、两侧版本、来源祖先和同版本字节一致性，再通过一次 `gh release create` 完成草稿/上传/公开流程；回读 manifest、附件大小/SHA256 和 Tag 实际指向后才报成功。不覆盖、不编辑/删除旧发布，不自动重试。
+
+## 本轮最终实际验证（本机，非外部 CI/真机）
+
+**Debug 644 + Release 631 + packtool 13 = 1288 项**，0 失败/错误/跳过。生产专项 **58 例双 Variant**，原 D2 19 / D1 27 例双 Variant 均在全量内。旧 PR41 的1172项、本轮前置641/631运行及专项重复均不相加；最终两 Variant 在完整 Claim 预览修正后重新全量执行。
+
+Python 内容门禁 **7 项 PASS**；六组确定性/Fake 模拟、Debug/Release assemble/lint PASS；APK 原签名 **2 接受 + 6 拒绝 PASS**。仅用已有 code20 runtimecheck 作静态签名夹具，SHA256仍为 `2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60`；没有新 runtimecheck 候选或安装。
+
+虚拟身份均在 JUnit 临时目录、工作树外，并与 fake gh 绑定。两独立身份从同一合成源码 commit 各自完成一次决定、内容检查、实际签名/验签及 fake create；有效输入才可到达 create，危险输入零 create。create/回读失败用例允许一次 fake 尝试，但绝不报成功或重试。覆盖 TEST_ONLY、审核对象变化、错县/版本/序号、旧版/重复 Tag、未知钥、权利不明、缺 Source/Claim、candidate/Visitor pending、签名/发布说明篡改、缺命令、网络/认证失败、超时与钥匙路径/权限。
+
+另有 **PowerShell 7 与 Windows PowerShell 5 独立进程替身检查**：中文和 SHA 原样转录，模拟标记/错摘要/多行拒绝、CLI exit_code 拒绝向上传递、宿主编码恢复。初次绑定失败、Windows PowerShell 5 ASCII 问号问题均保留且已修正，不记作最终通过成绩。
+
+[本轮脱敏证据](docs/evidence/v060-d2-production-verification.json) 记录新鲜 XML/日志哈希、前置运行、失败尝试、保护文件前后 SHA256 和模拟上传参数；[一页普通中文说明](docs/COUNTY_PACK_D2_PRODUCTION.md)；证据重建脚本 `scripts/record-v060-d2-production-evidence.py`。真实新都再审计仍为 11 来源 / 9 清楚 / **2 权利不明**（yang、ritual-paper-lead），正式故事 **0**；未制作或发行真实合规子集。
+
+## 尚未做与已知限制
+
+**无真实生产私钥/正式根、真实人工出版批准、GitHub Tag/Release/附件上传；无手机/ADB/安装/合并。** `app/src/main`、真实杨慎正文与审批前后哈希相同；最后已验收手机仍 code19，本轮未读取其20份历史/设置，旧 settings.xml 漂移 UNKNOWN 保留。App Provider/模型配置未改，本轮不验在线账号。
+
+办公室↔家庭两实体电脑 **PENDING**；此处是单机两虚拟本机身份与 fake gh。此工作环境没有 PATH 中的 gh，真实首次运行需安装/授权及用户另行授权的身份设置/登记；不借用其他应用的凭据。手机 JCA、公钥固化、下载/导入/原子安装与持久防回滚均属 V0.6.1，未施工。
+
+stdin 只证明该行决定绑定哪些字节，不能证明输入者身份，宿主必须转录真实用户决定。同县不同序号并发没有全局锁，**不要两机同时发布同县**；不声称分布式线性化。历史读取达到1000条或记录不完整即停止。gh 内部不是单次服务端事务；上传开始后异常返回 `release_outcome_unknown_check_remote` 和原因，先只读核查草稿/Tag/实际发布，程序不自动重试/删除，也不假称已发。
+
+最近实现：`ce750b8` 生产入口；`577dba3` 实际目录 ACL；`4f7c019` 默认 stdin；`d0f73c0` 全 Claim 预览；`52188e8` PowerShell 5/7 中文管道。签名与发布代码仅在 JVM 工具/测试，未进 APK。
+
+**STOP 边界**：完成 Draft PR、证据与交接后等独立工程复审/用户授权合并；不做真实初始化或出版，不处理 PR29/旧外场 Issue，不启动 V0.6.1。首次设备安全设置另行授权，此后合规内容每份只由用户看一次，无额外签名/上传/PR内容二审。
+
+---
+
+# 2026-10-17 下一施工阶段：D2 正式发布能力最小工程（仅模拟授权）
+
+D2 的 TEST_ONLY [PR #41](https://github.com/shimao1115/KITT/pull/41) 已合并到 main（merge `baea614ba02f1aad7776e65ed6766833ee451b3f`，工程 1172 项系上一轮证据，非本轮测试成绩）。现有的 D2 演练确认、预览、内容门禁与多测试身份均已实现，但真实生产身份和 GitHub Release 上传仍未启用。
+
+**最新施工许可**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)，分支 `feat/v060-d2-production-release` 的最新 [TASK_CARD.md](TASK_CARD.md) 是唯一任务卡：**只开发和模拟**“Agent 在任一电脑制作 → 用户一次审核确认 → 程序自动校验/签名/验签/上传”所缺失的最薄正式发布能力。**本轮不生成真实生产密钥、不建真实生产根、不创建或修改 Tag/Release、不实际上传、不开手机/V0.6.1、不中途合并**；使用 fake gh 和临时模拟密钥覆盖正反例，交付 Draft PR、证据、独立工程复审后 STOP。真实新都来源权利与杨慎 Visitor 仍 BLOCKED，正式故事 0；下方旧“PR41 Draft/未合并”是当时历史，不代表现状。
+
+---
+
 # 2026-10-17 D2 最新任务：任一电脑制作、一次确认、当前电脑发布准备 — 工程完成 / 待独立复审
 
 唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，分支 `feat/v060-d2-dual-workstation-release`。已合入用户更新的任务卡（远端 `037d13b`）：取消专用签名机、重复 Visitor 人工签字、PR 内容二审和第二次上传确认。**日常出版是用户看一次正文及来源说明，然后当前电脑自动检查/签名/验签/上传；本轮仅 TEST_ONLY 模拟，不是真实出版。** D1 已合并 main（`7637755`）；下方旧 D1 STOP/未合并文字仅属历史。

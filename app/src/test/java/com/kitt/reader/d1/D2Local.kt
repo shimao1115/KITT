@@ -153,10 +153,11 @@ internal object D2Local {
         return D1Cli.ACCEPTED
     }
 
-    private fun review(candidate: PackBuilder.Prepared): String = buildString {
-        appendLine("# TEST_ONLY 内容预览（不是真实人工批准或正式出版）")
+    internal fun review(candidate: PackBuilder.Prepared): String = buildString {
+        appendLine("# ${candidate.manifest.publisherScope} 内容预览（尚未批准或出版）")
         appendLine("地区：${candidate.manifest.areaId}；源码：${candidate.manifest.sourceCommit}")
         appendLine("版本：${candidate.manifest.factVersion} / ${candidate.manifest.narrativeVersion}；序号：${candidate.manifest.sequence}")
+        appendLine("完整待签名区域 SHA256：${ContentDigest.sha256(candidate.region)}")
         appendLine("用户一次过目包括正文、事实和下列来源/权利说明；机器检查自动执行。")
         val facts = Json.parseToJsonElement(candidate.blocks.facts.decodeToString()).jsonObject
         facts.getValue("entities").jsonArray.forEach { entity ->
@@ -170,8 +171,19 @@ internal object D2Local {
             val s = source.jsonObject
             appendLine("- ${s.getValue("source_id").jsonPrimitive.content}：${s.getValue("title").jsonPrimitive.content}；${s.getValue("url").jsonPrimitive.content}；${s.getValue("rights").jsonPrimitive.content}")
         }
+        val claims = (facts["claims"] as? JsonArray) ?: JsonArray(emptyList())
+        appendLine("\n## 核验事实（${claims.size} 项）")
+        claims.forEach { claim ->
+            val c = claim.jsonObject
+            appendLine("\n- ${c.getValue("claim_id").jsonPrimitive.content}：${c.getValue("text").jsonPrimitive.content}")
+            appendLine("  状态：${c.getValue("status").jsonPrimitive.content}；权利：${c.getValue("rights").jsonPrimitive.content}")
+            c.getValue("evidence").jsonArray.forEach { evidence ->
+                val e = evidence.jsonObject
+                appendLine("  依据：${e.getValue("source_id").jsonPrimitive.content}；${e.getValue("locator").jsonPrimitive.content}")
+            }
+        }
         val stories = Json.parseToJsonElement(candidate.blocks.narratives.decodeToString()).jsonObject.getValue("narratives").jsonArray
-        appendLine("\n## 讲述（${stories.size} 篇；合成测试稿）")
+        appendLine("\n## 讲述（${stories.size} 篇）")
         stories.forEach { story ->
             appendLine("\n### ${story.jsonObject.getValue("title").jsonPrimitive.content}")
             appendLine(story.jsonObject.getValue("text").jsonPrimitive.content)

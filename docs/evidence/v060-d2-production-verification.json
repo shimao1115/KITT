@@ -1,0 +1,2920 @@
+{
+  "milestone": "V0.6.0 D2 production capability (simulation only)",
+  "issue": 42,
+  "baseline_commit": "baea614ba02f1aad7776e65ed6766833ee451b3f",
+  "evidence_source_commit": "481ba5f0f1402dcb87515d8be3cd859df74792cc",
+  "implementation_commit": "52188e869c894b8b6f24d67dfce8961e282bceee",
+  "started_at": "2026-10-17T15:34:31.824693+00:00",
+  "recorded_at": "2026-10-17T16:33:45.469536+00:00",
+  "tests": {
+    "debug": {
+      "tests": 644,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.kitt.reader.ActiveResearchTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ActiveResearchTest.xml",
+            "bytes": 2133,
+            "sha256": "28ea9e7448784a6a587e359ccaa1c573a1fff0aa6a9b9fecbcaa9ba0b97ceddf"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AndroidAreaResolverTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AndroidAreaResolverTest.xml",
+            "bytes": 1057,
+            "sha256": "e175317b2dcb6cdd07bd98e552e5c81eb4c7b1767f4aa94cdba05395c5e870e7"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AndroidLifecycleTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AndroidLifecycleTest.xml",
+            "bytes": 459,
+            "sha256": "efefd9c440f5962025e7695c85a6a1792d47b060dd2704370362db9085c49eb7"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AndroidVoiceExperienceTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AndroidVoiceExperienceTest.xml",
+            "bytes": 1936,
+            "sha256": "c31c4c5ec4b6130d4485539f83a4cf5ffb7b926af98ce5808721556952b6f8ed"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AreaChapterTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AreaChapterTest.xml",
+            "bytes": 1385,
+            "sha256": "8e74bbd90de60820a747b08946399454d2f573aa4b220fddf0e88ffb3d77d4e4"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AreaResolutionCacheTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.AreaResolutionCacheTest.xml",
+            "bytes": 1665,
+            "sha256": "89351d5627ad1e40da7d27138612b55e7e59e2ce60061ea565564891e18c3739"
+          }
+        },
+        {
+          "name": "com.kitt.reader.BatchSimulationTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.BatchSimulationTest.xml",
+            "bytes": 2514,
+            "sha256": "5233623f909d9065d06b780fed3ec1c0adbfc136855279f7cfd7d19c3d390514"
+          }
+        },
+        {
+          "name": "com.kitt.reader.BootstrapTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.BootstrapTest.xml",
+            "bytes": 418,
+            "sha256": "7beca6aa4f2383c326e7bc6c20fdbf0f255bceaf649c466fe658945d12d4be83"
+          }
+        },
+        {
+          "name": "com.kitt.reader.BundledCountyPacksTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.BundledCountyPacksTest.xml",
+            "bytes": 776,
+            "sha256": "03b8d2c5848e65de1def67e86d8a30da53224bd2773c46349020a924cc5236de"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChapterOpportunityTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChapterOpportunityTest.xml",
+            "bytes": 1344,
+            "sha256": "10ee6417440979c7fbc0cd75b070ce6403b0b1ef9ea2bd2bb09c4b53b561bcf0"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChatGptAccountTest",
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChatGptAccountTest.xml",
+            "bytes": 2120,
+            "sha256": "273ab6cc846d0af1d2e5a775c9794691354d9d975f3a8b37c2cb61ca6f48ec4b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChatGptImagePayloadTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChatGptImagePayloadTest.xml",
+            "bytes": 484,
+            "sha256": "2ec2389863453a9477de8481d6f8f12a2600c79aac4b51cef4d0d089771ea6f7"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChatGptProtocolTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ChatGptProtocolTest.xml",
+            "bytes": 1602,
+            "sha256": "edabf59ef16234fb9cfd537b598c71c8bad977f196533f66346cae24939b7d51"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ContextTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ContextTest.xml",
+            "bytes": 438,
+            "sha256": "9d215e53129e89f0c6b002f81e7b89fa71fc8151f689bf4610b9d024364bccec"
+          }
+        },
+        {
+          "name": "com.kitt.reader.CountyPacksTest",
+          "tests": 26,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.CountyPacksTest.xml",
+            "bytes": 3932,
+            "sha256": "7bc8275405518d98eef25b2afc6c70de40c73d267a3905da9f1c96e7c019ea28"
+          }
+        },
+        {
+          "name": "com.kitt.reader.d1.ProductionD2Test",
+          "tests": 58,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.d1.ProductionD2Test.xml",
+            "bytes": 26388,
+            "sha256": "427088691e11c1aa08282c38fe373e9f9644b4733a2f29b854e401f4e1de5a5f"
+          },
+          "cases": [
+            "initializedIdentityIsOwnerOnlyAndCannotBeOverwritten",
+            "offlineOrUnauthorizedGhFailsWithoutCreatingAnything",
+            "groupReadablePrivateKeyRejected",
+            "simulatedConfirmationFlagCannotReplaceHumanInput",
+            "draftReleaseReservesSequenceAndStopsPublication",
+            "nextSequenceWithUnchangedContentPasses",
+            "reviewHashMustMatchBeforeReadingHumanInput",
+            "failedPostCreateReadbackNeverClaimsSuccess",
+            "oneSimulatedStdinDecisionSignsVerifiesAndPublishesWithFakeGh",
+            "privateKeyMismatchIsDetectedByThePinnedVerifier",
+            "previousNarrativeVersionCannotBeRolledBack",
+            "invalidProductionVersionIsRejected",
+            "missingClaimIsRejected",
+            "factOnlyProductionFlowKeepsZeroStories",
+            "dirtyFilesAreIgnoredAndTheFixedGitBlobIsReReadAfterDecision",
+            "unknownCopyrightIsRejected",
+            "newRemoteConflictAfterDecisionStopsBeforeCreate",
+            "junctionIntoWorkingTreeCannotHideKeyLocation",
+            "existingOutputIsNeverOverwritten",
+            "testScopeCannotReachProductionUpload",
+            "defaultStdinReaderConsumesTheSingleSimulatedHumanLine",
+            "subprocessOfflineFailureIsClassified",
+            "previousFactVersionCannotBeRolledBackWithHigherSequence",
+            "mismatchingPinnedPublicKeyRejected",
+            "duplicateSequenceRejectedWithoutHumanPrompt",
+            "testOnlyIdentityCannotBePromotedByScopeArgument",
+            "testOnlyPayloadCannotBeUploaded",
+            "registryMustBeCommittedNotDirtyLocalTrust",
+            "junctionToExternalIdentityChecksTargetDirectoryPermissions",
+            "identityInsideAnotherRegisteredWorktreeIsRejected",
+            "subprocessMissingExecutableIsClearAndSafe",
+            "differentCountyChangesReviewedObject",
+            "olderSequenceRejected",
+            "missingSourceIsRejected",
+            "changedReleaseNotesRejectedBeforeGhCreate",
+            "boundedHistoryCannotSilentlyIgnoreOlderRecords",
+            "incompleteOlderReleaseStopsPublication",
+            "tamperedStagedSignatureRejectedBeforeGhCreate",
+            "differentContentVersionChangesReviewedObject",
+            "sameVersionWithDifferentBytesIsRejected",
+            "refusingHumanInputDoesNotSignOrUpload",
+            "approvalForAnotherHashRejected",
+            "subprocessAuthenticationFailureIsClassifiedWithoutPrintingStderr",
+            "evenCorrectlySignedTestOnlyContainerIsRejectedAtUploadBoundary",
+            "visitorPendingStoryIsRejected",
+            "twoIndependentVirtualIdentitiesEachCompleteWithoutSharingPrivateKeys",
+            "tagWithoutReleaseCannotBeOverwritten",
+            "createFailureReportsUnknownOutcomeAndNeverRetries",
+            "identityInsideWorkingTreeRejectedBeforeKeyWrite",
+            "virtualIdentityCannotEnterTheRealDefaultRuntime",
+            "unrelatedSourceCommitIsRejectedAsRollback",
+            "wrongRemoteAssetDigestNeverClaimsSuccess",
+            "identityChangedAfterDecisionRejectedBeforeSigning",
+            "publicRegistrationWithTestScopeIsRejected",
+            "subprocessTimeoutStopsAndDoesNotBecomeSuccess",
+            "unknownKeyCannotSelfRegisterUsingLocalKeyFile",
+            "differentSequenceChangesReviewedObject",
+            "candidateStoryIsRejected"
+          ]
+        },
+        {
+          "name": "com.kitt.reader.d1.ReleaseD1Test",
+          "tests": 27,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.d1.ReleaseD1Test.xml",
+            "bytes": 3602,
+            "sha256": "b98e07552acf4d5edbeaefc8185bba446959f8f98c3d0dd3c92f2d2ea605965b"
+          },
+          "cases": [
+            "containerCarriesNoMachineIdentity",
+            "committedSampleMatchesAFreshRender",
+            "anotherCountysNarrativeCannotBeSplicedIntoThisCounty",
+            "anEmptyTrustStoreAcceptsNothing",
+            "productionScopeCannotBeAuthenticatedByATestOnlyAnchor",
+            "missingClaimDependencyIsRejected",
+            "pendingVisitorGateIsRejected",
+            "staleClaimRevisionIsRejected",
+            "acceptedBlocksStayReadableByTheD0Reader",
+            "wrongAppCodeIsRejected",
+            "factOnlyPackIsAcceptedAndReportsZeroStories",
+            "oversizedContainerIsRejectedBeforeParsing",
+            "aSignedOuterManifestCannotRelabelTheFactVersion",
+            "oneChangedByteBreaksTheSignature",
+            "anOldSignatureCannotCoverANewManifest",
+            "anOlderSignedPackIsRefusedOnceTheCallerRaisesTheFloor",
+            "unsignedBytesAndTheWholeContainerRepeatForTheSameKey",
+            "aPayloadCannotNominateItsOwnPublicKey",
+            "unregisteredKeyIdIsRejected",
+            "candidateReviewStatusIsRejected",
+            "aSignedOuterManifestCannotRelabelAnotherCounty",
+            "trailingBytesAndTruncationAreRejected",
+            "duplicateUnknownAndMissingBlocksAreRejected",
+            "reviewedSyntheticStoriesAreCountedWhenTheNarrativeBlockShipsThem",
+            "manifestEncodingIsCanonicalAndRoundTrips",
+            "restrictedSourceRightsRejectThePackEvenWithAValidSignature",
+            "aSignedOuterManifestCannotRelabelTheAppRequirement"
+          ]
+        },
+        {
+          "name": "com.kitt.reader.d1.ReleaseD2Test",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.d1.ReleaseD2Test.xml",
+            "bytes": 2747,
+            "sha256": "5dd99f9d692d9d71dcc600a9ed28d79ae5ed5a7c705506ba40c426ce496bac5b"
+          },
+          "cases": [
+            "preparesWithoutKeysAndReadsFrozenBlobsDespiteDirtyFiles",
+            "eitherWorkstationCompletesWithItsOwnKeyAndSameContent",
+            "previewPublicOnlyReportsZeroStoriesButNeverPublishable",
+            "explicitLegalSubsetPassesWithoutApprovingOrMutatingBlockedOriginal",
+            "keysInsideWorktreeOrRootAreRefusedWithoutFiles",
+            "pendingVisitorAndCandidateStoriesFailAtBothEntrypoints",
+            "syntheticStoriesRemainTestOnly",
+            "unknownRightsMissingSourcesAndClaimsFailBeforePrepareWrites",
+            "unknownPublicAnchorFails",
+            "oneDecisionDoesNotOverrideRightsOrPendingStories",
+            "singleSimulatedDecisionAutomaticallySignsVerifiesAndPlansUpload",
+            "wrongHumanReleaseIntentIsRejected",
+            "relabelledProductionAndProductionRequestAreRefused",
+            "missingDecisionOrChangedReviewCannotSignOrEmitAnUploadPlan",
+            "buildAlsoRunsContentGateBeforeSigningOrWriting",
+            "failedPreviewLeavesAnExistingApprovalFileUntouched",
+            "existingOutputAndSentinelSurvive",
+            "tamperedPackAndRollbackAreRejected",
+            "unknownCommitAndTraversalFail"
+          ]
+        },
+        {
+          "name": "com.kitt.reader.DirectorLoopTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DirectorLoopTest.xml",
+            "bytes": 710,
+            "sha256": "4eae206e4531cf6a5d9112078b83fff5f814c4b5cd9d80a2fb6494c17201f48d"
+          }
+        },
+        {
+          "name": "com.kitt.reader.DossierSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DossierSimulationTest.xml",
+            "bytes": 481,
+            "sha256": "2deec84c344c23ec6bb27ca69722dadc72cf6a8edce85f1d5f3efc52c3f2cb52"
+          }
+        },
+        {
+          "name": "com.kitt.reader.DrivingAreaResolutionTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DrivingAreaResolutionTest.xml",
+            "bytes": 919,
+            "sha256": "b7ab7acaaf566bb8d6fb9f25f59f27a7681fc767923e0206c0a33422ff46b66f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.DrivingUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.DrivingUiTest.xml",
+            "bytes": 447,
+            "sha256": "59bc897ee35bcbde50a76b46109ea4d355ca5c6a98437ddeaf74b6a544e11f43"
+          }
+        },
+        {
+          "name": "com.kitt.reader.EditorialFreedomTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.EditorialFreedomTest.xml",
+            "bytes": 1382,
+            "sha256": "bfe536510a14d88967f6a52e6019d3faede7451a98a356567b1835a3d5aca937"
+          }
+        },
+        {
+          "name": "com.kitt.reader.EndUiTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.EndUiTest.xml",
+            "bytes": 947,
+            "sha256": "f73cfb0ec42433134edffbe6f30afe914d81b8ae6477f0f0672ef5b289c2c02b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExplorePlacesTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExplorePlacesTest.xml",
+            "bytes": 1543,
+            "sha256": "c62ffc208facb42e44d0b7d0a33728eaf67857407ecbe182c68bbcbe88fa7445"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExploreRestoreUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExploreRestoreUiTest.xml",
+            "bytes": 468,
+            "sha256": "6ba04b5a5f710ffb4594d3f91bd61141be67c9d28e3a59e1a5a439a7efbfa84a"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExploreUiTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExploreUiTest.xml",
+            "bytes": 1696,
+            "sha256": "224e4b78b38f5a6ff1674c10d688eb22c9aa246b3646eb25a2dc41475f54a97b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExploreVoiceTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ExploreVoiceTest.xml",
+            "bytes": 613,
+            "sha256": "9936f09946dc0d6a1a501aa946276c5e28c23a044c3d76ca6e9b2b60a1a727c9"
+          }
+        },
+        {
+          "name": "com.kitt.reader.FullSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.FullSimulationTest.xml",
+            "bytes": 1152,
+            "sha256": "caa5595caf1bba1f9d398b0582aa5b26695232e85f045a93bdef076b2279b380"
+          }
+        },
+        {
+          "name": "com.kitt.reader.FusedLocationTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.FusedLocationTest.xml",
+            "bytes": 1239,
+            "sha256": "5d1ddf3198f6a214c14f788ea69bf3fc020e6961d4d08af9c40d575fd5e16c1b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ImageBoundaryTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ImageBoundaryTest.xml",
+            "bytes": 880,
+            "sha256": "9e128f3acf48caa011f11e7cb716b28a5902686d3c06cd6407b5c24a062c32f9"
+          }
+        },
+        {
+          "name": "com.kitt.reader.JourneyTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.JourneyTest.xml",
+            "bytes": 1904,
+            "sha256": "edd7f05286f7713d6cbe19761d58bd0337b3de92b249c7f483bcb26741a17c4b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.KittPolishLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.KittPolishLandscapeTest.xml",
+            "bytes": 490,
+            "sha256": "d87d15fa6dd6de44391c7373aea46fada741908911698176687944f6acda5a42"
+          }
+        },
+        {
+          "name": "com.kitt.reader.KittPolishPortraitTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.KittPolishPortraitTest.xml",
+            "bytes": 492,
+            "sha256": "0cceb4f7deccc1cb1fef3a94c12cd3067dd78a9154c9ff736ba92f3efc84465a"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LandmarkProximityTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LandmarkProximityTest.xml",
+            "bytes": 2412,
+            "sha256": "7ff02409150294a6ed176ae7e0b3a1966a43b1e4b2295aa4c83cecb48c3387a7"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LandscapeUiTest.xml",
+            "bytes": 449,
+            "sha256": "b1fd9f21b7447f44560c0c82894d3c13a260222da2e4fd02576b6d733aa822e9"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstHotfixTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocalFirstHotfixTest.xml",
+            "bytes": 1931,
+            "sha256": "fd6f353a876ec64dcba18479a2e023bfc461bee2d4401fabe6f8bd9a8313528c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstRuntimeTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocalFirstRuntimeTest.xml",
+            "bytes": 732,
+            "sha256": "accb7e857bfd80e3965e8d2b721725039c5cf051bfebe92bef6a0b13b0f2f91c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocalResearchTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocalResearchTest.xml",
+            "bytes": 2664,
+            "sha256": "a357c7e24145f9e5d66cdf007d4e02341d752a997197626ebab6a1eaa001d77c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocationCompatibilityTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocationCompatibilityTest.xml",
+            "bytes": 1578,
+            "sha256": "e9e71be5ed1c4179c05fb6a9601abc472bceb52c1cfb6ef83c206c286a4e165d"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocationFallbackTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.LocationFallbackTest.xml",
+            "bytes": 2609,
+            "sha256": "38932cf3563ff08d5be8cd138ebdb5216ee0f632e438673cfec9bf95d9b2bd60"
+          }
+        },
+        {
+          "name": "com.kitt.reader.NarrationLoopTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.NarrationLoopTest.xml",
+            "bytes": 1346,
+            "sha256": "2a7d41490d3cb601aca1abcbc63f557dc8194db9200ce7aaf8d1edb14de14be3"
+          }
+        },
+        {
+          "name": "com.kitt.reader.NarrationMemoryTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.NarrationMemoryTest.xml",
+            "bytes": 2934,
+            "sha256": "a2e358d87cd8ce897ff49d72e84ba3089a8476e45ac7de28b9521360f77f5be1"
+          }
+        },
+        {
+          "name": "com.kitt.reader.NetworkStatusTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.NetworkStatusTest.xml",
+            "bytes": 1277,
+            "sha256": "b11c5a0d42b6ace0502c64b5d1657ebbb8a15877df16a1b812a8b310f5627edc"
+          }
+        },
+        {
+          "name": "com.kitt.reader.OfflineLocationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.OfflineLocationTest.xml",
+            "bytes": 2038,
+            "sha256": "fcac839c352034c36933750e3da7e05ceba4c56c4d1feeca876f766d605f553e"
+          }
+        },
+        {
+          "name": "com.kitt.reader.OfflinePackTest",
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.OfflinePackTest.xml",
+            "bytes": 3092,
+            "sha256": "865ca966df76b2d5c32adcd38cfa71b10b9bd2086fa1325f300db8d42f119674"
+          }
+        },
+        {
+          "name": "com.kitt.reader.OfflineVoiceTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.OfflineVoiceTest.xml",
+            "bytes": 883,
+            "sha256": "db2b3628a97b5c900e646a808d25f1666281de980109127acc1c524315b82572"
+          }
+        },
+        {
+          "name": "com.kitt.reader.PersistenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.PersistenceTest.xml",
+            "bytes": 1026,
+            "sha256": "024b758c96ed5d0eb7639140e2bdc1a9981ce0e874e2e3f2f4907283ddb9f624"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ProviderTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ProviderTest.xml",
+            "bytes": 646,
+            "sha256": "61fdd7b26ef8ecc32c83376e3cdbf5ef38a3b6eccf71f63e1737f5cefa35f016"
+          }
+        },
+        {
+          "name": "com.kitt.reader.QuietCountdownTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.QuietCountdownTest.xml",
+            "bytes": 702,
+            "sha256": "927bc8aecf1768af39e4eed79234e49b1061ea7d83f7c069ea136482ad18e14f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RealAreaContinuityTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RealAreaContinuityTest.xml",
+            "bytes": 2468,
+            "sha256": "db9f40c3c407fb0d2459256e942bd6b83d5c2b437555cca338c595b5414ec5ff"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RealLocationSourceTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RealLocationSourceTest.xml",
+            "bytes": 3096,
+            "sha256": "b0499cecacfb57d00f2a660fd4d75c316717b6e56f073daed2a1543d98f11fd4"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RecognizerBackendTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RecognizerBackendTest.xml",
+            "bytes": 3018,
+            "sha256": "74b00376c5b78f96bc1b5ba0b81957f8dc56008eca61e6ca369ba441253eaa9b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ReplyExchangeTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ReplyExchangeTest.xml",
+            "bytes": 2059,
+            "sha256": "ed9c919a53060cec54e31846b6e800b7f684c42b22021daabaf735bc7758cd28"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ReplySurfaceUiTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ReplySurfaceUiTest.xml",
+            "bytes": 1132,
+            "sha256": "b55b0fac3486ecd7d8c029c820f220dac68fe0c127165bc4fe6fd2a43061948b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ResearchEvidenceStoreTest",
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ResearchEvidenceStoreTest.xml",
+            "bytes": 2670,
+            "sha256": "574fed8bd7b26800a5a87501ae3b84d1a439c7ccd64e671ab740693516c1b365"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ResearchSocketCancellationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ResearchSocketCancellationTest.xml",
+            "bytes": 644,
+            "sha256": "a42163f21d5fd380aee57ecf66e1217a07b9f3da30e353fabee0eed6aa584c6f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ResearchTransportProbeTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.ResearchTransportProbeTest.xml",
+            "bytes": 1410,
+            "sha256": "a08b2f80384b47c24e0e1e0dd9e2968952b8fd3e86ed58a0e1991b878317d65c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RouteReferenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RouteReferenceTest.xml",
+            "bytes": 1006,
+            "sha256": "3f38d656b996eb741342339e33861a61de57cfa7ebc12ad58bb019d26dd2f0df"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusLandscapeUiTest.xml",
+            "bytes": 476,
+            "sha256": "2121572eec697906e8fea9e7f76380864854ef68be7e9c3fbc75fc17ab2d9dfc"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusPortraitUiTest.xml",
+            "bytes": 641,
+            "sha256": "6028c236a0f7c5b92c095b73891d1d961bb5ee1419542cc067db651abdcecde5"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusTabletUiTest.xml",
+            "bytes": 459,
+            "sha256": "153f0c020dc3fdad4ce29120d11ef2a999a5c951428f972c9ee833c118dc8f69"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeStatusTest.xml",
+            "bytes": 2772,
+            "sha256": "dfd22325efddc612d5cf67a15fa32fa46154a962073eb0609af410c703281059"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeVoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.RuntimeVoiceTest.xml",
+            "bytes": 749,
+            "sha256": "b7bb178ddbfe503f58321c0a514a2c759c2e597b960b8ea428dacbb86d5c5288"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SearchCapabilityProbeTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SearchCapabilityProbeTest.xml",
+            "bytes": 1276,
+            "sha256": "41035b08de15be9f0b034bf01e51488a8f0d36f0e7a29a37c44503ea4411688b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SettingsBackTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SettingsBackTest.xml",
+            "bytes": 732,
+            "sha256": "48b2210597df5abdbe9e6041f842d9e5bffc8e9320293551f164e26ce5ee3498"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SettingsTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SettingsTest.xml",
+            "bytes": 720,
+            "sha256": "edf8a3e23414e576f8778dc289ea4cc5ff087a028fe7774601681188cb4b2d53"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SimulationCadenceTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SimulationCadenceTest.xml",
+            "bytes": 2335,
+            "sha256": "e7da4893ca41d768b145a4215db2889f9b3ffd8ff2725b91bbada84b0fcca5ea"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SimulationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SimulationTest.xml",
+            "bytes": 572,
+            "sha256": "e2782df5f33e8b87be3ee40f19357803e50b094b0ea51d7c8097b1d410d8f9cd"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SourceIsolationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.SourceIsolationTest.xml",
+            "bytes": 1053,
+            "sha256": "2511b2de845180023e699915787e91f68f6a0a351cddef63efc025ce04e51d9f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StagedResearchTest",
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StagedResearchTest.xml",
+            "bytes": 2224,
+            "sha256": "9be78247e306b7d1d56767ac143a1cc584e3297c5cc4b9ad736a55053cfc85b9"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryInterestSelectionTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryInterestSelectionTest.xml",
+            "bytes": 1240,
+            "sha256": "8f3df0409fcc112ddfccf2a8180c83891c6e0c2d7211e1467a7ea6010bba0f01"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryInterestStoreTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryInterestStoreTest.xml",
+            "bytes": 1060,
+            "sha256": "60df78ef9085b70f4ba42866543fc0b46b1f3b7ac41765b06a845a436cc77b82"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryInterestUiTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryInterestUiTest.xml",
+            "bytes": 1240,
+            "sha256": "52d21b7438905a01c6a87675545072975de84e4c4332be5df832057403d8fd66"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryPacksTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryPacksTest.xml",
+            "bytes": 2807,
+            "sha256": "70855f63be86235d272b3d213d689f31818a73bce31c97a4f344dc1e6ebfc34b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryRankingTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.StoryRankingTest.xml",
+            "bytes": 823,
+            "sha256": "9cee6876183676489414fb350e9dced838da674373742523e0acb269daff5bb2"
+          }
+        },
+        {
+          "name": "com.kitt.reader.TotalSilenceHotfixTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.TotalSilenceHotfixTest.xml",
+            "bytes": 3969,
+            "sha256": "b809964e84b222085de2f69626858a875bb061fb623c1a216c45f13a434910ba"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VisualTalkTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VisualTalkTest.xml",
+            "bytes": 1142,
+            "sha256": "629f08b27dd950971bd4c10b4e9236b7d30a00783b3a524edc8dd3c619f2c333"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceIndicatorLandscapeTest.xml",
+            "bytes": 482,
+            "sha256": "5bd9254b8e8c0ca1d4cd68fee2bd8c146999e0360de3429aee15ba7949a53d04"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceIndicatorUiTest.xml",
+            "bytes": 482,
+            "sha256": "5d79843704fb97d66de02d47d582c496a8ef7f6793e612615d33983300d08466"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceOutcomeTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceOutcomeTest.xml",
+            "bytes": 1415,
+            "sha256": "dc7b490e3b87f9460d4be93d138804f0eafcf156321586f8fa9116cb6bcae11f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testDebugUnitTest/TEST-com.kitt.reader.VoiceTest.xml",
+            "bytes": 696,
+            "sha256": "8bfb3fab1f693d21dbf24657154628e7cd44c20add6302d7fd879d48f77131f8"
+          }
+        }
+      ]
+    },
+    "release": {
+      "tests": 631,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.kitt.reader.ActiveResearchTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ActiveResearchTest.xml",
+            "bytes": 2133,
+            "sha256": "ad7d78964178e7fcaaee30a45d5dba1891b92e88f392c07c79c8d4052f8e7591"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AndroidAreaResolverTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AndroidAreaResolverTest.xml",
+            "bytes": 1055,
+            "sha256": "766210d5a0595b36c1940d2b2f2e91dd46eb120b98ecb655ad1f2fc6aaa5e232"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AndroidLifecycleTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AndroidLifecycleTest.xml",
+            "bytes": 459,
+            "sha256": "bf75304a5c6c8780951712e31cb32530a14e599ad19eba9729cd6722fe6747d0"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AndroidVoiceExperienceTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AndroidVoiceExperienceTest.xml",
+            "bytes": 1933,
+            "sha256": "bfb0658c26a4146a8c67e5e298029e0cfab9dfb5d9ba7beaaa3372322eea3109"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AreaChapterTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AreaChapterTest.xml",
+            "bytes": 1385,
+            "sha256": "3eacf4655b6fdfe262452c7e7a6414441e0017fbfa7ab1a6e0acd1db2f26b1cb"
+          }
+        },
+        {
+          "name": "com.kitt.reader.AreaResolutionCacheTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.AreaResolutionCacheTest.xml",
+            "bytes": 1667,
+            "sha256": "91fa8003148e7b608a9276719f3dfe8853c6c29eeacd0e62834f300f59afb14c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.BatchSimulationTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.BatchSimulationTest.xml",
+            "bytes": 2514,
+            "sha256": "8edf3b739e4c781f36a7a2e2b37793e66b4796209df83c6a9cf04811e6aed566"
+          }
+        },
+        {
+          "name": "com.kitt.reader.BootstrapTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.BootstrapTest.xml",
+            "bytes": 418,
+            "sha256": "0378881231c1b80f71c4d526a2a09d593f62d4cb788152dda4267bb2d0b7aca4"
+          }
+        },
+        {
+          "name": "com.kitt.reader.BundledCountyPacksTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.BundledCountyPacksTest.xml",
+            "bytes": 775,
+            "sha256": "88d4c023f3f828d322df06f5ade2496112ccd7cb5a6d5b6c3f560808dc18b701"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChapterOpportunityTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChapterOpportunityTest.xml",
+            "bytes": 1345,
+            "sha256": "b476ee6a15842807c884e3555a5b63c5cd004052e16e526bb0fb02f554f5de44"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChatGptAccountTest",
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChatGptAccountTest.xml",
+            "bytes": 2120,
+            "sha256": "6bc33cd8a0ea6298e9e60ff4b401e193d99a041de992900d79a23b3ad8c405b6"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChatGptImagePayloadTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChatGptImagePayloadTest.xml",
+            "bytes": 484,
+            "sha256": "cda7a6650fea1f12b2a54947870fbbc5d350593824e1e29e5485180bbbe40ee6"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ChatGptProtocolTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ChatGptProtocolTest.xml",
+            "bytes": 1602,
+            "sha256": "382dc348e70724a5a3beb6ea123be57037db8f10a67dcc791a267ea3da8a6404"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ContextTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ContextTest.xml",
+            "bytes": 438,
+            "sha256": "652fb48c17318429f0a1ff3e8afb9f8b48aeb0d04a77c914d9fcb01b0f926b04"
+          }
+        },
+        {
+          "name": "com.kitt.reader.CountyPacksTest",
+          "tests": 26,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.CountyPacksTest.xml",
+            "bytes": 3930,
+            "sha256": "e99960f36c2c3cfd9d9cdd970a6a20c1b1f80ce4da36fa71265bddb3018e6d4a"
+          }
+        },
+        {
+          "name": "com.kitt.reader.d1.ProductionD2Test",
+          "tests": 58,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.d1.ProductionD2Test.xml",
+            "bytes": 26388,
+            "sha256": "49cd1d5d6f0f5ba12641f2685a39f82c55c1288562ce267609b1e1b09016c9a1"
+          },
+          "cases": [
+            "initializedIdentityIsOwnerOnlyAndCannotBeOverwritten",
+            "offlineOrUnauthorizedGhFailsWithoutCreatingAnything",
+            "groupReadablePrivateKeyRejected",
+            "simulatedConfirmationFlagCannotReplaceHumanInput",
+            "draftReleaseReservesSequenceAndStopsPublication",
+            "nextSequenceWithUnchangedContentPasses",
+            "reviewHashMustMatchBeforeReadingHumanInput",
+            "failedPostCreateReadbackNeverClaimsSuccess",
+            "oneSimulatedStdinDecisionSignsVerifiesAndPublishesWithFakeGh",
+            "privateKeyMismatchIsDetectedByThePinnedVerifier",
+            "previousNarrativeVersionCannotBeRolledBack",
+            "invalidProductionVersionIsRejected",
+            "missingClaimIsRejected",
+            "factOnlyProductionFlowKeepsZeroStories",
+            "dirtyFilesAreIgnoredAndTheFixedGitBlobIsReReadAfterDecision",
+            "unknownCopyrightIsRejected",
+            "newRemoteConflictAfterDecisionStopsBeforeCreate",
+            "junctionIntoWorkingTreeCannotHideKeyLocation",
+            "existingOutputIsNeverOverwritten",
+            "testScopeCannotReachProductionUpload",
+            "defaultStdinReaderConsumesTheSingleSimulatedHumanLine",
+            "subprocessOfflineFailureIsClassified",
+            "previousFactVersionCannotBeRolledBackWithHigherSequence",
+            "mismatchingPinnedPublicKeyRejected",
+            "duplicateSequenceRejectedWithoutHumanPrompt",
+            "testOnlyIdentityCannotBePromotedByScopeArgument",
+            "testOnlyPayloadCannotBeUploaded",
+            "registryMustBeCommittedNotDirtyLocalTrust",
+            "junctionToExternalIdentityChecksTargetDirectoryPermissions",
+            "identityInsideAnotherRegisteredWorktreeIsRejected",
+            "subprocessMissingExecutableIsClearAndSafe",
+            "differentCountyChangesReviewedObject",
+            "olderSequenceRejected",
+            "missingSourceIsRejected",
+            "changedReleaseNotesRejectedBeforeGhCreate",
+            "boundedHistoryCannotSilentlyIgnoreOlderRecords",
+            "incompleteOlderReleaseStopsPublication",
+            "tamperedStagedSignatureRejectedBeforeGhCreate",
+            "differentContentVersionChangesReviewedObject",
+            "sameVersionWithDifferentBytesIsRejected",
+            "refusingHumanInputDoesNotSignOrUpload",
+            "approvalForAnotherHashRejected",
+            "subprocessAuthenticationFailureIsClassifiedWithoutPrintingStderr",
+            "evenCorrectlySignedTestOnlyContainerIsRejectedAtUploadBoundary",
+            "visitorPendingStoryIsRejected",
+            "twoIndependentVirtualIdentitiesEachCompleteWithoutSharingPrivateKeys",
+            "tagWithoutReleaseCannotBeOverwritten",
+            "createFailureReportsUnknownOutcomeAndNeverRetries",
+            "identityInsideWorkingTreeRejectedBeforeKeyWrite",
+            "virtualIdentityCannotEnterTheRealDefaultRuntime",
+            "unrelatedSourceCommitIsRejectedAsRollback",
+            "wrongRemoteAssetDigestNeverClaimsSuccess",
+            "identityChangedAfterDecisionRejectedBeforeSigning",
+            "publicRegistrationWithTestScopeIsRejected",
+            "subprocessTimeoutStopsAndDoesNotBecomeSuccess",
+            "unknownKeyCannotSelfRegisterUsingLocalKeyFile",
+            "differentSequenceChangesReviewedObject",
+            "candidateStoryIsRejected"
+          ]
+        },
+        {
+          "name": "com.kitt.reader.d1.ReleaseD1Test",
+          "tests": 27,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.d1.ReleaseD1Test.xml",
+            "bytes": 3601,
+            "sha256": "9fc531fd9133b2ada7017389f0cf85cfc26da79f3cb72e767bd02f414e5d0217"
+          },
+          "cases": [
+            "containerCarriesNoMachineIdentity",
+            "committedSampleMatchesAFreshRender",
+            "anotherCountysNarrativeCannotBeSplicedIntoThisCounty",
+            "anEmptyTrustStoreAcceptsNothing",
+            "productionScopeCannotBeAuthenticatedByATestOnlyAnchor",
+            "missingClaimDependencyIsRejected",
+            "pendingVisitorGateIsRejected",
+            "staleClaimRevisionIsRejected",
+            "acceptedBlocksStayReadableByTheD0Reader",
+            "wrongAppCodeIsRejected",
+            "factOnlyPackIsAcceptedAndReportsZeroStories",
+            "oversizedContainerIsRejectedBeforeParsing",
+            "aSignedOuterManifestCannotRelabelTheFactVersion",
+            "oneChangedByteBreaksTheSignature",
+            "anOldSignatureCannotCoverANewManifest",
+            "anOlderSignedPackIsRefusedOnceTheCallerRaisesTheFloor",
+            "unsignedBytesAndTheWholeContainerRepeatForTheSameKey",
+            "aPayloadCannotNominateItsOwnPublicKey",
+            "unregisteredKeyIdIsRejected",
+            "candidateReviewStatusIsRejected",
+            "aSignedOuterManifestCannotRelabelAnotherCounty",
+            "trailingBytesAndTruncationAreRejected",
+            "duplicateUnknownAndMissingBlocksAreRejected",
+            "reviewedSyntheticStoriesAreCountedWhenTheNarrativeBlockShipsThem",
+            "manifestEncodingIsCanonicalAndRoundTrips",
+            "restrictedSourceRightsRejectThePackEvenWithAValidSignature",
+            "aSignedOuterManifestCannotRelabelTheAppRequirement"
+          ]
+        },
+        {
+          "name": "com.kitt.reader.d1.ReleaseD2Test",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.d1.ReleaseD2Test.xml",
+            "bytes": 2749,
+            "sha256": "4fdb8a51a35658b2a8d5a5265a8f02c836490ac38ee660a545ddf586494dbe5f"
+          },
+          "cases": [
+            "preparesWithoutKeysAndReadsFrozenBlobsDespiteDirtyFiles",
+            "eitherWorkstationCompletesWithItsOwnKeyAndSameContent",
+            "previewPublicOnlyReportsZeroStoriesButNeverPublishable",
+            "explicitLegalSubsetPassesWithoutApprovingOrMutatingBlockedOriginal",
+            "keysInsideWorktreeOrRootAreRefusedWithoutFiles",
+            "pendingVisitorAndCandidateStoriesFailAtBothEntrypoints",
+            "syntheticStoriesRemainTestOnly",
+            "unknownRightsMissingSourcesAndClaimsFailBeforePrepareWrites",
+            "unknownPublicAnchorFails",
+            "oneDecisionDoesNotOverrideRightsOrPendingStories",
+            "singleSimulatedDecisionAutomaticallySignsVerifiesAndPlansUpload",
+            "wrongHumanReleaseIntentIsRejected",
+            "relabelledProductionAndProductionRequestAreRefused",
+            "missingDecisionOrChangedReviewCannotSignOrEmitAnUploadPlan",
+            "buildAlsoRunsContentGateBeforeSigningOrWriting",
+            "failedPreviewLeavesAnExistingApprovalFileUntouched",
+            "existingOutputAndSentinelSurvive",
+            "tamperedPackAndRollbackAreRejected",
+            "unknownCommitAndTraversalFail"
+          ]
+        },
+        {
+          "name": "com.kitt.reader.DirectorLoopTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DirectorLoopTest.xml",
+            "bytes": 709,
+            "sha256": "2d1f7390103160ec9e1183c6df703f75ead6b79bc8412a0cbaf2b0c906f36e7b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.DossierSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DossierSimulationTest.xml",
+            "bytes": 479,
+            "sha256": "5e3457b7fba08b344576bf6fd89538d61c16509fb2df1e29fcc5f4640775eba2"
+          }
+        },
+        {
+          "name": "com.kitt.reader.DrivingAreaResolutionTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DrivingAreaResolutionTest.xml",
+            "bytes": 918,
+            "sha256": "b050ec05fb1a344351fc9846517f6a3a941b8fe629697825d94cda098d7266cd"
+          }
+        },
+        {
+          "name": "com.kitt.reader.DrivingUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.DrivingUiTest.xml",
+            "bytes": 447,
+            "sha256": "01715fd37f20f9b32b7c26199da8448a7304170159d7110fd3200de30f019d8d"
+          }
+        },
+        {
+          "name": "com.kitt.reader.EditorialFreedomTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.EditorialFreedomTest.xml",
+            "bytes": 1383,
+            "sha256": "b6d69788971b66d2e4f79e92a73db722b70d53ff3af36b742152240a4349beff"
+          }
+        },
+        {
+          "name": "com.kitt.reader.EndUiTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.EndUiTest.xml",
+            "bytes": 949,
+            "sha256": "4aabb5e3880fa91856c00b83645c56d68266265da2a5d108087532e6c9e0189f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExplorePlacesTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExplorePlacesTest.xml",
+            "bytes": 1546,
+            "sha256": "2bbdb16ada01a3c7a6c82b98cc525806c829b5dc98fda088a1f397a3c6994413"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExploreRestoreUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExploreRestoreUiTest.xml",
+            "bytes": 468,
+            "sha256": "ce89ec5972a121cdb0e8435da1f2b9cdfc7153d1c8c6c7a3ef867d910eb08eaa"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExploreUiTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExploreUiTest.xml",
+            "bytes": 1695,
+            "sha256": "26b01b1951da813b0e04bf1892eb0de4f46862449ed9f9545797233767fce429"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ExploreVoiceTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ExploreVoiceTest.xml",
+            "bytes": 613,
+            "sha256": "e55e980babf070d8eaaf8f6ddc3c7588053b8de656058d74fd12a8a34b543da1"
+          }
+        },
+        {
+          "name": "com.kitt.reader.FullSimulationTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.FullSimulationTest.xml",
+            "bytes": 1152,
+            "sha256": "28bc15b2f5160619e722a3f1879fd9980b28a1828cdf1b7d3b6b2981dba9900c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.FusedLocationTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.FusedLocationTest.xml",
+            "bytes": 1238,
+            "sha256": "1b8bbee5806095ab477d436bc230ce9820ed7d26c668f68da2a6772e93288df2"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ImageBoundaryTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ImageBoundaryTest.xml",
+            "bytes": 878,
+            "sha256": "9f865115e76d7fefc8cd3b7cf8ae60a40112730845231b863b2113c63a03c8f9"
+          }
+        },
+        {
+          "name": "com.kitt.reader.JourneyTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.JourneyTest.xml",
+            "bytes": 1906,
+            "sha256": "2c7c428e0ed28c8a90112e7f70ec15c2a216610b76798f99d6579682ea087c7e"
+          }
+        },
+        {
+          "name": "com.kitt.reader.KittPolishLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.KittPolishLandscapeTest.xml",
+            "bytes": 490,
+            "sha256": "12c93f17b4d9e0293b601c5caec7eba277176a76f6a470662a60f7458c912a6e"
+          }
+        },
+        {
+          "name": "com.kitt.reader.KittPolishPortraitTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.KittPolishPortraitTest.xml",
+            "bytes": 492,
+            "sha256": "a27f96a34d25c2157377f71692dab1ca184300616d9a11f1adccc1d47827419c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LandmarkProximityTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LandmarkProximityTest.xml",
+            "bytes": 2413,
+            "sha256": "35c3bd1ddd9f66ed7f616f4b15b07e13f699fe68c7eca1e2396a3dd1811c6b00"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LandscapeUiTest.xml",
+            "bytes": 449,
+            "sha256": "6a72f2aa8301bc76eb9d731a104389b74fdf0a2134fd332617b41976fe9bb8b0"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstHotfixTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocalFirstHotfixTest.xml",
+            "bytes": 1932,
+            "sha256": "f9902b2799d006d9db43d6449fa926c09f988b4ffdd57bca1bafbbf3ad3c71d3"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocalFirstRuntimeTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocalFirstRuntimeTest.xml",
+            "bytes": 732,
+            "sha256": "862cb911796ef0ff0f7eecf3003b6ffff41eb11e00d4d84783a134b77ed0eb8f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocalResearchTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocalResearchTest.xml",
+            "bytes": 2664,
+            "sha256": "e6639336fd60decfe7f73013a3562ff54ffba308ccce7952a174b2279fa519fc"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocationCompatibilityTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocationCompatibilityTest.xml",
+            "bytes": 1577,
+            "sha256": "418667a953f7023d5a52c8644d5ab2eb97d4a403615f9092aa9fe1a99c3b67b1"
+          }
+        },
+        {
+          "name": "com.kitt.reader.LocationFallbackTest",
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.LocationFallbackTest.xml",
+            "bytes": 2612,
+            "sha256": "6f28ce18f02d37f5aeb7ecdf8599c67dde4510ae31d3e2823ddb8c11a929005c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.NarrationLoopTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.NarrationLoopTest.xml",
+            "bytes": 1348,
+            "sha256": "20a46b991a4bd5ef7a4121853515d36adcaec34f08b4b72c54c622f24779712b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.NarrationMemoryTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.NarrationMemoryTest.xml",
+            "bytes": 2932,
+            "sha256": "9f4c1c9e2fcb89955efdd1d90fc6aeb3d270853b1d3e46e2d66c38eb1bd9ad93"
+          }
+        },
+        {
+          "name": "com.kitt.reader.NetworkStatusTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.NetworkStatusTest.xml",
+            "bytes": 1279,
+            "sha256": "0e77b50f156813ddb4d3f15ea2969a1081cf4eef504341c6a4cea81d594c6afc"
+          }
+        },
+        {
+          "name": "com.kitt.reader.OfflineLocationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.OfflineLocationTest.xml",
+            "bytes": 2039,
+            "sha256": "64bdaba89305aa2e2e3c77ba5b25054d01880ba2aa26876b524a18146f29d2ae"
+          }
+        },
+        {
+          "name": "com.kitt.reader.OfflinePackTest",
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.OfflinePackTest.xml",
+            "bytes": 3090,
+            "sha256": "4726c86ea73b6007a6cde003061b19e2083b761c10726d449bfba45a2422fac2"
+          }
+        },
+        {
+          "name": "com.kitt.reader.OfflineVoiceTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.OfflineVoiceTest.xml",
+            "bytes": 882,
+            "sha256": "ffc6de6ac2510e4ab99bf74202aa78fc457b20d14a850584d97240f0673a6c08"
+          }
+        },
+        {
+          "name": "com.kitt.reader.PersistenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.PersistenceTest.xml",
+            "bytes": 1026,
+            "sha256": "3df06cbef3039203a6e10ed62a6eba4c48ed5597f4821634a34123d695316f2c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ProviderTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ProviderTest.xml",
+            "bytes": 647,
+            "sha256": "22ece636dfb694b986ba6859fbcd66c128f9b0bbcd76880ef8c2c0d2192c3e91"
+          }
+        },
+        {
+          "name": "com.kitt.reader.QuietCountdownTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.QuietCountdownTest.xml",
+            "bytes": 701,
+            "sha256": "6588c8a1e36e1c18813167469385445d223758f7547fbe204cced60e75d47785"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RealAreaContinuityTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RealAreaContinuityTest.xml",
+            "bytes": 2469,
+            "sha256": "f7648fa1261fc43e7aa2a4c7ecf5b20363870899c0f2b151bcc06410774e2a28"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RealLocationSourceTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RealLocationSourceTest.xml",
+            "bytes": 3095,
+            "sha256": "d77b0e26d96112583c95c6cc3c1330d2803a90f5f3085ffbe65ba31613f5d388"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RecognizerBackendTest",
+          "tests": 19,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RecognizerBackendTest.xml",
+            "bytes": 3018,
+            "sha256": "de0d1594bc960fdbf82febc524e40b8e49e6b77a2bf0fd5a5bd158f6a2c2559f"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ReplyExchangeTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ReplyExchangeTest.xml",
+            "bytes": 2059,
+            "sha256": "fa230db05ea12229eeeca118d54613ceadd26b5833f4933d4da65ceff93b5180"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ReplySurfaceUiTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ReplySurfaceUiTest.xml",
+            "bytes": 1133,
+            "sha256": "876f56952b8833b8c72375e9c3df74b3e38434823183caa6148d4402da9cf34c"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ResearchEvidenceStoreTest",
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ResearchEvidenceStoreTest.xml",
+            "bytes": 2670,
+            "sha256": "af6076d22f8ed8f0bc99b0d2964425568016cef22e5a4763e906f006dadacf01"
+          }
+        },
+        {
+          "name": "com.kitt.reader.ResearchSocketCancellationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.ResearchSocketCancellationTest.xml",
+            "bytes": 644,
+            "sha256": "f1da2bd51e50aada949cabaac8f4701d3abf70802c6c6521929066d54e27b76b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RouteReferenceTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RouteReferenceTest.xml",
+            "bytes": 1006,
+            "sha256": "e862626a356eaddef17ad1a40f8c7349c9579c049017ffa52fc4ef47b5e70627"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusLandscapeUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusLandscapeUiTest.xml",
+            "bytes": 476,
+            "sha256": "693a4553b5e77165bfaff4564550a5e59fb32bb2a9f4c7fbdb925a7dda8ee9f8"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusPortraitUiTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusPortraitUiTest.xml",
+            "bytes": 641,
+            "sha256": "9e3936240ab5897d306d1eabdc72fa16ad0774ad5cc7c2206dd98f8fb3031b87"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTabletUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusTabletUiTest.xml",
+            "bytes": 461,
+            "sha256": "d7159e0b754b6fe71b4e25518c8b448988f4264df87db970f69d1824cd57914e"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeStatusTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeStatusTest.xml",
+            "bytes": 2774,
+            "sha256": "b48c565a368de000b48356ddf501d5d1ac8ba0f0f0fb7bd1a90d66ad2e7c17d7"
+          }
+        },
+        {
+          "name": "com.kitt.reader.RuntimeVoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.RuntimeVoiceTest.xml",
+            "bytes": 749,
+            "sha256": "9df99894326d259498b33095e4e3c4aa9ece386a1336ee064b7dcb68f4e8dd9e"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SettingsBackTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SettingsBackTest.xml",
+            "bytes": 733,
+            "sha256": "1a1232d1c19b5cf325b511b49d00471c3ef53c36c32dd7c875f05f5227fbefb8"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SettingsTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SettingsTest.xml",
+            "bytes": 720,
+            "sha256": "5e06a0cb25390977bd7f26cc1ba592d9f3cdba8f7314bf4d71de91f7bb7c3b19"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SimulationCadenceTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SimulationCadenceTest.xml",
+            "bytes": 2335,
+            "sha256": "da4c4f8209c7523cdc190ad42dcc6934f7abc85bd823444e90158579810c575b"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SimulationTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SimulationTest.xml",
+            "bytes": 572,
+            "sha256": "3a604e5c5ffaa9fc8dc348d4cf44bab30d6343735217109ac710e48153be5894"
+          }
+        },
+        {
+          "name": "com.kitt.reader.SourceIsolationTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.SourceIsolationTest.xml",
+            "bytes": 1053,
+            "sha256": "1f96b65a078d0ba58d239728d42b573332b764b8f9fa8429c94cf1758c608410"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StagedResearchTest",
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StagedResearchTest.xml",
+            "bytes": 2222,
+            "sha256": "79a36569c9c4240217bcebdf82b6f079e7a25ad91039129543c2b88c9db5bd3e"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryInterestSelectionTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryInterestSelectionTest.xml",
+            "bytes": 1240,
+            "sha256": "1f67afbf6c0f52742ecfb9c61a693f26b1ca6649f9a0d1f39c185f709e17de4a"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryInterestStoreTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryInterestStoreTest.xml",
+            "bytes": 1063,
+            "sha256": "e1ee564afa26a25327d85fd114a6958f6d7f68c3ecd9331462b63fa5e3550824"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryInterestUiTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryInterestUiTest.xml",
+            "bytes": 1240,
+            "sha256": "19f2d3dad5a4c0d645a174a569ac8ac3c08c819d2b452686e43e6635c23cbc48"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryPacksTest",
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryPacksTest.xml",
+            "bytes": 2809,
+            "sha256": "e07ca482e72d47a6a95f369100ba44c743987d7de41e7db2954c56ec48fa5c42"
+          }
+        },
+        {
+          "name": "com.kitt.reader.StoryRankingTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.StoryRankingTest.xml",
+            "bytes": 819,
+            "sha256": "d7b7efc37afe6c5499aa6b3296f763f553843877ed2c801664ff7e4ab76a1e03"
+          }
+        },
+        {
+          "name": "com.kitt.reader.TotalSilenceHotfixTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.TotalSilenceHotfixTest.xml",
+            "bytes": 3967,
+            "sha256": "67469d0acc3a2e2d9397329688f95c35088a98666d0bbca15843b5ab3dcba3ba"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VisualTalkTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VisualTalkTest.xml",
+            "bytes": 1143,
+            "sha256": "643e203cfe52a654f627510bdfa1308ccb7c026599b044a5889fafd99dd55c87"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorLandscapeTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceIndicatorLandscapeTest.xml",
+            "bytes": 482,
+            "sha256": "6a69d9d2ccdd198db2ea1de905db6d82dc6be77577a6db192569ee906b922350"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceIndicatorUiTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceIndicatorUiTest.xml",
+            "bytes": 482,
+            "sha256": "1a2b6c83175bf00af8a0fdc97f42aaff2b82b07790b49bced14fd7fc9be82313"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceOutcomeTest",
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceOutcomeTest.xml",
+            "bytes": 1414,
+            "sha256": "feab6b6baa926cb601ed76de56ff5e70275493de0192ac4ac1dc5f0e2b5f7bf6"
+          }
+        },
+        {
+          "name": "com.kitt.reader.VoiceTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "app/build/test-results/testReleaseUnitTest/TEST-com.kitt.reader.VoiceTest.xml",
+            "bytes": 697,
+            "sha256": "2c59325f6b639230af4bdb5c12ca0a8bcd927d611654dfd5baed4d5a9232bdf9"
+          }
+        }
+      ]
+    },
+    "packtool": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "com.kitt.packtool.ReleaseFormatTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "report": {
+            "path": "packtool/build/test-results/test/TEST-com.kitt.packtool.ReleaseFormatTest.xml",
+            "bytes": 1926,
+            "sha256": "d81ec7afbd3a0de4273ad5321d69ba8536a39f98837ee7f8fe3e0b78ec0125d3"
+          },
+          "cases": [
+            "containerRoundTripsAndKeepsBlockOrder",
+            "headerDamageIsReportedPrecisely",
+            "factOnlyDeclarationCannotHideStories",
+            "manifestEncodingDoesNotDependOnFieldOrder",
+            "trustAnchorsArePinnedToTheirScope",
+            "sealingIsDeterministic",
+            "signedContainerIsAcceptedAndTamperingIsNot",
+            "aMissingContentGateIsNeverTreatedAsApproval",
+            "blockIntegrityIsCheckedAgainstTheManifestEvenWhenTheSignatureVerifies",
+            "manifestRejectsUnknownFieldsAndSelfAssertedTrust",
+            "anOlderSequenceIsOnlyARollbackWhenTheCallerSaysSo",
+            "outerManifestMustDescribeTheInnerPack",
+            "sizeLimitsFailClosed"
+          ]
+        }
+      ]
+    }
+  },
+  "totals": {
+    "debug": 644,
+    "release": 631,
+    "packtool": 13,
+    "all": 1288
+  },
+  "checks": [
+    {
+      "name": "packtool",
+      "tasks": [
+        ":packtool:test"
+      ],
+      "started_at": "2026-10-18T00:06:09.3277094+08:00",
+      "finished_at": "2026-10-18T00:06:28.6046514+08:00",
+      "exit": 0,
+      "log": {
+        "path": "artifacts/d2-production/packtool.log",
+        "bytes": 778,
+        "sha256": "18a2be1e5be76886720c6c5bfd4e67f979c5c0c7fa73ca05c0fd4afbf7ea4dea"
+      }
+    },
+    {
+      "name": "build-lint",
+      "tasks": [
+        ":app:assembleDebug",
+        ":app:assembleRelease",
+        ":app:lintDebug",
+        ":app:lintRelease"
+      ],
+      "started_at": "2026-10-18T00:06:28.6085865+08:00",
+      "finished_at": "2026-10-18T00:10:22.5246407+08:00",
+      "exit": 0,
+      "log": {
+        "path": "artifacts/d2-production/build-lint.log",
+        "bytes": 5931,
+        "sha256": "da0c7ca20fcf73974c5315aa4b187e68c927e785e8095108399df9128f9cde75"
+      }
+    },
+    {
+      "name": "debug",
+      "tasks": [
+        ":app:testDebugUnitTest"
+      ],
+      "started_at": "2026-10-17T16:11:29.2803671+00:00",
+      "finished_at": "2026-10-17T16:20:24.8312647+00:00",
+      "exit": 0,
+      "source_commit": "54854fc641961da882b9370db05252773c33709e",
+      "log": {
+        "path": "artifacts/d2-production/debug.log",
+        "bytes": 5492,
+        "sha256": "821cfd01eb075bd1e2b23ac9909f39ca043eefefe8a8985e9d144e8d21496fd1"
+      }
+    },
+    {
+      "name": "release",
+      "tasks": [
+        ":app:testReleaseUnitTest"
+      ],
+      "started_at": "2026-10-17T16:20:24.8844266+00:00",
+      "finished_at": "2026-10-17T16:30:02.9391633+00:00",
+      "exit": 0,
+      "source_commit": "52188e869c894b8b6f24d67dfce8961e282bceee",
+      "log": {
+        "path": "artifacts/d2-production/release.log",
+        "bytes": 5598,
+        "sha256": "663160e6c964333a06d8f86d33393792a58ff37c20936f37d7f9b443527c24f1"
+      }
+    }
+  ],
+  "fake_gh_acceptance": {
+    "publish": {
+      "status": "SIMULATED_PUBLISHED",
+      "simulation": true,
+      "upload_performed": false,
+      "signed_region_sha256": "30c1fb6b401069636737baea2a05fdaa0d37d11e3a89340dba9f8720df98f1d9",
+      "container_sha256": "d1e19736d069d71a75c6342cb7db79ecd63b9eb0b2bd562a9b191cb7a6d22055",
+      "tag": "kitt-pack-cn-420502-s1",
+      "human_decisions": 1,
+      "signature_verified": true
+    },
+    "gh_create_argv": [
+      "gh",
+      "release",
+      "create",
+      "kitt-pack-cn-420502-s1",
+      "<VERIFIED_TEMP_PACK>",
+      "--target",
+      "950e61d74c5ba108821d87dfe04a871eb090987d",
+      "--title",
+      "kitt-pack-cn-420502-s1",
+      "--notes-file",
+      "<MANIFEST_NOTES>",
+      "--latest=false",
+      "--repo",
+      "github.com/shimao1115/KITT"
+    ],
+    "private_material_exported": false,
+    "real_human_approval": false
+  },
+  "fake_report": {
+    "path": "app/build/acceptance/d2-production-fake.json",
+    "bytes": 671,
+    "sha256": "00cbddc17912d4cc035f7f5c87b7b6d7658aaa0032a9e6625d0fa7649108e2bc"
+  },
+  "python": {
+    "tests": 7,
+    "test_log": {
+      "path": "artifacts/d2-production/python-tests.log",
+      "bytes": 841,
+      "sha256": "8e413228752222c3a214bf2db7187929283d9b99d6b87efe57fd75d13d4b8ec9"
+    },
+    "content_log": {
+      "path": "artifacts/d2-production/content-check.log",
+      "bytes": 122,
+      "sha256": "3c0a273016ce3cfe88dbecb6752b04496791b3ad6de635b22364999747aab481"
+    }
+  },
+  "signing": {
+    "exit": 0,
+    "accepted": 2,
+    "rejected": 6,
+    "log": {
+      "path": "artifacts/d2-production/signing.log",
+      "bytes": 712,
+      "sha256": "d57a2bf71b6faef318245697da9a403e2a35b8298efd313eee368d34f2715d2c"
+    },
+    "static_runtime_fixture": {
+      "path": "artifacts/kitt-v0.6.0-runtimecheck.apk",
+      "bytes": 74461274,
+      "sha256": "2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60"
+    }
+  },
+  "simulations": [
+    {
+      "path": "app/build/acceptance/full-simulation.txt",
+      "bytes": 710,
+      "sha256": "8569182fe83dd66008502168967396ec916b565d58b7323c60aecb0cd9612538"
+    },
+    {
+      "path": "app/build/acceptance/accelerated-simulation.txt",
+      "bytes": 320,
+      "sha256": "93cc90a67ec2d64704db8e6874706e996fea92b9aff969c6f87c894e969d6b79"
+    },
+    {
+      "path": "app/build/acceptance/batch-simulation.txt",
+      "bytes": 1596,
+      "sha256": "81ff1ee5bde79e6dc6d1b57d6e14dbbdc172a6444ed1c408053a61cda9f9b26b"
+    },
+    {
+      "path": "app/build/acceptance/landmark-simulation.txt",
+      "bytes": 605,
+      "sha256": "5ae755378205d4c51921f7d567fca18bc52e58ac740f0995a5cb8ca56619c7e0"
+    },
+    {
+      "path": "app/build/acceptance/dossier-simulation.txt",
+      "bytes": 45348,
+      "sha256": "001f610950abfb52f9a41d5b99befff6d10fda864a32168625b194e895d94ae8"
+    },
+    {
+      "path": "app/build/acceptance/driving-area-resolution.txt",
+      "bytes": 437,
+      "sha256": "2f6f03693b41226c0dfabe4e767a9901e9911ed51d107e7c121931682424ddfd"
+    }
+  ],
+  "wrapper_checks": {
+    "prepare_succeeded": true,
+    "preview_includes_all_claims": true,
+    "simulated_production_flag_refused": true,
+    "cli_refusal_propagated": true,
+    "real_xindu_still_blocked": true
+  },
+  "host_stdin_process_checks": [
+    {
+      "shell": "PowerShell 7",
+      "checks": {
+        "utf8_single_decision_forwarded": true,
+        "simulated_flag_wrong_hash_and_multiple_lines_refused": true,
+        "cli_refusal_propagated": true,
+        "host_encoding_restored": true,
+        "fake_process_only": true,
+        "real_user_approval_recorded": false,
+        "real_upload_performed": false
+      },
+      "log": {
+        "path": "artifacts/d2-production/host-input-final7.log",
+        "bytes": 104,
+        "sha256": "899657b3cf47080532d5253045aa0e72a641acdc72db25cefc9fde2bbdcfdd56"
+      }
+    },
+    {
+      "shell": "Windows PowerShell 5",
+      "checks": {
+        "utf8_single_decision_forwarded": true,
+        "simulated_flag_wrong_hash_and_multiple_lines_refused": true,
+        "cli_refusal_propagated": true,
+        "host_encoding_restored": true,
+        "fake_process_only": true,
+        "real_user_approval_recorded": false,
+        "real_upload_performed": false
+      },
+      "log": {
+        "path": "artifacts/d2-production/host-input-final5.log",
+        "bytes": 104,
+        "sha256": "899657b3cf47080532d5253045aa0e72a641acdc72db25cefc9fde2bbdcfdd56"
+      }
+    }
+  ],
+  "wrapper_logs": [
+    {
+      "path": "artifacts/d2-production/wrapper-prepare.log",
+      "bytes": 244,
+      "sha256": "4341a42d224213e4c73808c9ce325f2c382a81b87730b7123d13a5b31d3dee1a"
+    },
+    {
+      "path": "artifacts/d2-production/wrapper-refusal.log",
+      "bytes": 84,
+      "sha256": "98aaace5dacb29af1412bbb389a8ba62035195e09d9d23f2cbe86199dbc5db11"
+    },
+    {
+      "path": "artifacts/d2-production/audit-newdu.log",
+      "bytes": 311,
+      "sha256": "ccb85c783cda5f991c5f70f3a14a6882d4720b2128c188530bf7ac87b6daef69"
+    }
+  ],
+  "preliminary_full_runs": {
+    "Debug": {
+      "tests": 641,
+      "counted_as_final": false
+    },
+    "Release": {
+      "tests": 631,
+      "counted_as_final": false
+    }
+  },
+  "preliminary_logs": [
+    {
+      "path": "artifacts/d2-production/preliminary-debug.log",
+      "bytes": 5492,
+      "sha256": "298e67973921b08715563b43edb27190be3efec7f4f65bf2fffa118db13a8989"
+    },
+    {
+      "path": "artifacts/d2-production/preliminary-release.log",
+      "bytes": 5598,
+      "sha256": "5c1eff7ecee262bf795d2395b31d8a4a37f52beb5e5e7511c909c057e15dc517"
+    }
+  ],
+  "protected_files": [
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "sha256": "4defce1790b43588b186cc22a04a622db5350d5f01bb7051690294c4e29879b2"
+    },
+    {
+      "path": "app/src/main/assets/chengdu-mianyang.json",
+      "sha256": "1ee34355b09aa2d502b9b61b30d691d7c4436e35ecef2453774f987346bbb32e"
+    },
+    {
+      "path": "app/src/main/assets/landmarks.json",
+      "sha256": "947eee98a270cb92d87a7d0b8831d2cb7894fe7aa3c1d6aeea95d20a283decfb"
+    },
+    {
+      "path": "app/src/main/assets/offline/ODbL-1.0.html",
+      "sha256": "1879937103eecd9837a86d1a52132b8b2f42855e90d89409bee54103ffc5d5b6"
+    },
+    {
+      "path": "app/src/main/assets/offline/xindu-facts.json",
+      "sha256": "289d29772d0ed375edace0e5bcfa9b70e1fb02336573b71f6dae326e9768d0cd"
+    },
+    {
+      "path": "app/src/main/assets/offline/xindu-geometry.geojson",
+      "sha256": "c0fb7041af727b80bbaf3f7d1deebaf873a47072dfff9a236d48a95cac84b7ce"
+    },
+    {
+      "path": "app/src/main/assets/offline/xindu-manifest.json",
+      "sha256": "40f01533cd7e60137361c72f9a7118280b0db8b267c589dd5efb811d5abf9427"
+    },
+    {
+      "path": "app/src/main/assets/offline/ys-facts-manifest.json",
+      "sha256": "e4146afaefb9624a43ef6fd070be380b570121ef3ec0bd7721bfe25e04f5eb2f"
+    },
+    {
+      "path": "app/src/main/assets/offline/ys-facts.json",
+      "sha256": "397a3795c4fdefe63632ae358bec2208fae8b90f25372aa3ca439802b6495a20"
+    },
+    {
+      "path": "app/src/main/assets/offline/ys-narratives-manifest.json",
+      "sha256": "8ce845495604344a803ac37e352bfe212f29d2733c9096e70401cd9cde195e09"
+    },
+    {
+      "path": "app/src/main/assets/offline/ys-narratives.json",
+      "sha256": "f8d29acfe2366e67d226988889d44ebecfc91aea3c45896af3dbe5fda41c5665"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/README",
+      "sha256": "7362be411c609f2a1c9d2dfe22c2d72555c15eb90bfe47c41772f49ef94840ce"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/am/final.mdl",
+      "sha256": "91eda2c04c4f599361cb92b0e5298ccdf6b3c7a1fa52bfcefcd2c4e07aa1c131"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/conf/mfcc.conf",
+      "sha256": "6c326fea5741c2d78be12f76eb1b36ea2ace040da9e355e4cfe6bb80e5f7d5ab"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/conf/model.conf",
+      "sha256": "468a8125c07530f96adcc219a0a5f993e8e0721ccf18acbd3169b77fc685fb9b"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/graph/Gr.fst",
+      "sha256": "46d41a9b1723abccdcb354d731a5b58d87c060100d88ada1a3e31220f52b0434"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/graph/HCLr.fst",
+      "sha256": "798af0d9ba6f2d727747f58e1e7b2305f8618bc8ea7f6c51beecd8a2c965b965"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/graph/disambig_tid.int",
+      "sha256": "c9200318c2a265549ebfbea7e0176fa62e131e953abd140c9b0b39fe61e24015"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/graph/phones/word_boundary.int",
+      "sha256": "11ca784b99f03188b451fb54714c2de3dd694e662a5f88e82df435c2789b9aec"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/ivector/final.dubm",
+      "sha256": "e33276cbd548c0a03ae5812c98115940614997dff23a6d59968af6eaf7630ff8"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/ivector/final.ie",
+      "sha256": "c39d46fbff04efb7baa9660ae7a728b0e2f35a4a1250b56ed3a599e26956df86"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/ivector/final.mat",
+      "sha256": "42706d88818070ea0d0182b4d11367ba52a13b9a2be45630f60858a422109ada"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/ivector/global_cmvn.stats",
+      "sha256": "b267dc89c1556fdd5bc358f0a480929da1743eeccfa06a67daf8db629ca336bb"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/ivector/online_cmvn.conf",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/ivector/splice.conf",
+      "sha256": "9f0c5f7c82d18eaf25d8bce470efa9f7741f88411fe428774bc0a9bb69a24756"
+    },
+    {
+      "path": "app/src/main/assets/vosk-model-small-cn-0.22/uuid",
+      "sha256": "12bc1e43e39109d14a3211ac484b24a6759c60367320f0dc9e6aac41564275cf"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ActiveResearch.kt",
+      "sha256": "9781e3b19c91a2731d2b99f6c5540e851a33c088788bb263c4cc865edb43c3de"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/AndroidAreaResolver.kt",
+      "sha256": "66805e1a620532d0ac5c58117d829d48860376fbc278be387dccb8a4eb131227"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/AndroidImageReader.kt",
+      "sha256": "64eb405baa7626b1a490990731cf799c4a41d43012e81401c24f6f774d05f7a3"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/AndroidVoice.kt",
+      "sha256": "82c490f4fb3a221f8c866944e99010b4a2f0eb2a1bca097df3479cf755343e4c"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/AreaChapter.kt",
+      "sha256": "e7b50b67606b4fba2c5fe75300867449069da20aaf8c4d453f9b0223b0aeec0d"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ChatGptAccount.kt",
+      "sha256": "d08b9abcdfd6ae3b08afed7ccdefbdd4b1773966c974b101ed4e78807f5ec1e5"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ChatGptAuthService.kt",
+      "sha256": "f1bfb87d472298814d829890eb966f492e120d1b49c074050605f99f1bfac663"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ChatGptProtocol.kt",
+      "sha256": "05b9fa24556393d0ee4656a35271b9ae263cac4d1b842a446c3e59dcd3713b23"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ChatGptTransport.kt",
+      "sha256": "3dfe3d2834f223611ff29a0fd9b2af6dc871a643450600a2a70b563b2ce98d1f"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/CountyPacks.kt",
+      "sha256": "ad52e98cf136f5342a5c29567f05489d5ca9d1814407de6076cad6b9d9752f93"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/DebugDiagnostics.kt",
+      "sha256": "cc11ab482c5dd6c50a9f7cab11f5d42897189ae9fb34e260dabfbffc8501b64c"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/DirectorLoop.kt",
+      "sha256": "5cfbed77cddfcc414620ad78cbd772e784b50263c92bd5dba36a467aa585e80f"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/DirectorProvider.kt",
+      "sha256": "f384be746ba4d6d28da0c044b5a0d0e802f55950c3c237d83049387ebc693845"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/DrivingScreen.kt",
+      "sha256": "86d45d2025cf88aa05077b55ff441cd08bf64d91c412d222884388f31ce6d1b7"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/EndScreen.kt",
+      "sha256": "1ea0eeecd4aa1128ea6258bedad483e9388eb562706f4e61c1a8ddf38a0c1f23"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ExplorePlaces.kt",
+      "sha256": "3071821945c6730be959cfc7873f220f70ae8dbd3e2d5e3c319446fac7a39540"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ExploreScreen.kt",
+      "sha256": "bcc2010e864d3de3e57bbc5b48174569b9342af5b0dfe15729c0b939676e9fb6"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ImageInput.kt",
+      "sha256": "a45432642552bd687e7fdc81d2e5d0cbd96edaffee82970aa7a188d54fd7c554"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/Journey.kt",
+      "sha256": "505b4484a714726e21568321a33a2e647bc7989602f735b044b66e9b901f2945"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/JourneyService.kt",
+      "sha256": "e67478d9d84ab6370ce2862f4705cdfa307edf0555e99bb6f6480fe86c1d6f46"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/KittApp.kt",
+      "sha256": "3d92e6ae985f662e8fe461abb125f13bca240e89f863038dc65ac01fc88f9b88"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/KittRuntime.kt",
+      "sha256": "b4a63ebf9aac27a180f2e2e947aa8afa477a5c96d5f38808cd7c1a71bbe11e3f"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/KittTheme.kt",
+      "sha256": "82cc98ca117578b996c8cbc84502c6460ed1ebc19cfb748ca6d211acb133689f"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/LandmarkProximity.kt",
+      "sha256": "abf3fa056eb23d3ad8676166658bdd6679994acf5e892fc18de82262fea2d4be"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/LocalResearch.kt",
+      "sha256": "fa8c21f99447e12d6da4a1414798c2ba65ed02c4b9e99dd1c779f0d7a09dda30"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/LocationContext.kt",
+      "sha256": "a427678ccf1219ca99c0e3e518e64c9ff9a075897e980d6147a472e528415f54"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/MainActivity.kt",
+      "sha256": "bbd50b430e35a0652bf71200e7482c08a2b417911a9820e6bf84e65f166431e0"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/NetworkStatus.kt",
+      "sha256": "24e06118b403a64d13cd30b3d8b2ac74b030cdea937930ef7e736936f16ed968"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/OfflinePack.kt",
+      "sha256": "d87a860234330df5e51b6117df282177941c7ef3513e7b92fdbe94c4ecf67d18"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/PhysicalLocationSelector.kt",
+      "sha256": "573886a4727992ce05b5f435a3577990992e22c30bea63600d1d71ec2b197bf1"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/RealLocationSource.kt",
+      "sha256": "42e2081f20f9e2282ff184fbb063a47e02e704fedac438e38f26981c8420142b"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/ResearchEvidenceStore.kt",
+      "sha256": "e2d62d32394d4b323ba201cef39df8a67c313f8c41a06e1d726972bd5f2f0978"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/RouteReference.kt",
+      "sha256": "7118518430905bd5400db327c2f84273c68e242c1ef0cdfe05fe83b8ed968fe6"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/RuntimeStatus.kt",
+      "sha256": "d4ab628fc6afba5b1d6cf7b2cec7e00217ea2d673e35194ab5b330b40697f3b1"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/SettingsScreen.kt",
+      "sha256": "c1435f5bb9d17c4f60d9a95f838cfcf0339dfc15b969fd8e3b59cbc3c6d81bc3"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/SettingsStore.kt",
+      "sha256": "c72555d9f39244ab3d32794c358d7e16126537c73299f1792f357306267714ee"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/SimulatedLocationSource.kt",
+      "sha256": "265d460d32efc6d1942d5fdf838083fa74eb1ce73879de9ea49b6449f08ad3a8"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/SpeechEngine.kt",
+      "sha256": "963af88afa620a36ab6aaa8067d9c6c48837666ec10a9e6700bb1740faaa6d1d"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/StagedResearch.kt",
+      "sha256": "e445be2b92e7fa947b603b11a723c8954adf48a5dc2d6c7f6ae06bd3d74d4d70"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/StoryInterests.kt",
+      "sha256": "854317e5fe16b45fece46eb62c42c3ae359772eb5e068c7dc428a9b352f31501"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/StoryPacks.kt",
+      "sha256": "cc13b4666f3fc31846ac3c2ab6d8de359253da258d01a73bff1189f65e7948e7"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/StoryRanking.kt",
+      "sha256": "6b99b879131bbd7191986fa447706e31f3a91e838f7e734445779836823713fc"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/TripStore.kt",
+      "sha256": "d9e539db06ee0067552a1818961ff7c9071fed356565635061b7fa6245a1e933"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/VisualTalk.kt",
+      "sha256": "5a9bda276d279193069e91d3e4c6f31e9192eb772960aa449b076b5e0962e562"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/VisualTalkDialog.kt",
+      "sha256": "81c60e54e57916a07f6f60044aa8716b4d8e1813275c374d90dca3f99831f060"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/VoiceIndicator.kt",
+      "sha256": "611c5d749bf1e42ebe085c81ec6adab76d5a8123d179384bb4bf2bd05b58c40a"
+    },
+    {
+      "path": "app/src/main/java/com/kitt/reader/VoiceState.kt",
+      "sha256": "ea07c2ea21f667d751319dec17ef97903214918d9439d0fe9c00f3946b77d3a8"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_journey.xml",
+      "sha256": "a4e59771fd8bd4b7610565bff65c35d7429082a995f238ee87fa0b050238a9e9"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_launcher.xml",
+      "sha256": "44faa4d8648f8f96427bdb293f2fbee1dc8b6ba48cfc3a456fb430577bff2045"
+    },
+    {
+      "path": "app/src/main/res/values/styles.xml",
+      "sha256": "b4e945c225d42f107391aebf0ce4f18d524c061f1fc71905066da403804771e8"
+    },
+    {
+      "path": "app/src/main/res/xml/data_extraction_rules.xml",
+      "sha256": "6838b505f75d39c06f2d7e5fe29af9ee38c311c6d1f8dab0d604545427fd0bee"
+    },
+    {
+      "path": "app/src/main/res/xml/image_paths.xml",
+      "sha256": "c9fca0f928bff368b08a5e5c5b54cceb14a6795ebb5f5129a4ab73e2bf446669"
+    },
+    {
+      "path": "content/yangshen/README.md",
+      "sha256": "951ed93303660bb86e0b3630c5cc8d87d56d0e75d051553522424d5d085a999b"
+    },
+    {
+      "path": "content/yangshen/approvals.json",
+      "sha256": "0c8b4442d6ef892a02d0ce78a15cd04a23ef9171cd04cfd61980df186c4c235e"
+    },
+    {
+      "path": "content/yangshen/facts.json",
+      "sha256": "397a3795c4fdefe63632ae358bec2208fae8b90f25372aa3ca439802b6495a20"
+    },
+    {
+      "path": "content/yangshen/narratives.json",
+      "sha256": "3b90d1136e7a09a5b5a64322aeefd022452f0c974c2df05f368148be89288589"
+    },
+    {
+      "path": "content/yangshen/yangshen-followup-dianzai.md",
+      "sha256": "6e02869b6898bfa48476d4cdef2fbb33480eaca10ca784f90d926bb9678a2fd5"
+    },
+    {
+      "path": "content/yangshen/yangshen-main.md",
+      "sha256": "9a1f010eefa16eb9b86f0acae1a7f96c88c006ad6785ed78cc3741ed2013b81b"
+    }
+  ],
+  "production_app_and_yangshen_unchanged": true,
+  "remote_readonly_audit": {
+    "access": "public read-only REST inventory; authenticated drafts not established; gh absent from PATH",
+    "releases": [
+      {
+        "tag": [
+          "v0.3.5.1",
+          "v0.3.5",
+          "v0.3.4",
+          "v0.3.3"
+        ],
+        "draft": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "prerelease": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    ],
+    "tags": [
+      "v0.3.3",
+      "v0.3.4",
+      "v0.3.5",
+      "v0.3.5.1"
+    ],
+    "open_prs": [
+      29
+    ],
+    "pr41_merged": true,
+    "merge_commit": "baea614ba02f1aad7776e65ed6766833ee451b3f",
+    "ignored_paths": [
+      ".gradle/",
+      ".kotlin/",
+      ".workbuddy-ai/",
+      "app/build/",
+      "artifacts/",
+      "packtool/build/",
+      "scripts/__pycache__/"
+    ],
+    "worktrees_before": 1,
+    "original_checkout_clean": true,
+    "prior_task_branch_preserved": true,
+    "phase": "before implementation; after-validation public comparison appended",
+    "public_release_tags_after_validation": [
+      null
+    ],
+    "original_task_branch_sha_after": "eb2db12a09edcf9813f7559f3d8825b83aa20ed0"
+  },
+  "identity_boundary": {
+    "default_production_identity_exists": false,
+    "tracked_private_files": [],
+    "original_worktree_count": 1
+  },
+  "production_public_registry": [],
+  "real_identity_initialized": false,
+  "real_human_publication_approval": false,
+  "real_tag_release_upload_performed": false,
+  "phone_adb_install_performed": false,
+  "actual_gh_available_in_path": false,
+  "apk_keystore_reused_for_pack_signing": false,
+  "key_storage": "JUnit temporary directories outside Git worktrees; virtual flag; owner ACL; cleaned by JUnit",
+  "physical_two_computers": "PENDING; two virtual local identities share one source commit, fake gh only",
+  "real_xindu": "BLOCKED: 2/11 source rights unclear; Yangshen candidate/Visitor pending; formal stories 0",
+  "limits": [
+    "stdin consent authenticates bytes, not human identity; host must relay actual user decision",
+    "gh create internally stages draft/uploads/publishes, not one server transaction; errors require read-only remote diagnosis",
+    "no distributed lock for simultaneous different sequences of same county; do not publish that county concurrently",
+    "fresh local engineering run, not external CI, phone JCA or actual GitHub Release test"
+  ],
+  "pending": [
+    "separately authorized first real workstation identity and public registration",
+    "gh installation/authentication and separately authorized first actual publication",
+    "office/home physical test",
+    "phone trust/download/import/atomic install V0.6.1"
+  ],
+  "failed_attempts": [
+    {
+      "stage": "initial compile",
+      "reason": "Files.readString unavailable on Android test compile API; replaced with readAllBytes",
+      "counted": false
+    },
+    {
+      "stage": "test compile",
+      "reason": "ambiguous Kotlin property/function name; renamed fixture helper",
+      "counted": false
+    },
+    {
+      "stage": "expanded focused tests",
+      "tests": 73,
+      "failures": 5,
+      "reason": "fake remote assertion assumed ls-remote had no ref filters; corrected argument index",
+      "counted": false
+    },
+    {
+      "stage": "host pipe process test",
+      "reason": "PowerShell advanced script needed a ValueFromPipeline binding; added hidden stdin binding",
+      "counted": false
+    },
+    {
+      "stage": "Windows PowerShell 5 process test",
+      "reason": "native stdin used global ASCII encoding; added scoped UTF8 global encoding with restoration and UTF8 BOM script files",
+      "counted": false
+    }
+  ]
+}

@@ -1,31 +1,37 @@
-# KITT V0.6.0 D2：双电脑制包，一次人工确认，当前电脑直接发布
+# KITT V0.6.0 · D2 正式发布能力收尾（仅工程施工，不进行真实发行）
 
-> **实际交付：[Draft PR #41](https://github.com/shimao1115/KITT/pull/41)，保持 Draft/未合并，STOP 等独立工程复审。**
+> **2026-10-18 PR43 最小复审修复交付 / STOP 待再次复审**：按用户“执行修复”和[独立复审唯一要求](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)，可信登记改从固定 GitHub 仓库的远端 main 读取并固定 SHA，不再由候选源码 commit 授权；不引入新服务或额外人工审批。本轮实际重跑 **Debug652 + Release639 + packtool13 = 1304项**零失败/错误/跳过，生产专项66例双Variant，Python7、六组Fake、assemble/lint、原签名2+6 PASS。见[新证据](docs/evidence/v060-d2-production-review-fix.json)。下方1288项为旧 head 历史；本轮仍只使用临时虚拟身份/fake gh，无真实密钥/根/发行/手机/合并，保持Draft、两实体机PENDING、新都BLOCKED。交付后STOP。
 
-> **2026-10-17 本轮工程验收完成**：最终 Debug586 + Release573 + packtool13 = **1172 项**零失败/错误/跳过，D2 19 例双 Variant；一次确认 TEST_ONLY 自动制包/验签/上传参数演练、显式合法子集、两干净工作树无密钥字节复现均 PASS。见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d2-verification.json)、[操作说明](docs/COUNTY_PACK_D2_WORKFLOW.md)。只交付 Draft PR 等工程复审；两实体电脑 PENDING，真实新都全量 BLOCKED，生产身份/Release/手机未操作，真实故事仍0。本段不改变下方“日常一次确认”的用户决定。
+> **实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，OPEN / DRAFT / 未合并；STOP 等独立复审与用户合并授权。**
 
-> **唯一任务**：[Issue #40](https://github.com/shimao1115/KITT/issues/40)。用户明确要求**去除多余的人工审核/多电脑交接环节**。D2 工程只打通这个日常使用流程：**办公室或家里 Codex/WorkBuddy/Qoder 制作 → 用户过目并点一次确认 → 这台电脑完成自动校验、签名、上传 GitHub Release**。另一台电脑也能独立照做。下方明确区分 D2 的施工模拟与将来真实发布。
+> **2026-10-18 工程验证完成，Draft PR 交付后 STOP**：最终 Debug644 + Release631 + packtool13 = **1288项**零失败/错误/跳过；生产专项58例双Variant，Python7、六组Fake、构建/lint、原签名2+6、PowerShell5/7中文决定转录 PASS。详见 [HANDOFF](HANDOFF.md)、[本轮证据](docs/evidence/v060-d2-production-verification.json)、[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。仅虚拟身份与fake gh；真实登记为空，无真实钥/Tag/Release/上传/手机/合并，两实体机PENDING，新都仍BLOCKED、正式故事0。下方任务范围不变，交付后只等独立复审。
 
-## 工作结果与边界
 
-- 两个 Windows 工作区使用**同一 KITT GitHub 仓库**同步可公开的文字和审批状态；Agent 承担查证、写稿、登记出处和合法可发布权限、修订、生成 Fact + Narrative 候选、运行检查。受限 PDF/原文/扫描不上传公开 GitHub。
-- **唯一人工动作**：用户检查 Agent 提供的内容预览及简短的事实/来源说明，确认“这版可发布”。这一次即内容终审和发布同意。**不要再引入另一位 Reviewer、单独的 Visitor 人工签字环节、交给专用签名电脑、PR 二次审稿或第二个“确认上传”步骤**。Agent 在确认前完成所有准备，必要的审稿状态由这一次用户决定按真实证据记录。
-- 之后由确定性程序**自动**检查 D0 原有许可/Claim/Source/Story/Visitor/地区/版本/摘要/签名规则，按 D1 KCPK v1 生成并验签，再将已合格文件上传 Release；失败则列出具体不可发布内容，不悄悄放行、也不让用户逐项人工盖章。**必须能把权利不明或待审条目排除后只提交合格的子集，但不伪造审核、修改原始权利或拿忽略错误替代合法剔除；具体以既有 D0 Gate 的合法输入为准。**
-- 两机**各自可完成终端发布**，取消“固定单台签名机”的硬要求。优先采用**办公室/家里各自保存一个独立生产签名私钥及 key_id**，复用现有 D1 TrustStore 多发行者公钥机制，私钥不进 Git/日志、独立于 APK 签名；真正生成和配置两把正式钥留待首次正式发布另行授权。若发现明显更简单且同样安全、可在任一电脑直接发布的方法可采用，但不得引入 NAS/服务端密钥中心/CI 自动签名/HSM/复杂密钥仪式。平时不得让用户管理密钥或在两地跑腿。
-- 内容生产与工程发布是两回事：允许用户**一次性内容终审**，并不意味着版权许可、真实性或签名可绕过。**旧新都全量候选继续 BLOCKED**：11 研究来源中 2 项对外再分发权利未明，杨慎两篇仍 candidate/visitor pending，正式完整故事仍 0；只有重新核实权利或合规地剔除后才可另行测试可发行子集。
+> **唯一任务**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)。**唯一分支**：`feat/v060-d2-production-release`。基线为已合并的 D2 TEST_ONLY [PR #41](https://github.com/shimao1115/KITT/pull/41)（merge `baea614ba02f1aad7776e65ed6766833ee451b3f`）；本轮只让原有流程未来能实际正式发布，仍交付 **Draft PR + 工程证据**，STOP 待 ChatGPT 复审/用户授权合并。
 
-## 最小施工路径（不新造轮子）
+## 目标：不要把简单事再做复杂
 
-1. 读取 [AGENTS](AGENTS.md)、[HANDOFF](HANDOFF.md)、[签名契约](docs/COUNTY_PACK_D1_SIGNING_CONTRACT.md)、[内容规范](docs/KITT_KNOWLEDGE_STANDARD.md) 和 `packtool`/`D1PackCli`，先检查现有 worktree/忽略目录，不改旧数据。
-2. 复用现有 Builder、Verifier、Content Gate，**只补缺少的薄命令/参数**：候选生成、用户一次确认输入（明确由本人执行）、安全检查/签名、Release 上传预览/上传手段。无须自建发布框架；能调用成熟 `gh release` 就不要另写 GitHub API 客户端。日常流程应是 Agent 接管工具步骤、用户只看一次。
-3. 用 **TEST_ONLY 合成数据**证明两台不同路径各自可以从同 Git commit 生成相同 unsigned bytes/hash；模拟一次用户确认后自动检查＋本地制包，**不得实际触发生产签名或 GitHub Release/Tag**。模拟上传可以输出准备好的 gh 命令/参数与校验清单，不宣称已发。
-4. 做必要的正负例与已有 Debug/Release/packtool、Python、六组 Fake、assemble/lint、APK 签名回归，报告新鲜结果。损坏、错县、未授权/无来源、待审故事、TEST_ONLY 伪装 production 一律拒绝；检查不应增加人工审核步骤。能做双实体机器实测则记录，否则 PENDING。
-5. 保留一页普通中文“办公室或家里使用”说明，更新最简证据和 `HANDOFF.md`，提交 Draft PR 等独立工程复审。
+**办公室或家里的 Codex / WorkBuddy / Qoder 做好知识包 → 用户看一次正文及来源说明、明确说“可以发布” → 当前电脑自动检查、签名、验签、上传 GitHub Release**。机器执行技术细节，不再找用户重复确认，不交给专门签名机。只需填补 PR41 真正缺失的生产密钥接口与实际 gh 上传路径，不新建架构。
 
-## 此次不允许
+## 黄金路径：优先复用，尽量合并
 
-**不生成正式生产密钥、正式可信根、GitHub Tag/Release 或任何真实出版附件**（后续首次真实发行单独授权）；不修改 `app/src/main`，不升手机 code19，不做手机侧 V0.6.1 下载/导入/原子安装，不合并 PR #29，不设置额外人工 Gate，不建 KITT-PACKS/数据库/NAS/服务器/多 Agent 审稿架构，不更改原始故事版权/审稿结论来伪造放行。
+1. **保护现场与审计**：先 fetch、检查所有 worktree、ignored 本地文件和已有 PR/Release，不改、删、覆盖其他任务；读 `AGENTS.md`、`HANDOFF.md`、现有 D2 工作流、KCPK v1 契约、`packtool` / `D2Local.kt` / `D1PackCli.kt` / `scripts/d2-pack.ps1`。保留现有 `prepare`、`review.md`、`reviewhash`、D0 内容门禁和签名验签。不要造新版 Schema、Publisher 服务、Agent、多级 Gate、额外数据库。
+2. **正式发布的薄实现**：增加本机独立生产身份的最简一次性初始化手段、受保护钥匙位置（工作树外、不可打印）、对应公开 `key_id` / 公钥登记格式；办公室和家里各自有独立密钥，绝不通过 GitHub 同步私钥。与 APK 签名钥隔离，不复用 TEST_ONLY 钥匙。日常 Agent 自动使用本机钥、无需用户管理参数/多次点击。正式公钥的手机可信锚接入单独留给 V0.6.1。
+3. **固定审核对象**：从固定 Git commit 制备审核预览，唯一真人确认必须绑定当次包的地区、源码、版本、sequence、完整待签名区域 SHA256。不可让 Agent 用模拟批准或自己编造用户决定。确认后重新读同一 Git blob 并核对 hash，再用同一个 D0 内容/版权/Visitor Gate 和 D1 Builder / Verifier 签名、验签；拒绝任何 TEST_ONLY 或自带不可信公钥冒充 PRODUCTION。
+4. **发布到 GitHub**：调用已有 `gh release`，不要重写 GitHub API 客户端；固定 `shimao1115/KITT`，按**县级 ID 与单调 sequence**制定最薄的 tag/附件命名，发布前读取现有发布记录并检查地区/版本/序号，不允许同县旧版倒退、重复序号、同名覆盖或修改删除既有 Release/Tag。失败（包括无网、无授权、冲突）清晰报错；不误报成功、不重试乱创建。使用成熟 GitHub CLI 的发布原子操作，不增加外部版本数据库/锁服务/CI 私钥。
+5. **真人只审一次**：只要内容与发布对象未改变、校验通过，用户一句确认之后不要求“签名批准”“PR再审”“二次上传确认”。若内容被拒，Agent 说明缺少哪些证据/许可，先修或在**新已提交源目录**明确剔除不合格内容（严格维护引用关系）；不偷改 rights 或 visitor 状态，不把自造许可/审核 PASS 混入。首次生产公钥配置是**一次性设备安全设置**，不是每个内容包的审批。
+6. **不碰 App 和真实内容**：手机仍是已验收 code19；`app/src/main`、本机历史/设置、GPS/TTS/账号、`content/yangshen` 和旧审批零意外改动。真实新都完整内容仍 BLOCKED（11 来源中2项权利不明，杨慎两篇 Visitor 待审、标准正式故事 0）。不因本工程完成就宣布可以发布新都。
 
-**验收一句话**：用户在办公室或家里让 Agent 做好一本“可发布的书”，**只看一遍并确认**，随后这台电脑能够自动完成应有的机器检查与发布；不合格则具体指出原因。本轮先把工具和测试做好，STOP 在 Draft PR。
+## 本轮验收，只测不真发
 
-> D1 原始任务卡留于 [PR #39 合并记录](https://github.com/shimao1115/KITT/blob/76377555bf3e00be1060a1d03cdf3d4eda8be768/TASK_CARD.md)，不要回退主干内容或延用旧 STOP。
+- 使用**仅在临时测试目录的虚拟发行身份**和 fake gh（或者进程注入式替身）演练整个正式控制流；Fake 记录的上传调用只能在一次真实模拟用户输入、固定审核 SHA、合法合成内容、有效发行公钥和签名/验签全部通过之后发生。测试身份永不成为官方生产身份；禁止把任何测试密钥当成真实根提交或发布。
+- TEST_ONLY 不可上传，确认后内容变化、错县/版本/序号、旧版/重复 tag、未知 key、内容版权未知、Source/Claim 缺失、candidate/Visitor pending、签名被改、无网/gh失败、密钥路径在工作树内都拒绝上传。一次用户决定后没有额外人工审批。
+- 复测 fresh Debug/Release/packtool 和 D0/D1/D2 相关用例、Python7、六组 Fake、assemble/lint、APK 签名回归；与现有 1172 项历史基线区分，不继承或相加旧数字。留脱敏的成功/失败证据与保护文件哈希。
+- 跨实体办公室与家里电脑实测**本轮没有则如实 PENDING**；模拟两种独立本机身份覆盖即可，不要求为了这个测试把个人私钥分发给另一台电脑。
+- 写一页普通中文说明：**Agent 制作 → 人工看一次 → 发布完成/具体失败原因**；交付 Draft PR / HANDOFF / 本轮证据后 STOP。
+
+## 红线
+
+**没有授权在本轮真实生成/启用办公室或家庭正式私钥或根、实际创建任何 GitHub Tag/Release、上传真实/合成正式附件、操作或安装手机、启动 V0.6.1 或合并本 PR。** 真实首次身份初始化与首次正式发行由用户之后**单独授权**。当前完成的是可审查、可测试的发布实现，不把模拟等同已上线。
+
+> 已合并 D2 TEST_ONLY 的旧工程事实见 [PR #41](https://github.com/shimao1115/KITT/pull/41) 和 `docs/evidence/v060-d2-verification.json`；本任务卡是**新唯一施工范围**，历史 STOP 不阻碍这里明确允许的模拟开发。
