@@ -36,8 +36,11 @@ def suites(directory):
         root = ET.parse(path).getroot()
         counts = {k: int(root.attrib[k]) for k in ('tests', 'failures', 'errors', 'skipped')}
         assert counts['tests'] and not any(counts[k] for k in ('failures', 'errors', 'skipped')), path
-        rows.append(dict(name=root.attrib['name'], **counts, report=info(path),
-                         cases=[c.attrib['name'] for c in root.findall('testcase')]))
+        row = dict(name=root.attrib['name'], **counts, report=info(path))
+        if root.attrib['name'] in ('com.kitt.reader.d1.ReleaseD1Test', 'com.kitt.reader.d1.ReleaseD2Test',
+                                  'com.kitt.packtool.ReleaseFormatTest'):
+            row['cases'] = [c.attrib['name'] for c in root.findall('testcase')]
+        rows.append(row)
     assert rows
     return dict(tests=sum(r['tests'] for r in rows), failures=0, errors=0, skipped=0, suites=rows)
 
