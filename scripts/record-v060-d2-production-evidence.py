@@ -92,6 +92,8 @@ def main():
     signing = load(OUT / 'signing.json')
     assert signing == dict(exit=0, accepted=2, rejected=6)
     signing['log'] = info(OUT / 'signing.log')
+    signing['static_runtime_fixture'] = info('artifacts/kitt-v0.6.0-runtimecheck.apk', False)
+    assert signing['static_runtime_fixture']['sha256'] == '2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60'
     fake = load('app/build/acceptance/d2-production-fake.json')
     assert fake['publish']['status'] == 'SIMULATED_PUBLISHED'
     assert fake['publish']['human_decisions'] == 1 and fake['publish']['signature_verified']
@@ -114,6 +116,8 @@ def main():
                     python=dict(tests=7, test_log=info(OUT / 'python-tests.log'), content_log=info(OUT / 'content-check.log')),
                     signing=signing, simulations=simulations, wrapper_checks=wrapper,
                     wrapper_logs=[info(OUT / p) for p in ('wrapper-prepare.log', 'wrapper-refusal.log', 'audit-newdu.log')],
+                    preliminary_full_runs=load(OUT / 'preliminary-totals.json'),
+                    preliminary_logs=[info(OUT / p) for p in ('preliminary-debug.log', 'preliminary-release.log')],
                     protected_files=before, production_app_and_yangshen_unchanged=True,
                     remote_readonly_audit=audit, identity_boundary=identity_boundary, production_public_registry=[],
                     real_identity_initialized=False, real_human_publication_approval=False,
