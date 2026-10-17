@@ -42,6 +42,8 @@ object D1Cli {
   --command keygen   --keydir <dir> [--root <repo>] [--keyid <id>]
   --command sample   --root <repo>
   --command build    --root <repo> --sample <dir> --keydir <dir> --out <dir> --commit <40 hex> [--appcode 20] [--sequence 1]
+  --command prepare --root <repo> --input <repo-relative-dir> --out <NEW dir> --commit <40 hex> [--keyid <TEST_ONLY id>]
+  --command release-preview --pack <file> --keydir <public-only-dir> --area <id> --commit <40 hex> --factversion <version> --narrativeversion <version> --sequence <n> --json <NEW file>
   --command verify   --pack <file> --keydir <dir> [--appcode 20] [--minsequence 1] [--json <file>]
   --command tamper   --pack <file> --out <file> --offset <int>
   --command relabel  --pack <file> --out <file> --keydir <dir> --area <cn-nnnnnn> --parent <cn-nnnn00>
@@ -53,6 +55,8 @@ object D1Cli {
             "keygen" -> keygen(options)
             "sample" -> sample(options)
             "build" -> build(options)
+            "prepare" -> D2Local.prepare(options)
+            "release-preview" -> D2Local.preview(options)
             "verify" -> verify(options)
             "tamper" -> tamper(options)
             "relabel" -> relabel(options)
@@ -62,26 +66,30 @@ object D1Cli {
                 USAGE_ERROR
             }
         }
+    } catch (error: com.kitt.packtool.PackRejection) {
+        println("status=REJECTED code=${error.code}")
+        REJECTED
     } catch (error: IllegalArgumentException) {
-        println("status=USAGE_ERROR reason=arguments detail=${error.message}")
+        println("status=USAGE_ERROR reason=arguments")
         println(USAGE)
         USAGE_ERROR
     } catch (error: Exception) {
-        println("status=ERROR reason=${error.javaClass.simpleName} detail=${error.message}")
+        println("status=ERROR reason=${error.javaClass.simpleName}")
         USAGE_ERROR
     }
 
     /** A one-off RSA test key. It is written outside the work tree, never printed, never committed. */
     private fun keygen(options: Options): Int {
-        val directory = File(options.required("keydir")).absoluteFile
-        val root = File(options.optional("root") ?: ".").absoluteFile
-        if (directory.path.startsWith(root.path + File.separator)) {
+        val directory = File(options.required("keydir")).canonicalFile
+        val root = File(options.optional("root") ?: ".").canonicalFile
+        D2Local.requireExternalKey(directory, root)
+        if (directory.toPath().startsWith(root.toPath())) {
             println("status=REFUSED reason=keydir_inside_worktree")
             return USAGE_ERROR
         }
         val privateFile = File(directory, "private.pem")
-        if (privateFile.isFile) {
-            println("status=REFUSED reason=key_exists path=${privateFile.absolutePath}")
+        if (directory.exists()) {
+            println("status=REFUSED reason=keydir_exists")
             return USAGE_ERROR
         }
         directory.mkdirs()
@@ -102,7 +110,6 @@ object D1Cli {
         println("key_id=$keyId")
         println("scope=TEST_ONLY")
         println("public_sha256=${ContentDigest.sha256(pair.public.encoded)}")
-        println("keydir=${directory.path}")
         return ACCEPTED
     }
 
@@ -121,29 +128,31 @@ object D1Cli {
 
     private fun build(options: Options): Int {
         val root = File(options.required("root")).absoluteFile
-        val sample = options.required("sample")
+        val sample = options.optional("input") ?: options.required("sample")
         val output = File(options.required("out")).absoluteFile
+        if (output.exists()) throw com.kitt.packtool.PackRejection("output_exists")
         val keyDirectory = File(options.required("keydir")).absoluteFile
         val commit = options.required("commit")
         val appCode = options.optional("appcode")?.toInt() ?: 20
         val sequence = options.optional("sequence")?.toInt() ?: 1
-        val key = readKey(keyDirectory)
+        if ((options.optional("scope") ?: "TEST_ONLY") != "TEST_ONLY") {
+            throw com.kitt.packtool.PackRejection("production_not_authorized")
+        }
+        D2Local.requireExternalKey(keyDirectory, root)
+        val key = readKey(keyDirectory, privateRequired = true)
         val privateKey = key.privateKey ?: run {
             println("status=REFUSED reason=missing_private_key")
             return USAGE_ERROR
         }
-        val factFile = File(root, "tools/d1/sample/$sample/facts.json")
-        val narrativeFile = File(root, "tools/d1/sample/$sample/narratives.json")
-        if (!factFile.isFile || !narrativeFile.isFile) {
-            println("status=REFUSED reason=missing_sample path=$sample")
-            return USAGE_ERROR
-        }
-        val factBytes = factFile.readBytes()
-        val narrativeBytes = narrativeFile.readBytes()
+        val (factBytes, narrativeBytes) = D2Local.input(options)
         val areaId = Json.parseToJsonElement(factBytes.decodeToString()).jsonObject.getValue("area_id").jsonPrimitive.content
-        val built = PackBuilder.build(areaId, factBytes, narrativeBytes, key.keyId, key.scope, commit, appCode,
-            privateKey, sequence)
-        output.mkdirs()
+        val prepared = PackBuilder.prepare(areaId, factBytes, narrativeBytes, key.keyId, key.scope,
+            commit, appCode, sequence)
+        D2Local.contentCheck(prepared)
+        val built = PackBuilder.build(areaId, factBytes, narrativeBytes, key.keyId, key.scope,
+            commit, appCode, privateKey, sequence)
+        java.nio.file.Files.createDirectories(output.toPath().parent)
+        java.nio.file.Files.createDirectory(output.toPath())
         val packFile = File(output, "pack.kcpk")
         packFile.writeBytes(built.container)
         val summary = buildJsonObject {
@@ -160,7 +169,7 @@ object D1Cli {
             put("unsigned_sha256", built.unsignedDigest)
             put("container_sha256", ContentDigest.sha256(built.container))
             put("container_bytes", built.container.size)
-            put("pack_file", packFile.absolutePath)
+            put("pack_file", "pack.kcpk")
             put("blocks", JsonArray(built.manifest.blocks.map { block ->
                 JsonObject(linkedMapOf("kind" to JsonPrimitive(block.kind), "bytes" to JsonPrimitive(block.bytes),
                     "sha256" to JsonPrimitive(block.sha256)))
@@ -174,7 +183,7 @@ object D1Cli {
         println("unsigned_sha256=${built.unsignedDigest}")
         println("container_sha256=${ContentDigest.sha256(built.container)}")
         println("container_bytes=${built.container.size}")
-        println("pack_file=${packFile.path}")
+        println("pack_file=pack.kcpk")
         return ACCEPTED
     }
 
@@ -189,6 +198,9 @@ object D1Cli {
         }
         val key = readKey(keyDirectory)
         val trust = TrustStore(listOf(TrustAnchor(key.keyId, key.publicKey, AnchorScope.of(key.scope))))
+        if (packFile.length() > com.kitt.packtool.ReleaseFormat.MAX_CONTAINER) {
+            throw com.kitt.packtool.PackRejection("container_too_large")
+        }
         val bytes = packFile.readBytes()
         val verdict = ReleaseVerifier(trust, appCode, D0CountyGate, minimumSequence).verify(bytes)
         val report = when (verdict) {
@@ -248,7 +260,7 @@ object D1Cli {
         val source = File(options.required("pack")).readBytes()
         val areaId = options.required("area")
         val parentId = options.required("parent")
-        val key = readKey(File(options.required("keydir")).absoluteFile)
+        val key = readKey(File(options.required("keydir")).absoluteFile, privateRequired = true)
         val privateKey = key.privateKey ?: run {
             println("status=REFUSED reason=missing_private_key")
             return USAGE_ERROR
@@ -294,23 +306,26 @@ object D1Cli {
         return ACCEPTED
     }
 
-    private class KeyMaterial(val keyId: String, val scope: String, val publicKey: PublicKey,
+    internal class KeyMaterial(val keyId: String, val scope: String, val publicKey: PublicKey,
         val privateKey: PrivateKey?)
 
-    private fun readKey(directory: File): KeyMaterial {
+    internal fun readKey(directory: File, privateRequired: Boolean = false): KeyMaterial {
         val metadata = Json.parseToJsonElement(File(directory, "key.json").readText()).jsonObject
+        if (metadata.getValue("scope").jsonPrimitive.content != "TEST_ONLY") {
+            throw com.kitt.packtool.PackRejection("production_not_authorized")
+        }
         val publicFile = File(directory, "public.pem")
-        if (!publicFile.isFile) throw IllegalArgumentException("missing public.pem in ${directory.path}")
+        if (!publicFile.isFile) throw IllegalArgumentException("missing public.pem")
         val privateFile = File(directory, "private.pem")
         return KeyMaterial(
             metadata.getValue("key_id").jsonPrimitive.content,
             metadata.getValue("scope").jsonPrimitive.content,
             Pem.publicKey(publicFile.readText()),
-            privateFile.takeIf { it.isFile }?.let { Pem.privateKey(it.readText()) }
+            privateFile.takeIf { privateRequired && it.isFile }?.let { Pem.privateKey(it.readText()) }
         )
     }
 
-    private class Options(arguments: List<String>) {
+    internal class Options(arguments: List<String>) {
         private val values: Map<String, String>
         init {
             val parsed = linkedMapOf<String, String>()
@@ -318,7 +333,12 @@ object D1Cli {
             while (index < arguments.size) {
                 val flag = arguments[index]
                 require(flag.startsWith("--") && index + 1 < arguments.size) { flag }
-                parsed[flag.removePrefix("--")] = arguments[index + 1]
+                val name = flag.removePrefix("--")
+                require(name in setOf("command", "root", "sample", "out", "keydir", "pack", "commit",
+                    "appcode", "json", "offset", "keyid", "sequence", "minsequence", "area", "parent",
+                    "input", "scope", "factversion", "narrativeversion"))
+                require(name !in parsed) { "duplicate_option" }
+                parsed[name] = arguments[index + 1]
                 index += 2
             }
             values = parsed

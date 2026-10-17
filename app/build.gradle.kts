@@ -94,6 +94,7 @@ tasks.register<JavaExec>("d1Pack") {
     // turning an expected negative case into a Gradle failure.
     isIgnoreExitValue = true
     val flags = listOf("command", "root", "sample", "out", "keydir", "pack", "commit", "appcode",
-        "json", "offset", "keyid", "sequence", "minsequence", "area", "parent")
+        "json", "offset", "keyid", "sequence", "minsequence", "area", "parent", "input", "scope",
+        "factversion", "narrativeversion")
     args = flags.mapNotNull { flag -> (project.findProperty("d1.$flag") as String?)?.let { listOf("--$flag", it) } }.flatten()
 }
