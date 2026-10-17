@@ -73,7 +73,7 @@ def main():
                  packtool=suites('packtool/build/test-results/test'))
     for variant in ('debug', 'release'):
         counts = {s['name']: s['tests'] for s in tests[variant]['suites']}
-        assert counts['com.kitt.reader.d1.ProductionD2Test'] >= 55
+        assert counts['com.kitt.reader.d1.ProductionD2Test'] >= 58
         assert counts['com.kitt.reader.d1.ReleaseD2Test'] == 19
         assert counts['com.kitt.reader.d1.ReleaseD1Test'] == 27
     checks = load(OUT / 'checks.json')
@@ -82,6 +82,9 @@ def main():
         assert check['exit'] == 0
         check['log'] = info(OUT / (check['name'] + '.log'))
         assert 'BUILD SUCCESSFUL' in (OUT / (check['name'] + '.log')).read_text(encoding='utf-8-sig')
+        if check['name'] in tests:
+            threshold = datetime.fromisoformat(check['started_at']).timestamp()
+            assert all(Path(s['report']['path']).stat().st_mtime >= threshold for s in tests[check['name']]['suites'])
     py = (OUT / 'python-tests.log').read_text(encoding='utf-8-sig')
     assert 'Ran 7 tests' in py and '\nOK' in py
     assert '0 eligible narratives' in (OUT / 'content-check.log').read_text(encoding='utf-8-sig')
@@ -99,6 +102,9 @@ def main():
     simulations = [info(Path('app/build/acceptance', p)) for p in ('full-simulation.txt', 'accelerated-simulation.txt',
                    'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt')]
     audit = load(OUT / 'remote-audit.json')
+    identity_boundary = load(OUT / 'identity-boundary.json')
+    assert not identity_boundary['default_production_identity_exists']
+    assert not identity_boundary['tracked_private_files'] and identity_boundary['original_worktree_count'] == 1
     evidence = dict(milestone='V0.6.0 D2 production capability (simulation only)', issue=42,
                     baseline_commit=BASE, evidence_source_commit=git('rev-parse', 'HEAD'),
                     implementation_commit=git('log', '-1', '--format=%H', '--', 'app/src/test/java/com/kitt/reader/d1/D2Production.kt', 'app/src/test/java/com/kitt/reader/d1/ProductionD2Test.kt'),
@@ -109,7 +115,7 @@ def main():
                     signing=signing, simulations=simulations, wrapper_checks=wrapper,
                     wrapper_logs=[info(OUT / p) for p in ('wrapper-prepare.log', 'wrapper-refusal.log', 'audit-newdu.log')],
                     protected_files=before, production_app_and_yangshen_unchanged=True,
-                    remote_readonly_audit=audit, production_public_registry=[],
+                    remote_readonly_audit=audit, identity_boundary=identity_boundary, production_public_registry=[],
                     real_identity_initialized=False, real_human_publication_approval=False,
                     real_tag_release_upload_performed=False, phone_adb_install_performed=False,
                     actual_gh_available_in_path=False, apk_keystore_reused_for_pack_signing=False,
