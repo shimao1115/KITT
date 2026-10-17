@@ -59,7 +59,7 @@ try {
             $taskRaw = @('candidate.unsigned', 'fact-manifest.json', 'facts.json', 'narrative-manifest.json', 'narratives.json') |
                 ForEach-Object { [Convert]::ToBase64String([IO.File]::ReadAllBytes((Join-Path $taskOut $_))) }
             if ($taskIndex -eq 1) { $taskFirstRaw = $taskRaw } else {
-                if (($taskFirstRaw -join ':') -ne ($taskRaw -join ':')) { throw 'Unsigned bytes differ.' }
+                if (($taskFirstRaw -join ':') -cne ($taskRaw -join ':')) { throw 'Unsigned bytes differ.' }
             }
             $taskFields['sequence'] = '1'
             $taskFields['container_sha256'] = $taskFields['signed_region_sha256']
