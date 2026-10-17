@@ -1,5 +1,7 @@
 # KITT「沿途」现行产品与工程路线图
 
+> **实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，OPEN / DRAFT / 未合并；STOP 等独立复审与用户合并授权。**
+
 > **2026-10-18 D2 #42 工程验证完成（仅隔离模拟）**：新增独立本机身份接口、固定审核摘要后一次决定及成熟 gh 发布/回读；本轮新鲜1288项零失败，PowerShell5/7转录等检查通过。见 [HANDOFF](../HANDOFF.md)、[证据](evidence/v060-d2-production-verification.json)。Draft PR交付后STOP待独立复审/合并授权；首次真实身份/出版未授权，登记为空，App/手机/杨慎审批不动，两实体机PENDING，新都BLOCKED、正式故事0，不启动V0.6.1。
 
 

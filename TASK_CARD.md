@@ -1,5 +1,7 @@
 # KITT V0.6.0 · D2 正式发布能力收尾（仅工程施工，不进行真实发行）
 
+> **实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，OPEN / DRAFT / 未合并；STOP 等独立复审与用户合并授权。**
+
 > **2026-10-18 工程验证完成，Draft PR 交付后 STOP**：最终 Debug644 + Release631 + packtool13 = **1288项**零失败/错误/跳过；生产专项58例双Variant，Python7、六组Fake、构建/lint、原签名2+6、PowerShell5/7中文决定转录 PASS。详见 [HANDOFF](HANDOFF.md)、[本轮证据](docs/evidence/v060-d2-production-verification.json)、[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。仅虚拟身份与fake gh；真实登记为空，无真实钥/Tag/Release/上传/手机/合并，两实体机PENDING，新都仍BLOCKED、正式故事0。下方任务范围不变，交付后只等独立复审。
 
 

@@ -1,4 +1,6 @@
-# 2026-10-18 D2 正式发布能力收尾：工程验证完成，Draft PR 交付后 STOP
+# 2026-10-18 D2 正式发布能力工程交付 / Draft PR #43 / STOP 待独立复审
+
+**实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，保持 OPEN / DRAFT / 未合并。工程证据与交接已提交，STOP 等独立复审，不继续真实设置/出版或 V0.6.1。**
 
 唯一任务 [Issue #42](https://github.com/shimao1115/KITT/issues/42)，分支 `feat/v060-d2-production-release`；基线为已合并 [PR #41](https://github.com/shimao1115/KITT/pull/41)，merge `baea614ba02f1aad7776e65ed6766833ee451b3f`。本轮只完成可审查实现和隔离模拟，首次真实身份设置/首次正式发行仍未授权。
 
