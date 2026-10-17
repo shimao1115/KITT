@@ -69,7 +69,7 @@ def main():
     packtool = suites('packtool/build/test-results/test')
     for variant in (debug, release):
         d2 = next(s for s in variant['suites'] if s['name'] == 'com.kitt.reader.d1.ReleaseD2Test')
-        assert d2['tests'] >= 14
+        assert d2['tests'] >= 19
         assert any(s['name'] == 'com.kitt.reader.d1.ReleaseD1Test' for s in variant['suites'])
     checks = load(OUT / 'checks.json')
     assert {r['name'] for r in checks} == {'debug', 'release', 'packtool', 'build-lint'}
@@ -97,7 +97,7 @@ def main():
     for path in sorted((OUT / 'cli').glob('*.log')):
         fields = {}
         for line in path.read_text(encoding='utf-8-sig').splitlines():
-            match = re.fullmatch(r'([a-z_]+)=(.*)', line)
+            match = re.fullmatch(r'([a-z][a-z0-9_]*)=(.*)', line)
             if match:
                 fields[match[1]] = match[2]
         assert 'status' in fields and 'exit_code' in fields, path
@@ -107,10 +107,16 @@ def main():
         assert cli[name]['status'] == status
     assert cli['preview']['ready_to_publish'] == 'false' and cli['preview']['stories'] == '0'
     assert cli['preview-story']['stories'] == '2' and cli['preview-story']['ready_to_publish'] == 'false'
+    assert cli['dry-run']['status'] == 'SIMULATED_RELEASE_PREPARED_TEST_ONLY'
+    assert cli['dry-run']['simulated_human_decisions'] == '1'
+    assert cli['dry-run']['upload_performed'] == 'false' and cli['dry-run']['ready_to_publish'] == 'false'
+    assert cli['dry-run']['signature_verified'] == 'true' and cli['dry-run']['real_human_approval_recorded'] == 'false'
+    assert '<VERIFIED_PRODUCTION_FILE>' in json.loads(cli['dry-run']['upload_argv_template'])
     for name, code in {'tamper-verify': 'bad_signature', 'wrong-county': 'expected_area',
                        'wrong-version': 'expected_factversion', 'rollback': 'sequence_rollback',
                        'unknown-key': 'unknown_key_id', 'production': 'production_not_authorized',
-                       'relabel-verify': 'inner_binding'}.items():
+                       'relabel-verify': 'inner_binding', 'dry-run-change': 'review_changed',
+                       'dry-run-no-confirm': 'confirmation_required'}.items():
         assert cli[name]['code'] == code and cli[name]['exit_code'] == '3'
     assert cli['audit-newdu']['sources_unclear'] == '2' and cli['audit-newdu']['published_stories'] == '0'
     key_metadata = load(OUT / 'key-public.json')
@@ -139,13 +145,16 @@ def main():
                     real_xindu_external_release='BLOCKED: 2 of 11 research sources have unclear rights',
                     production_signing_cli='NOT ENABLED; first identity and publication require separate authorization',
                     physical_two_computers='PENDING; two clean worktrees on one Windows computer only',
-                    pending=['office/home actual cross-device comparison', 'user-selected signing computer and production identity',
+                    pending=['office/home actual cross-device comparison', 'first-time independent production identity initialization on each computer',
                              'real Xindu rights and Yangshen Visitor approval', 'production signing/publication authorization and tooling enablement',
                              'phone JCA, pinned public key, download/import/atomic installation and persisted rollback floor (V0.6.1)'],
                     failed_attempts=[dict(stage='initial compilation', reason='JDK-only APIs unavailable on Android test compile classpath; fixed using compatible APIs', counted=False),
                                      dict(stage='first focused D2 run', tests=14, failures=1,
-                                          reason='test helper duplicated --input; corrected helper to replace the option', counted=False)])
+                                          reason='test helper duplicated --input; corrected helper to replace the option', counted=False),
+                                     dict(stage='first external preview', reason='documentation sample used the story version for the empty narrative; correctly refused, example corrected', counted=False)],
+                    superseded_runs=[dict(tests=1162, reason='previous task-card version; replaced by fresh final tests', counted=False)])
     assert evidence['wrapper_checks']['success'] and evidence['wrapper_checks']['refusal_propagated']
+    assert evidence['wrapper_checks']['one_decision_pipeline_success']
     text = json.dumps(scrub(evidence), ensure_ascii=False, indent=2) + '\n'
     assert not re.search(r'[A-Za-z]:[/\\]', text) and 'AppData' not in text, 'local path leakage'
     Path('docs/evidence/v060-d2-verification.json').write_text(text, encoding='utf-8')

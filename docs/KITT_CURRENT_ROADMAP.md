@@ -7,7 +7,7 @@
 
 ## 1. 真实基线与已批准事项
 
-> **2026-10-17 新授权 D2 最小工程（仅当前开发分支的施工许可）**：在办公室和家里两台 Windows 电脑协作编辑/校验知识包，复用 D1 KCPK 和 D0 审核，规划指定单台电脑签名和 GitHub Release 手动受控发布。见 [Issue #40](https://github.com/shimao1115/KITT/issues/40) / 当前分支 [TASK_CARD](../TASK_CARD.md)。**此授权不包括真实生成生产私钥、创建 Release/Tag、上传正式知识包、手机升级或 V0.6.1；下面 D1 时期“D2未授权”是历史状态，不再用来阻止本轮工程任务**。
+> **2026-10-17 D2 最新授权（仅当前开发分支施工）**：办公室或家里任一电脑由 Agent 制作，用户看一次正文及来源说明并确认，随后当前电脑自动检查/签名/验签/发布；不要求专用签名机、第二轮人工审稿或重复上传确认。两机各自持独立本机 key_id/私钥，复用 D1 多锚和 D0 Gate；不合格条目可在新输入中明确剔除后单独检查合法子集。见 [Issue #40](https://github.com/shimao1115/KITT/issues/40)、[TASK_CARD](../TASK_CARD.md)、[操作说明](COUNTY_PACK_D2_WORKFLOW.md)。**本轮只做 TEST_ONLY 模拟和 Draft PR，不生成生产钥/真实根，不创建 Release/Tag、不操作手机、不启动 V0.6.1；真实新都全量继续 BLOCKED**。旧“单台签名机”及下方 D1 时期授权文字均为历史。
 
 
 > **2026-10-17 D1 完成并合并（以此状态为准）**：V0.6.0 D1 电脑端 TEST_ONLY 可复现双包打包与离线签名验签已通过[第二轮工程复审](https://github.com/shimao1115/KITT/pull/39#issuecomment-6233819737)，[PR #39](https://github.com/shimao1115/KITT/pull/39) 已合并 main（merge `76377555bf3e00be1060a1d03cdf3d4eda8be768`，工程证据 Debug567 + Release554 + packtool13 = **1134项**；不是独立 GitHub CI）。V0.6.0 D0/code20县级双包通用读取已于 [PR #37](https://github.com/shimao1115/KITT/pull/37) 正式合并main（merge `1330574d15deb55bc8881783c55e889ddf77ddf0`），有Debug540+Release527=1067项旧阶段工程证据与独立复审PASS。用户已明确启动**下一阶段 D1**：[Issue #38](https://github.com/shimao1115/KITT/issues/38)，唯一工程范围是**可复现Fact/Narrative发行候选字节＋离线签名/验签协议**，仅用TEST_ONLY密钥，不自动建立正式出版信任；实际生产密钥首次托管/GitHub Release/D2、手机下载导入/V0.6.1均未授权。手机现为已验收code19；D0 code20未上手机，正式完整故事0、杨慎Visitor待审；旧settings.xml首次进设置页字节漂移与Gradle IPC初轮失败确切根因仍UNKNOWN。

@@ -57,6 +57,7 @@ object D1Cli {
             "build" -> build(options)
             "prepare" -> D2Local.prepare(options)
             "release-preview" -> D2Local.preview(options)
+            "release-dry-run" -> D2Local.releaseDryRun(options)
             "verify" -> verify(options)
             "tamper" -> tamper(options)
             "relabel" -> relabel(options)
@@ -67,7 +68,9 @@ object D1Cli {
             }
         }
     } catch (error: com.kitt.packtool.PackRejection) {
-        println("status=REJECTED code=${error.code}")
+        println("status=REJECTED")
+        println("code=${error.code}")
+        if (error.detail.matches(Regex("[a-z0-9_,.:-]{1,512}"))) println("detail=${error.detail}")
         REJECTED
     } catch (error: IllegalArgumentException) {
         println("status=USAGE_ERROR reason=arguments")
@@ -336,7 +339,7 @@ object D1Cli {
                 val name = flag.removePrefix("--")
                 require(name in setOf("command", "root", "sample", "out", "keydir", "pack", "commit",
                     "appcode", "json", "offset", "keyid", "sequence", "minsequence", "area", "parent",
-                    "input", "scope", "factversion", "narrativeversion"))
+                    "input", "scope", "factversion", "narrativeversion", "confirmation", "reviewhash"))
                 require(name !in parsed) { "duplicate_option" }
                 parsed[name] = arguments[index + 1]
                 index += 2

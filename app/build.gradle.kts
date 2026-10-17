@@ -95,6 +95,6 @@ tasks.register<JavaExec>("d1Pack") {
     isIgnoreExitValue = true
     val flags = listOf("command", "root", "sample", "out", "keydir", "pack", "commit", "appcode",
         "json", "offset", "keyid", "sequence", "minsequence", "area", "parent", "input", "scope",
-        "factversion", "narrativeversion")
+        "factversion", "narrativeversion", "confirmation", "reviewhash")
     args = flags.mapNotNull { flag -> (project.findProperty("d1.$flag") as String?)?.let { listOf("--$flag", it) } }.flatten()
 }

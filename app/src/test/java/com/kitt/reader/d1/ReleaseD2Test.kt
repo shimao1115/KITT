@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
 import java.security.KeyPairGenerator
+import java.security.KeyPair
 
 /** Real CLI calls with isolated local Git inputs; all content and keys are TEST_ONLY. */
 class ReleaseD2Test {
@@ -207,6 +208,105 @@ class ReleaseD2Test {
         assertEquals("preserve", sentinel.readText())
         assertNotEquals(0, preview(more = arrayOf("--json", sentinel.path)).first)
         assertEquals("preserve", sentinel.readText())
+    }
+
+    private lateinit var pipelineOutput: File
+    private fun dryRun(s: Source, localKeyId: String = keyId, localPair: KeyPair = pair,
+                       vararg more: String): Pair<Int, String> {
+        val keys = temp.newFolder()
+        File(keys, "key.json").writeText("""{"key_id":"$localKeyId","scope":"TEST_ONLY"}""")
+        File(keys, "public.pem").writeText(Pem.publicPem(localPair.public))
+        File(keys, "private.pem").writeText(Pem.privatePem(localPair.private))
+        val prepared = PackBuilder.prepare(D1Sample.AREA_ID, File(s.root, "input/facts.json").readBytes(),
+            File(s.root, "input/narratives.json").readBytes(), localKeyId, "TEST_ONLY", s.commit, 20)
+        pipelineOutput = File(temp.root, "pipeline-${System.nanoTime()}")
+        val options = linkedMapOf("command" to "release-dry-run", "root" to s.root.path, "input" to "input",
+            "commit" to s.commit, "keydir" to keys.path, "out" to pipelineOutput.path,
+            "confirmation" to "SIMULATED_TEST_ONLY", "reviewhash" to ContentDigest.sha256(prepared.region))
+        more.toList().chunked(2).forEach { options[it[0].removePrefix("--")] = it[1] }
+        return cli(*options.flatMap { listOf("--${it.key}", it.value) }.toTypedArray())
+    }
+
+    @Test fun singleSimulatedDecisionAutomaticallySignsVerifiesAndPlansUpload() {
+        val result = dryRun(source(n = story))
+        assertEquals(result.second, 0, result.first)
+        val report = Json.parseToJsonElement(File(pipelineOutput, "release-preview.json").readText()).jsonObject
+        assertEquals(1, report.getValue("simulated_human_decisions").jsonPrimitive.int)
+        assertTrue(report.getValue("signature_verified").jsonPrimitive.boolean)
+        assertFalse(report.getValue("upload_performed").jsonPrimitive.boolean)
+        assertFalse(report.getValue("real_human_approval_recorded").jsonPrimitive.boolean)
+        assertFalse(report.getValue("ready_to_publish").jsonPrimitive.boolean)
+        assertEquals("<VERIFIED_PRODUCTION_FILE>", report.getValue("upload_argv_template").jsonArray[4].jsonPrimitive.content)
+        assertTrue(File(pipelineOutput, "pack.kcpk").isFile)
+    }
+
+    @Test fun missingDecisionOrChangedReviewCannotSignOrEmitAnUploadPlan() {
+        val s = source()
+        refuses(dryRun(s, more = arrayOf("--confirmation", "not-confirmed")), "confirmation_required")
+        assertFalse(pipelineOutput.exists())
+        refuses(dryRun(s, more = arrayOf("--reviewhash", "0".repeat(64))), "review_changed")
+        assertFalse(pipelineOutput.exists())
+        refuses(dryRun(s, more = arrayOf("--scope", "PRODUCTION")), "production_not_authorized")
+        assertFalse(pipelineOutput.exists())
+    }
+
+    @Test fun oneDecisionDoesNotOverrideRightsOrPendingStories() {
+        val bad = source(n = story.decodeToString().replace("\"approved\"", "\"candidate\"").encodeToByteArray())
+        val result = dryRun(bad)
+        refuses(result, "content_rejected")
+        assertTrue(result.second.contains("story-0:"))
+        assertFalse(pipelineOutput.exists())
+        val unclear = source(f = facts.decodeToString().replace("CC-BY-4.0", "unknown").encodeToByteArray())
+        refuses(dryRun(unclear), "content_rejected")
+        assertFalse(pipelineOutput.exists())
+    }
+
+    @Test fun eitherWorkstationCompletesWithItsOwnKeyAndSameContent() {
+        val s = source()
+        val second = KeyPairGenerator.getInstance("RSA").apply { initialize(2048) }.generateKeyPair()
+        assertEquals(0, dryRun(s, "test-only-office", pair).first)
+        val firstBytes = File(pipelineOutput, "pack.kcpk").readBytes()
+        assertEquals(0, dryRun(s, "test-only-home", second).first)
+        val secondBytes = File(pipelineOutput, "pack.kcpk").readBytes()
+        val trust = TrustStore(listOf(TrustAnchor("test-only-office", pair.public, AnchorScope.TEST_ONLY),
+            TrustAnchor("test-only-home", second.public, AnchorScope.TEST_ONLY)))
+        val verifier = ReleaseVerifier(trust, 20, D0CountyGate)
+        val firstAccepted = verifier.verify(firstBytes) as ReleaseVerdict.Accepted
+        val secondAccepted = verifier.verify(secondBytes) as ReleaseVerdict.Accepted
+        assertEquals(firstAccepted.blocks.digest(), secondAccepted.blocks.digest())
+        assertFalse(firstBytes.contentEquals(secondBytes))
+    }
+
+    @Test fun explicitLegalSubsetPassesWithoutApprovingOrMutatingBlockedOriginal() {
+        val badFacts = facts.decodeToString().replaceFirst("CC-BY-4.0", "unknown").encodeToByteArray()
+        val s = source(f = badFacts, n = story)
+        refuses(prepare(s, File(temp.root, "blocked-full")), "content_rejected")
+        val original = Json.parseToJsonElement(badFacts.decodeToString()).jsonObject
+        val subset = JsonObject(original + mapOf(
+            "content_version" to JsonPrimitive("TEST_ONLY-explicit-subset-1"),
+            "sources" to JsonArray(original.getValue("sources").jsonArray.filter { it.jsonObject.getValue("source_id").jsonPrimitive.content == "s1" }),
+            "source_permissions" to buildJsonObject { put("s1", "allowed") },
+            "entities" to JsonArray(original.getValue("entities").jsonArray.filter { it.jsonObject.getValue("entity_id").jsonPrimitive.content == "e1" }),
+            "claims" to JsonArray(emptyList()), "claim_permissions" to JsonObject(emptyMap())))
+        File(s.root, "subset").mkdir()
+        File(s.root, "subset/facts.json").writeText(subset.toString())
+        File(s.root, "subset/narratives.json").writeBytes(narratives)
+        fun git(vararg flags: String): String {
+            val p = ProcessBuilder(listOf("git", "-C", s.root.path) + flags).redirectErrorStream(true).start()
+            val text = p.inputStream.bufferedReader().readText()
+            check(p.waitFor() == 0)
+            return text.trim()
+        }
+        git("add", "subset"); git("commit", "-qm", "TEST_ONLY explicit legal subset")
+        val committed = s.copy(commit = git("rev-parse", "HEAD"))
+        val out = File(temp.root, "legal-subset")
+        assertEquals(0, prepare(committed, out, "--input", "subset").first)
+        val report = Json.parseToJsonElement(File(out, "prepare.json").readText()).jsonObject
+        assertEquals(2, report.getValue("facts").jsonPrimitive.int)
+        assertEquals(1, report.getValue("sources").jsonPrimitive.int)
+        assertEquals(0, report.getValue("stories").jsonPrimitive.int)
+        assertArrayEquals(badFacts, File(s.root, "input/facts.json").readBytes())
+        refuses(prepare(committed, File(temp.root, "still-blocked-full")), "content_rejected")
     }
 
     private fun edit(bytes: ByteArray, transform: (JsonObject) -> JsonObject): ByteArray =

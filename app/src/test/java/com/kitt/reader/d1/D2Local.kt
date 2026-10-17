@@ -47,7 +47,10 @@ internal object D2Local {
     fun contentCheck(prepared: PackBuilder.Prepared): GateReport {
         InnerBinding.check(prepared.manifest, prepared.blocks)
         val report = D0CountyGate.inspect(prepared.blocks)
-        if (!report.accepted) throw PackRejection("content_rejected")
+        if (!report.accepted) throw PackRejection("content_rejected",
+            report.blocked.entries.joinToString(",") { "${it.key}:${it.value}" }.ifBlank {
+                report.reason ?: "content_schema"
+            })
         return report
     }
 
@@ -92,12 +95,87 @@ internal object D2Local {
         val names = listOf("fact-manifest.json", "facts.json", "narrative-manifest.json", "narratives.json")
         names.zip(candidate.blocks.list()).forEach { (name, bytes) -> Files.write(output.resolve(name), bytes, CREATE_NEW) }
         Files.write(output.resolve("prepare.json"), JsonObject(report).toString().encodeToByteArray(), CREATE_NEW)
+        Files.write(output.resolve("review.md"), review(candidate).encodeToByteArray(), CREATE_NEW)
         println("status=PREPARED_TEST_ONLY")
         println("unsigned_sha256=${candidate.blocks.digest()}")
         println("signed_region_sha256=${ContentDigest.sha256(candidate.region)}")
         println("stories=${gate.stories}")
         println("ready_to_publish=false")
         return D1Cli.ACCEPTED
+    }
+
+    /** One simulated human decision, followed by automatic checks/sign/verify/upload planning.
+     *  No second confirmation, no real approval mutation and no network process can be invoked. */
+    fun releaseDryRun(options: D1Cli.Options): Int {
+        testScope(options)
+        if (options.required("confirmation") != "SIMULATED_TEST_ONLY") throw PackRejection("confirmation_required")
+        val root = File(options.required("root"))
+        val keyDirectory = File(options.required("keydir"))
+        requireExternalKey(keyDirectory, root)
+        val key = D1Cli.readKey(keyDirectory, privateRequired = true)
+        val privateKey = key.privateKey ?: throw PackRejection("missing_private_key")
+        val (facts, narratives) = input(options)
+        val area = Json.parseToJsonElement(facts.decodeToString()).jsonObject.getValue("area_id").jsonPrimitive.content
+        val appCode = options.optional("appcode")?.toInt() ?: 20
+        val sequence = options.optional("sequence")?.toInt() ?: 1
+        val prepared = PackBuilder.prepare(area, facts, narratives, key.keyId, "TEST_ONLY",
+            options.required("commit"), appCode, sequence)
+        if (options.required("reviewhash") != ContentDigest.sha256(prepared.region)) {
+            throw PackRejection("review_changed")
+        }
+        contentCheck(prepared)
+        val built = PackBuilder.build(area, facts, narratives, key.keyId, "TEST_ONLY",
+            options.required("commit"), appCode, privateKey, sequence)
+        val verifier = ReleaseVerifier(TrustStore(listOf(TrustAnchor(key.keyId, key.publicKey, AnchorScope.TEST_ONLY))),
+            appCode, D0CountyGate, options.optional("minsequence")?.toInt() ?: 1)
+        val verdict = verifier.verify(built.container)
+        if (verdict is ReleaseVerdict.Rejected) throw PackRejection(verdict.code, verdict.detail)
+        verdict as ReleaseVerdict.Accepted
+        val result = JsonObject(report(verdict.manifest, verdict.gate, "SIMULATED_RELEASE_PREPARED_TEST_ONLY") + mapOf(
+            "confirmation" to JsonPrimitive("SIMULATED_TEST_ONLY"),
+            "simulated_human_decisions" to JsonPrimitive(1),
+            "real_human_approval_recorded" to JsonPrimitive(false),
+            "signature_verified" to JsonPrimitive(true),
+            "upload_performed" to JsonPrimitive(false),
+            "unsigned_sha256" to JsonPrimitive(prepared.blocks.digest()),
+            "signed_region_sha256" to JsonPrimitive(ContentDigest.sha256(prepared.region)),
+            "container_sha256" to JsonPrimitive(ContentDigest.sha256(built.container)),
+            "upload_argv_template" to JsonArray(listOf("gh", "release", "create", "<PRODUCTION_TAG>",
+                "<VERIFIED_PRODUCTION_FILE>", "--repo", "shimao1115/KITT", "--title", "<APPROVED_TITLE>",
+                "--notes-file", "<REVIEWED_NOTES_FILE>").map(::JsonPrimitive)),
+            "upload_template_executable" to JsonPrimitive(false)))
+        val output = File(options.required("out")).canonicalFile.toPath()
+        Files.createDirectories(output.parent)
+        Files.createDirectory(output)
+        Files.write(output.resolve("pack.kcpk"), built.container, CREATE_NEW)
+        Files.write(output.resolve("release-preview.json"), result.toString().encodeToByteArray(), CREATE_NEW)
+        result.forEach { (field, value) -> println("$field=${if (value is JsonPrimitive) value.content else value}") }
+        return D1Cli.ACCEPTED
+    }
+
+    private fun review(candidate: PackBuilder.Prepared): String = buildString {
+        appendLine("# TEST_ONLY 内容预览（不是真实人工批准或正式出版）")
+        appendLine("地区：${candidate.manifest.areaId}；源码：${candidate.manifest.sourceCommit}")
+        appendLine("版本：${candidate.manifest.factVersion} / ${candidate.manifest.narrativeVersion}；序号：${candidate.manifest.sequence}")
+        appendLine("用户一次过目包括正文、事实和下列来源/权利说明；机器检查自动执行。")
+        val facts = Json.parseToJsonElement(candidate.blocks.facts.decodeToString()).jsonObject
+        facts.getValue("entities").jsonArray.forEach { entity ->
+            appendLine("\n## ${entity.jsonObject.getValue("title").jsonPrimitive.content}")
+            entity.jsonObject.getValue("basic_facts").jsonArray.forEach { fact ->
+                appendLine("- ${fact.jsonObject.getValue("summary").jsonPrimitive.content}")
+            }
+        }
+        appendLine("\n## 来源与权利")
+        facts.getValue("sources").jsonArray.forEach { source ->
+            val s = source.jsonObject
+            appendLine("- ${s.getValue("source_id").jsonPrimitive.content}：${s.getValue("title").jsonPrimitive.content}；${s.getValue("url").jsonPrimitive.content}；${s.getValue("rights").jsonPrimitive.content}")
+        }
+        val stories = Json.parseToJsonElement(candidate.blocks.narratives.decodeToString()).jsonObject.getValue("narratives").jsonArray
+        appendLine("\n## 讲述（${stories.size} 篇；合成测试稿）")
+        stories.forEach { story ->
+            appendLine("\n### ${story.jsonObject.getValue("title").jsonPrimitive.content}")
+            appendLine(story.jsonObject.getValue("text").jsonPrimitive.content)
+        }
     }
 
     fun preview(options: D1Cli.Options): Int {
@@ -111,7 +189,7 @@ internal object D2Local {
             options.optional("appcode")?.toInt() ?: 20, D0CountyGate,
             options.optional("minsequence")?.toInt() ?: 1)
         val verdict = verifier.verify(bytes)
-        if (verdict is ReleaseVerdict.Rejected) throw PackRejection(verdict.code)
+        if (verdict is ReleaseVerdict.Rejected) throw PackRejection(verdict.code, verdict.detail)
         verdict as ReleaseVerdict.Accepted
         val m = verdict.manifest
         // Match the human's intended release, not just a self-consistent signed container.
