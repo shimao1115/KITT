@@ -1,0 +1,239 @@
+{
+    "schema_version": 2,
+    "pack_id": "cn-420502-fact",
+    "content_version": "TEST_ONLY-d1-fact-1",
+    "area_id": "cn-420502",
+    "retrieved_at": "2026-10-17",
+    "area": {
+        "area_id": "cn-420502",
+        "parent_id": "cn-420500",
+        "province": "湖北省",
+        "city": "宜昌市",
+        "district": "西陵区"
+    },
+    "sources": [
+        {
+            "source_id": "s0",
+            "title": "TEST_ONLY 合成来源 s0",
+            "url": "https://example.invalid/s0",
+            "kind": "OTHER",
+            "access_status": "read",
+            "accessed_at": "2026-10-17",
+            "rights": "CC-BY-4.0",
+            "registry_revision": "3a0f873e615cccc98a5ba6c58b9ba826ca7b4982ce7d1ef072756b9e9929484b"
+        },
+        {
+            "source_id": "s1",
+            "title": "TEST_ONLY 合成来源 s1",
+            "url": "https://example.invalid/s1",
+            "kind": "OTHER",
+            "access_status": "read",
+            "accessed_at": "2026-10-17",
+            "rights": "CC-BY-4.0",
+            "registry_revision": "be2f7f97e4246bac11f1ad59879d2e64c8e800409ee28da0be04754e324a9db1"
+        }
+    ],
+    "source_permissions": {
+        "s0": "allowed",
+        "s1": "allowed"
+    },
+    "entities": [
+        {
+            "entity_id": "e0",
+            "title": "TEST_ONLY 合成同名对象0",
+            "family": "PEOPLE",
+            "basic_facts": [
+                {
+                    "fact_id": "b0-0",
+                    "summary": "TEST_ONLY 合成基础说明 0/0，不是地方史实。",
+                    "coverage": "TEST_ONLY 基础0/0",
+                    "source_ids": [
+                        "s0"
+                    ]
+                },
+                {
+                    "fact_id": "b0-1",
+                    "summary": "TEST_ONLY 合成基础说明 0/1，不是地方史实。",
+                    "coverage": "TEST_ONLY 基础0/1",
+                    "source_ids": [
+                        "s0"
+                    ]
+                }
+            ]
+        },
+        {
+            "entity_id": "e1",
+            "title": "TEST_ONLY 合成同名对象1",
+            "family": "PEOPLE",
+            "basic_facts": [
+                {
+                    "fact_id": "b1-0",
+                    "summary": "TEST_ONLY 合成基础说明 1/0，不是地方史实。",
+                    "coverage": "TEST_ONLY 基础1/0",
+                    "source_ids": [
+                        "s1"
+                    ]
+                },
+                {
+                    "fact_id": "b1-1",
+                    "summary": "TEST_ONLY 合成基础说明 1/1，不是地方史实。",
+                    "coverage": "TEST_ONLY 基础1/1",
+                    "source_ids": [
+                        "s1"
+                    ]
+                }
+            ]
+        }
+    ],
+    "claims": [
+        {
+            "claim_id": "c0",
+            "entity_id": "e0",
+            "area_ids": [
+                "cn-420502"
+            ],
+            "text": "TEST_ONLY 合成Claim 0，不是已核实地方知识。",
+            "status": "verified",
+            "temporal_class": "stable",
+            "rights": "CC-BY-4.0",
+            "evidence": [
+                {
+                    "source_id": "s0",
+                    "locator": "TEST_ONLY paragraph 0",
+                    "relation": "supports",
+                    "accepted_source_revision": "3a0f873e615cccc98a5ba6c58b9ba826ca7b4982ce7d1ef072756b9e9929484b"
+                }
+            ],
+            "revision": "592985becf1a69d46b0201aae96ed00b7a41e0f8d5aef8f6d0c6744461c0a09a"
+        },
+        {
+            "claim_id": "c1",
+            "entity_id": "e1",
+            "area_ids": [
+                "cn-420502"
+            ],
+            "text": "TEST_ONLY 合成Claim 1，不是已核实地方知识。",
+            "status": "verified",
+            "temporal_class": "stable",
+            "rights": "CC-BY-4.0",
+            "evidence": [
+                {
+                    "source_id": "s1",
+                    "locator": "TEST_ONLY paragraph 1",
+                    "relation": "supports",
+                    "accepted_source_revision": "be2f7f97e4246bac11f1ad59879d2e64c8e800409ee28da0be04754e324a9db1"
+                }
+            ],
+            "revision": "3f75ae9ffe3eedda2d0388da2826f0deddd5b06e53106960197564dcbbfef655"
+        },
+        {
+            "claim_id": "c2",
+            "entity_id": "e0",
+            "area_ids": [
+                "cn-420502"
+            ],
+            "text": "TEST_ONLY 合成Claim 2，不是已核实地方知识。",
+            "status": "verified",
+            "temporal_class": "stable",
+            "rights": "CC-BY-4.0",
+            "evidence": [
+                {
+                    "source_id": "s0",
+                    "locator": "TEST_ONLY paragraph 2",
+                    "relation": "supports",
+                    "accepted_source_revision": "3a0f873e615cccc98a5ba6c58b9ba826ca7b4982ce7d1ef072756b9e9929484b"
+                }
+            ],
+            "revision": "260cba64b3fa8070ed358915c5ac6cc2dfc52f1e8c42fc7faeac330359a908a5"
+        },
+        {
+            "claim_id": "c3",
+            "entity_id": "e1",
+            "area_ids": [
+                "cn-420502"
+            ],
+            "text": "TEST_ONLY 合成Claim 3，不是已核实地方知识。",
+            "status": "verified",
+            "temporal_class": "stable",
+            "rights": "CC-BY-4.0",
+            "evidence": [
+                {
+                    "source_id": "s1",
+                    "locator": "TEST_ONLY paragraph 3",
+                    "relation": "supports",
+                    "accepted_source_revision": "be2f7f97e4246bac11f1ad59879d2e64c8e800409ee28da0be04754e324a9db1"
+                }
+            ],
+            "revision": "6c47e774a606dbd818d256eb7935e4e9972e3a0ee425b359b3f732cbee9a85cd"
+        },
+        {
+            "claim_id": "c4",
+            "entity_id": "e0",
+            "area_ids": [
+                "cn-420502"
+            ],
+            "text": "TEST_ONLY 合成Claim 4，不是已核实地方知识。",
+            "status": "verified",
+            "temporal_class": "stable",
+            "rights": "CC-BY-4.0",
+            "evidence": [
+                {
+                    "source_id": "s0",
+                    "locator": "TEST_ONLY paragraph 4",
+                    "relation": "supports",
+                    "accepted_source_revision": "3a0f873e615cccc98a5ba6c58b9ba826ca7b4982ce7d1ef072756b9e9929484b"
+                }
+            ],
+            "revision": "e170d9bb2f4e1b1f74304f9366f8259e41713c6ecf2d9dc0d35e0753fda20810"
+        },
+        {
+            "claim_id": "c5",
+            "entity_id": "e1",
+            "area_ids": [
+                "cn-420502"
+            ],
+            "text": "TEST_ONLY 合成Claim 5，不是已核实地方知识。",
+            "status": "verified",
+            "temporal_class": "stable",
+            "rights": "CC-BY-4.0",
+            "evidence": [
+                {
+                    "source_id": "s1",
+                    "locator": "TEST_ONLY paragraph 5",
+                    "relation": "supports",
+                    "accepted_source_revision": "be2f7f97e4246bac11f1ad59879d2e64c8e800409ee28da0be04754e324a9db1"
+                }
+            ],
+            "revision": "8dc1d5c8088a972f3fafd32ea24299ffcdc276bce7f5c370a40ba3f309e0b510"
+        },
+        {
+            "claim_id": "c6",
+            "entity_id": "e0",
+            "area_ids": [
+                "cn-420502"
+            ],
+            "text": "TEST_ONLY 合成Claim 6，不是已核实地方知识。",
+            "status": "verified",
+            "temporal_class": "stable",
+            "rights": "CC-BY-4.0",
+            "evidence": [
+                {
+                    "source_id": "s0",
+                    "locator": "TEST_ONLY paragraph 6",
+                    "relation": "supports",
+                    "accepted_source_revision": "3a0f873e615cccc98a5ba6c58b9ba826ca7b4982ce7d1ef072756b9e9929484b"
+                }
+            ],
+            "revision": "e1e014a5bc029be75c9cd739aa85f9a3980f2f7ad81f5dbbb08c1bc445897183"
+        }
+    ],
+    "claim_permissions": {
+        "c0": "allowed",
+        "c1": "allowed",
+        "c2": "allowed",
+        "c3": "allowed",
+        "c4": "allowed",
+        "c5": "allowed",
+        "c6": "allowed"
+    }
+}

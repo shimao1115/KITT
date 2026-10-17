@@ -5,3 +5,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "KITT"
 include(":app")
+// D1 release-format tooling. Pure JVM, no Android dependency, never packaged into the APK.
+include(":packtool")

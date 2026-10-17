@@ -1,0 +1,52 @@
+{
+    "schema_version": 2,
+    "pack_id": "cn-420502-narrative",
+    "content_version": "TEST_ONLY-d1-narrative-1",
+    "area_id": "cn-420502",
+    "narratives": [
+        {
+            "narrative_id": "story-0",
+            "story_type": "main",
+            "area_id": "cn-420502",
+            "entity_id": "e0",
+            "title": "TEST_ONLY 合成篇0",
+            "text": "TEST_ONLY 合成工程夹具，不可作为西陵或新都的已核实知识。只用来验证县级双包签名、拼包拒绝、审核依赖与可复现打包。TEST_ONLY 合成工程夹具，不可作为西陵或新都的已核实知识。只用来验证县级双包签名、拼包拒绝、审核依赖与可复现打包。",
+            "text_sha256": "38a683845e73e38dc027104289f82e84c0137f920ea2d4e40c446c20f14dfc46",
+            "review_status": "approved",
+            "fact_gate": "passed",
+            "visitor_gate": "passed",
+            "approval_ref": "TEST_ONLY_NOT_REAL_APPROVAL",
+            "license": "CC-BY-4.0",
+            "primary_category": "NATURE",
+            "secondary_categories": [],
+            "supported_claim_refs": [
+                {
+                    "claim_id": "c0",
+                    "accepted_revision": "592985becf1a69d46b0201aae96ed00b7a41e0f8d5aef8f6d0c6744461c0a09a"
+                }
+            ]
+        },
+        {
+            "narrative_id": "story-1",
+            "story_type": "followup",
+            "area_id": "cn-420502",
+            "entity_id": "e0",
+            "title": "TEST_ONLY 合成篇1",
+            "text": "TEST_ONLY 合成工程夹具，不可作为西陵或新都的已核实知识。只用来验证县级双包签名、拼包拒绝、审核依赖与可复现打包。TEST_ONLY 合成工程夹具，不可作为西陵或新都的已核实知识。只用来验证县级双包签名、拼包拒绝、审核依赖与可复现打包。",
+            "text_sha256": "38a683845e73e38dc027104289f82e84c0137f920ea2d4e40c446c20f14dfc46",
+            "review_status": "approved",
+            "fact_gate": "passed",
+            "visitor_gate": "passed",
+            "approval_ref": "TEST_ONLY_NOT_REAL_APPROVAL",
+            "license": "CC-BY-4.0",
+            "primary_category": "ENGINEERING",
+            "secondary_categories": [],
+            "supported_claim_refs": [
+                {
+                    "claim_id": "c2",
+                    "accepted_revision": "260cba64b3fa8070ed358915c5ac6cc2dfc52f1e8c42fc7faeac330359a908a5"
+                }
+            ]
+        }
+    ]
+}

@@ -1,5 +1,7 @@
 # Byte-exact curated bundle: manifest checksums must survive Windows checkouts.
 app/src/main/assets/offline/* -text
+# D1 release inputs are hashed byte-for-byte; CRLF rewriting would change every digest.
+tools/d1/** -text
 # Preserve vendor license and serialized manifest bytes without whitespace rewrites.
 app/src/main/assets/offline/ODbL-1.0.html -whitespace
 app/src/main/assets/offline/xindu-manifest.json -whitespace
