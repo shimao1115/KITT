@@ -52,6 +52,7 @@ def main():
     tests = {}
     for check in checks:
         assert check['exit'] == 0
+        assert not git('diff', check['source_commit'], 'HEAD', '--', 'app/src/test', 'packtool', 'app/build.gradle.kts', 'scripts/d2-pack.ps1')
         check['log'] = info(OUT / (check['name'] + '.log'), started.timestamp())
         assert 'BUILD SUCCESSFUL' in (OUT / (check['name'] + '.log')).read_text(encoding='utf-8-sig')
         if check['name'] == 'build-lint':
@@ -110,7 +111,9 @@ def main():
                     phone_adb_install=False, merge=False, physical_two_machines='PENDING', real_xindu='BLOCKED; formal stories 0',
                     previous_1288_tests='historical reviewed head only; neither inherited nor added',
                     unchanged_host_input_tests='PS5/PS7 wrapper unchanged; previous head evidence retained, not claimed rerun',
-                    preliminary_focused=load(OUT / 'focused-debug-check.json'),
+                    preliminary_focused=dict(check=load(OUT / 'focused-debug-check.json'),
+                                             counts=load(OUT / 'focused-debug-counts.json'), counted_in_totals=False,
+                                             log=info(OUT / 'focused-debug.log', started.timestamp())),
                     limitations=['local JVM/fake gh validation only, not external CI or actual gh Release',
                                  'authorization of main relies on repository access/merge policy; first actual registration separately authorized',
                                  'no distributed same-county lock; serialize publication',
