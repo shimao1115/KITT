@@ -88,8 +88,8 @@ def main():
     assert repro['command'] == 'prepare' and repro['unsigned_bytes_identical'] and repro['signed_region_bytes_identical']
     assert repro['builder_project_is_worktree']
     assert len({row['unsigned_sha256'] for row in repro['clean_directories']}) == 1
-    assert len({row['pack_sha256'] for row in repro['clean_directories']}) == 1
-    assert all(row['container_sha256'] == row['pack_sha256'] for row in repro['clean_directories'])
+    assert len({row['candidate_file_sha256'] for row in repro['clean_directories']}) == 1
+    assert all(row['signed_region_sha256'] == row['candidate_file_sha256'] for row in repro['clean_directories'])
     guard = load(OUT / 'repro-guard.json')
     assert guard['stopped'] and guard['sentinel_intact'] and not guard['created_directory_deleted']
     assert guard['original_worktrees_unchanged']

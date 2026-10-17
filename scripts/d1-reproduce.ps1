@@ -66,7 +66,7 @@ try {
             $taskFields['container_bytes'] = (Get-Item -LiteralPath (Join-Path $taskOut 'candidate.unsigned')).Length
         }
         $taskCandidate = if ($taskCommand -eq 'build') { 'pack.kcpk' } else { 'candidate.unsigned' }
-        $taskResults += [ordered]@{
+        $taskResult = [ordered]@{
             tree = "<REPRO_WORKTREE_$taskIndex>"
             commit = $taskCommit
             status = $taskFields['status']
@@ -76,11 +76,23 @@ try {
             container_bytes = [int]$taskFields['container_bytes']
             pack_sha256 = (Get-FileHash -LiteralPath (Join-Path $taskOut $taskCandidate) -Algorithm SHA256).Hash.ToLower()
         }
+        if ($taskCommand -eq 'prepare') {
+            $taskResult['signed_region_sha256'] = $taskResult['container_sha256']
+            $taskResult['signed_region_bytes'] = $taskResult['container_bytes']
+            $taskResult['candidate_file_sha256'] = $taskResult['pack_sha256']
+            $taskResult.Remove('container_sha256')
+            $taskResult.Remove('container_bytes')
+            $taskResult.Remove('pack_sha256')
+        }
+        $taskResults += $taskResult
     }
+    $taskHashField = if ($taskCommand -eq 'build') { 'container_sha256' } else { 'signed_region_sha256' }
+    $taskSizeField = if ($taskCommand -eq 'build') { 'container_bytes' } else { 'signed_region_bytes' }
+    $taskFileField = if ($taskCommand -eq 'build') { 'pack_sha256' } else { 'candidate_file_sha256' }
     $taskIdentical = ($taskResults[0].unsigned_sha256 -eq $taskResults[1].unsigned_sha256) -and
-        ($taskResults[0].container_sha256 -eq $taskResults[1].container_sha256) -and
-        ($taskResults[0].pack_sha256 -eq $taskResults[1].pack_sha256) -and
-        ($taskResults[0].container_bytes -eq $taskResults[1].container_bytes)
+        ($taskResults[0][$taskHashField] -eq $taskResults[1][$taskHashField]) -and
+        ($taskResults[0][$taskFileField] -eq $taskResults[1][$taskFileField]) -and
+        ($taskResults[0][$taskSizeField] -eq $taskResults[1][$taskSizeField])
     if (-not $taskIdentical) { throw 'The two clean directories produced different bytes.' }
     $taskReport = [ordered]@{
         generated_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
