@@ -20,7 +20,7 @@ import java.security.PublicKey
 import kotlin.system.exitProcess
 
 /** D1/D2 command line. Original D1 commands remain TEST_ONLY; the explicit D2 production commands
- * use the protected local identity, committed trust registry and single stdin content decision.
+ * use the protected local identity, authorized remote main registry and single stdin decision.
  *
  *  Build :  ./gradlew :app:d1Pack -Pd1.command=build -Pd1.sample=fact-only \
  *               -Pd1.keydir=$TEMP/kitt-d1-keys -Pd1.out=$TEMP/kitt-d1-out -Pd1.commit=<40 hex>

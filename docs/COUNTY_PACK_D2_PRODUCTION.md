@@ -16,7 +16,9 @@ Agent 先整理正文、事实、来源和许可，提交到 Git 并固定 commi
 
 默认在本机 `%LOCALAPPDATA%\KITT\pack-publisher` 生成独立 RSA-3072 身份，创建目录后先设仅所有者可访问的 Windows ACL，再写私钥；以后每次检查目录和钥匙文件权限。拒绝所有已登记工作树、其他 Git 目录、符号链接/联接解析后落在工作树内的位置；已存在目录绝不覆盖。私钥与 APK keystore 分开，不打印、不传给 gh、不进 Git。两机独立生成，不能复制测试身份充当正式身份。
 
-只将该目录的 `registration.json` **公开信息**加入 `config/pack-publishers.json` 数组并提交：`key_id`、`scope=PRODUCTION`、`test_identity=false`、`public_key`（SPKI PEM）。当前仓库清单为 **空数组**，没有真实公钥/生产根。预览及发布都从固定 commit 读取清单；包内公钥、未登记钥匙、本机私钥旁自带公钥均不能替代登记。临时测试身份带 `test_identity=true`，只能在测试代码同时注入 fake gh 的运行环境使用；真实 CLI 拒绝。
+只将该目录的 `registration.json` **公开信息**加入 `config/pack-publishers.json` 数组：`key_id`、`scope=PRODUCTION`、`test_identity=false`、`public_key`（SPKI PEM）。首次登记须另行获得授权并进入固定仓库 `shimao1115/KITT` 的正式 main，候选内容分支自行提交名单不能获得发行权限。当前仓库清单为 **空数组**，没有真实公钥/生产根。
+
+预览及发布使用 [gh api](https://cli.github.com/manual/gh_api) 的认证请求，主机固定 `github.com`：先读远端 `refs/heads/main` 的提交 SHA，再按该 SHA 读取清单，避免 main 移动时读取混杂。候选 `--commit` 只提供内容；不采用其名单、工作区文件、本地 main/origin/main 或包内公钥，也没有调用方可选的登记来源参数。确认后重新读取当前 main 登记；若钥已撤销、网络/认证失败或 main 无法校验，直接停止且不上传，不增加第二次人工决定。生产预览因此需要能访问 GitHub；原 TEST_ONLY 离线 prepare 不变。临时测试身份带 `test_identity=true`，只能在测试代码同时注入 fake gh 的运行环境使用；真实 CLI 拒绝。
 
 一次性安全设置后，日常无需用户管理密钥参数。建议用户在当地另存一份加密离线备份，连同公开登记信息保管；不通过 GitHub 同步私钥。手机公钥固化单独留 V0.6.1。
 

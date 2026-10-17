@@ -59,6 +59,9 @@ class ProductionD2Test {
         val keys = File(temp.root, "identity-${System.nanoTime()}")
         val output = File(temp.root, "published-${System.nanoTime()}")
         lateinit var commit: String
+        lateinit var approvedMain: String
+        var mainReferenceOverride: String? = null
+        var registryUnavailable = false
         lateinit var hash: String
         var sequence = 1
         var decisions = 0
@@ -92,6 +95,7 @@ class ProductionD2Test {
             File(root, "input/narratives.json").writeBytes(payload.second)
             File(root, "config/pack-publishers.json").writeText("[${File(keys, "registration.json").readText()}]")
             saveCommit()
+            approvedMain = commit // Fake remote approval, independent of later candidate commits.
         }
         fun git(vararg args: String) = D2Production.command(listOf("git", "-C", root.path) + args).trim()
         fun saveCommit() { git("add", "."); git("-c", "commit.gpgsign=false", "commit", "--allow-empty", "-qm", "SIMULATED source"); commit = git("rev-parse", "HEAD") }
@@ -128,6 +132,21 @@ class ProductionD2Test {
         }
         private fun fake(args: List<String>): String {
             calls += args
+            if (args.take(2) == listOf("gh", "api")) {
+                assertEquals(listOf("gh", "api", "--hostname", "github.com", "--method", "GET"), args.take(6))
+                if (registryUnavailable) throw PackRejection("command_network")
+                return when (args[6]) {
+                    "repos/shimao1115/KITT/git/ref/heads/main" -> {
+                        assertEquals(listOf("--jq", ".object.sha"), args.drop(7))
+                        mainReferenceOverride ?: approvedMain
+                    }
+                    "repos/shimao1115/KITT/contents/config/pack-publishers.json?ref=$approvedMain" -> {
+                        assertEquals(listOf("--header", "Accept: application/vnd.github.raw+json"), args.drop(7))
+                        git("show", "$approvedMain:config/pack-publishers.json")
+                    }
+                    else -> error("Unexpected registry request: ${args[6]}")
+                }
+            }
             if (args.take(3) == listOf("git", "ls-remote", "--tags")) {
                 assertEquals(D2Production.REMOTE, args[3]); return remoteTags
             }
@@ -180,6 +199,9 @@ class ProductionD2Test {
         File("build/acceptance/d2-production-fake.json").apply { parentFile?.mkdirs() }.writeText(buildJsonObject {
             put("publish", Json.parseToJsonElement(File(f.output, "publish.json").readText()))
             put("gh_create_argv", JsonArray(argv.map(::JsonPrimitive)))
+            put("publisher_registry_source", "authenticated github.com/shimao1115/KITT main; contents pinned to main SHA")
+            put("publisher_registry_main_commit", f.approvedMain)
+            put("registry_requests", JsonArray(f.calls.filter { it.take(2) == listOf("gh", "api") }.map { JsonArray(it.map(::JsonPrimitive)) }))
             put("private_material_exported", false); put("real_human_approval", false)
         }.toString())
     }
@@ -207,7 +229,8 @@ class ProductionD2Test {
         val office = Fixture(); val home = Fixture()
         File(office.root, "config/pack-publishers.json").writeText("[${File(office.keys, "registration.json").readText()},${File(home.keys, "registration.json").readText()}]")
         office.saveCommit()
-        home.root = office.root; home.commit = office.commit
+        office.approvedMain = office.commit
+        home.root = office.root; home.commit = office.commit; home.approvedMain = office.approvedMain
         office.prepare(); home.prepare(); assertEquals(0, office.publish()); assertEquals(0, home.publish())
         assertNotEquals(File(office.keys, "public.pem").readText(), File(home.keys, "public.pem").readText())
         assertArrayEquals(office.payload.first, home.payload.first)
@@ -225,6 +248,15 @@ class ProductionD2Test {
     @Test fun virtualIdentityCannotEnterTheRealDefaultRuntime() {
         val f = Fixture()
         rejects("virtual_identity_forbidden", f) { D2Production.prepare(f.options("production-prepare")) }
+    }
+    @Test fun realCliPublishRejectsVirtualAndTestOnlyIdentitiesBeforeAnyRemoteCommand() {
+        val f = Fixture()
+        val args = listOf("--command", "publish", "--root", f.root.path, "--keydir", f.keys.path)
+        assertEquals(D1Cli.REJECTED, D1Cli.run(args))
+        val metadata = File(f.keys, "key.json")
+        metadata.writeText(metadata.readText().replace("PRODUCTION", "TEST_ONLY"))
+        assertEquals(D1Cli.REJECTED, D1Cli.run(args))
+        assertEquals(0, f.uploads); assertEquals(0, f.decisions); assertTrue(f.calls.isEmpty())
     }
     @Test fun identityInsideWorkingTreeRejectedBeforeKeyWrite() {
         val f = Fixture(); val path = File(f.root, "bad-key")
@@ -264,13 +296,63 @@ class ProductionD2Test {
     }
     @Test fun unknownKeyCannotSelfRegisterUsingLocalKeyFile() {
         val f = Fixture(); File(f.root, "config/pack-publishers.json").writeText("[]"); f.saveCommit()
+        f.approvedMain = f.commit
         rejects("unknown_key_id", f) { f.prepare() }
     }
     @Test fun registryMustBeCommittedNotDirtyLocalTrust() {
         val f = Fixture(); val good = File(f.root, "config/pack-publishers.json").readText()
         File(f.root, "config/pack-publishers.json").writeText("[]"); f.saveCommit()
+        f.approvedMain = f.commit
         File(f.root, "config/pack-publishers.json").writeText(good)
         rejects("unknown_key_id", f) { f.prepare() }
+    }
+    @Test fun candidateBranchCannotGrantItselfPublicationAuthority() {
+        val f = Fixture()
+        val registry = File(f.root, "config/pack-publishers.json")
+        val ownRegistration = registry.readText()
+        registry.writeText("[]"); f.saveCommit(); f.approvedMain = f.commit
+        registry.writeText(ownRegistration); f.saveCommit()
+        assertNotEquals(f.approvedMain, f.commit)
+        rejects("unknown_key_id", f) { f.prepare() }
+        rejects("unknown_key_id", f) { f.publish("reviewhash" to "0".repeat(64)) }
+        assertEquals(0, f.decisions)
+    }
+    @Test fun authorizedMainKeyWorksEvenWhenCandidateRegistryIsEmpty() {
+        val f = Fixture()
+        File(f.root, "config/pack-publishers.json").writeText("[]"); f.saveCommit()
+        assertNotEquals(f.approvedMain, f.commit)
+        f.prepare(); assertEquals(0, f.publish()); assertEquals(1, f.decisions); assertEquals(1, f.uploads)
+        assertFalse(f.calls.any { it.first() == "git" && it.contains("show") &&
+            it.last() == "${f.commit}:config/pack-publishers.json" })
+    }
+    @Test fun localMainRefCannotGrantPublicationAuthority() {
+        val f = Fixture()
+        File(f.root, "config/pack-publishers.json").writeText("[]"); f.saveCommit(); f.approvedMain = f.commit
+        File(f.root, "config/pack-publishers.json").writeText("[${File(f.keys, "registration.json").readText()}]"); f.saveCommit()
+        f.git("update-ref", "refs/heads/main", f.commit)
+        f.git("update-ref", "refs/remotes/origin/main", f.commit)
+        rejects("unknown_key_id", f) { f.prepare() }
+    }
+    @Test fun mainRevocationAfterDecisionStopsBeforeSigningOrUpload() {
+        val f = Fixture(); f.prepare()
+        f.afterDecision = {
+            File(f.root, "config/pack-publishers.json").writeText("[]")
+            f.saveCommit(); f.approvedMain = f.commit
+        }
+        rejects("unknown_key_id", f); assertEquals(1, f.decisions); assertFalse(f.output.exists())
+    }
+    @Test fun unavailableMainRegistryDoesNotFallBackToCandidateOrLocalFiles() {
+        val f = Fixture(); f.registryUnavailable = true
+        rejects("command_network", f) { f.prepare() }; assertEquals(0, f.decisions)
+    }
+    @Test fun invalidMainReferenceCannotChooseAnotherRegistry() {
+        val f = Fixture(); f.mainReferenceOverride = "main"
+        rejects("publisher_registry_main_reference", f) { f.prepare() }
+        assertEquals(1, f.calls.count { it.take(2) == listOf("gh", "api") })
+    }
+    @Test fun unavailableMainAfterDecisionStopsWithoutASecondPrompt() {
+        val f = Fixture(); f.prepare(); f.afterDecision = { f.registryUnavailable = true }
+        rejects("command_network", f); assertEquals(1, f.decisions); assertFalse(f.output.exists())
     }
     @Test fun mismatchingPinnedPublicKeyRejected() {
         val f = Fixture(); val other = Fixture()
@@ -429,6 +511,7 @@ class ProductionD2Test {
         val f = Fixture()
         val registry = File(f.root, "config/pack-publishers.json")
         registry.writeText(registry.readText().replace("PRODUCTION", "TEST_ONLY")); f.saveCommit()
+        f.approvedMain = f.commit
         rejects("publisher_registry_scope", f) { f.prepare() }
     }
     @Test fun invalidProductionVersionIsRejected() {

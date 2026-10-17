@@ -116,10 +116,17 @@ internal object D2Production {
         return Identity(directory, id, public)
     }
 
-    private fun registered(o: D1Cli.Options, r: Runtime, identity: Identity): TrustStore {
-        // A caller-controlled key directory is NOT a trust store. Registration comes from the
-        // same immutable repository commit as the reviewed source, never the pack or local files.
-        val raw = r.command(listOf("git", "-C", o.required("root"), "show", "${o.required("commit")}:$REGISTRY"))
+    private fun registered(r: Runtime, identity: Identity): TrustStore {
+        // Only the authorized repository's current main grants publication authority. Neither
+        // candidate --commit nor local refs/files can register a publisher. gh authenticates the
+        // fixed HTTPS host; pin the contents request to the returned main SHA to avoid a moving ref.
+        val main = r.command(listOf("gh", "api", "--hostname", "github.com", "--method", "GET",
+            "repos/shimao1115/KITT/git/ref/heads/main", "--jq", ".object.sha")).trim()
+        if (!main.matches(Regex("[0-9a-f]{40}"))) reject("publisher_registry_main_reference")
+        val raw = r.command(listOf("gh", "api", "--hostname", "github.com", "--method", "GET",
+            "repos/shimao1115/KITT/contents/$REGISTRY?ref=$main",
+            "--header", "Accept: application/vnd.github.raw+json"))
+        println("publisher_registry_main_commit=$main")
         val anchors = Json.parseToJsonElement(raw).jsonArray.map {
             val row = it.jsonObject
             if (row.keys != setOf("key_id", "scope", "test_identity", "public_key")) reject("publisher_registry")
@@ -156,7 +163,7 @@ internal object D2Production {
 
     fun prepare(o: D1Cli.Options, r: Runtime = Runtime()): Int {
         val identity = identity(o, r)
-        registered(o, r, identity)
+        registered(r, identity)
         val prepared = candidate(o, identity)
         val output = File(o.required("out")).toPath()
         Files.createDirectories(output.toAbsolutePath().parent)
@@ -218,7 +225,7 @@ internal object D2Production {
     fun publish(o: D1Cli.Options, r: Runtime = Runtime()): Int {
         if (o.optional("confirmation") != null) reject("stdin_decision_required")
         val identity = identity(o, r)
-        registered(o, r, identity)
+        registered(r, identity)
         val reviewed = candidate(o, identity)
         val hash = ContentDigest.sha256(reviewed.region)
         if (o.required("reviewhash") != hash) reject("review_changed")
@@ -232,7 +239,7 @@ internal object D2Production {
         if (r.decision() != "可以发布 $hash") reject("confirmation_required")
         // Re-read the immutable Git blobs AND pinned identity after the single decision.
         val now = identity(o, r)
-        val trust = registered(o, r, now)
+        val trust = registered(r, now)
         val prepared = candidate(o, now)
         if (!prepared.region.contentEquals(reviewed.region)) reject("review_changed")
         val privateKey = Pem.privateKey(File(now.directory, "private.pem").readText())
