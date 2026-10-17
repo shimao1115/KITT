@@ -81,7 +81,7 @@ dependencies {
  *  the D0 county reader without putting a byte of signing code into the shipped application. */
 tasks.register<JavaExec>("d1Pack") {
     group = "kitt"
-    description = "D1 TEST_ONLY pack build/verify CLI (docs/COUNTY_PACK_D1_SIGNING_CONTRACT.md)."
+    description = "D1/D2 pack tooling (docs/COUNTY_PACK_D2_PRODUCTION.md)."
     dependsOn("compileDebugUnitTestKotlin", "compileDebugUnitTestJavaWithJavac")
     classpath = configurations.getByName("debugUnitTestRuntimeClasspath") + files(
         layout.buildDirectory.dir("tmp/kotlin-classes/debug"),
@@ -89,6 +89,7 @@ tasks.register<JavaExec>("d1Pack") {
         layout.buildDirectory.dir("intermediates/javac/debug/compileDebugJavaWithJavac/classes")
     )
     mainClass.set("com.kitt.reader.d1.D1PackCliKt")
+    standardInput = System.`in`
     workingDir = rootProject.projectDir
     // A refusal is a normal D1 outcome, so the CLI reports it through status=/exit_code= instead of
     // turning an expected negative case into a Gradle failure.

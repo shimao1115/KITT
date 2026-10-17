@@ -19,8 +19,8 @@ import java.security.PrivateKey
 import java.security.PublicKey
 import kotlin.system.exitProcess
 
-/** D1 command line. Only TEST_ONLY material ever passes through it: no production key, no tag,
- *  no release, no device and no network.
+/** D1/D2 command line. Original D1 commands remain TEST_ONLY; the explicit D2 production commands
+ * use the protected local identity, committed trust registry and single stdin content decision.
  *
  *  Build :  ./gradlew :app:d1Pack -Pd1.command=build -Pd1.sample=fact-only \
  *               -Pd1.keydir=$TEMP/kitt-d1-keys -Pd1.out=$TEMP/kitt-d1-out -Pd1.commit=<40 hex>
@@ -47,6 +47,9 @@ object D1Cli {
   --command verify   --pack <file> --keydir <dir> [--appcode 20] [--minsequence 1] [--json <file>]
   --command tamper   --pack <file> --out <file> --offset <int>
   --command relabel  --pack <file> --out <file> --keydir <dir> --area <cn-nnnnnn> --parent <cn-nnnn00>
+  --command identity-init --root <repo> [--keydir <external local identity>]
+  --command production-prepare --root <repo> --input <dir> --commit <40 hex> --sequence <n> --out <NEW dir>
+  --command publish --root <repo> --input <dir> --commit <40 hex> --sequence <n> --reviewhash <sha256> --out <NEW dir> (one stdin decision)
   --command audit-newdu --root <repo>"""
 
     fun run(arguments: List<String>): Int = try {
@@ -58,6 +61,9 @@ object D1Cli {
             "prepare" -> D2Local.prepare(options)
             "release-preview" -> D2Local.preview(options)
             "release-dry-run" -> D2Local.releaseDryRun(options)
+            "identity-init" -> D2Production.initialize(options)
+            "production-prepare" -> D2Production.prepare(options)
+            "publish" -> D2Production.publish(options)
             "verify" -> verify(options)
             "tamper" -> tamper(options)
             "relabel" -> relabel(options)
