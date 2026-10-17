@@ -1,5 +1,7 @@
 # KITT V0.6.0 · D2 正式发布能力收尾（仅工程施工，不进行真实发行）
 
+> **2026-10-18 PR43 最小复审修复交付 / STOP 待再次复审**：按用户“执行修复”和[独立复审唯一要求](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)，可信登记改从固定 GitHub 仓库的远端 main 读取并固定 SHA，不再由候选源码 commit 授权；不引入新服务或额外人工审批。本轮实际重跑 **Debug652 + Release639 + packtool13 = 1304项**零失败/错误/跳过，生产专项66例双Variant，Python7、六组Fake、assemble/lint、原签名2+6 PASS。见[新证据](docs/evidence/v060-d2-production-review-fix.json)。下方1288项为旧 head 历史；本轮仍只使用临时虚拟身份/fake gh，无真实密钥/根/发行/手机/合并，保持Draft、两实体机PENDING、新都BLOCKED。交付后STOP。
+
 > **实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，OPEN / DRAFT / 未合并；STOP 等独立复审与用户合并授权。**
 
 > **2026-10-18 工程验证完成，Draft PR 交付后 STOP**：最终 Debug644 + Release631 + packtool13 = **1288项**零失败/错误/跳过；生产专项58例双Variant，Python7、六组Fake、构建/lint、原签名2+6、PowerShell5/7中文决定转录 PASS。详见 [HANDOFF](HANDOFF.md)、[本轮证据](docs/evidence/v060-d2-production-verification.json)、[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。仅虚拟身份与fake gh；真实登记为空，无真实钥/Tag/Release/上传/手机/合并，两实体机PENDING，新都仍BLOCKED、正式故事0。下方任务范围不变，交付后只等独立复审。

@@ -1,3 +1,29 @@
+# 2026-10-18 PR43 最小复审修复交付 / STOP 待再次复审
+
+[Draft PR #43](https://github.com/shimao1115/KITT/pull/43) 保持 Draft、未合并。用户授权“执行修复”，本轮仅处理[独立复审](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)指出的可信登记来源缺口；没有扩大 Issue #42 范围。
+
+## 修复后的信任边界
+
+`D2Production.registered()` 不再接收候选 Options。它只通过 `gh api --hostname github.com --method GET` 读取固定仓库 `shimao1115/KITT` 的 `refs/heads/main`，校验40位提交SHA，再按该SHA读取 `config/pack-publishers.json` 原文。名单不再来自候选 `--commit`，也不回退到工作区、本地 main/origin/main 或钥匙旁的登记文件。main 的授权依赖仓库访问/合并管理；首次真实身份及公钥进入 main 仍须单独授权，本轮没有执行。
+
+预览、发布预检及一次决定之后均检查当前登记；若已撤销或无法读取即停止。原 Git blob/reviewhash、D0 Gate、Builder/Verifier、历史检查、一次 gh create 和回读均保留。日常内容可留在固定的候选分支提交，无须新增内容 PR 审批，不要求第二次签名/上传确认。正式预览需要联网读取登记，原 TEST_ONLY 离线 prepare 不变。代码实现提交 `6f9732a`。
+
+## 本轮实际验证
+
+**Debug652 + Release639 + packtool13 = 1304项**，0失败/错误/跳过；三组均强制重新执行。生产专项66例、原D1 27例、原D2 19例在两个Variant各执行。assembleDebug/Release、lintDebug/Release共103任务执行成功；Python7、六组Fake、APK原签名2接受+6拒绝PASS。原1288项仅是被复审旧head `4911a485` 的历史；首轮65例专项亦不加入最终计数。PS5/PS7包装脚本未改，本轮不冒称重新运行其旧专项。
+
+新增8例覆盖：候选分支提交陌生公钥→拒绝且零create；伪造本地main/origin/main→拒绝；正式登记的虚拟钥在候选名单为空时一次确认成功；确认后撤销→拒绝；登记无网/确认后无网→拒绝；非法main引用→拒绝；真实CLI拒绝虚拟/TEST_ONLY身份。原两把独立虚拟办公室/家庭钥的成功流程改用明确独立的 fake main 授权，仍无私钥互传。实际远端gh认证/Release操作没有执行，本机gh仍不在PATH。
+
+[新证据](docs/evidence/v060-d2-production-review-fix.json) 单独记录本轮源码、每组命令/时间、全部新鲜JUnit计数与专项名称、fake登记请求及上传调用、保护文件哈希和日志摘要；[旧1288项证据](docs/evidence/v060-d2-production-verification.json) 保留不改。原签名回归仍仅读取已有code20 runtimecheck静态夹具，没有重新生成该runtimecheck包，更没有安装或访问手机。
+
+84个 `app/src/main` / `content/yangshen` 保护文件前后SHA256一致，且自PR41基线零差异；公开清单仍为`[]`，默认生产身份不存在。公开Release清单前后只读对照，认证草稿清单未验证；本轮没有真实Tag/Release/上传调用。新都全量仍BLOCKED（11来源2项权利不明、杨慎Visitor pending、正式故事0），两实体电脑仍PENDING。手机只沿用已验收code19基线，未操作/安装。
+
+**STOP：等待本次最小修复复审及用户合并授权。** 没有真实生产钥/根、首次身份设置、真实人工出版批准、真实发行、手机/ADB/安装或V0.6.1。原stdin不认证真人、同县发布须串行、gh异常结果须只读核查且不自动重试的限制继续有效。普通中文流程见[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。
+
+---
+
+以下为首轮1288项交付历史，可信登记来源已由上述修复替代：
+
 # 2026-10-18 D2 正式发布能力工程交付 / Draft PR #43 / STOP 待独立复审
 
 **实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，保持 OPEN / DRAFT / 未合并。工程证据与交接已提交，STOP 等独立复审，不继续真实设置/出版或 V0.6.1。**

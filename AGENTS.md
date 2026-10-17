@@ -1,3 +1,9 @@
+> **2026-10-18 PR #43 最小复审修复交付 / STOP 待再次复审**：用户明确授权执行[复审要求](https://github.com/shimao1115/KITT/pull/43#issuecomment-6236842986)。发行者登记改由固定 GitHub 主机/仓库的远端 main 提供，gh api 先取 main SHA 再按 SHA 读名单；候选 commit、工作区、本地 main/origin/main 均不能自登记，确认后重查授权，无额外人工 Gate。新增8例，生产专项66例双 Variant；本轮新鲜 **Debug652 + Release639 + packtool13 = 1304项**零失败/错误/跳过，Python7、六组Fake、assemble/lint（103任务）、原签名2+6 PASS。旧1288项仅代表被复审的旧 head，不继承/相加。见[新证据](docs/evidence/v060-d2-production-review-fix.json)与[HANDOFF](HANDOFF.md)。84个保护文件哈希不变，正式清单仍空、无真实钥/根/Tag/Release/上传/手机/合并；新都BLOCKED、正式故事0，两实体机PENDING。保持 Draft，首次真实身份/发行另行授权，不启动V0.6.1。
+
+---
+
+> **以下1288项为首轮交付历史；当前修复结果以上段及新证据为准。**
+
 > **实际交付：[Draft PR #43](https://github.com/shimao1115/KITT/pull/43)，OPEN / DRAFT / 未合并。STOP 等独立工程复审与用户合并授权。**
 
 > **2026-10-18 D2 正式发布能力工程验证完成 / Draft PR 交付后 STOP**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)，唯一分支 `feat/v060-d2-production-release`。复用固定 Git blob、reviewhash、D0 Gate 和 Builder/Verifier，补齐所有者 ACL 保护的独立本机身份、空公开登记表、一次 stdin 决定后的签名/验签及 gh Release 创建与回读；PowerShell 5/7 中文决定管道均验证。**最终 Debug644 + Release631 + packtool13 = 1288 项**零失败/错误/跳过，生产专项58例双 Variant；Python7、六组 Fake、assemble/lint、原签名2+6 PASS。旧1172及本轮前置运行不计入。全部发行演练仅用临时虚拟身份与 fake gh；真实登记表为空，默认生产身份未创建，gh 不在本机 PATH。**没有真实生产私钥/根、Tag/Release/附件上传、手机/ADB/安装/合并；app/src/main 与杨慎原始内容/审批零差异；新都仍 BLOCKED、正式故事0、两实体机 PENDING。** 首次真实设置/发行另行授权，此后每份合规内容只看一次。见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d2-production-verification.json)、[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。交付后等待独立工程复审/用户授权合并，不启动 V0.6.1。

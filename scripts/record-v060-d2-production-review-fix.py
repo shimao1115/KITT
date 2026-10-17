@@ -121,7 +121,7 @@ def main():
     assert evidence['public_releases_before'] == evidence['public_releases_after']
     assert evidence['static_runtime_fixture']['sha256'] == '2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60'
     text = json.dumps(scrub(evidence), ensure_ascii=False, indent=2) + '\n'
-    assert not re.search(r'[A-Za-z]:[/\\]', text) and 'AppData' not in text and 'PRIVATE KEY' not in text
+    assert not re.search(r'(?<![A-Za-z0-9])[A-Za-z]:[/\\]', text) and 'AppData' not in text and 'PRIVATE KEY' not in text
     Path('docs/evidence/v060-d2-production-review-fix.json').write_text(text, encoding='utf-8')
     print(f'PR43 repair: {evidence["totals"]["all"]} fresh passing tests')
 
