@@ -1,3 +1,21 @@
+# 2026-10-17 V0.6.0 D0/code20 最终工程复审 PASS — 用户已批准文档收口与 PR #37 合并
+
+**最新授权**：用户对“D0 工程复审通过后，文档收口并将 [PR #37](https://github.com/shimao1115/KITT/pull/37) 合并 main，暂不升级手机”的方案明确回复**批准**。本任务仅执行去敏文档整理与合并操作，不重跑测试、不访问/安装手机、不创建Release或KITT-PACKS仓库、不审批故事、不启动D1/D2或V0.6.1。**合并是否已执行请查询PR #37 的 GitHub merged 状态和实际merge commit；本段记录的是授权及门禁，不预先宣称成功。**
+
+## D0 工程验收及证据封口
+
+- **独立代码复审 PASS**：[首轮评审](https://github.com/shimao1115/KITT/pull/37#issuecomment-6229804921) 指出的县→市州代码归属和来源/Claim许可黑名单两处漏洞均经实现提交 dc764651 最小修复；[第二轮复审 PASS](https://github.com/shimao1115/KITT/pull/37#issuecomment-6231174949)。县与父市州普通代码一致性、特殊层级暂拒；权利字段完整字符串显式允许表、权限允许不能覆盖受限声明；专项反例重新计算源/Claim/故事引用和摘要，确认是权限判断而非旧哈希错误。
+- **Qoder 的真实本轮工程测试证据**：Debug **540/79套件**、Release **527/77套件**，**1067项**、0失败/错误/跳过，Python 7、六组确定性Fake模拟、Android构建与lint（标准各6个既有warning/零错误）、原签名**2接受＋6拒绝**通过；干净目录runtimecheck 75/75任务。首次Gradle/IPC/Release进程异常未被算作PASS；后来以 --rerun-tasks --max-workers=1 --no-daemon 真正115/115任务完整成功，IPC确切根因 UNKNOWN。GitHub该SHA没有独立CI Actions运行；独立审阅仅核对源码与已提交日志，并未从本会话直接执行这些测试。
+- **本地未安装的 code20 候选**：com.kitt.reader.runtimecheck，versionName 0.6.0 / versionCode 20，**74,461,274 bytes**，SHA256 **2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60**，原证书 SHA256 3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba。该哈希来自Qoder提交的本地证据；本会话未取得 APK 原始字节复核。**手机继续使用 code19**；code19→20仅静态兼容、不代表真机升级成功。
+- **结构性验收**：新都内置1县/6对象/22基础事实/6基础来源、不改原资料与可信GPS离线路径；县级 Fact + Narrative 独立Manifest、独立版本、Claim修订/来源审核与地区隔离通过工程验证；宜昌西陵第二县与6篇主故事+1篇延伸仅隔离的 TEST_ONLY 内存夹具，APK不可访问；通用县只读视图没有物理GPS几何。默认Loader拒绝未经验证外部输入，签名发布与GitHub Release尚未实施。
+- **真实性保留**：杨慎两篇仍 candidate/fact_gate=passed/visitor_gate=pending，标准正式故事 **0篇 / 发布 BLOCKED**；settings.xml 首次打开原设置页字节漂移根因 UNKNOWN；账号在线有效性及手机真机 D0、外场#23/#24/#27/#30 PENDING，离线/即时模式 DEFERRED。此次无新手机真实历史/设置测试，旧20份真实历史未触碰；用户延后的两个保存按钮间距UI问题不在本D0修复范围。
+
+**最新 D0 交付来源**：[Issue #36](https://github.com/shimao1115/KITT/issues/36)、[PR #37](https://github.com/shimao1115/KITT/pull/37)、[R1 证据](docs/evidence/v060-d0-verification.json)、[协议](docs/COUNTY_PACK_D0_CONTRACT.md)、[工程验收步骤](docs/ACCEPTANCE_COUNTY_PACK_D0.md)。正式V0.6.0整体发行闭环仍未完成：可信发行者/独立签名、可复现双包成品、受控 GitHub Release、下载/导入/原子安装均需后续分别授权，不可因为D0合并自行开工。
+
+**最终 STOP**：文档更新与用户明确批准的 PR #37 GitHub 合并完成后，核验main与PR状态即停止；不擅自操作其他分支、手机、APK、故事审批或开始下一阶段。下方“工程待复审、不能合并”是过往阶段的交接历史，不再代表最新许可。
+
+---
+
 # 2026-10-17 V0.6.0 D0 / code20 评审修正交付 — STOP 待再次验收
 
 [Issue #36](https://github.com/shimao1115/KITT/issues/36) 的第一条县级双包读取黄金路径已完成，交付 [Draft PR #37](https://github.com/shimao1115/KITT/pull/37)，实现提交 `91b96a8ecc711e663007a1c01d406d1afee8a607`。仅本 D0 工程完成，主干/手机仍以已验收 code19 为基线；未合并、未安装、未发布，不代表整个 V0.6.0 发行完成。
