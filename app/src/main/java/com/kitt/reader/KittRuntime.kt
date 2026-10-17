@@ -14,8 +14,10 @@ class KittRuntime(private val context: Context, injectedVoice: VoicePort? = null
         offlineRequired = { !simulation || !cloudAvailable() }
         offlineListeningRequired = { !cloudAvailable() }
     }
-    val offlinePack = OfflinePack.load(context)
-    val storyPacks = StoryPacks.load(context)
+    private val countyCatalog = BundledCountyPacks.load(context, acceptanceCandidate = BuildConfig.DEBUG &&
+        BuildConfig.APPLICATION_ID == "com.kitt.reader.runtimecheck")
+    val offlinePack = countyCatalog.county("cn-510114")?.factsView
+    val storyPacks = countyCatalog.county("cn-510114")?.runtimeStories
     val store = TripStore(context)
     val settings = SettingsStore(context)
     val storyInterestStore = StoryInterestStore(context)

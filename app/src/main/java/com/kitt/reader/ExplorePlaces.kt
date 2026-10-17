@@ -30,7 +30,10 @@ class ExploreCatalog(val regions: List<ExploreRegion>) {
                 else -> "完整故事已通过内容校验，点击文章后可手动播放。"
             })))
         // Even runtimecheck exploration is strict. Its separate story-preview audition is unchanged.
-        fun load(context: Context) = from(OfflinePack.load(context), StoryPacks.load(context, acceptanceCandidate = false))
+        internal fun from(catalog: CountyCatalog) = ExploreCatalog(catalog.counties.values.map {
+            ExploreRegion(it.factsView, it.stories.stories, it.status)
+        })
+        fun load(context: Context) = from(BundledCountyPacks.load(context))
     }
 }
 
