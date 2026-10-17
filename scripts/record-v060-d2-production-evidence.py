@@ -101,6 +101,13 @@ def main():
     assert not fake['real_human_approval'] and not fake['private_material_exported']
     wrapper = load(OUT / 'wrapper-checks.json')
     assert all(wrapper.values())
+    host_input = []
+    for name, shell in (('host-input-final7', 'PowerShell 7'), ('host-input-final5', 'Windows PowerShell 5')):
+        row = load(OUT / name / 'result.json')
+        assert all(row[k] for k in ('utf8_single_decision_forwarded', 'simulated_flag_wrong_hash_and_multiple_lines_refused',
+                                   'cli_refusal_propagated', 'host_encoding_restored', 'fake_process_only'))
+        assert not row['real_user_approval_recorded'] and not row['real_upload_performed']
+        host_input.append(dict(shell=shell, checks=row, log=info(OUT / (name + '.log'))))
     simulations = [info(Path('app/build/acceptance', p)) for p in ('full-simulation.txt', 'accelerated-simulation.txt',
                    'batch-simulation.txt', 'landmark-simulation.txt', 'dossier-simulation.txt', 'driving-area-resolution.txt')]
     audit = load(OUT / 'remote-audit.json')
@@ -109,12 +116,12 @@ def main():
     assert not identity_boundary['tracked_private_files'] and identity_boundary['original_worktree_count'] == 1
     evidence = dict(milestone='V0.6.0 D2 production capability (simulation only)', issue=42,
                     baseline_commit=BASE, evidence_source_commit=git('rev-parse', 'HEAD'),
-                    implementation_commit=git('log', '-1', '--format=%H', '--', 'app/src/test/java/com/kitt/reader/d1/D2Production.kt', 'app/src/test/java/com/kitt/reader/d1/ProductionD2Test.kt'),
+                    implementation_commit=git('log', '-1', '--format=%H', '--', 'app/src/test/java/com/kitt/reader/d1', 'scripts/d2-pack.ps1', 'scripts/test-d2-host-input.ps1'),
                     started_at=START.isoformat(), recorded_at=datetime.now(timezone.utc).isoformat(),
                     tests=tests, totals={**{k: v['tests'] for k, v in tests.items()}, 'all': sum(v['tests'] for v in tests.values())},
                     checks=checks, fake_gh_acceptance=fake, fake_report=info('app/build/acceptance/d2-production-fake.json'),
                     python=dict(tests=7, test_log=info(OUT / 'python-tests.log'), content_log=info(OUT / 'content-check.log')),
-                    signing=signing, simulations=simulations, wrapper_checks=wrapper,
+                    signing=signing, simulations=simulations, wrapper_checks=wrapper, host_stdin_process_checks=host_input,
                     wrapper_logs=[info(OUT / p) for p in ('wrapper-prepare.log', 'wrapper-refusal.log', 'audit-newdu.log')],
                     preliminary_full_runs=load(OUT / 'preliminary-totals.json'),
                     preliminary_logs=[info(OUT / p) for p in ('preliminary-debug.log', 'preliminary-release.log')],
@@ -135,7 +142,9 @@ def main():
                              'office/home physical test', 'phone trust/download/import/atomic install V0.6.1'],
                     failed_attempts=[dict(stage='initial compile', reason='Files.readString unavailable on Android test compile API; replaced with readAllBytes', counted=False),
                                      dict(stage='test compile', reason='ambiguous Kotlin property/function name; renamed fixture helper', counted=False),
-                                     dict(stage='expanded focused tests', tests=73, failures=5, reason='fake remote assertion assumed ls-remote had no ref filters; corrected argument index', counted=False)])
+                                     dict(stage='expanded focused tests', tests=73, failures=5, reason='fake remote assertion assumed ls-remote had no ref filters; corrected argument index', counted=False),
+                                     dict(stage='host pipe process test', reason='PowerShell advanced script needed a ValueFromPipeline binding; added hidden stdin binding', counted=False),
+                                     dict(stage='Windows PowerShell 5 process test', reason='native stdin used global ASCII encoding; added scoped UTF8 global encoding with restoration and UTF8 BOM script files', counted=False)])
     text = json.dumps(scrub(evidence), ensure_ascii=False, indent=2) + '\n'
     assert not re.search(r'[A-Za-z]:[/\\]', text) and 'AppData' not in text and 'PRIVATE KEY' not in text
     Path('docs/evidence/v060-d2-production-verification.json').write_text(text, encoding='utf-8')

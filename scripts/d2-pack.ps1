@@ -1,4 +1,4 @@
-# Thin wrapper; publish is the real production path and requires the one reviewed stdin decision.
+﻿# Thin wrapper; publish is the real production path and requires the one reviewed stdin decision.
 param(
     [Parameter(Mandatory=$true)][ValidateSet('prepare','build','verify','release-preview','release-dry-run','audit-newdu','identity-init','production-prepare','publish')][string]$Command,
     [string]$Commit,
@@ -14,7 +14,8 @@ param(
     [int]$AppCode = 20,
     [string]$KeyId = 'test-only-d1-local',
     [string]$Confirmation,
-    [string]$ReviewHash
+    [string]$ReviewHash,
+    [Parameter(ValueFromPipeline=$true,DontShow=$true)][string]$DecisionLine
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -36,6 +37,14 @@ if ($Command -eq 'publish') {
     if ($Confirmation) { throw 'Production consent must come from the single stdin decision, not a simulated flag.' }
     if ($ReviewHash -notmatch '^[0-9a-f]{64}$') { throw 'Pass the reviewed signed-region SHA256.' }
     $taskArguments += "-Pd1.reviewhash=$ReviewHash"
+}
+$taskPipedDecision = $null
+if ($Command -eq 'publish' -and $MyInvocation.ExpectingInput) {
+    $taskDecisionLines = @($input)
+    if ($taskDecisionLines.Count -ne 1 -or "$($taskDecisionLines[0])" -cne "可以发布 $ReviewHash") {
+        throw 'Pipe exactly the one actual user decision bound to the reviewed SHA256.'
+    }
+    $taskPipedDecision = "$($taskDecisionLines[0])"
 }
 if ($Command -in @('build', 'verify', 'release-preview', 'release-dry-run')) {
     if (-not $KeyDirectory) { throw 'Pass an external TEST_ONLY key directory (public-only for verification).' }
@@ -63,12 +72,23 @@ try {
     # Gradle intentionally ignores CLI exit values; propagate the CLI's exit_code explicitly.
     $ErrorActionPreference = 'Continue'
     $taskFields = @{}
-    & (Join-Path $taskRoot 'gradlew.bat') @taskArguments --offline --console=plain 2>&1 | ForEach-Object {
+    $taskConsumeOutput = {
         $taskLine = "$_"
         if ($taskLine -match '^([a-z][a-z0-9_]*)=(.*)$') {
             $taskFields[$Matches[1]] = $Matches[2]
             Write-Output $taskLine
         } elseif ($Command -eq 'publish') { Write-Host $taskLine }
+    }
+    if ($null -ne $taskPipedDecision) {
+        # Relay an existing human decision; do not ask the user again in the terminal.
+        # Windows PowerShell 5 otherwise replaces Chinese stdin with ASCII question marks.
+        $taskPreviousEncoding = $global:OutputEncoding
+        try {
+            $global:OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+            $taskPipedDecision | & (Join-Path $taskRoot 'gradlew.bat') @taskArguments --offline --console=plain 2>&1 | ForEach-Object $taskConsumeOutput
+        } finally { $global:OutputEncoding = $taskPreviousEncoding }
+    } else {
+        & (Join-Path $taskRoot 'gradlew.bat') @taskArguments --offline --console=plain 2>&1 | ForEach-Object $taskConsumeOutput
     }
     $taskGradleExit = $LASTEXITCODE
     $ErrorActionPreference = 'Stop'

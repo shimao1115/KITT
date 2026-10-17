@@ -34,6 +34,8 @@ Agent 先整理正文、事实、来源和许可，提交到 Git 并固定 commi
 
 发布入口只读取一次 stdin：`可以发布 <完整审核SHA256>`。本人的这次输入即内容终审与发布同意；在聊天宿主中，Agent 仅可在已有用户明确决定后将其转录并绑定该摘要，不可自行生成决定或使用 `SIMULATED_TEST_ONLY`。`decision.json` 记录摘要、决定及模拟标记，并如实标明没有独立认证输入者身份。不读第二次输入，不改任何原始 rights/Visitor 状态。
 
+包装脚本支持把这**同一个已作出的真人决定**通过 stdin 管道转录，并保留 UTF-8 中文；交互终端也可直接输入。拒绝模拟标记、不同摘要或多行输入，不再让用户在终端重复确认。
+
 发布目标固定 `github.com/shimao1115/KITT`，Tag 为 `kitt-pack-cn-县码-s序号`，唯一附件为 `cn-县码-s序号.kcpk`。Release 正文使用原 D1 canonical manifest，既有 Releases 是版本记录。发布前及上传前检查历史与远端 Tag：同县序号须严格增大、两侧版本不得倒退、同版本不得变更正文；源码必须沿已有版本前进。不覆盖同名 Tag/Release，不编辑/删除既有发布，不使用 `--clobber`。草稿/孤立 Tag/缺附件/无法解析的同县历史均停止；1000 条读取上限达到时也停止，不能假装历史为空。不要让两台电脑同时发布同一县；本实现没有跨机器、跨序号的全局锁，不承诺分布式线性化。
 
 [gh create 的成熟流程](https://cli.github.com/manual/gh_release_create)会先建草稿、上传附件再公开，并非服务端单次事务。本工具不另写 API 客户端；成功后回读公开状态、原 manifest、附件大小及服务端 SHA256、Tag 实际指向，全部一致才报告 `PUBLISHED`。无网、无授权、冲突、缺 gh 或超时均有拒绝码；上传开始后的异常报告 `release_outcome_unknown_check_remote` 及具体下层原因，**不重试、不清理远端**，Agent 先检查是否留下草稿/Tag/实际已发布，不能宣称成功或再乱建一次。普通预检错误不会调用 create。
