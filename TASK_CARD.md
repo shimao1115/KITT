@@ -1,5 +1,8 @@
 # KITT V0.6.0 · D2 正式发布能力收尾（仅工程施工，不进行真实发行）
 
+> **2026-10-18 工程验证完成，Draft PR 交付后 STOP**：最终 Debug644 + Release631 + packtool13 = **1288项**零失败/错误/跳过；生产专项58例双Variant，Python7、六组Fake、构建/lint、原签名2+6、PowerShell5/7中文决定转录 PASS。详见 [HANDOFF](HANDOFF.md)、[本轮证据](docs/evidence/v060-d2-production-verification.json)、[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。仅虚拟身份与fake gh；真实登记为空，无真实钥/Tag/Release/上传/手机/合并，两实体机PENDING，新都仍BLOCKED、正式故事0。下方任务范围不变，交付后只等独立复审。
+
+
 > **唯一任务**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)。**唯一分支**：`feat/v060-d2-production-release`。基线为已合并的 D2 TEST_ONLY [PR #41](https://github.com/shimao1115/KITT/pull/41)（merge `baea614ba02f1aad7776e65ed6766833ee451b3f`）；本轮只让原有流程未来能实际正式发布，仍交付 **Draft PR + 工程证据**，STOP 待 ChatGPT 复审/用户授权合并。
 
 ## 目标：不要把简单事再做复杂

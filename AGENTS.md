@@ -1,3 +1,7 @@
+> **2026-10-18 D2 正式发布能力工程验证完成 / Draft PR 交付后 STOP**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)，唯一分支 `feat/v060-d2-production-release`。复用固定 Git blob、reviewhash、D0 Gate 和 Builder/Verifier，补齐所有者 ACL 保护的独立本机身份、空公开登记表、一次 stdin 决定后的签名/验签及 gh Release 创建与回读；PowerShell 5/7 中文决定管道均验证。**最终 Debug644 + Release631 + packtool13 = 1288 项**零失败/错误/跳过，生产专项58例双 Variant；Python7、六组 Fake、assemble/lint、原签名2+6 PASS。旧1172及本轮前置运行不计入。全部发行演练仅用临时虚拟身份与 fake gh；真实登记表为空，默认生产身份未创建，gh 不在本机 PATH。**没有真实生产私钥/根、Tag/Release/附件上传、手机/ADB/安装/合并；app/src/main 与杨慎原始内容/审批零差异；新都仍 BLOCKED、正式故事0、两实体机 PENDING。** 首次真实设置/发行另行授权，此后每份合规内容只看一次。见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d2-production-verification.json)、[一页说明](docs/COUNTY_PACK_D2_PRODUCTION.md)。交付后等待独立工程复审/用户授权合并，不启动 V0.6.1。
+
+---
+
 > **2026-10-17 当前新任务：D2 正式发布能力最小工程（仅代码和模拟，不真实发布）**：用户明确“下一步”，已建立 [Issue #42](https://github.com/shimao1115/KITT/issues/42) 与分支 `feat/v060-d2-production-release`；**唯一施工依据为此分支 [TASK_CARD.md](TASK_CARD.md)**。PR #41 已于 merge `baea614ba02f1aad7776e65ed6766833ee451b3f` 合并 main，旧“D2 待复审/禁止继续施工”属于历史。目标仅让办公室/家里任一电脑未来能在用户**一次内容确认**后自动完成安全校验、独立本机签名、验签并由 gh 发布；不增审批/服务器/仓库/架构。本次**只做实现、模拟和 Draft PR**，不生成真正生产身份/密钥、公钥信任根，不创建 Tag/Release，不上传文件，不更改 app/src/main/杨慎审批/手机 code19，不启动 V0.6.1，STOP 等独立复审。
 
 ---
