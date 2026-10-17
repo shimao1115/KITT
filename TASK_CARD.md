@@ -1,5 +1,7 @@
 # KITT V0.6.0 D2：双电脑制包，一次人工确认，当前电脑直接发布
 
+> **2026-10-17 本轮工程验收完成**：最终 Debug586 + Release573 + packtool13 = **1172 项**零失败/错误/跳过，D2 19 例双 Variant；一次确认 TEST_ONLY 自动制包/验签/上传参数演练、显式合法子集、两干净工作树无密钥字节复现均 PASS。见 [HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d2-verification.json)、[操作说明](docs/COUNTY_PACK_D2_WORKFLOW.md)。只交付 Draft PR 等工程复审；两实体电脑 PENDING，真实新都全量 BLOCKED，生产身份/Release/手机未操作，真实故事仍0。本段不改变下方“日常一次确认”的用户决定。
+
 > **唯一任务**：[Issue #40](https://github.com/shimao1115/KITT/issues/40)。用户明确要求**去除多余的人工审核/多电脑交接环节**。D2 工程只打通这个日常使用流程：**办公室或家里 Codex/WorkBuddy/Qoder 制作 → 用户过目并点一次确认 → 这台电脑完成自动校验、签名、上传 GitHub Release**。另一台电脑也能独立照做。下方明确区分 D2 的施工模拟与将来真实发布。
 
 ## 工作结果与边界

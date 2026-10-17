@@ -1,3 +1,33 @@
+# 2026-10-17 D2 最新任务：任一电脑制作、一次确认、当前电脑发布准备 — 工程完成 / 待独立复审
+
+唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，分支 `feat/v060-d2-dual-workstation-release`。已合入用户更新的任务卡（远端 `037d13b`）：取消专用签名机、重复 Visitor 人工签字、PR 内容二审和第二次上传确认。**日常出版是用户看一次正文及来源说明，然后当前电脑自动检查/签名/验签/上传；本轮仅 TEST_ONLY 模拟，不是真实出版。** D1 已合并 main（`7637755`）；下方旧 D1 STOP/未合并文字仅属历史。
+
+## 本轮交付
+
+复用原 `PackBuilder`、KCPK v1、`ReleaseVerifier` 与 `D0CountyGate`，只补 `prepare / release-preview / release-dry-run` 和 PowerShell 薄入口。无密钥 `prepare` 从固定 Git blob 生成四块、待签名区、清单及 `review.md`；`release-dry-run` 接收一次 **SIMULATED_TEST_ONLY** 决定及待签名区摘要，自动检查、签名、验签、生成不可直接执行的 gh 参数模板。没有第二次人工 Gate；`ready_to_publish=false / upload_performed=false / real_human_approval_recorded=false`，不能把模拟当真人已批准。生产 CLI 保持关闭。
+
+办公室/家庭未来各自保存独立私钥与不同 key_id，复用 D1 多公钥 TrustStore，不通过 GitHub 传私钥、不转交给另一台签名机。首次正式身份初始化与真实发布仍需用户单独授权，此后每个合格内容包只看一次。操作见 [一页说明](docs/COUNTY_PACK_D2_WORKFLOW.md)。
+
+**合法子集**：Agent 可在新的已提交目录中明确剔除不合格事实/Claim/故事及依赖，再交给原门禁；不自动改原始权利或审批。测试中原全量继续拒绝，显式合规子集得到 2 事实/1 来源/0 Claim/0 故事；这是合成夹具，**没有制作或发布真实新都合规子集**。
+
+## 最终真实验证（旧 1162 / D1 1134 均不计入）
+
+- **Debug 586 + Release 573 + packtool 13 = 1172 项**，0 失败/错误/跳过；D2 19 例、D1 27 例在两 Variant 都执行。Python 内容门禁 7 项、六组 Fake 模拟、Debug/Release assemble/lint 均 PASS。本机工程证据，不是外部 CI 或真机验收。
+- APK 原签名保护 **2 接受 + 6 拒绝** PASS；仅将现有 code20 runtimecheck APK 作静态夹具，没有新建 runtimecheck 候选或安装手机。
+- CLI 正例：Fact-only 4 事实/2 来源/7 Claim/0 故事，合成含故事样例 2 篇；一次决定后自动签名/验签/发布准备模拟成功。篡改、错县、错版本/序号、未知钥、PRODUCTION 冒充、未确认、确认摘要变化均拒绝。权利/待审/缺 Claim/Source 负例及两个独立本机测试身份在专项中通过。
+- 两个**真正独立项目目录**（显式 `--project-dir`）从同一提交 `39475a510bd62f0dc3f1c1603deaf88d3737ab64` 各自编译并无密钥预制，四块与完整待签名区逐字节相同：内容摘要 `6d9e0f9c122abd9699bd03e6d4c024e564478b88ddd64dd00cc80b819da8bcb2`；待签名区 **10,049 B**、SHA256 `d78ac2ca315b899227fa0d3f23684b985ac672c6a178647c016d4ccda6e70614`。本轮此项不比较签名成品；不同本机 key_id/私钥的签名成品本就不要求相同。两个临时 worktree 已清理，原工作树与哨兵完好。
+- `app/src/main` 与 `content/yangshen` 相对 D1 零差异，14 个受保护文件哈希入证据。初次编译兼容修复、专项 helper 修正、操作示例误填空故事版本而被正确拒绝的尝试均保留说明，未计入最终通过。
+
+完整去敏证据：[v060-d2-verification.json](docs/evidence/v060-d2-verification.json)。功能实现 `70a9f8e`；CLI 和工作树对照基于 `39475a5`。证据生成器检查 XML 新鲜度、日志哈希、跨入口同提交/同摘要、受保护文件与路径泄漏。
+
+## 现实边界与 STOP
+
+**办公室↔家庭两台实体电脑实测 PENDING**；目前只有单机两工作树和两独立测试身份。真实新都全量仍 **BLOCKED：11 来源中 2 权利不明**；杨慎 `candidate / visitor_gate=pending`，正式故事 **0**。没有真实人工出版确认、生产私钥/正式可信根、Tag/Release/上传；本机 gh 上传仅参数模板，未执行。手机仍为最后已知 code19，本轮未访问设备/ADB/安装、未重读历史；旧 settings.xml 漂移根因 UNKNOWN 保留。真机 JCA、手机公钥固化/下载/导入/原子安装/持久序号仍留 V0.6.1。
+
+本轮以独立 **Draft PR** 交付后 STOP 等工程复审；不合并、不实际发布、不操作手机、不合并 PR29、不扩展 V0.6.1。工程复审不是为日常出版重新增加一次人工审稿。
+
+---
+
 # D1 最终工程复审与用户合并授权
 
 2026-10-17 D1 第二轮独立工程复审 PASS（PR #39 head 15894f5；评审 https://github.com/shimao1115/KITT/pull/39#issuecomment-6233819737）。用户已明确批准仅做最终文档收口及 PR #39 合并 main；此段是合并前授权与审查状态，不预先宣称合并成功。测试依据提交的工程证据1134项零失败，ChatGPT未实跑Gradle；生产代码 app/src/main 零改动。仍无生产密钥、Release、正式新都可发行故事、手机JCA验收、D2授权；sequence只是调用方下限，非持久防回滚。旧本机路径留在Git历史，未授权不得重写。实际合并状态以GitHub PR merged及merge commit为准。
