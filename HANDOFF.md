@@ -2,6 +2,8 @@
 
 唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，分支 `feat/v060-d2-dual-workstation-release`。已合入用户更新的任务卡（远端 `037d13b`）：取消专用签名机、重复 Visitor 人工签字、PR 内容二审和第二次上传确认。**日常出版是用户看一次正文及来源说明，然后当前电脑自动检查/签名/验签/上传；本轮仅 TEST_ONLY 模拟，不是真实出版。** D1 已合并 main（`7637755`）；下方旧 D1 STOP/未合并文字仅属历史。
 
+**实际交付：[Draft PR #41](https://github.com/shimao1115/KITT/pull/41)，OPEN / DRAFT / 未合并。STOP 等独立工程复审。**
+
 ## 本轮交付
 
 复用原 `PackBuilder`、KCPK v1、`ReleaseVerifier` 与 `D0CountyGate`，只补 `prepare / release-preview / release-dry-run` 和 PowerShell 薄入口。无密钥 `prepare` 从固定 Git blob 生成四块、待签名区、清单及 `review.md`；`release-dry-run` 接收一次 **SIMULATED_TEST_ONLY** 决定及待签名区摘要，自动检查、签名、验签、生成不可直接执行的 gh 参数模板。没有第二次人工 Gate；`ready_to_publish=false / upload_performed=false / real_human_approval_recorded=false`，不能把模拟当真人已批准。生产 CLI 保持关闭。
