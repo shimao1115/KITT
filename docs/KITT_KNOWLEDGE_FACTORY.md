@@ -1,5 +1,7 @@
 # KITT 离线知识工厂 — 跨 AI 调查、双层文字包及 GitHub 协作发布 V2.4
 
+> **2026-10-17 D2 最小工程决定**：办公室和家里通过现有 **KITT 同仓库**协作文字源与审核记录；不创建下文早期布局设想中的第二个 KITT-PACKS 仓库。无密钥预制、TEST_ONLY预检与未来单机签名/人工同仓库发布的操作见 [D2 工作流](COUNTY_PACK_D2_WORKFLOW.md)。真实身份与首次发布另行授权，当前无生产密钥、无 Release；真实新都发行仍 BLOCKED。
+
 > **2026-10-14 正式生产协议，整体替换 V1.0—V1.2 累积草稿。** 内容标准见 [KITT 知识内容标准 V2.4](KITT_KNOWLEDGE_STANDARD.md)。内容标准定义“什么值得讲、何以可信、怎样让普通游客听懂”；本文规定“由什么 AI 生产、如何交接、在哪里存储、怎样组包和验证”。
 >
 > **2026-10-16 现状与路线更新**：V0.5.0/code17 工程 [PR #28](https://github.com/shimao1115/KITT/pull/28) 已合并，杨慎候选双篇的真实中文 TTS 试听通过，但**正式故事0、游客 Gate/正式发布仍 BLOCKED**。计划中的 `shimao1115/KITT-PACKS`、县级 GitHub Release 分发及手机下载/本地导入尚未实现。按[现行路线图](KITT_CURRENT_ROADMAP.md)优先完成 V0.5.1 探索地点，再建立县级通用独立分包；经用户确认的镇街普查/县级工单规范见[待合并 PR #29](https://github.com/shimao1115/KITT/pull/29)。本标准**不授权自动修改活跃 App 分支或正式发布候选故事**。
