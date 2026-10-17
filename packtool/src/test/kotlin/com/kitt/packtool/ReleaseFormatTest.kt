@@ -137,6 +137,23 @@ class ReleaseFormatTest {
         assertEquals(a.unsignedDigest, b.unsignedDigest)
     }
 
+    @Test
+    fun outerManifestMustDescribeTheInnerPack() {
+        val built = built()
+        val relabelled = PackBuilder.assembleBlocks("cn-510114", "cn-510100", built.blocks,
+            built.manifest.factVersion, built.manifest.narrativeVersion, built.manifest.contentKind,
+            keyId, ReleaseFormat.SCOPE_TEST_ONLY, commit, 20, key.private).container
+        assertEquals("inner_binding", (verify(relabelled) as ReleaseVerdict.Rejected).code)
+    }
+
+    @Test
+    fun anOlderSequenceIsOnlyARollbackWhenTheCallerSaysSo() {
+        val built = built()
+        assertTrue(ReleaseVerifier(trust, 20, gate, 1).verify(built.container) is ReleaseVerdict.Accepted)
+        assertEquals("sequence_rollback",
+            (ReleaseVerifier(trust, 20, gate, 2).verify(built.container) as ReleaseVerdict.Rejected).code)
+    }
+
     private fun rejection(manifestBytes: ByteArray): String? = runCatching {
         ReleaseManifest.parse(manifestBytes)
     }.exceptionOrNull()?.let { (it as PackRejection).code }

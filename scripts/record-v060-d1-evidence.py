@@ -7,6 +7,7 @@ material beyond the public fingerprint that the CLI itself printed.
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import xml.etree.ElementTree as ET
@@ -36,6 +37,31 @@ def info(path, fresh=False):
     if fresh:
         assert p.stat().st_mtime >= START_EPOCH, f'Stale evidence: {path}'
     return dict(path=p.as_posix(), bytes=p.stat().st_size, sha256=sha(p.read_bytes()))
+
+
+TEMP_ROOT = os.environ['TEMP']
+HOME_ROOT = str(Path.home())
+GUARD = 'artifacts/d1/repro-guard.json'
+
+
+def scrub(value):
+    """Replace machine-specific paths with stable placeholders.
+
+    The evidence is published in a public repository, so no user name, home directory or temporary
+    workspace path may survive into it. Hashes, counts, timestamps and refusal codes are untouched.
+    """
+    if isinstance(value, dict):
+        return {k: scrub(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [scrub(v) for v in value]
+    if not isinstance(value, str):
+        return value
+    text = re.sub(re.escape(TEMP_ROOT) + r'[\\/]kitt-d1-repro-[0-9a-zA-Z]+-(\d)',
+                  r'<REPRO_WORKTREE_\1>', value, flags=re.I)
+    text = re.sub(re.escape(TEMP_ROOT) + r'[\\/]', '<TEMP>/', text, flags=re.I)
+    text = re.sub(re.escape(HOME_ROOT) + r'[\\/]?', '<HOME>/', text, flags=re.I)
+    text = re.sub(r'[A-Za-z]:\\Users\\[^\\/\s"]+', '<HOME>', text)
+    return text.replace('\\', '/')
 
 
 def command(*args):
@@ -107,12 +133,19 @@ def main():
     cli = cli_logs()
     assert cli['03-verify-fact-only']['status'] == 'ACCEPTED_TEST_ONLY'
     assert cli['03-verify-fact-only']['stories'] == '0'
+    assert cli['03-verify-fact-only']['sequence'] == '1'
     assert cli['05-verify-with-story']['status'] == 'ACCEPTED_TEST_ONLY'
     assert cli['05-verify-with-story']['stories'] == '2'
     assert cli['07-verify-tampered']['status'] == 'REJECTED' and cli['07-verify-tampered']['code'] == 'bad_signature'
     assert cli['08-verify-old-app-code']['code'] == 'minimum_code'
     assert cli['09-audit-newdu']['status'] == 'BLOCKED'
     assert cli['09-audit-newdu']['reason'] == 'external_redistribution_rights_unverified'
+    assert cli['10-verify-sequence-rollback']['code'] == 'sequence_rollback'
+    assert cli['11-verify-relabelled-county']['code'] == 'inner_binding'
+
+    guard = json.loads(Path(GUARD).read_text(encoding='utf-8-sig'))
+    assert guard['stopped'] and guard['sentinel_intact'] and guard['sentinel_content'] == 'do-not-delete'
+    assert guard['created_directory_deleted'] is False
 
     key = json.loads(Path(os.environ['TEMP'], 'kitt-d1-keys', 'key.json').read_text(encoding='utf-8'))
     protected = [info(p) for p in sorted(Path('app/src/main/assets/offline').iterdir()) if p.is_file()]
@@ -146,6 +179,7 @@ def main():
         },
         'cli': cli,
         'reproducibility': reproducibility,
+        'reproducibility_guard': guard,
         'signing_regression': signing,
         'tests': {'debug': debug, 'release': release, 'packtool': packtool, 'd1': d1},
         'totals': {'debug': debug['tests'], 'release': release['tests'], 'packtool': packtool['tests'],
@@ -153,6 +187,7 @@ def main():
         'production_app_unchanged_since_d0': True,
         'protected_files': protected,
         'refusal_codes_exercised': sorted({v['code'] for v in cli.values() if v.get('code')} |
+                                          {'inner_binding', 'sequence_rollback'} |
                                           {'unknown_key_id', 'no_trusted_publisher', 'payload_trust_claim',
                                            'duplicate_block', 'unknown_block', 'missing_block', 'block_kind',
                                            'trailing_bytes', 'container_too_large', 'content_rejected',
@@ -182,8 +217,12 @@ def main():
             'Yangshen visitor gate and any formal story approval',
         ],
     }
+    evidence = scrub(evidence)
+    text = json.dumps(evidence, ensure_ascii=False, indent=2) + '\n'
+    assert 'C:////' not in text and HOME_ROOT.replace('\\', '/') not in text, 'unredacted path in evidence'
+    assert 'AppData' not in text and 'Temp/' not in text, 'unredacted temporary path in evidence'
     target = Path('docs/evidence/v060-d1-verification.json')
-    target.write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    target.write_text(text, encoding='utf-8')
     print(f'wrote {target} tests={evidence["totals"]["all"]}')
 
 

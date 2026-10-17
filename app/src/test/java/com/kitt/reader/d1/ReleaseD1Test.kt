@@ -44,11 +44,13 @@ class ReleaseD1Test {
         scope: String = ReleaseFormat.SCOPE_TEST_ONLY,
         minimumCode: Int = 20,
         declaredKeyId: String = keyId,
-        privateKey: PrivateKey = key.private
-    ) = PackBuilder.build(areaId, fact, narrative, declaredKeyId, scope, commit, minimumCode, privateKey)
+        privateKey: PrivateKey = key.private,
+        sequence: Int = 1
+    ) = PackBuilder.build(areaId, fact, narrative, declaredKeyId, scope, commit, minimumCode, privateKey, sequence)
 
-    private fun verify(container: ByteArray, supportedCode: Int = 20, store: TrustStore = trust) =
-        ReleaseVerifier(store, supportedCode, D0CountyGate).verify(container)
+    private fun verify(container: ByteArray, supportedCode: Int = 20, store: TrustStore = trust,
+                       minimumSequence: Int = 1) =
+        ReleaseVerifier(store, supportedCode, D0CountyGate, minimumSequence).verify(container)
 
     private fun rejection(verdict: ReleaseVerdict): ReleaseVerdict.Rejected {
         assertTrue("expected a refusal but got $verdict", verdict is ReleaseVerdict.Rejected)
@@ -68,6 +70,7 @@ class ReleaseD1Test {
         assertEquals(D1Sample.AREA_ID, pack.manifest.areaId)
         assertEquals(ReleaseFormat.KIND_FACT_ONLY, pack.manifest.contentKind)
         assertEquals(AnchorScope.TEST_ONLY, pack.anchorScope)
+        assertEquals(1, pack.manifest.sequence)
         assertEquals(4, pack.gate.facts)
         assertEquals(2, pack.gate.sources)
         assertEquals(7, pack.gate.claims)
@@ -129,8 +132,8 @@ class ReleaseD1Test {
         val container = PackBuilder.assembleBlocks(D1Sample.AREA_ID, D1Sample.PARENT_ID, spliced, "v-fact", "v-narrative",
             ReleaseFormat.KIND_FACT_ONLY, keyId, ReleaseFormat.SCOPE_TEST_ONLY, commit, 20, key.private).container
         val refusal = rejection(verify(container))
-        assertEquals("content_rejected", refusal.code)
-        assertEquals("area_mismatch", refusal.detail)
+        assertEquals("inner_binding", refusal.code)
+        assertEquals("narrative_manifest.area_id", refusal.detail)
     }
 
     @Test
@@ -232,6 +235,46 @@ class ReleaseD1Test {
             withEntry(narratives, "narratives", 0) { JsonObject(it + ("review_status" to JsonPrimitive("candidate"))) }
         }
         assertEquals("content_rejected", rejection(verify(build(narrative = hostile).container)).code)
+    }
+
+    @Test
+    fun aSignedOuterManifestCannotRelabelAnotherCounty() {
+        val built = build()
+        val relabelled = PackBuilder.assembleBlocks("cn-510114", "cn-510100", built.blocks,
+            built.manifest.factVersion, built.manifest.narrativeVersion, built.manifest.contentKind,
+            keyId, ReleaseFormat.SCOPE_TEST_ONLY, commit, 20, key.private).container
+        val refusal = rejection(verify(relabelled))
+        assertEquals("inner_binding", refusal.code)
+        assertEquals("fact_manifest.area_id", refusal.detail)
+    }
+
+    @Test
+    fun aSignedOuterManifestCannotRelabelTheFactVersion() {
+        val built = build()
+        val relabelled = PackBuilder.assembleBlocks(D1Sample.AREA_ID, D1Sample.PARENT_ID, built.blocks,
+            "TEST_ONLY-d1-fact-9", built.manifest.narrativeVersion, built.manifest.contentKind,
+            keyId, ReleaseFormat.SCOPE_TEST_ONLY, commit, 20, key.private).container
+        val refusal = rejection(verify(relabelled))
+        assertEquals("inner_binding", refusal.code)
+        assertEquals("fact_manifest.content_version", refusal.detail)
+    }
+
+    @Test
+    fun aSignedOuterManifestCannotRelabelTheAppRequirement() {
+        val built = build(minimumCode = 20)
+        val relabelled = PackBuilder.assembleBlocks(D1Sample.AREA_ID, D1Sample.PARENT_ID, built.blocks,
+            built.manifest.factVersion, built.manifest.narrativeVersion, built.manifest.contentKind,
+            keyId, ReleaseFormat.SCOPE_TEST_ONLY, commit, 19, key.private).container
+        val refusal = rejection(verify(relabelled))
+        assertEquals("inner_binding", refusal.code)
+        assertEquals("fact_manifest.minimum_code", refusal.detail)
+    }
+
+    @Test
+    fun anOlderSignedPackIsRefusedOnceTheCallerRaisesTheFloor() {
+        val older = build(sequence = 3)
+        assertTrue(verify(older.container, minimumSequence = 3) is ReleaseVerdict.Accepted)
+        rejected(verify(older.container, minimumSequence = 4), "sequence_rollback")
     }
 
     @Test

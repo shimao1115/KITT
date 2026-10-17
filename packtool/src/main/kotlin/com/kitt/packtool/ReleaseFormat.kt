@@ -79,6 +79,7 @@ data class ReleaseManifest(
     val keyId: String,
     val sourceCommit: String,
     val minimumCode: Int,
+    val sequence: Int,
     val factVersion: String,
     val narrativeVersion: String,
     val contentKind: String,
@@ -107,6 +108,7 @@ data class ReleaseManifest(
             "parent_id" to JsonPrimitive(parentId),
             "publisher_scope" to JsonPrimitive(publisherScope),
             "schema_version" to JsonPrimitive(schemaVersion),
+            "sequence" to JsonPrimitive(sequence),
             "source_commit" to JsonPrimitive(sourceCommit)
         )
         // Sorted keys make the encoding independent of declaration order.
@@ -118,7 +120,7 @@ data class ReleaseManifest(
     companion object {
         private val KEYS = setOf("area_id", "blocks", "builder", "content_kind", "content_sha256", "fact_version",
             "format", "format_version", "key_id", "minimum_code", "narrative_version", "parent_id",
-            "publisher_scope", "schema_version", "source_commit")
+            "publisher_scope", "schema_version", "sequence", "source_commit")
 
         /** Strict parse. Unknown fields, embedded trust claims and non-canonical shapes fail closed. */
         fun parse(bytes: ByteArray): ReleaseManifest {
@@ -142,6 +144,7 @@ data class ReleaseManifest(
                 areaId = root.str("area_id"), parentId = root.str("parent_id"),
                 publisherScope = root.str("publisher_scope"), keyId = root.str("key_id"),
                 sourceCommit = root.str("source_commit"), minimumCode = root.int("minimum_code"),
+                sequence = root.int("sequence"),
                 factVersion = root.str("fact_version"), narrativeVersion = root.str("narrative_version"),
                 contentKind = root.str("content_kind"), blocks = blocks,
                 contentSha256 = root.str("content_sha256"), formatVersion = root.int("format_version"),
@@ -174,6 +177,9 @@ object ManifestRules {
         if (!ReleaseFormat.KEY_ID.matches(m.keyId)) throw PackRejection("field_size", "key_id")
         if (!ReleaseFormat.SOURCE_COMMIT.matches(m.sourceCommit)) throw PackRejection("source_commit")
         if (m.minimumCode !in 1..supportedCode) throw PackRejection("minimum_code", "${m.minimumCode}")
+        // Monotonic release sequence. The verifier additionally refuses anything below the caller's
+        // minimum accepted sequence, which is what makes an old-but-valid pack a rollback.
+        if (m.sequence < 1) throw PackRejection("sequence", "${m.sequence}")
         if (m.contentKind !in ReleaseFormat.KINDS) throw PackRejection("content_kind")
         listOf("fact_version" to m.factVersion, "narrative_version" to m.narrativeVersion).forEach { (name, value) ->
             if (value.isBlank() || value.length > ReleaseFormat.MAX_VERSION) throw PackRejection("field_size", name)

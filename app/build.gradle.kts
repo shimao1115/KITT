@@ -93,6 +93,7 @@ tasks.register<JavaExec>("d1Pack") {
     // A refusal is a normal D1 outcome, so the CLI reports it through status=/exit_code= instead of
     // turning an expected negative case into a Gradle failure.
     isIgnoreExitValue = true
-    val flags = listOf("command", "root", "sample", "out", "keydir", "pack", "commit", "appcode", "json", "offset", "keyid")
+    val flags = listOf("command", "root", "sample", "out", "keydir", "pack", "commit", "appcode",
+        "json", "offset", "keyid", "sequence", "minsequence", "area", "parent")
     args = flags.mapNotNull { flag -> (project.findProperty("d1.$flag") as String?)?.let { listOf("--$flag", it) } }.flatten()
 }

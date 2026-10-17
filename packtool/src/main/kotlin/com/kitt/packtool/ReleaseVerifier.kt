@@ -42,11 +42,15 @@ sealed class ReleaseVerdict {
 }
 
 /** Signature first, then region/type/version/size, then the content gate. A payload that merely
- *  carries a key id, a public key or a "trusted" flag can never authenticate itself. */
+ *  carries a key id, a public key or a "trusted" flag can never authenticate itself.
+ *
+ *  `minimumSequence` is the caller's own floor for accepted release sequences. D1 keeps no state:
+ *  the caller (later the client) supplies the floor, and anything older is refused as a rollback. */
 class ReleaseVerifier(
     private val trust: TrustStore = TrustStore.EMPTY,
     private val supportedCode: Int = 20,
-    private val gate: ContentGate? = null
+    private val gate: ContentGate? = null,
+    private val minimumSequence: Int = 1
 ) {
     fun verify(container: ByteArray): ReleaseVerdict = try {
         accept(container)
@@ -68,6 +72,9 @@ class ReleaseVerifier(
             throw PackRejection("bad_signature")
         }
         ManifestRules.checkManifest(manifest, supportedCode)
+        if (manifest.sequence < minimumSequence) {
+            throw PackRejection("sequence_rollback", "${manifest.sequence}<$minimumSequence")
+        }
         val blocks = CountyBlocks(decoded.region.blocks[0], decoded.region.blocks[1],
             decoded.region.blocks[2], decoded.region.blocks[3])
         blocks.list().forEachIndexed { index, block ->
@@ -77,6 +84,8 @@ class ReleaseVerifier(
             }
         }
         if (blocks.digest() != manifest.contentSha256) throw PackRejection("content_digest")
+        // The signature covers the outer manifest, so the outer claim must match the inner pack.
+        InnerBinding.check(manifest, blocks)
         val content = gate ?: throw PackRejection("content_gate_unavailable")
         val report = content.inspect(blocks)
         if (!report.accepted) throw PackRejection("content_rejected", report.reason ?: "unspecified")

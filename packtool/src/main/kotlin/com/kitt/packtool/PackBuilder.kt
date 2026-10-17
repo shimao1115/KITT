@@ -51,6 +51,7 @@ object PackBuilder {
         sourceCommit: String,
         minimumCode: Int,
         privateKey: java.security.PrivateKey,
+        sequence: Int = 1,
         builder: String = ReleaseFormat.BUILDER_ID
     ): Built {
         val fact = seal("fact", factPayload, minimumCode)
@@ -67,7 +68,7 @@ object PackBuilder {
         val blocks = CountyBlocks(fact.manifest, fact.payload, narrative.manifest, narrative.payload)
         val manifest = ReleaseManifest(
             areaId = areaId, parentId = parentId, publisherScope = scope, keyId = keyId,
-            sourceCommit = sourceCommit, minimumCode = minimumCode,
+            sourceCommit = sourceCommit, minimumCode = minimumCode, sequence = sequence,
             factVersion = factBody.getValue("content_version").jsonPrimitive.content,
             narrativeVersion = narrativeBody.getValue("content_version").jsonPrimitive.content,
             contentKind = if (stories == 0) ReleaseFormat.KIND_FACT_ONLY else ReleaseFormat.KIND_FACT_AND_NARRATIVE,
@@ -102,12 +103,13 @@ object PackBuilder {
         sourceCommit: String,
         minimumCode: Int,
         privateKey: java.security.PrivateKey,
+        sequence: Int = 1,
         builder: String = ReleaseFormat.BUILDER_ID
     ): Built {
         ManifestRules.checkArea(areaId, parentId)
         val manifest = ReleaseManifest(
             areaId = areaId, parentId = parentId, publisherScope = scope, keyId = keyId,
-            sourceCommit = sourceCommit, minimumCode = minimumCode,
+            sourceCommit = sourceCommit, minimumCode = minimumCode, sequence = sequence,
             factVersion = factVersion, narrativeVersion = narrativeVersion, contentKind = contentKind,
             blocks = listOf(
                 BlockRef("fact_manifest", blocks.factManifest.size, ContentDigest.sha256(blocks.factManifest)),

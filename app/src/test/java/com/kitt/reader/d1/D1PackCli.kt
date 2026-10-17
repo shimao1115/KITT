@@ -2,8 +2,11 @@ package com.kitt.reader.d1
 
 import com.kitt.packtool.AnchorScope
 import com.kitt.packtool.ContentDigest
+import com.kitt.packtool.CountyBlocks
 import com.kitt.packtool.PackBuilder
 import com.kitt.packtool.Pem
+import com.kitt.packtool.ReleaseContainer
+import com.kitt.packtool.ReleaseManifest
 import com.kitt.packtool.ReleaseVerifier
 import com.kitt.packtool.ReleaseVerdict
 import com.kitt.packtool.TrustAnchor
@@ -38,9 +41,10 @@ object D1Cli {
     private const val USAGE = """usage:
   --command keygen   --keydir <dir> [--root <repo>] [--keyid <id>]
   --command sample   --root <repo>
-  --command build    --root <repo> --sample <dir> --keydir <dir> --out <dir> --commit <40 hex> [--appcode 20]
-  --command verify   --pack <file> --keydir <dir> [--appcode 20] [--json <file>]
+  --command build    --root <repo> --sample <dir> --keydir <dir> --out <dir> --commit <40 hex> [--appcode 20] [--sequence 1]
+  --command verify   --pack <file> --keydir <dir> [--appcode 20] [--minsequence 1] [--json <file>]
   --command tamper   --pack <file> --out <file> --offset <int>
+  --command relabel  --pack <file> --out <file> --keydir <dir> --area <cn-nnnnnn> --parent <cn-nnnn00>
   --command audit-newdu --root <repo>"""
 
     fun run(arguments: List<String>): Int = try {
@@ -51,6 +55,7 @@ object D1Cli {
             "build" -> build(options)
             "verify" -> verify(options)
             "tamper" -> tamper(options)
+            "relabel" -> relabel(options)
             "audit-newdu" -> auditNewdu(options)
             else -> {
                 println("status=USAGE_ERROR reason=unknown_command detail=$command")
@@ -121,6 +126,7 @@ object D1Cli {
         val keyDirectory = File(options.required("keydir")).absoluteFile
         val commit = options.required("commit")
         val appCode = options.optional("appcode")?.toInt() ?: 20
+        val sequence = options.optional("sequence")?.toInt() ?: 1
         val key = readKey(keyDirectory)
         val privateKey = key.privateKey ?: run {
             println("status=REFUSED reason=missing_private_key")
@@ -135,7 +141,8 @@ object D1Cli {
         val factBytes = factFile.readBytes()
         val narrativeBytes = narrativeFile.readBytes()
         val areaId = Json.parseToJsonElement(factBytes.decodeToString()).jsonObject.getValue("area_id").jsonPrimitive.content
-        val built = PackBuilder.build(areaId, factBytes, narrativeBytes, key.keyId, key.scope, commit, appCode, privateKey)
+        val built = PackBuilder.build(areaId, factBytes, narrativeBytes, key.keyId, key.scope, commit, appCode,
+            privateKey, sequence)
         output.mkdirs()
         val packFile = File(output, "pack.kcpk")
         packFile.writeBytes(built.container)
@@ -149,6 +156,7 @@ object D1Cli {
             put("publisher_scope", key.scope)
             put("source_commit", commit)
             put("minimum_code", appCode)
+            put("sequence", built.manifest.sequence)
             put("unsigned_sha256", built.unsignedDigest)
             put("container_sha256", ContentDigest.sha256(built.container))
             put("container_bytes", built.container.size)
@@ -162,6 +170,7 @@ object D1Cli {
         println("status=BUILT_TEST_ONLY")
         println("area_id=${built.manifest.areaId}")
         println("content_kind=${built.manifest.contentKind}")
+        println("sequence=${built.manifest.sequence}")
         println("unsigned_sha256=${built.unsignedDigest}")
         println("container_sha256=${ContentDigest.sha256(built.container)}")
         println("container_bytes=${built.container.size}")
@@ -173,6 +182,7 @@ object D1Cli {
         val packFile = File(options.required("pack")).absoluteFile
         val keyDirectory = File(options.required("keydir")).absoluteFile
         val appCode = options.optional("appcode")?.toInt() ?: 20
+        val minimumSequence = options.optional("minsequence")?.toInt() ?: 1
         if (!packFile.isFile) {
             println("status=USAGE_ERROR reason=missing_pack")
             return USAGE_ERROR
@@ -180,7 +190,7 @@ object D1Cli {
         val key = readKey(keyDirectory)
         val trust = TrustStore(listOf(TrustAnchor(key.keyId, key.publicKey, AnchorScope.of(key.scope))))
         val bytes = packFile.readBytes()
-        val verdict = ReleaseVerifier(trust, appCode, D0CountyGate).verify(bytes)
+        val verdict = ReleaseVerifier(trust, appCode, D0CountyGate, minimumSequence).verify(bytes)
         val report = when (verdict) {
             is ReleaseVerdict.Accepted -> buildJsonObject {
                 put("status", "ACCEPTED_TEST_ONLY")
@@ -190,6 +200,8 @@ object D1Cli {
                 put("publisher_scope", verdict.manifest.publisherScope)
                 put("key_id", verdict.manifest.keyId)
                 put("source_commit", verdict.manifest.sourceCommit)
+                put("sequence", verdict.manifest.sequence)
+                put("minimum_sequence", minimumSequence)
                 put("fact_version", verdict.manifest.factVersion)
                 put("narrative_version", verdict.manifest.narrativeVersion)
                 put("facts", verdict.gate.facts)
@@ -202,6 +214,7 @@ object D1Cli {
             is ReleaseVerdict.Rejected -> buildJsonObject {
                 put("status", "REJECTED")
                 put("code", verdict.code)
+                put("minimum_sequence", minimumSequence)
                 put("detail", verdict.detail)
                 put("container_sha256", ContentDigest.sha256(bytes))
             }
@@ -226,6 +239,31 @@ object D1Cli {
         println("status=TAMPERED")
         println("offset=$offset")
         println("container_sha256=${ContentDigest.sha256(mutated)}")
+        return ACCEPTED
+    }
+
+    /** Hostile-input helper: re-signs the very same blocks under a different county label, which is
+     *  exactly the "valid signature over the wrong identity" case the verifier must refuse. */
+    private fun relabel(options: Options): Int {
+        val source = File(options.required("pack")).readBytes()
+        val areaId = options.required("area")
+        val parentId = options.required("parent")
+        val key = readKey(File(options.required("keydir")).absoluteFile)
+        val privateKey = key.privateKey ?: run {
+            println("status=REFUSED reason=missing_private_key")
+            return USAGE_ERROR
+        }
+        val decoded = ReleaseContainer.decode(source)
+        val original = ReleaseManifest.parse(decoded.region.manifestBytes)
+        val blocks = CountyBlocks(decoded.region.blocks[0], decoded.region.blocks[1],
+            decoded.region.blocks[2], decoded.region.blocks[3])
+        val built = PackBuilder.assembleBlocks(areaId, parentId, blocks, original.factVersion,
+            original.narrativeVersion, original.contentKind, key.keyId, key.scope, original.sourceCommit,
+            original.minimumCode, privateKey, original.sequence)
+        File(options.required("out")).absoluteFile.writeBytes(built.container)
+        println("status=RELABELLED")
+        println("area_id=$areaId")
+        println("container_sha256=${ContentDigest.sha256(built.container)}")
         return ACCEPTED
     }
 
