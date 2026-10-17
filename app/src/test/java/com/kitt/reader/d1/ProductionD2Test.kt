@@ -219,6 +219,25 @@ class ProductionD2Test {
         f.git("worktree", "add", "--detach", linked.path, f.commit)
         rejects("keydir_inside_worktree", f) { D2Production.initialize(f.options("identity-init", "keydir" to File(linked, "keys").path), f.runtime) }
     }
+    private fun junction(target: File): File {
+        val alias = File(temp.root, "junction-${System.nanoTime()}")
+        val p = ProcessBuilder("cmd.exe", "/c", "mklink", "/J", alias.path, target.path).redirectErrorStream(true).start()
+        p.inputStream.use { it.readBytes() }
+        assertEquals(0, p.waitFor())
+        return alias
+    }
+    @Test fun junctionIntoWorkingTreeCannotHideKeyLocation() {
+        val f = Fixture(); val alias = junction(f.root)
+        rejects("keydir_inside_worktree", f) { D2Production.initialize(f.options("identity-init", "keydir" to File(alias, "keys").path), f.runtime) }
+        assertFalse(File(f.root, "keys").exists())
+    }
+    @Test fun junctionToExternalIdentityChecksTargetDirectoryPermissions() {
+        val f = Fixture(); val alias = junction(f.keys)
+        val acl = Files.getFileAttributeView(f.keys.toPath(), AclFileAttributeView::class.java)
+        val everyone = f.keys.toPath().fileSystem.userPrincipalLookupService.lookupPrincipalByName("Everyone")
+        acl.acl = acl.acl + AclEntry.newBuilder().setType(AclEntryType.ALLOW).setPrincipal(everyone).setPermissions(AclEntryPermission.READ_DATA).build()
+        rejects("identity_permissions", f) { D2Production.prepare(f.options("production-prepare", "keydir" to alias.path), f.runtime) }
+    }
     @Test fun groupReadablePrivateKeyRejected() {
         val f = Fixture(); val path = File(f.keys, "private.pem").toPath()
         val acl = Files.getFileAttributeView(path, AclFileAttributeView::class.java)
