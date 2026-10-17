@@ -7,7 +7,7 @@
 
 ## 1. 真实基线与已批准事项
 
-> **2026-10-17 新阶段**：V0.5.2/code19 已在 [PR #35](https://github.com/shimao1115/KITT/pull/35) 合并 main（`53c0e0fa`），用户真机人工体验 PASS；本版1009项工程测试、20/20真实历史原样保留。原 `settings.xml` 首进设置页字节变化根因仍 UNKNOWN；正式完整故事仍0，杨慎Visitor Gate仍待独立批准。当前仅获准 [Issue #36](https://github.com/shimao1115/KITT/issues/36) **V0.6.0 D0 / code20 第一个小工程：通用县级双包解析与读取、旧新都兼容、第二县TEST_ONLY隔离**；GitHub Release与手机分发属于此版本后续独立任务，下载/导入与自动更新更后置，均未实施或授权。**[PR #29](https://github.com/shimao1115/KITT/pull/29)仍Draft未合并**；其旧分支落后main64个提交，只作设计审计，不直接合并。
+> **2026-10-17 D0 最新状态**：V0.5.2/code19 已在 [PR #35](https://github.com/shimao1115/KITT/pull/35) 合并且真机用户验收PASS；**V0.6.0 D0/code20 县级独立双包通用读取已完成工程交付和第二轮独立工程复审PASS，用户已批准 PR #37 文档收口与合并**（以GitHub [PR #37](https://github.com/shimao1115/KITT/pull/37) 实际状态与合并SHA为准）。本次采用真实 Debug540+Release527=**1067项**回归，新增县父级归属和显式权利许可校验；旧新都、杨慎内容与正式故事0、TEST_ONLY第二县范围不变。**手机仍是code19，未进行code20安装和真机验收**。可信发行者签名、独立正式包及GitHub Release属于后续 **D1/D2**，V0.6.1下载/本地导入、V0.6.2更新仍需单独授权；PR29仍为未合并的候选采集规范。旧settings.xml进入设置页字节漂移根因UNKNOWN，首次Gradle IPC异常根因UNKNOWN，均不随D0收口消失。
 
 
 | 项目 | 截至 2026-10-17 的已核状态 |
@@ -16,7 +16,7 @@
 | 工程与语音 | V0.5.2/code19 实跑 **Debug511+Release498=1009项**，零失败/错误/跳过，Fake模拟/签名回归PASS；20/20真实历史在升级前、升级后、真机辅助UI后哈希相同。杨慎双篇历史独立试听PASS不代表Visitor Gate获批；`settings.xml` 首进设置页整体字节漂移根因仍UNKNOWN、账号在线有效性未独立测试 |
 | 标准已发布故事 | **0篇**。杨慎主篇、延伸仍 `candidate / fact_gate=passed / visitor_gate=pending`，批准范围只是 acceptance_candidate；正式发布 **BLOCKED**，不能把试播成功等同正式发行 |
 | 外场测试 | [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27) 保持 OPEN：可信物理 GPS 自动讲述/重播/延伸、断网新鲜定位/云故障恢复、旧历史样本等继续 PENDING |
-| 当前工程交付 | **V0.5.1探索地点、V0.5.2六类讲述偏好均已合并并有用户人工体验PASS**；实际新都1县6对象/22基础事实/6来源，正式可播故事0。**当前独立交付为 V0.6.0 D0**：[Issue #36](https://github.com/shimao1115/KITT/issues/36)，通用县级双包读取与旧路径保护，已工程交付 [Draft PR #37](https://github.com/shimao1115/KITT/pull/37)：两处评审验证缺口已最小修正（`dc76465`）；本轮Debug540+Release527=1067项PASS（旧1055仅历史）、Python7/六组Fake模拟/构建lint/签名回归PASS；第二县TEST_ONLY；尚待独立复审及用户再次验收，未合并/安装/发布；[交接](../HANDOFF.md) |
+| 当前工程交付 | **V0.6.0 D0/code20 工程已完成且独立复审PASS、用户已授权合并PR #37**：县级双包通用内存读取、新都旧路径兼容、第二县TEST_ONLY隔离、来源/Claim及地区关系门禁；本轮Debug540 + Release527=**1067项**0失败/错误/跳过，Python7、六组模拟、签名回归均留证。**手机尚未安装code20**，正式完整故事0；整体V0.6.0发布闭环仍PENDING，[HANDOFF](../HANDOFF.md)、[PR #37](https://github.com/shimao1115/KITT/pull/37)记录实际合并SHA与状态 |
 | 全国采集规范 | “**区县分包、镇街普查、对象建档、事实入库、精选成篇；全国复用、市州聚合**”已由用户确认。详细设计在 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)，**尚未合并、尚未实施全国分发** |
 
 **三种 PASS 严格分开**：工程测试通过 ≠ 真人听完整篇 ≠ 真实道路全链/正式发布已通过。所有证据要对应实际代码、内容哈希、设备及测试日期。
@@ -28,7 +28,7 @@
 | **已完成：V0.5.1/code18** | 「探索地点」无 GPS/无网阅读新都6对象22基础事实；完整已审故事才能全文阅读和手动TTS | **工程965项PASS、原签名手机升级PASS、用户手工体验PASS，已在 PR #31 合并 main**；正式故事0、平板及部分手势仍PENDING |
 | **V0.5.1之后的独立内容审批** | 对杨慎两篇既有正文及真人试听证据做游客 Gate 最终判定，用户明确授权后才走正式审批与打包 | 保持正文/Claim修订/哈希绑定；审核不通过则仍候选。**不作为 V0.5.1 开发中的自动放行**；必要正式制包及受影响测试另执行 |
 | **已完成：V0.5.2/code19** | 六类讲述兴趣「多讲/正常/少讲」、默认正常、独立保存；只对合格自动讲述候选做软排序 | **工程1009项PASS、手机一次原签名code18→19升级PASS、20/20真实历史不变、用户人工体验PASS、PR #35 已合并**；正式多类故事播报排序PENDING；离线/即时来源模式明确DEFERRED；两个保存按钮距离过近下次优化 |
-| **V0.6.0：D0首个小工程已获准；后续正式发行需另授权** | **D0** 县级独立 Fact/Narrative 通用解析/加载、旧新都兼容、第二县TEST_ONLY隔离、市州→县级目录索引，不接收未经可信验签的外来内容；**后续D1/D2** 才实现可复现签名成包及 GitHub 正式 Release 最小闭环 | D0验收：新都原6对象22事实不退化、2县独立/跨包Claim准确、坏包/未审故事拒绝、测试夹具不上正式APK；后续签名/发布每步真实验收，**不提前建 KITT-PACKS/上传Release/操作手机** |
+| **V0.6.0：D0工程PASS / 后续D1、D2待独立授权** | **D0** 县级独立 Fact/Narrative 通用解析/内置加载、新都兼容、第二县TEST_ONLY隔离、市州→县级目录索引；**D1/D2** 才建立可信签名成包及GitHub正式Release的可复现发行闭环 | **D0已完成1067项回归并复审通过，PR #37 合并获用户授权**，手机code20未验收；仅承认新都内置1县6对象22事实，第二县测试夹具不能当正式知识，全国特殊行政层级需专门规则；未发布任何外部包 |
 | **V0.6.1（重点）** | **手机「离线知识管理」：默认按市／州选择下载**（成都市、德阳市、阿坝州等），一键组合其中**当前实际已发布**县级双包，也可展开按区县选择；更新、清理按县包执行；同版提供**本地文件导入**（可电脑/U盘转入），两条入口共用一套验证与安装管线 | 校验发布者签名/摘要/版本/Claim依赖/空间和版权；先暂存再原子启用，失败旧包不丢；GitHub不通时本地可信包仍可导入；国内网络、真实设备需实际验收 |
 | **V0.6.2（按需）** | Wi-Fi 自动更新已安装区县（用户可关闭）、真实更新摘要/覆盖率、失败重试体验与低打扰提示 | 不偷偷下载未选地区，不占用沿途主链；优先修实际发现的问题，不做差分/复杂后台任务 |
 | **V0.7.x** | 用户主动问 AI 时**优先匹配已安装可信 Fact/Narrative**（方案 B）；再视问题及在线可用性查证，完善离线优先/即时优先行为 | 只取相关证据而非整个县包；临时生成资料不得未经审核写入正式包；在线失败不影响本地阅读、朗读及可信定位下的自动故事 |
@@ -66,7 +66,7 @@
 
 ## 6. 文档优先级与开发纪律
 
-- **现行产品排序**：本文件。**当前唯一施工范围**：V0.6.0 D0 分支 `feat/v060-county-pack-loader-d0` 最新 `TASK_CARD.md` + [Issue #36](https://github.com/shimao1115/KITT/issues/36) + 用户授权；执行时先读 AGENTS、HANDOFF 及真实代码。文档归档和路线更新本身**不批准开工**任何未来版本。
+- **现行产品排序**：本文件。**最近获准事项**是完成 [PR #37](https://github.com/shimao1115/KITT/pull/37) 的V0.6.0 D0文档收口及合并，完成后STOP。旧D0任务卡与Issue #36作历史工程存档；**D1/D2、V0.6.1、真机安装、正式故事审核与任何Release没有因D0合并自动获得授权**。
 - **内容/证据/版权**：[知识内容标准 V2.4](KITT_KNOWLEDGE_STANDARD.md)、[知识工厂 V2.4](KITT_KNOWLEDGE_FACTORY.md)。**下载与安装的技术规则**：[离线包管理 V1.0](KITT_OFFLINE_PACK_MANAGEMENT.md)，按本次确定的县级与导入优先级更新解释。
 - **正式县级生产规范**：[PR #29](https://github.com/shimao1115/KITT/pull/29)，当前 Draft；其 [全国区县采集 V1.0](https://github.com/shimao1115/KITT/blob/docs/county-knowledge-collection-v1/docs/KITT_COUNTY_KNOWLEDGE_COLLECTION_V1.md) 和[单县任务模板](https://github.com/shimao1115/KITT/blob/docs/county-knowledge-collection-v1/docs/templates/KITT_COUNTY_COLLECTION_TASK.md) 为候选实施模板，待单独合并。
 - **历史资料**：[V0 Destination Chain](ROADMAP.md)、[2026-10-14—15 本地优先旧路线归档](archive/ROADMAP_OFFLINE_FIRST_20261014_15.md) 与旧 PR/Issue/HANDOFF；旧日期的“当前”“尚未授权”“先三星堆”“城市详细包最低单位”均不可覆盖本文件的新决定。
