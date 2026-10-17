@@ -1,3 +1,13 @@
+# 2026-10-17 最终授权：V0.6.0 D0 工程复审 PASS，文档收口并合并 PR #37
+
+> 用户明确**批准** [Draft PR #37](https://github.com/shimao1115/KITT/pull/37) **最终文档收口及合并至 main，不升级手机**。这只解除下方历史“未获PR合并许可”限制，不是授权 code20 手机安装、APK/县包正式发行、KITT-PACKS创建、内容Visitor审核、PR29合并或 V0.6.0 D1/D2施工。
+>
+> 独立复审结论：[PASS](https://github.com/shimao1115/KITT/pull/37#issuecomment-6231174949)。最新已测实现是 dc764651；交付HEAD 2195ad04；**Debug540+Release527=1067项**、零失败错误跳过；六组Fake模拟/Python7/构建lint/原签名回归通过，证据详见 [v060-d0-verification.json](docs/evidence/v060-d0-verification.json)。受限权利与县父级代码两缺口均复审解决；新都1县6对象22基础事实与旧路径保留，第二县TEST_ONLY且普通APK无测试资料，正式故事0、杨慎Visitor pending。GitHub未记录独立CI运行，设备code20未验收；这些不能写成PASS。旧settings.xml漂移、Gradle首轮IPC根因 UNKNOWN。
+>
+> **本轮执行仅允许**：更新AGENTS/HANDOFF及现行路线的已完成状态→核查main/PR审查与安全文件差异→将PR从Draft转Ready（GitHub如需）→使用受保护HEAD合并PR37→核验实际merge SHA/main有证据→STOP。只准文档改动，不改Kotlin/Story/Claim/manifest/assets/签名/APK，不重跑安装、不访问手机、不做下一阶段。手机仍留code19。**下方所有旧的“待复审/禁止合并/D0仍未开发”均为时间较早的阶段文字。**
+
+---
+
 > **2026-10-17 D0/code20 两处评审修正 / STOP 待再次验收**：已按 [PR #37 独立评审](https://github.com/shimao1115/KITT/pull/37#issuecomment-6229804921) 完成县级码/父级码归属校验与来源/Claim显式权利允许表，修正提交 `dc76465`；生产差异仅 `CountyPacks.kt`，新都正文、杨慎审批、账号设置及Android UI不变。**本轮完整重跑 Debug540 + Release527 = 1067项，0失败/错误/跳过**；六项新增用例两Variant均执行，Python7、六组Fake模拟、构建/lint、原签名2接受+6拒绝PASS。首轮Gradle本机IPC失败尝试已保留且排除，最终串行独立进程全量重跑通过。code20 runtimecheck本地候选 **74461274字节 / SHA256 `2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60`**，旧1055项及旧候选仅为历史。详见[HANDOFF](HANDOFF.md)、[证据](docs/evidence/v060-d0-verification.json)。**Draft PR #37 保持未合并；无手机/ADB/安装、无发布、未启动后续里程碑；正式故事0、杨慎candidate/visitor_gate=pending不变。独立工程复审与用户验收仍PENDING。**
 
 ---
