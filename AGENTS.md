@@ -1,3 +1,7 @@
+> **2026-10-18 办公室身份日常权限修复 DONE／保护与备份仅方案**：按 Issue #44 独立核验意见执行。既有身份 `kitt-9a5e596c-45bd-422b-a53c-b17a15de98a7` **未重新生成、未改登记**；`H:\KITT-identity` 目录与四个文件所有者及唯一 Allow 主体改为日常 Windows 用户，满足工具“全部 Allow 主体等于所有者”，`production-prepare` 已通过 `identity()` 并停在 `command_unavailable`（缺 `gh`）。修复中出现过临时空 DACL，已按原字节（SHA-256 一致）恢复，密钥字节/指纹/mtime 不变、创建时间变为 02:16:24。**非提权进程实测未完成**：本机策略禁止 `runas`/计划任务，Agent 无法自建普通会话。`gh` 仍未安装（`winget` 可用）；main 仍无保护——`Restrict file paths` 需 Team + 私有/内部库，本公开个人库不可用，推荐“限定 PAT + CODEOWNERS + 要求 PR/Code Owner 审批”三层方案（未实施）；离线备份建议 BitLocker 加密 VHDX/U 盘（未执行）。零 publish/Tag/Release/上传/手机操作。见[证据](docs/evidence/v060-d2-office-identity-acl-repair.json)。
+
+---
+
 > **2026-10-18 办公室正式发行身份初始化 + 公钥登记 DONE（家庭 PENDING）**：按 [Issue #44](https://github.com/shimao1115/KITT/issues/44) 阶段 B 用户批准执行。办公室电脑生成本机唯一正式身份 `kitt-9a5e596c-45bd-422b-a53c-b17a15de98a7`（RSA-3072、`scope=PRODUCTION`、`test_identity=false`，公钥 SHA-256 `79b5403d…aef73e`），私钥仅存工作树外 `H:\KITT-identity`，ACL 仅所有者；默认 `%LOCALAPPDATA%` 目录因位于 Git 工作树内被 `keydir_inside_worktree` 拒绝，未生成任何密钥，经用户当场选择改到 H 盘。唯一公钥条目已写入 `main:config/pack-publishers.json`（提交 `3c42897`，父 `9ad557e0`，仅该文件），回读远端 `key_id`/`public_key` 与本机逐字节一致、无私钥。**main 未受保护（protection 404、rulesets 空），`gh` 仍未安装；本轮零 publish、零 Tag/Release、零上传、未碰内容/手机/App。** 家庭电脑阶段 C 与 gh 安装、main 保护、私钥离线备份仍 PENDING；新都 BLOCKED、正式故事 0。见[证据](docs/evidence/v060-d2-office-identity-init.json)。
 
 ---

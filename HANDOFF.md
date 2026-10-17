@@ -1,3 +1,38 @@
+# 2026-10-18 办公室身份日常权限修复 + 收尾调查 / DONE，保护与备份待批准
+
+按 [Issue #44](https://github.com/shimao1115/KITT/issues/44) 的独立核验意见执行。本轮不重新生成密钥、不发布知识包、不修改 GitHub 保护设置。
+
+## 一、私钥日常权限（已完成）
+
+- 终态：目录与 `key.json`/`public.pem`/`private.pem`/`registration.json` 的所有者为日常 Windows 用户，各仅一条 Allow（主体与该用户一致），无 Administrators/Users/SYSTEM/沙箱主体；满足 `D2Production.protect()` 的“全部 Allow 主体等于所有者”。
+- 事故与恢复：第一轮 `icacls` 组合（setowner → grant `(OI)(CI)` → remove Administrators → `/inheritance:r /T`）中，`(OI)(CI)` 没有作为可用文件 ACE 落盘，随后 `/inheritance:r /T` 清掉继承项，四个文件变成受保护的空 DACL。该卷此后拒绝一切 DACL 写入（`icacls`、`SetNamedSecurityInfo`、`SetFileSecurity`、句柄 `SetSecurityInfo`、`takeown` 全部返回 Win32 5），PowerShell 侧读取也被拒；同样操作在 C: 上可正常恢复，说明与本机该卷行为有关。
+- 恢复方式：按原字节复制到暂存目录并逐个校验 SHA-256 → 原文件改名 `*.locked` → 暂存副本换入 → 复核哈希、ACL、所有者、公私钥匹配 → 删除 `*.locked` 与暂存目录。**密钥字节、`key_id`、公钥指纹、最后修改时间均未变；创建时间变为 02:16:24。未重新生成密钥，未改动登记。**
+- 工具验证：`production-prepare` 通过 `identity()`（工作树外路径、ACL、`key.json` 非模拟、`key_id` 格式、RSA-3072、四文件可读），随后停在 `command_unavailable`（缺 `gh`）；未创建输出目录、未上传。
+- 未完成：非提权进程实测。本会话始终提权，`runas` 与计划任务被本机安全策略禁止，无法自建普通会话；ACL 判定本身是确定的（仅该用户 Allow、无 Deny）。
+
+## 二、GitHub CLI（PENDING）
+
+`gh` 未安装，`winget` 1.29.380 可用。建议 `winget install --id GitHub.cli --source winget`，再 `gh auth login --hostname github.com --git-protocol https --web`。未读取或输出任何令牌，未执行任何 release 命令。
+
+## 三、main 公钥登记保护（仅方案，未改设置）
+
+- 现状：protection `404`、rulesets `[]`；仓库为个人账号公开库（GitHub Free）。
+- 关键限制：`Restrict file paths` 属 push ruleset，需 GitHub Team + internal/private 仓库，本仓库**不可用**，因此不能靠“禁止改该文件”的路径规则。
+- 推荐三层：① **凭据分离**——Agent 改用限定本仓库的 fine-grained PAT（Contents RW、Pull requests RW、Metadata R，无 Administration/Workflows）；否则 Agent 可改 CODEOWNERS 或停用 ruleset，任何规则都拦不住。② `.github/CODEOWNERS` 写 `/.github/CODEOWNERS @shimao1115` 与 `/config/pack-publishers.json @shimao1115`，把门锁本身也锁上。③ main 规则集：Require a pull request + Require review from Code Owners + Block force pushes + Restrict deletions，bypass 留空。
+- 效果：知识包仍提交候选分支、无额外审稿；日常 main 文档改动 Agent 可自建 PR 自行合并；**公钥名单变更必须仓库所有者批准，Agent 不能自批**。
+
+## 四、离线加密备份（建议，未执行）
+
+身份共 4 个文件 3955 字节；H: 与 C: 均未开 BitLocker，本机为 Windows 11 专业版（BitLocker 可用）。推荐 BitLocker 加密的 VHDX（或 BitLocker To Go U 盘）保存副本，两份离线介质分开存放，口令与恢复密钥分开保管，每年恢复演练并比对四个文件 SHA-256。备选 7-Zip AES-256（含文件名加密），本机未安装 7-Zip。
+
+## 未做
+
+未重新生成密钥、未改公钥登记、未安装 `gh`、未读令牌、未 publish/Tag/Release/上传、未改 GitHub 保护、未操作手机、未启动 V0.6.1。
+
+[证据](docs/evidence/v060-d2-office-identity-acl-repair.json)
+
+---
+
 # 2026-10-18 办公室正式发行身份初始化 + 公钥登记 / DONE（本机），PENDING（家庭）
 
 依据 [Issue #44](https://github.com/shimao1115/KITT/issues/44) 阶段 B 的用户批准评论执行。本轮只做两件事：办公室电脑一次性正式发行身份初始化、唯一公钥登记。**未发布任何知识包**，未运行 publish / production-prepare / release-dry-run，未建 Tag/Release，未上传附件。

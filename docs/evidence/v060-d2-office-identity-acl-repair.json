@@ -1,0 +1,121 @@
+{
+  "issue": "https://github.com/shimao1115/KITT/issues/44",
+  "round": "办公室阶段 B 收尾：私钥日常权限修复、GitHub CLI 核查、main 登记保护方案、离线备份方案",
+  "device": "office",
+  "executed_at": "2026-10-18T02:20:00+08:00",
+  "identity": {
+    "key_id": "kitt-9a5e596c-45bd-422b-a53c-b17a15de98a7",
+    "scope": "PRODUCTION",
+    "test_identity": false,
+    "bits": 3072,
+    "public_key_fingerprint_sha256": "79b5403d949681dd9f95d2d436f3d0fac3ecd5682a3bdeca11f91ea0a9aef73e",
+    "key_directory": "H:\\KITT-identity",
+    "regenerated": false,
+    "registration_changed": false
+  },
+  "acl": {
+    "before": {
+      "owner": "BUILTIN\\Administrators",
+      "ace": "BUILTIN\\Administrators FullControl Allow (single, explicit)"
+    },
+    "after": {
+      "owner": "daily Windows user (church account)",
+      "directory": "single explicit Allow FullControl for the daily user, inheritance protected",
+      "files": "single inherited Allow FullControl from the directory, owner equals that user",
+      "other_principals": "none (no Administrators, Users, SYSTEM or sandbox principals)"
+    },
+    "tool_rule_compatibility": "all ALLOW principals equal the owner, DACL non-empty; matches D2Production.protect()"
+  },
+  "key_bytes": {
+    "preserved": true,
+    "sha256": {
+      "key.json": "838abf97410978892933568d1ded99e024500ec72a74b2cda8858e2d9989f6d4",
+      "public.pem": "8bec1a96a71eb174bd0de525d28ae5539b3a17163e04c931dee82898614bdced",
+      "private.pem": "6da639deec5fa40c28148b65ae6dacc88884ac5b824a87e0427cae39f20ec69d",
+      "registration.json": "c6689144435b45be0dffd2c39a29f23b19b0ad1ad53b021177ca2d8a50a68767"
+    },
+    "baseline_compared": "hash captured before any ACL change; identical after repair",
+    "last_write_time_preserved": true,
+    "creation_time": "reset to 2026-10-18T02:16:24+08:00 during recovery",
+    "keys_reinitialized": false
+  },
+  "incident": {
+    "summary": "第一次 ACL 修正把四个文件的 DACL 清空，且该卷拒绝重新写入 DACL；随后以逐字节一致的副本完成恢复。",
+    "sequence": [
+      "setowner + grant daily user + remove Administrators + strip inheritance applied to directory and files",
+      "the (OI)(CI) grant did not land as a usable file ACE, and /inheritance:r /T removed the inherited ACEs",
+      "all four files ended with a protected empty DACL (SDDL D:PAI, owner = daily user)",
+      "subsequent DACL writes were rejected with Win32 error 5 by icacls, SetNamedSecurityInfo, SetFileSecurity, SetSecurityInfo on a handle, and takeown, with SeTakeOwnership/SeRestore/SeBackup enabled",
+      "PowerShell-side reads were denied; a control test on C: with the same owner/empty-DACL recovered normally, so the rejection is specific to this volume"
+    ],
+    "recovery": [
+      "copied the four files to a staging directory with the same bytes and verified SHA-256 equality",
+      "set the staging files to owner = daily user with a single Allow ACE",
+      "renamed the four original files to *.locked",
+      "moved the verified staging copies into place",
+      "re-verified hashes, ACL, owner and key pair match, then removed the *.locked copies and the staging directory"
+    ],
+    "data_loss": false,
+    "notes": "No key material was printed, transmitted or committed at any point."
+  },
+  "tool_verification": {
+    "command": ".\\gradlew.bat :app:d1Pack -Pd1.command=production-prepare -Pd1.keydir=H:\\KITT-identity (fixed commit, sample input, offline)",
+    "result_status": "REJECTED",
+    "result_code": "command_unavailable",
+    "interpretation": "identity() passed (external path, ACL, key.json scope/test_identity, key_id format, RSA-3072 strength, file readability); the run then stopped at the registry read because gh is not installed. No output directory was created and no upload was attempted.",
+    "identity_accepted_by_tool": true
+  },
+  "non_elevated_session": {
+    "executed": false,
+    "reason": "The agent session always runs elevated; privilege-dropping launchers (runas, scheduled tasks) are blocked by the local security policy. No non-elevated shell could be started from this session.",
+    "deterministic_basis": "The DACL now grants only the daily user FullControl with no deny entries, so a standard token of that user is granted access by ACL evaluation. The remaining confirmation is a one-command read test in a normal PowerShell window."
+  },
+  "github_cli": {
+    "installed": false,
+    "gh_auth_status": "not applicable",
+    "winget_available": "1.29.380",
+    "recommended_install": "winget install --id GitHub.cli --source winget",
+    "recommended_auth": "gh auth login --hostname github.com --git-protocol https --web",
+    "token_read_or_printed": false,
+    "release_commands_executed": false
+  },
+  "main_protection": {
+    "current_state": {
+      "branch_protection_api": "404 Branch not protected",
+      "rulesets": [],
+      "repo": "public, user-owned, GitHub Free"
+    },
+    "availability": {
+      "branch_rulesets": "available for public repositories on GitHub Free",
+      "push_rulesets": "Restrict file paths is a push rule; push rulesets require GitHub Team with internal/private repositories, so it is NOT available for this public user-owned repository",
+      "codeowners": "available for public repositories on GitHub Free; code owner review can be required from branch protection or rulesets"
+    },
+    "recommended": {
+      "credential_separation": "Replace the agent's stored GitHub credential with a fine-grained PAT limited to this repository: Contents read/write, Pull requests read/write, Metadata read; no Administration and no Workflows. Without this, the agent can edit CODEOWNERS or disable the ruleset, so no GitHub-side rule is enforceable.",
+      "codeowners": "Add .github/CODEOWNERS with '/.github/CODEOWNERS @shimao1115' and '/config/pack-publishers.json @shimao1115' so the file that enforces the gate is itself gated.",
+      "ruleset": "Branch ruleset on main: require a pull request before merging, require review from code owners, block force pushes, restrict deletions, empty bypass list.",
+      "effect": "Knowledge packs keep going to candidate branches with no added review. Routine main changes can be merged by the agent through a PR. Any change to the publisher registry requires an approval from the repository owner that the agent cannot give to itself.",
+      "not_applied": true,
+      "requires_user_approval": true
+    }
+  },
+  "backup": {
+    "current": {
+      "volume": "H: internal SATA NTFS, fixed, healthy",
+      "bitlocker": "Off on H: and C:",
+      "size": "four files, 3955 bytes total",
+      "private_key_at_rest": "unencrypted PEM protected only by ACL and disk access"
+    },
+    "recommended": "BitLocker-encrypted VHDX (or BitLocker To Go USB) holding a copy of H:\\KITT-identity; two offline copies in separate places; password plus recovery key stored separately from the media; annual restore drill comparing SHA-256 of the four files.",
+    "alternative": "7-Zip AES-256 archive with encrypted headers (-mhe=on); 7-Zip is not installed on this machine.",
+    "executed": false
+  },
+  "not_performed": [
+    "no key regeneration or re-initialization",
+    "no change to config/pack-publishers.json or the registered public key",
+    "no gh installation, no token read or printed",
+    "no publish, production-prepare completion, tag, release or upload",
+    "no change to GitHub branch protection or rulesets",
+    "no copy, export or upload of private key material"
+  ]
+}
