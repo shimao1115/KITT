@@ -171,6 +171,17 @@ internal object D2Local {
             val s = source.jsonObject
             appendLine("- ${s.getValue("source_id").jsonPrimitive.content}：${s.getValue("title").jsonPrimitive.content}；${s.getValue("url").jsonPrimitive.content}；${s.getValue("rights").jsonPrimitive.content}")
         }
+        val claims = (facts["claims"] as? JsonArray) ?: JsonArray(emptyList())
+        appendLine("\n## 核验事实（${claims.size} 项）")
+        claims.forEach { claim ->
+            val c = claim.jsonObject
+            appendLine("\n- ${c.getValue("claim_id").jsonPrimitive.content}：${c.getValue("text").jsonPrimitive.content}")
+            appendLine("  状态：${c.getValue("status").jsonPrimitive.content}；权利：${c.getValue("rights").jsonPrimitive.content}")
+            c.getValue("evidence").jsonArray.forEach { evidence ->
+                val e = evidence.jsonObject
+                appendLine("  依据：${e.getValue("source_id").jsonPrimitive.content}；${e.getValue("locator").jsonPrimitive.content}")
+            }
+        }
         val stories = Json.parseToJsonElement(candidate.blocks.narratives.decodeToString()).jsonObject.getValue("narratives").jsonArray
         appendLine("\n## 讲述（${stories.size} 篇）")
         stories.forEach { story ->

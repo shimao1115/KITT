@@ -110,6 +110,9 @@ class ProductionD2Test {
             assertEquals(ContentDigest.sha256(File(review, "candidate.unsigned").readBytes()), hash)
             assertTrue(File(review, "review.md").readText().contains(hash))
             assertFalse(File(review, "review.md").readText().contains("PRIVATE KEY"))
+            Json.parseToJsonElement(payload.first.decodeToString()).jsonObject.getValue("claims").jsonArray.forEach {
+                assertTrue(File(review, "review.md").readText().contains(it.jsonObject.text("text")))
+            }
         }
         fun publish(vararg extra: Pair<String, String>) = D2Production.publish(options("publish", *extra), runtime)
         fun old(sequence: Int = 1, facts: ByteArray = payload.first, narratives: ByteArray = payload.second): ReleaseManifest =
