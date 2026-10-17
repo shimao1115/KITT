@@ -105,6 +105,9 @@ def cli_logs():
 def main():
     assert not command('git', 'status', '--porcelain'), 'working tree must be clean before recording evidence'
     commit = command('git', 'rev-parse', 'HEAD')
+    implementation = command('git', 'log', '-1', '--format=%H', '--',
+                             'packtool', 'app/src/test/java/com/kitt/reader/d1').strip()
+    assert implementation, 'cannot resolve the implementation commit'
     assert command('git', 'merge-base', '--is-ancestor', BASE_COMMIT, commit) == ''
     production_diff = command('git', 'diff', '--stat', BASE_COMMIT, '--', 'app/src/main')
     assert production_diff == '', f'production app code must be untouched: {production_diff}'
@@ -158,6 +161,7 @@ def main():
         'recorded_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         'run_started_at': START.isoformat(),
         'commit': commit,
+        'implementation_commit': implementation,
         'base_commit_d0': BASE_COMMIT,
         'scope': {
             'delivered': ['KCPK v1 deterministic container', 'SHA256withRSA TEST_ONLY signing',

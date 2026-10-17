@@ -31,8 +31,13 @@ try {
         if (Test-Path -LiteralPath $taskDirectory) {
             throw "Refusing to reuse or delete an existing directory: $taskDirectory"
         }
-        & git -C $taskRoot worktree add --detach $taskDirectory $taskCommit | Out-Null
-        if ($LASTEXITCODE -ne 0) { throw "Cannot create a clean work tree at $taskDirectory" }
+        # git writes progress to stderr; capture it instead of letting the strict preference throw.
+        $taskPreference = $ErrorActionPreference
+        $ErrorActionPreference = 'Continue'
+        & git -C $taskRoot worktree add --detach $taskDirectory $taskCommit 2>&1 | Out-Null
+        $taskAddExit = $LASTEXITCODE
+        $ErrorActionPreference = $taskPreference
+        if ($taskAddExit -ne 0) { throw "Cannot create a clean work tree at $taskDirectory" }
         $taskCreated += $taskDirectory
         $taskOut = Join-Path $taskDirectory 'artifacts/d1/build'
         $taskOutput = & (Join-Path $taskDirectory 'gradlew.bat') ':app:d1Pack' '-Pd1.command=build' `
@@ -77,8 +82,12 @@ try {
     $taskReport | ConvertTo-Json -Depth 6
 } finally {
     $taskRegistered = @()
+    $taskPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
     $taskList = & git -C $taskRoot worktree list --porcelain 2>$null
-    if ($LASTEXITCODE -eq 0) {
+    $taskListExit = $LASTEXITCODE
+    $ErrorActionPreference = $taskPreference
+    if ($taskListExit -eq 0 -and $taskList) {
         $taskRegistered = @($taskList | Where-Object { $_ -like 'worktree *' } | ForEach-Object { $_.Substring(9).Trim() })
     }
     foreach ($taskDirectory in $taskCreated) {
@@ -88,7 +97,10 @@ try {
             Write-Warning "Left an unregistered directory in place: $taskDirectory"
             continue
         }
-        & git -C $taskRoot worktree remove --force $taskFull 2>$null | Out-Null
+        $taskPreference = $ErrorActionPreference
+        $ErrorActionPreference = 'Continue'
+        & git -C $taskRoot worktree remove --force $taskFull 2>&1 | Out-Null
+        $ErrorActionPreference = $taskPreference
     }
     Pop-Location
 }

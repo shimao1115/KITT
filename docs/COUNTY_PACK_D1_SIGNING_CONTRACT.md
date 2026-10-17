@@ -51,7 +51,8 @@ KCPK v1 是**固定字节帧**，不是 ZIP：
 | `publisher_scope` | `TEST_ONLY` 或 `PRODUCTION`（D1 只产出前者） |
 | `key_id` | 与签名段、可信锚表一致，三处不符即拒绝 |
 | `source_commit` | 40 位小写十六进制，固定内容来源版本 |
-| `minimum_code` | 要求的最低 App versionCode；高于验签方支持版本即拒绝 |
+| `minimum_code` | 要求的最低 App versionCode；高于验签方支持版本即拒绝；必须与两份内层 manifest 相同 |
+| `sequence` | 单调发布序号（≥1）；低于调用方给定的最低接受序号即拒绝（`sequence_rollback`） |
 | `fact_version` / `narrative_version` | 两侧独立版本 |
 | `content_kind` | `fact_only` / `fact_and_narrative`；`fact_only` 而实际有故事时拒绝 |
 | `blocks` | 四块的 kind/bytes/sha256 |
@@ -71,7 +72,7 @@ KCPK v1 是**固定字节帧**，不是 ZIP：
 
 ## 5. 验签顺序与拒绝码
 
-顺序固定：**解码 → manifest 严格解析 → 可信锚 → 签名 → 版本/地区/类型/尺寸 → 分块摘要 → 整包摘要 → D0 内容门禁**。任一步失败即 `REJECTED`，不会降级为“部分可用”。
+顺序固定：**解码 → manifest 严格解析 → 可信锚 → 签名 → manifest 规则（版本/地区/类型/尺寸/序号≥1）→ 调用方序列下限 → 分块摘要 → 整包摘要 → 外层/内层绑定 → D0 内容门禁**。任一步失败即 `REJECTED`，不会降级为“部分可用”；新增检查全部排在信任与签名之后，不会绕过验签。
 
 | 拒绝码 | 触发 |
 | --- | --- |
@@ -82,19 +83,39 @@ KCPK v1 是**固定字节帧**，不是 ZIP：
 | `no_trusted_publisher` / `unknown_key_id` / `key_id_mismatch` / `bad_signature` | 信任与签名 |
 | `source_commit` / `minimum_code` / `publisher_scope` / `content_kind` / `builder_version` | 版本与声明 |
 | `area_id` / `parent_relationship` | 地区码 |
+| `inner_binding` | 已签名外层宣称与内层四块不一致（详见第 6 节） |
+| `sequence` / `sequence_rollback` | 序号非法，或低于调用方最低接受序号 |
+| `ambiguous_anchor` | 同一 `key_id` 绑定两个不同 scope/公钥 |
 | `block_integrity` / `content_digest` | 分块/整包摘要 |
 | `content_gate_unavailable` / `content_rejected` | 内容门禁缺失或内容不合法 |
 
 内容门禁（`D0CountyGate`）在签名通过后调用 D0 的 `CountyPackLoader`，并且**比 D0 阅读路径更严格**：D0 允许“只显示基础事实、隐藏被阻断的依赖”，但发行候选若静默丢弃事实或故事就是虚假陈述，因此**任何 blocked 条目都拒绝整包**。`fact_only` 包必须如实报告 `0` 篇故事。
 
-## 6. 可复现
+## 6. 外层/内层绑定与防回滚
+
+**外层/内层绑定**（`InnerBinding`）：D0 只保证四块**彼此**一致，不知道签名外层的宣称。因此验签器在签名、分块摘要、整包摘要都通过后，逐字段比对：
+
+| 外层字段 | 必须等于内层 |
+| --- | --- |
+| `area_id` | 两份 manifest 的 `area_id`、两份正文的 `area_id`、Fact `area.area_id` |
+| `parent_id` | Fact `area.parent_id` |
+| `fact_version` | Fact manifest 与 Fact 正文的 `content_version` |
+| `narrative_version` | Narrative manifest 与 Narrative 正文的 `content_version` |
+| `minimum_code` | 两份 manifest 的 `minimum_code` |
+| `blocks[].pack_id` 隐含 | 两份 manifest 与两份正文的 `pack_id` 必须是 `县ID-fact/-narrative` |
+
+不一致一律 `inner_binding`（`detail` 给出具体字段）。这样“用另一县的合法 TEST_ONLY 块重新签成外层别县”会失败，`Accepted.manifest` 永不谎报实际接收内容。
+
+**防回滚**：manifest 带单调 `sequence`。D1 **不保存任何客户端状态**——由调用方传入 `minimumSequence`，低于它就 `sequence_rollback`。这满足任务卡“未授权序列降级拒绝”的最薄要求，但**不是**完整的防回滚：没有持久安装库、没有版本库、没有撤销中心，也不防止攻击者同时伪造更高序号（那仍需要可信锚保护）。真正的持久序列与撤销属 V0.6.1/D2。
+
+## 7. 可复现
 
 - 容器不含时间戳、绝对路径、用户名、机器指纹、Git 脏状态；`source_commit` 由调用方显式传入。
 - 同一输入 + 同一 builder 版本 + 同一 TEST_ONLY 密钥 → unsigned 四块字节、`unsigned_sha256`、整包 `container_sha256` 全部逐字节相同（两干净 worktree 实测，见证据）。
 - `tools/d1/**` 在 `.gitattributes` 中标记 `-text`，避免 Windows 检出把 LF 改成 CRLF 而改变载荷字节与所有摘要。
 - 签名本身的跨密钥复现**不作承诺**：换密钥必然换签名；D1 只承诺同一密钥下的确定性。
 
-## 7. 密钥治理规划（D2 实施，本轮不执行）
+## 8. 密钥治理规划（D2 实施，本轮不执行）
 
 | 事项 | 计划 |
 | --- | --- |
@@ -106,16 +127,17 @@ KCPK v1 是**固定字节帧**，不是 ZIP：
 | 最低版本 | `minimum_code` 与 `content_kind` 配合，防止旧客户端读新格式 |
 | 事故响应 | 保留 `source_commit` + `content_sha256` 以便全量追溯与重签 |
 
-## 8. D2 遗留风险
+## 9. D2 遗留风险
 
 1. 生产密钥仪式、双人复核与 HSM 选型尚未设计落地，本轮**没有**任何生产私钥或官方公钥。
 2. 公钥固化需要 App 发版；D1 的验签库只存在于 JVM 工具与单元测试，**未进入 APK**（V0.6.1 才接手机侧）。
 3. 撤销/轮换的客户端语义、离线设备长期不联网时的锚过期策略未定。
-4. 真实新都内容对外发行许可仍未取得（2 个来源权利不明，见验收记录），D1 只产出 TEST_ONLY 合成样板。
-5. 真机 JCA 可用性未验证（无设备）：D1 只用 JDK 17 的 `SHA256withRSA`，Robolectric 仍是 JVM 实现，**真 Android 记录为 PENDING**。
-6. 分发层（Releases、索引托管、镜像）完全未实现。
+4. 持久化防回滚（已安装序号、失败回退、撤销列表）未实现，D1 只有调用方传入的最低序号。
+5. 真实新都内容对外发行许可仍未取得（2 个来源权利不明，见验收记录），D1 只产出 TEST_ONLY 合成样板。
+6. 真机 JCA 可用性未验证（无设备）：D1 只用 JDK 17 的 `SHA256withRSA`，Robolectric 仍是 JVM 实现，**真 Android 记录为 PENDING**。
+7. 分发层（Releases、索引托管、镜像）完全未实现。
 
-## 9. 命令
+## 10. 命令
 
 ```bash
 # 1) 一次性 TEST_ONLY 测试密钥（写到工作树之外，拒绝写入仓库内）
