@@ -1,3 +1,9 @@
+# D1 最终工程复审与用户合并授权
+
+2026-10-17 D1 第二轮独立工程复审 PASS（PR #39 head 15894f5；评审 https://github.com/shimao1115/KITT/pull/39#issuecomment-6233819737）。用户已明确批准仅做最终文档收口及 PR #39 合并 main；此段是合并前授权与审查状态，不预先宣称合并成功。测试依据提交的工程证据1134项零失败，ChatGPT未实跑Gradle；生产代码 app/src/main 零改动。仍无生产密钥、Release、正式新都可发行故事、手机JCA验收、D2授权；sequence只是调用方下限，非持久防回滚。旧本机路径留在Git历史，未授权不得重写。实际合并状态以GitHub PR merged及merge commit为准。
+
+---
+
 # 2026-10-17 V0.6.0 D1 评审修复轮 — Draft PR #39 仍待复审（STOP）
 
 **触发**：[PR #39 首轮独立评审](https://github.com/shimao1115/KITT/pull/39#issuecomment-6233095568) 要求三项最小修复并对防回滚边界作明确交代。本轮只做这些修复与对应验证，**未合并、未操作手机、未发布、未生成生产密钥、未开 D2**。
