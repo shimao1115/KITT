@@ -7,6 +7,9 @@
 
 ## 1. 真实基线与已批准事项
 
+> **2026-10-17 最新**：V0.6.0 D2 TEST_ONLY 演练 [PR #41](https://github.com/shimao1115/KITT/pull/41) 已合并 main（merge `baea614b`，该轮工程1172项PASS，非真实生产发行）。用户现已允许启动 **D2 正式发行能力的最小工程实现与模拟**：[Issue #42](https://github.com/shimao1115/KITT/issues/42)、本分支 `TASK_CARD.md`。目标仍是办公室/家里 AI 制作、用户看一次、当前机器自动检查/签名/上传；本轮**不启用真实生产密钥/公钥，不建Tag/Release、不发布真实内容或安装手机**。首次真正发行仍待用户另外授权；真实新都内容BLOCKED、正式故事0。下方“D2未授权 / PR41 Draft”是合并前历史。
+
+
 > **2026-10-17 D2 最新授权（仅当前开发分支施工）**：办公室或家里任一电脑由 Agent 制作，用户看一次正文及来源说明并确认，随后当前电脑自动检查/签名/验签/发布；不要求专用签名机、第二轮人工审稿或重复上传确认。两机各自持独立本机 key_id/私钥，复用 D1 多锚和 D0 Gate；不合格条目可在新输入中明确剔除后单独检查合法子集。见 [Issue #40](https://github.com/shimao1115/KITT/issues/40)、[TASK_CARD](../TASK_CARD.md)、[操作说明](COUNTY_PACK_D2_WORKFLOW.md)。**本轮只做 TEST_ONLY 模拟和 Draft PR，不生成生产钥/真实根，不创建 Release/Tag、不操作手机、不启动 V0.6.1；真实新都全量继续 BLOCKED**。旧“单台签名机”及下方 D1 时期授权文字均为历史。
 
 
