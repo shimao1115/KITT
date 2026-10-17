@@ -72,5 +72,27 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.12.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     testImplementation("androidx.compose.ui:ui-test-junit4")
+    // D1 release format/signature tooling. Test-only: nothing of it is packaged into the APK.
+    testImplementation(project(":packtool"))
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+/** D1 command line (`build`, `verify`, ...). Runs the JVM unit-test classpath, so the tool can reuse
+ *  the D0 county reader without putting a byte of signing code into the shipped application. */
+tasks.register<JavaExec>("d1Pack") {
+    group = "kitt"
+    description = "D1 TEST_ONLY pack build/verify CLI (docs/COUNTY_PACK_D1_SIGNING_CONTRACT.md)."
+    dependsOn("compileDebugUnitTestKotlin", "compileDebugUnitTestJavaWithJavac")
+    classpath = configurations.getByName("debugUnitTestRuntimeClasspath") + files(
+        layout.buildDirectory.dir("tmp/kotlin-classes/debug"),
+        layout.buildDirectory.dir("tmp/kotlin-classes/debugUnitTest"),
+        layout.buildDirectory.dir("intermediates/javac/debug/compileDebugJavaWithJavac/classes")
+    )
+    mainClass.set("com.kitt.reader.d1.D1PackCliKt")
+    workingDir = rootProject.projectDir
+    // A refusal is a normal D1 outcome, so the CLI reports it through status=/exit_code= instead of
+    // turning an expected negative case into a Gradle failure.
+    isIgnoreExitValue = true
+    val flags = listOf("command", "root", "sample", "out", "keydir", "pack", "commit", "appcode", "json", "offset", "keyid")
+    args = flags.mapNotNull { flag -> (project.findProperty("d1.$flag") as String?)?.let { listOf("--$flag", it) } }.flatten()
 }
