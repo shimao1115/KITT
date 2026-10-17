@@ -1,3 +1,7 @@
+> **2026-10-17 最新 D2 施工授权（覆盖下方 D1 的历史 STOP）**：用户已批准**最小 D2 工程准备**，要求办公室和家庭两台 Windows 电脑都能参与离线知识包制作、相同 Git commit 可各自预制并校验；最终生产签名仅单机、实际生产密钥生成与发布另行批准，拒绝过度设计。唯一任务 [Issue #40](https://github.com/shimao1115/KITT/issues/40)，唯一分支 `feat/v060-d2-dual-workstation-release`，施工前首先阅读该分支 [TASK_CARD.md](TASK_CARD.md)。D1 [PR #39](https://github.com/shimao1115/KITT/pull/39) 已合并 main；本阶段只做流程、工具、测试和 Draft PR，保持手机 code19、真实新都发行 BLOCKED，**不建 KITT-PACKS、不生成生产密钥、不发 Tag/Release、不装机/合并、不启动 V0.6.1**。
+
+---
+
 > **D1 最终工程复审通过 / 用户批准合并范围**：2026-10-17 D1 第二轮独立工程复审 PASS（PR #39 head 15894f5；评审 https://github.com/shimao1115/KITT/pull/39#issuecomment-6233819737）。用户已明确批准仅做最终文档收口及 PR #39 合并 main；此段是合并前授权与审查状态，不预先宣称合并成功。测试依据提交的工程证据1134项零失败，ChatGPT未实跑Gradle；生产代码 app/src/main 零改动。仍无生产密钥、Release、正式新都可发行故事、手机JCA验收、D2授权；sequence只是调用方下限，非持久防回滚。旧本机路径留在Git历史，未授权不得重写。实际合并状态以GitHub PR merged及merge commit为准。
 
 ---
