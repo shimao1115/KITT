@@ -106,7 +106,7 @@ object D1Cli {
         val root = File(options.required("root")).absoluteFile
         D1Sample.render().forEach { (path, bytes) ->
             val target = File(root, path)
-            target.parentFile.mkdirs()
+            target.parentFile?.mkdirs()
             target.writeBytes(bytes)
             println("sample_file=$path bytes=${bytes.size} sha256=${ContentDigest.sha256(bytes)}")
         }
