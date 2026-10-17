@@ -7,7 +7,7 @@
 
 ## 1. 真实基线与已批准事项
 
-> **2026-10-17 D1 最新阶段**：V0.6.0 D0/code20县级双包通用读取已于 [PR #37](https://github.com/shimao1115/KITT/pull/37) 正式合并main（merge `1330574d15deb55bc8881783c55e889ddf77ddf0`），有Debug540+Release527=1067项旧阶段工程证据与独立复审PASS。用户已明确启动**下一阶段 D1**：[Issue #38](https://github.com/shimao1115/KITT/issues/38)，唯一工程范围是**可复现Fact/Narrative发行候选字节＋离线签名/验签协议**，仅用TEST_ONLY密钥，不自动建立正式出版信任；实际生产密钥首次托管/GitHub Release/D2、手机下载导入/V0.6.1均未授权。手机现为已验收code19；D0 code20未上手机，正式完整故事0、杨慎Visitor待审；旧settings.xml首次进设置页字节漂移与Gradle IPC初轮失败确切根因仍UNKNOWN。
+> **2026-10-17 D1 完成并合并（以此状态为准）**：V0.6.0 D1 电脑端 TEST_ONLY 可复现双包打包与离线签名验签已通过[第二轮工程复审](https://github.com/shimao1115/KITT/pull/39#issuecomment-6233819737)，[PR #39](https://github.com/shimao1115/KITT/pull/39) 已合并 main（merge `76377555bf3e00be1060a1d03cdf3d4eda8be768`，工程证据 Debug567 + Release554 + packtool13 = **1134项**；不是独立 GitHub CI）。V0.6.0 D0/code20县级双包通用读取已于 [PR #37](https://github.com/shimao1115/KITT/pull/37) 正式合并main（merge `1330574d15deb55bc8881783c55e889ddf77ddf0`），有Debug540+Release527=1067项旧阶段工程证据与独立复审PASS。用户已明确启动**下一阶段 D1**：[Issue #38](https://github.com/shimao1115/KITT/issues/38)，唯一工程范围是**可复现Fact/Narrative发行候选字节＋离线签名/验签协议**，仅用TEST_ONLY密钥，不自动建立正式出版信任；实际生产密钥首次托管/GitHub Release/D2、手机下载导入/V0.6.1均未授权。手机现为已验收code19；D0 code20未上手机，正式完整故事0、杨慎Visitor待审；旧settings.xml首次进设置页字节漂移与Gradle IPC初轮失败确切根因仍UNKNOWN。
 
 
 | 项目 | 截至 2026-10-17 的已核状态 |
@@ -16,7 +16,7 @@
 | 工程与语音 | V0.5.2/code19 实跑 **Debug511+Release498=1009项**，零失败/错误/跳过，Fake模拟/签名回归PASS；20/20真实历史在升级前、升级后、真机辅助UI后哈希相同。杨慎双篇历史独立试听PASS不代表Visitor Gate获批；`settings.xml` 首进设置页整体字节漂移根因仍UNKNOWN、账号在线有效性未独立测试 |
 | 标准已发布故事 | **0篇**。杨慎主篇、延伸仍 `candidate / fact_gate=passed / visitor_gate=pending`，批准范围只是 acceptance_candidate；正式发布 **BLOCKED**，不能把试播成功等同正式发行 |
 | 外场测试 | [#23](https://github.com/shimao1115/KITT/issues/23)、[#24](https://github.com/shimao1115/KITT/issues/24)、[#27](https://github.com/shimao1115/KITT/issues/27) 保持 OPEN：可信物理 GPS 自动讲述/重播/延伸、断网新鲜定位/云故障恢复、旧历史样本等继续 PENDING |
-| 当前工程交付 | **D0/code20 已正式合并 main**，PR #37 merge `1330574d`，工程1067项旧阶段回归和独立复审PASS，未升级手机。**D1首轮工程已交付、Draft PR #39 未合并**：[Issue #38](https://github.com/shimao1115/KITT/issues/38) 的TEST_ONLY可复现打包与离线验签完成，本轮 Debug563+Release550+packtool11=**1124项**零失败、两干净目录字节一致、签名回归2接受+6拒绝；**无生产密钥/Release/手机路径**，真实新都对外发行与真机JCA仍PENDING，正式故事仍0 |
+| 当前工程交付 | **D0/code20 已正式合并 main**，PR #37 merge `1330574d`，工程1067项旧阶段回归和独立复审PASS，未升级手机。**D1已通过第二轮独立工程复审并合并 main**（[PR #39](https://github.com/shimao1115/KITT/pull/39)，merge `76377555`）：[Issue #38](https://github.com/shimao1115/KITT/issues/38) 的 TEST_ONLY 可复现打包与离线验签完成，本轮 Debug567+Release554+packtool13=**1134项**零失败（旧1124不继承、无独立GitHub CI）、两干净目录字节一致、签名回归2接受+6拒绝；**无生产密钥/Release/手机路径**，真实新都对外发行与真机JCA仍PENDING，正式故事仍0 |
 | 全国采集规范 | “**区县分包、镇街普查、对象建档、事实入库、精选成篇；全国复用、市州聚合**”已由用户确认。详细设计在 [Draft PR #29](https://github.com/shimao1115/KITT/pull/29)，**尚未合并、尚未实施全国分发** |
 
 **三种 PASS 严格分开**：工程测试通过 ≠ 真人听完整篇 ≠ 真实道路全链/正式发布已通过。所有证据要对应实际代码、内容哈希、设备及测试日期。
@@ -28,7 +28,7 @@
 | **已完成：V0.5.1/code18** | 「探索地点」无 GPS/无网阅读新都6对象22基础事实；完整已审故事才能全文阅读和手动TTS | **工程965项PASS、原签名手机升级PASS、用户手工体验PASS，已在 PR #31 合并 main**；正式故事0、平板及部分手势仍PENDING |
 | **V0.5.1之后的独立内容审批** | 对杨慎两篇既有正文及真人试听证据做游客 Gate 最终判定，用户明确授权后才走正式审批与打包 | 保持正文/Claim修订/哈希绑定；审核不通过则仍候选。**不作为 V0.5.1 开发中的自动放行**；必要正式制包及受影响测试另执行 |
 | **已完成：V0.5.2/code19** | 六类讲述兴趣「多讲/正常/少讲」、默认正常、独立保存；只对合格自动讲述候选做软排序 | **工程1009项PASS、手机一次原签名code18→19升级PASS、20/20真实历史不变、用户人工体验PASS、PR #35 已合并**；正式多类故事播报排序PENDING；离线/即时来源模式明确DEFERRED；两个保存按钮距离过近下次优化 |
-| **V0.6.0：D0已合并，D1已获准，D2仍待授权** | **D0已完成** 通用县级双包读取与新都兼容；**D1** 电脑端可复现双包候选、独立于APK的 TEST_ONLY签名验签及发行前可信/内容门禁；**D2** 真正发行者公钥/签名治理与首次受控 GitHub Release | D1必须两干净目录同字节、签名错误/拼包/无可信根/故事未审等负例；**本阶段不得生成正式生产私钥或发布任何GitHub Release**；手机仍是code19 |
+| **V0.6.0：D0/D1已合并，D2仍待授权** | **D0已完成** 通用县级双包读取与新都兼容；**D1已完成** 电脑端可复现双包候选、独立于APK的 TEST_ONLY签名验签及发行前可信/内容门禁；**D2** 真正发行者公钥/签名治理与首次受控 GitHub Release | D1必须两干净目录同字节、签名错误/拼包/无可信根/故事未审等负例；**本阶段不得生成正式生产私钥或发布任何GitHub Release**；手机仍是code19 |
 | **V0.6.1（重点）** | **手机「离线知识管理」：默认按市／州选择下载**（成都市、德阳市、阿坝州等），一键组合其中**当前实际已发布**县级双包，也可展开按区县选择；更新、清理按县包执行；同版提供**本地文件导入**（可电脑/U盘转入），两条入口共用一套验证与安装管线 | 校验发布者签名/摘要/版本/Claim依赖/空间和版权；先暂存再原子启用，失败旧包不丢；GitHub不通时本地可信包仍可导入；国内网络、真实设备需实际验收 |
 | **V0.6.2（按需）** | Wi-Fi 自动更新已安装区县（用户可关闭）、真实更新摘要/覆盖率、失败重试体验与低打扰提示 | 不偷偷下载未选地区，不占用沿途主链；优先修实际发现的问题，不做差分/复杂后台任务 |
 | **V0.7.x** | 用户主动问 AI 时**优先匹配已安装可信 Fact/Narrative**（方案 B）；再视问题及在线可用性查证，完善离线优先/即时优先行为 | 只取相关证据而非整个县包；临时生成资料不得未经审核写入正式包；在线失败不影响本地阅读、朗读及可信定位下的自动故事 |
