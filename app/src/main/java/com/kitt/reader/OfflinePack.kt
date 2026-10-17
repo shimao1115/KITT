@@ -16,7 +16,7 @@ class OfflinePack private constructor(val version: String, val area: AreaIdentit
     /** WGS84 real measurements only. The entire accuracy disk must clear every ring by the margin.
      * A historical community boundary is not an official survey; no street identity is inferred. */
     fun resolve(fix: Fix?, time: Long): AreaIdentity? {
-        if (fix == null || !fix.valid() || !fix.precise(time) ||
+        if (rings.isEmpty() || fix == null || !fix.valid() || !fix.precise(time) ||
             fix.source !in setOf(FixSource.GPS, FixSource.NETWORK) || fix.accuracy <= 0) return null
         val x = fix.longitude; val y = fix.latitude
         fun inside(ring: List<Pair<Double, Double>>): Boolean {
@@ -53,7 +53,7 @@ class OfflinePack private constructor(val version: String, val area: AreaIdentit
 
     private val retrievedMs get() = java.time.LocalDate.parse(retrievedAt).atStartOfDay().toInstant(java.time.ZoneOffset.UTC).toEpochMilli()
     fun overview(identity: AreaIdentity): OverviewDossier? = if (!matches(identity)) null else
-        OverviewDossier(identity, retrievedMs, "新都区审校离线包；本次未联网；检索日期$retrievedAt（日级精度）；只有区县关联。", objects.map {
+        OverviewDossier(identity, retrievedMs, "${area.district}审校离线包；本次未联网；检索日期$retrievedAt（日级精度）；只有区县关联。", objects.map {
             OverviewObject(it.title, it.facts.first().summary, it.family, 4, sourcesFor(it.facts))
         }, sources, listOf("无实时信息、无可信镇街几何、无对象精确现场位置"), historical = true)
 
@@ -66,6 +66,12 @@ class OfflinePack private constructor(val version: String, val area: AreaIdentit
     private fun sourcesFor(facts: List<PackFact>) = sources.filter { s -> facts.any { s.id in it.sourceIds } }
 
     companion object {
+        /** Browsing evidence is not geometry. Generic D0 counties cannot manufacture a GPS trigger. */
+        internal fun readOnly(version: String, area: AreaIdentity, sources: List<ResearchSource>,
+            objects: List<PackObject>, retrievedAt: String): OfflinePack {
+            java.time.LocalDate.parse(retrievedAt)
+            return OfflinePack(version, area, sources, objects, retrievedAt, emptyList(), "unavailable", 0.0)
+        }
         fun sha256(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
         fun load(context: Context): OfflinePack? = runCatching {
             val assets = context.assets
@@ -153,7 +159,7 @@ class OfflineNarrator(private val pack: OfflinePack?, private val stories: Story
         } ?: return if (active) message("目前没有可靠的新内容。") else DirectorResult(Action.SILENT)
         val (obj, facts) = chosen
         return DirectorResult(Action.SPEAK_NOW, obj.title,
-            (if (!more) "新都区有个值得了解的对象，${obj.title}。" else "关于${obj.title}，还有两点。") + facts.joinToString("") { it.summary },
+            (if (!more) "${identity.district}有个值得了解的对象，${obj.title}。" else "关于${obj.title}，还有两点。") + facts.joinToString("") { it.summary },
             memoryUpdate = facts.joinToString("；") { it.coverage }, topicFamily = obj.family)
     }
 }

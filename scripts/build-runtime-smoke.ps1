@@ -6,7 +6,7 @@ $taskCopy = Join-Path $taskRoot 'artifacts\runtime-smoke-workspace'
 Push-Location $taskRoot
 try {
     $taskVersionSource = Get-Content -LiteralPath (Join-Path $taskRoot 'app\build.gradle.kts') -Raw -Encoding utf8
-    if ($taskVersionSource -match 'versionName = "0\.5\.[0-2]"') {
+    if ($taskVersionSource -match 'versionName = "0\.(5\.[0-2]|6\.0)"') {
         & python (Join-Path $PSScriptRoot 'build-story-packs.py') --check
         if ($LASTEXITCODE -ne 0) { throw 'Standard content integrity check failed; runtimecheck candidate not built.' }
     }

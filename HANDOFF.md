@@ -1,3 +1,84 @@
+# 2026-10-17 V0.6.0 D0/code20 最终工程复审 PASS — 用户已批准文档收口与 PR #37 合并
+
+**最新授权**：用户对“D0 工程复审通过后，文档收口并将 [PR #37](https://github.com/shimao1115/KITT/pull/37) 合并 main，暂不升级手机”的方案明确回复**批准**。本任务仅执行去敏文档整理与合并操作，不重跑测试、不访问/安装手机、不创建Release或KITT-PACKS仓库、不审批故事、不启动D1/D2或V0.6.1。**合并是否已执行请查询PR #37 的 GitHub merged 状态和实际merge commit；本段记录的是授权及门禁，不预先宣称成功。**
+
+## D0 工程验收及证据封口
+
+- **独立代码复审 PASS**：[首轮评审](https://github.com/shimao1115/KITT/pull/37#issuecomment-6229804921) 指出的县→市州代码归属和来源/Claim许可黑名单两处漏洞均经实现提交 dc764651 最小修复；[第二轮复审 PASS](https://github.com/shimao1115/KITT/pull/37#issuecomment-6231174949)。县与父市州普通代码一致性、特殊层级暂拒；权利字段完整字符串显式允许表、权限允许不能覆盖受限声明；专项反例重新计算源/Claim/故事引用和摘要，确认是权限判断而非旧哈希错误。
+- **Qoder 的真实本轮工程测试证据**：Debug **540/79套件**、Release **527/77套件**，**1067项**、0失败/错误/跳过，Python 7、六组确定性Fake模拟、Android构建与lint（标准各6个既有warning/零错误）、原签名**2接受＋6拒绝**通过；干净目录runtimecheck 75/75任务。首次Gradle/IPC/Release进程异常未被算作PASS；后来以 --rerun-tasks --max-workers=1 --no-daemon 真正115/115任务完整成功，IPC确切根因 UNKNOWN。GitHub该SHA没有独立CI Actions运行；独立审阅仅核对源码与已提交日志，并未从本会话直接执行这些测试。
+- **本地未安装的 code20 候选**：com.kitt.reader.runtimecheck，versionName 0.6.0 / versionCode 20，**74,461,274 bytes**，SHA256 **2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60**，原证书 SHA256 3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba。该哈希来自Qoder提交的本地证据；本会话未取得 APK 原始字节复核。**手机继续使用 code19**；code19→20仅静态兼容、不代表真机升级成功。
+- **结构性验收**：新都内置1县/6对象/22基础事实/6基础来源、不改原资料与可信GPS离线路径；县级 Fact + Narrative 独立Manifest、独立版本、Claim修订/来源审核与地区隔离通过工程验证；宜昌西陵第二县与6篇主故事+1篇延伸仅隔离的 TEST_ONLY 内存夹具，APK不可访问；通用县只读视图没有物理GPS几何。默认Loader拒绝未经验证外部输入，签名发布与GitHub Release尚未实施。
+- **真实性保留**：杨慎两篇仍 candidate/fact_gate=passed/visitor_gate=pending，标准正式故事 **0篇 / 发布 BLOCKED**；settings.xml 首次打开原设置页字节漂移根因 UNKNOWN；账号在线有效性及手机真机 D0、外场#23/#24/#27/#30 PENDING，离线/即时模式 DEFERRED。此次无新手机真实历史/设置测试，旧20份真实历史未触碰；用户延后的两个保存按钮间距UI问题不在本D0修复范围。
+
+**最新 D0 交付来源**：[Issue #36](https://github.com/shimao1115/KITT/issues/36)、[PR #37](https://github.com/shimao1115/KITT/pull/37)、[R1 证据](docs/evidence/v060-d0-verification.json)、[协议](docs/COUNTY_PACK_D0_CONTRACT.md)、[工程验收步骤](docs/ACCEPTANCE_COUNTY_PACK_D0.md)。正式V0.6.0整体发行闭环仍未完成：可信发行者/独立签名、可复现双包成品、受控 GitHub Release、下载/导入/原子安装均需后续分别授权，不可因为D0合并自行开工。
+
+**最终 STOP**：文档更新与用户明确批准的 PR #37 GitHub 合并完成后，核验main与PR状态即停止；不擅自操作其他分支、手机、APK、故事审批或开始下一阶段。下方“工程待复审、不能合并”是过往阶段的交接历史，不再代表最新许可。
+
+---
+
+# 2026-10-17 V0.6.0 D0 / code20 评审修正交付 — STOP 待再次验收
+
+[Issue #36](https://github.com/shimao1115/KITT/issues/36) 的第一条县级双包读取黄金路径已完成，交付 [Draft PR #37](https://github.com/shimao1115/KITT/pull/37)，实现提交 `91b96a8ecc711e663007a1c01d406d1afee8a607`。仅本 D0 工程完成，主干/手机仍以已验收 code19 为基线；未合并、未安装、未发布，不代表整个 V0.6.0 发行完成。
+
+## 本次两处最小修正
+
+针对 [独立工程评审评论](https://github.com/shimao1115/KITT/pull/37#issuecomment-6229804921) 的两个验证缺口，实现提交 `dc76465`；相对受审 `9f3ada2`，唯一生产文件改动为 `CountyPacks.kt`。
+
+- 普通县级 `area_id` 与父市州 `parent_id` 必须满足六位码前四位一致、父级末两位00；00/90特殊层级暂不支持，拒绝而不虚构父市州。重封摘要/签名后的跨市、跨省错误归属及特殊层级均有拒绝用例。
+- 来源和Claim权利改为有限、完整字符串允许表，仅做首尾空格/大小写规范化。保留既有明确的事实自行概括/古籍范围，不授权复制受保护的来源表达；未知、restricted、all rights reserved、混合许可及中文禁转载均拒绝，`permissions=allowed`不能覆盖它。新用例同步重算source registry、accepted source revision、Claim revision、Narrative accepted revision以及包摘要/测试签名，证明拒绝来自权利门禁；无关篇章及独立事实仍可用。明确CC-BY-4.0及既有已明确范围的正例通过。
+
+新增六项用例，每种Variant全部执行；未改原正文、资产、审批、账号、设置、UI或D0边界。独立工程**复审PENDING**，不将本次施工自测称为独立审核通过。
+
+## 当前可运行能力与范围
+
+- `CountyPackLoader` 接收独立 Fact/Narrative 原始 bytes、各自 manifest/版本、调用方整体摘要与 verifier 来源标签；县ID、父市州目录、Entity/Source/Claim/Story ID、版权权限、具体接受修订、Fact/Visitor Gate 均验证。默认拒绝输入，哈希不产生身份信任。生产唯一入口为固定 APK 内置资产适配；测试 RSA verifier/临时密钥仅在 src/test。
+- `ExploreCatalog.load` 与 `KittRuntime` 已接入县级目录的兼容层。真实新都仍为 **1县 / 6对象 / 22基础事实 / 6基础来源 / 0正式故事**；内存索引另保留16条杨慎Claim及11个原研究来源登记（含未采纳项），与6个基础来源用前缀隔离，共17登记来源。原可信几何、离线事实自动讲述、重播、六类兴趣、Journey/TripStore/账号路径保持；普通探索无GPS/无云/无登录。
+- 通用模型可接收多实体、多main；只有逐篇审核和依赖合格者进入集合，再按兴趣软排序。测试 Story/Claim 记忆按县ID限定，同Claim换Story ID不再自动重讲。旧杨慎专用解析器的 `<=1 main` 安全限制保留。
+- 第二县仅使用湖北宜昌西陵区行政标签，具体人物/对象/Claim/来源/故事均为 **TEST_ONLY 合成**，与新都测试标签不相邻。6篇main+1篇followup只在内存测试中验证多县隔离、六类偏置及资格门禁。APK资产和DEX实查均无第二县夹具/单测类；通用只读县视图无几何，不能制造GPS触发。
+- 错地区、重复/悬空ID、格式/大小/Schema/App code、整体/分包摘要与未受信输入拒绝；篇级审核、来源权限和Claim撤回/修订失配只停用实际引用篇章，基础事实独立可用时显示“仅基础事实”。详见[契约与迁移](docs/COUNTY_PACK_D0_CONTRACT.md)。
+
+## 本轮R1真实验证（旧1055项仅历史，不累计）
+
+| 检查 | 结果 |
+| --- | --- |
+| Debug全量 | **540**，79套件，失败/错误/跳过均0 |
+| Release全量 | **527**，77套件，失败/错误/跳过均0 |
+| 本轮合计 | **1067**；本次新增6项，两Variant均执行；旧1055及本次不完整失败尝试均不计入 |
+| 内容与发布门禁 | Python **7项 PASS**；标准 `--check` 为0合格故事；`--require-playable` **BLOCKED/exit1**；候选无独立输出目录拒绝/exit2 |
+| 六组模拟 | 成都新都→安州雎水29点粗路线，full/accelerated/batch/landmark/dossier/driving-area-resolution 全PASS；确定性/Fake Provider及fake Voice，不是实车/真模型/真人耳听 |
+| assemble/lint | 标准Debug/Release成功，lint各6 warnings/0 errors；最终完整重跑使用 `--rerun-tasks --max-workers=1 --no-daemon`，**18分34秒 / 115任务全部执行**；随后verify归档检查17秒（2执行/113复用），不重复计数 |
+| 独立干净目录 | runtimecheck Debug/AndroidTest/lint成功，**75/75任务实际执行**；原code19工作目录及中止的D0目录完整保留在本地忽略的artifacts，最终目录从不存在状态建立 |
+| 签名与权限 | **2接受+6拒绝 PASS**；所有候选均原证书；本地code19候选重新验签/核哈希，code19→20同包同证书递增仅静态兼容；权限逐项一致 |
+| 数据/资产隔离 | content、全部main/assets、AndroidManifest、SettingsStore、TripStore、StoryInterestStore、DirectorLoop与施工基线字节不变；读取器专项及既有UI/持久化回归使用合成设置/20份合成历史；真实手机历史未访问 |
+
+[本轮完整证据](docs/evidence/v060-d0-verification.json) 包含逐套测试名/计数/新鲜报告哈希、六组报告摘要/哈希、源码哈希、APK内容、签名及日志摘要。`scripts/record-v060-evidence.py` 已实际执行通过：对照本轮开始标记检查真实任务执行和报告新鲜度，对照独立构建源码；runtimecheck预期的包名/应用label差异被单独核对，不忽略其它差异。本次首轮13分50秒因Gradle本机loopback IPC连接失败及Release Test Executor退出而失败，未取得完整Release XML；日志及当时Debug XML已保留在忽略的 `artifacts/v060-r1-failed-worker-*`。随后未改源代码，以串行独立进程强制完整重跑成功；全部最终XML晚于该次重跑开始标记。证据保留失败原因、时间和日志哈希，失败尝试未累计；不推断IPC问题的确定根因。原D0初交1055项/旧哈希保留在 `9f3ada2` 和本地R0备份，仅为历史。
+
+## 本地候选（未上传/未安装）
+
+全部 versionName `0.6.0` / versionCode `20`；唯一证书 SHA256 `3139a293aaf9a233accba2489f10bb59c8f79102b631abfd51a7ec7f929502ba`。
+
+| 本地文件 | 包名 | 字节数 / SHA256 |
+| --- | --- | --- |
+| `artifacts/kitt-v0.6.0-runtimecheck.apk` | com.kitt.reader.runtimecheck | 74461274 / `2d8326eb295e642a8247715bdd13fa5c89c2081cdab071ba325735fea4fe5d60` |
+| `artifacts/kitt-v0.6.0-debug.apk` | com.kitt.reader | 74461250 / `5b47c4a0809a5abf2ef2c0b6af2afc15a2ebed2660068a236a17a8613095f6a4` |
+| `artifacts/kitt-v0.6.0-release.apk` | com.kitt.reader | 70790206 / `8aae53348a378987e6a2924dfb9105f0cefde0c9aa9d9a5bacadef72de214fa4` |
+
+配套AndroidTest仅构建/验签，未执行设备instrumentation。候选未入Git，无GitHub Release或APK上传。
+
+## 已知限制、配置与最短人工验收
+
+正式完整故事仍 **0**；杨慎两篇正文/approval/Claim/manifest原样，仍 `candidate / fact_gate=passed / visitor_gate=pending`。测试通过不等于游客审批、真人耳听或真实道路全链通过。新县尚无生产几何/正式内容，D0不宣称全国县域可用。每包500000 bytes、索引200项、Journey marker总长240字符等为本版安全上限，超限拒绝或阻断篇章；未来发行格式/大引用集合应单独审查。
+
+真实发行者信任根、公钥治理、签名成包、GitHub Release、下载/文件导入/原子安装/Wi-Fi更新、真实六区调查都未实现。市州只聚合县ID，不复制正文。PR #29及 #23/#24/#27/#30状态未触碰。旧 `settings.xml` 首进设置页字节漂移根因仍 **UNKNOWN**，云账号在线有效性及原外场Gate仍PENDING，离线/即时模式仍DEFERRED；用户延期的设置UI按钮间距未改。
+
+默认Provider/模型保持 `FAKE / gpt-4.1-mini`，无新增OAuth/密钥步骤。本轮无真实Provider/研究网络请求；没有访问手机、账号原始记录、真实历史或设备设置。
+
+最短验收：审 [PR #37](https://github.com/shimao1115/KITT/pull/37) → 对照[证据](docs/evidence/v060-d0-verification.json)与[验收说明](docs/ACCEPTANCE_COUNTY_PACK_D0.md) → 核对[协议与隔离边界](docs/COUNTY_PACK_D0_CONTRACT.md)。当前需独立工程复审及用户再次审阅；手机升级、合并及内容正式发布仍需各自独立授权。
+
+最近milestone：`dc76465` 两处验证修正/6专项；`9f3ada2` 初交工程证据；`91b96a8` D0实现/23专项/协议；`edab16f` D0任务文档基线；`53c0e0f` 已合并code19主干基线。**STOP：仅交付Draft PR #37，等待工程验收；不启动后续里程碑。**
+
+---
+
 # 2026-10-17 V0.5.2/code19 最终人工验收与合并收口（用户明确批准）
 
 **人工体验：PASS。** 在 Qoder 唯一一次 code18→19 原签名保数据升级、六类兴趣实机辅助验收后，用户亲手检查已装的 vivo X200 Pro / `com.kitt.reader.runtimecheck` code19，并回复：**“都正常，就是‘保存讲述兴趣’ 和 ‘保存’两个按钮挨的太近，图标就要连在一起了，不过这个是小问题，暂时不修改，以后优化UI的时候一起修改”**。人工认可范围为当前 code19 的设置与兴趣体验；**并不等于** ChatGPT 在线请求、原设置完整语义等价、正式多类故事真实排序、冷进程重启、平板或者真实 GPS 全链已验收。用户随后再次明确**“批准”本次文档收口及 PR #35 正式合并至 main**；实际合并状态/merge SHA 始终以 [PR #35](https://github.com/shimao1115/KITT/pull/35) 为准。
